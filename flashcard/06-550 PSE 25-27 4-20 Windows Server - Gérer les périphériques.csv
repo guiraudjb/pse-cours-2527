@@ -1,0 +1,48 @@
+Quel est le principe fondamental de l'accès au matériel sous Windows ?,Une application n'accède jamais directement au matériel : tout passe par l'I/O Manager et les pilotes.
+Quel est le chemin d'une requête d'E/S sous Windows ?,"Application, API Win32/NTAPI, I/O Manager, pilotes, matériel."
+Quels sont les objectifs de l'architecture d'E/S de Windows ?,"Abstraction matérielle, modularité, Plug and Play, sécurité par contrôle d'accès, performances, gestion des erreurs."
+Que signifie HAL ?,Hardware Abstraction Layer : couche d'abstraction matérielle.
+Quel est le rôle de la HAL ?,"Faire l'intermédiaire entre le noyau et le matériel : gestion homogène des interruptions, compatibilité entre architectures, indépendance vis-à-vis du constructeur."
+Qu'est-ce que l'I/O Manager ?,"Le composant central du noyau qui gère toutes les E/S : il crée les IRP, les achemine et synchronise les opérations."
+Que signifie IRP ?,I/O Request Packet : la structure de données représentant une requête d'E/S.
+Que contient un IRP ?,"Le type d'opération, le buffer mémoire, le contexte d'exécution, les informations de sécurité et l'état de la requête."
+Quel est le rôle du Cache Manager ?,Mettre en cache les accès disque en mémoire pour limiter les accès physiques et accélérer les lectures répétées.
+Quel est le rôle du Memory Manager dans les E/S ?,"Gérer les buffers d'E/S, le memory-mapped I/O et coordonner les transferts mémoire."
+Quel est le rôle du Security Reference Monitor ?,Vérifier les droits d'accès et les privilèges pour empêcher les accès non autorisés aux périphériques.
+Citez les cinq composants du système d'E/S Windows.,"I/O Manager, IRP, Cache Manager, Memory Manager, Security Reference Monitor."
+Qu'est-ce qu'un pilote de périphérique ?,"Un composant logiciel, surtout en mode noyau, qui traduit les commandes du système en instructions propres au matériel."
+Quel est le rôle d'un pilote de fonction ?,Gérer directement le périphérique : c'est le cœur de la pile de pilotes.
+Quel est le rôle d'un pilote de filtre ?,"Intercepter les IRP pour ajouter des fonctions (sécurité, journalisation, chiffrement) ; il est optionnel."
+Quel est le rôle d'un pilote de bus ?,"Gérer les contrôleurs de bus (USB, PCI) et les périphériques qui y sont connectés."
+Dans quel ordre s'organise la pile de pilotes (Driver Stack) ?,"Application, pilote filtre (optionnel), pilote de fonction, pilote de bus, matériel."
+Que peut faire chaque pilote d'une pile avec un IRP ?,"Le traiter, le modifier ou le transmettre au pilote suivant."
+Qu'est-ce que WDM ?,"Windows Driver Model : ancien modèle de pilotes, bas niveau, puissant mais complexe et peu sécurisé."
+Qu'est-ce que KMDF ?,"Kernel-Mode Driver Framework : le framework moderne de pilotes en mode noyau, le plus utilisé aujourd'hui."
+Que simplifie KMDF ?,"La gestion mémoire, le Plug and Play, la gestion d'énergie et les IRP."
+Qu'est-ce qu'UMDF ?,User-Mode Driver Framework : exécution de certains pilotes en mode utilisateur.
+Quel est l'avantage d'UMDF ?,"Si le pilote plante, le système reste généralement stable."
+Quel risque présente un pilote bogué en mode noyau ?,"Un écran bleu (BSOD) rendant le système indisponible, car il a les privilèges les plus élevés."
+Qu'est-ce qu'une IRQ ?,Interrupt ReQuest : signal d'interruption matérielle envoyé au processeur pour signaler un événement ou la fin d'une opération.
+Que sont MSI et MSI-X ?,Des interruptions modernes (Message Signaled Interrupts) qui remplacent les IRQ classiques.
+Qu'apporte MSI-X ?,"Une meilleure répartition des interruptions entre processeurs, moins de latence, de meilleures performances réseau et stockage."
+Qu'est-ce que le DMA ?,Direct Memory Access : un périphérique accède directement à la mémoire sans solliciter fortement le processeur.
+Quels périphériques utilisent le DMA ?,"Les cartes réseau, les SSD NVMe et les contrôleurs RAID."
+Différence entre E/S synchrones et asynchrones ?,Synchrones : l'application attend la fin de l'opération. Asynchrones : elle continue son exécution pendant l'opération.
+Que sont les IOCP ?,"I/O Completion Ports : mécanisme d'E/S asynchrones utilisé par IIS, SQL Server et Hyper-V."
+Pourquoi les E/S asynchrones sont-elles indispensables aux serveurs ?,"Sans elles, chaque connexion bloquerait un thread, limitant fortement la capacité de traitement."
+Quelles sont les cinq étapes du cycle d'une requête d'E/S ?,"L'application demande l'opération, l'I/O Manager crée l'IRP, l'IRP traverse la pile de pilotes, le pilote matériel exécute, le résultat revient à l'application."
+Quel type d'IRP est créé pour une lecture de fichier via ReadFile() ?,IRP_MJ_READ.
+Que permet le Plug and Play ?,"Détecter automatiquement les périphériques, installer les pilotes et attribuer les ressources (IRQ, DMA, ports)."
+Quels sont les états possibles d'un périphérique PnP ?,"Détecté, Démarré, Suspendu, Arrêté, Supprimé."
+Quelle console ouvre le Gestionnaire de périphériques ?,devmgmt.msc.
+Que permet le Gestionnaire de périphériques ?,"Installer, désinstaller et mettre à jour les pilotes, diagnostiquer le matériel, activer ou désactiver les périphériques."
+Sur quelle norme repose la gestion de l'alimentation des périphériques ?,"ACPI (veille, arrêt, états matériels, optimisation énergétique)."
+Sur quoi repose la sécurité des pilotes sous Windows Server moderne ?,"Signature obligatoire, Secure Boot, HVCI, isolation mémoire et protection du noyau."
+Que signifie HVCI ?,Hypervisor-Protected Code Integrity : l'hyperviseur protège l'intégrité du code des pilotes contre l'injection de code dans le noyau.
+Citez des technologies de virtualisation de périphériques sous Windows Server.,"SR-IOV, périphériques virtuels Hyper-V, virtualisation GPU."
+Qu'est-ce que Driver Verifier ?,L'outil (commande verifier) qui teste les pilotes pour détecter les erreurs noyau et les pilotes instables.
+Quelle commande active Driver Verifier sur les pilotes non Microsoft ?,verifier /standard /all.
+Peut-on utiliser Driver Verifier en production ?,"Non, uniquement en test : il peut rendre le système instable."
+Quelle commande liste en détail les pilotes installés ?,driverquery /v.
+Quelle cmdlet PowerShell liste les périphériques Plug and Play et leur état ?,Get-PnpDevice.
+Quelles cmdlets listent les disques physiques et les volumes ?,Get-Disk et Get-Volume.

@@ -1,0 +1,46 @@
+Que signifie RDS ?,Remote Desktop Services : les services Bureau à distance de Windows Server.
+Que permet RDS ?,"D'accéder à distance à un bureau Windows, à des applications ou à des ressources hébergées sur un serveur, depuis n'importe quel poste."
+Quelle suite de protocoles assure les communications réseau de Windows Server ?,"TCP/IP : adressage, routage, transport des données et fiabilité des échanges."
+"Avec RDS, où s'exécute l'application ?",Entièrement sur le serveur ; le client ne reçoit que l'affichage et les résultats.
+Quels sont les avantages de RDS ?,"Applications centralisées, administration simplifiée, coûts matériels réduits côté client, accès depuis n'importe quel poste."
+Citez les usages principaux de RDS.,"Télétravail, administration distante, virtualisation de postes, applications métiers sur postes légers."
+Quelles conditions faut-il pour établir une connexion RDS ?,"Ordinateur cible allumé et connecté au réseau, Bureau à distance activé, autorisations nécessaires."
+Qu'est-ce que la virtualisation de sessions ?,"Plusieurs utilisateurs partagent les ressources d'un même serveur, chacun dans sa propre session isolée."
+Quel protocole utilise RDS ?,"RDP (Remote Desktop Protocol), protocole propriétaire Microsoft."
+Que transmet le protocole RDP ?,"L'affichage graphique, la souris, le clavier, le son et les périphériques redirigés."
+Quels ports utilise RDP par défaut ?,TCP 3389 pour les connexions et UDP 3389 pour optimiser les performances.
+Que se passe-t-il si l'on bloque UDP 3389 ?,"La qualité des sessions se dégrade nettement, notamment pour les graphiques et les vidéos."
+Quels sont les cinq composants de RDS sous Windows Server 2016 ?,"RD Session Host, RD Connection Broker, RD Web Access, RD Gateway et RD Licensing."
+Quel est le rôle de RD Session Host (RDSH) ?,"Héberger les sessions utilisateurs : exécuter les applications, gérer les bureaux distants et les ressources système."
+Quel est le composant central d'une infrastructure RDS ?,RD Session Host.
+Quel est le rôle de RD Connection Broker ?,"Répartir les utilisateurs entre les Session Host, les reconnecter à leur session existante et équilibrer la charge."
+Pourquoi configurer RD Connection Broker en haute disponibilité ?,Pour qu'il ne devienne pas un point unique de défaillance (SPOF).
+Quel est le rôle de RD Web Access ?,"Donner accès aux ressources et aux applications RemoteApp depuis un navigateur web, sans client RDP."
+Quel est le rôle de RD Gateway ?,"Fournir un accès sécurisé depuis Internet via SSL/TLS, sans VPN et sans exposer le port 3389."
+Décrivez le flux d'un accès via RD Gateway.,"Internet vers RD Gateway (HTTPS 443, SSL/TLS), puis RD Gateway vers le serveur RDS interne (port 3389)."
+Pourquoi ne jamais exposer le port 3389 directement sur Internet ?,Pour éviter les attaques par force brute sur RDP ; il faut passer par RD Gateway.
+Quel est le rôle de RD Licensing ?,Gérer les licences d'accès client (CAL TS).
+Quels sont les deux types de licences CAL RDS ?,Par utilisateur ou par périphérique.
+Quelle est la durée de la période de grâce des licences RDS ?,"120 jours ; au-delà, sans serveur de licences, le serveur RDS refuse les connexions."
+Quels sont les deux modes de déploiement RDS ?,Le déploiement rapide et le déploiement standard.
+Qu'installe le déploiement rapide RDS ?,"Connection Broker, Web Access et Session Host sur un seul serveur, pour les petits environnements."
+Quand utiliser le déploiement standard RDS ?,"En production : plusieurs serveurs, haute disponibilité et montée en charge."
+Comment installer RDS ?,"Gestionnaire de serveur, Ajouter des rôles et fonctionnalités, puis Services Bureau à distance."
+Qu'est-ce que RemoteApp ?,"Une application exécutée sur le serveur qui s'affiche sur le poste client comme si elle était installée localement, sans le bureau du serveur."
+Donnez un exemple de RemoteApp.,Microsoft Word publié sur le serveur RDS : il s'ouvre dans une fenêtre locale mais s'exécute sur le serveur.
+Quels sont les avantages de RemoteApp ?,"Meilleure expérience utilisateur, moins de bande passante, mises à jour centralisées."
+Quelle limite présente RemoteApp ?,Les applications doivent être compatibles avec l'exécution multi-sessions.
+Que signifie NLA ?,Network Level Authentication.
+Que fait NLA ?,Il impose l'authentification avant l'ouverture de la session Windows.
+Pourquoi activer systématiquement NLA ?,"Il limite les attaques et réduit la consommation de ressources serveur : sans lui, un attaquant atteint l'écran d'ouverture de session."
+De quoi un utilisateur a-t-il besoin pour se connecter à RDS dans un domaine ?,D'un compte Active Directory et de l'appartenance à un groupe autorisé.
+Comment sont chiffrées les communications RDP ?,Via SSL/TLS ou des certificats d'entreprise.
+Quels protocoles d'authentification sont utilisés par RDS ?,Kerberos (Active Directory) et NTLM (compatibilité ou hors AD).
+Quelles actions l'administrateur peut-il faire sur les sessions RDS ?,"Afficher les sessions actives, déconnecter un utilisateur, fermer une session bloquée, surveiller les ressources."
+Quelle commande ouvre une session PowerShell distante ?,Enter-PSSession (ex. Enter-PSSession SRV-AD01).
+Quels sont les avantages de PowerShell Remoting ?,L'automatisation et l'administration centralisée de plusieurs serveurs.
+Quelles causes peuvent empêcher une connexion RDS ?,"Service RDS arrêté, pare-feu bloquant le port 3389, problème DNS, utilisateur non autorisé."
+Quelle commande teste l'accès au port RDP d'un serveur ?,Test-NetConnection serveur -Port 3389.
+Que vérifier face au message « Le serveur de licences Bureau à distance n'est pas disponible » ?,"RD Licensing, l'activation des licences et les GPO RDS."
+Comment remédier à des performances RDS dégradées ?,"Augmenter les ressources, répartir les utilisateurs ou ajouter des serveurs Session Host."
+Quelles sont les causes de déconnexions intempestives RDS ?,"Coupures réseau, expiration de session ou GPO restrictives ; vérifier les journaux et les délais de session."

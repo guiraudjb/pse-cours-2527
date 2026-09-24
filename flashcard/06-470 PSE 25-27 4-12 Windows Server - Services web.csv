@@ -1,0 +1,51 @@
+Qu'est-ce qu'IIS ?,Internet Information Services : le serveur web Microsoft intégré à Windows Server.
+Citez des fonctions d'IIS.,"Hébergement de sites web, applications ASP.NET, API, services FTP, certificats HTTPS, administration centralisée."
+Quel port utilise HTTP et comment transitent les données ?,"Le port 80 TCP, données en clair."
+Quel port utilise HTTPS et qu'apporte-t-il ?,"Le port 443 TCP, avec chiffrement TLS/SSL."
+Qu'est-ce que HTTP.sys ?,"Le pilote noyau Windows qui écoute les requêtes HTTP, gère les connexions et améliore les performances (cache, file d'attente)."
+Pourquoi une faille dans HTTP.sys est-elle particulièrement critique ?,Il s'exécute en mode noyau et intercepte toutes les connexions HTTP avant IIS.
+Quelles sont les étapes du traitement d'une requête par IIS ?,"Le client envoie la requête, HTTP.sys la reçoit, elle passe au pool d'applications, le moteur IIS l'exécute (ASP.NET si besoin) et renvoie la réponse."
+Quels éléments caractérisent un site web IIS ?,"Un nom, une racine physique (dossier) et un ou plusieurs bindings."
+Qu'est-ce qu'un binding IIS ?,"L'association d'une adresse IP, d'un port, d'un nom d'hôte et d'un protocole."
+Donnez un exemple de binding HTTPS.,"Adresse 192.168.1.10, port 443, nom d'hôte intranet.local, protocole HTTPS."
+À quoi sert un pool d'applications ?,"À isoler chaque application web dans son propre processus pour la stabilité et la sécurité, afin qu'un site défaillant ne bloque pas les autres."
+Quel est le nom du processus worker d'un pool IIS ?,w3wp.exe.
+Que possède chaque pool d'applications ?,"Son propre processus worker (w3wp.exe), son identité de sécurité (compte de service) et ses paramètres mémoire."
+Quel est le dossier racine par défaut des sites IIS ?,C:\inetpub\wwwroot.
+Où sont stockés les journaux IIS ?,Dans C:\inetpub\logs\LogFiles.
+Quelle commande PowerShell installe IIS ?,Install-WindowsFeature -Name Web-Server -IncludeManagementTools.
+Comment vérifier que l'installation d'IIS a réussi ?,En ouvrant http://localhost : la page d'accueil IIS s'affiche.
+À quoi servent les documents par défaut (Default Documents) ?,"À charger automatiquement Index.html, Default.aspx ou Default.html quand l'URL ne précise pas de fichier."
+Qu'est-ce qu'un répertoire virtuel IIS ?,Un chemin web (URL) associé à un dossier physique situé hors de la racine du site.
+Comment s'appelle la console graphique d'IIS ?,"IIS Manager, lancée par inetmgr."
+Quelle commande PowerShell crée un site IIS ?,New-Website (ex. New-Website -Name SiteTest -Port 80 -PhysicalPath C:\SiteTest).
+Quelle commande redémarre complètement le service IIS ?,iisreset.
+Qu'est-ce qu'ASP.NET ?,Le framework Microsoft pour créer des applications web dynamiques.
+Différence entre ASP.NET Framework et ASP.NET Core ?,"Framework : version classique liée à Windows. Core : version moderne, multiplateforme et modulaire."
+Qu'est-ce que Kestrel ?,Le serveur web léger intégré à ASP.NET Core.
+Comment IIS héberge-t-il une application ASP.NET Core ?,Via le module ASP.NET Core : IIS agit en reverse proxy et transmet les requêtes à Kestrel.
+Quels sont les trois types de certificats utilisables pour HTTPS ?,"Auto-signé (test ou interne), émis par une autorité interne (PKI d'entreprise), délivré par une autorité publique (Let's Encrypt, DigiCert)."
+Quelles sont les trois étapes pour configurer HTTPS sur IIS ?,"Importer le certificat dans le magasin Windows, ajouter un binding HTTPS au site, sélectionner le certificat."
+Qu'est-ce que l'authentification anonyme IIS ?,"Un accès public sans compte utilisateur, pour les sites grand public."
+Sur quoi repose l'authentification Windows d'IIS ?,"Sur Active Directory, Kerberos et NTLM, surtout en intranet."
+Comment l'authentification Basic transmet-elle les identifiants ?,"Encodés en Base64 : c'est un encodage, pas un chiffrement."
+Pourquoi l'authentification Basic doit-elle toujours être combinée à HTTPS ?,"Sans HTTPS, les mots de passe sont facilement récupérables par écoute du réseau (sniffing)."
+"Sur quoi repose aussi la sécurité d'IIS, en plus de l'authentification ?","Les permissions NTFS, les comptes des pools et les ACL Windows, selon le principe du moindre privilège."
+Quelle permission NTFS minimale le compte du pool doit-il avoir sur wwwroot ?,Lecture ; sinon IIS renvoie une erreur 403 ou 500 même si le fichier existe.
+Que permet le filtrage des requêtes IIS ?,"Bloquer certaines extensions, limiter la taille des requêtes et contrer des attaques (injection, traversée de répertoires)."
+Quels ports ouvrir dans le pare-feu pour un serveur web ?,80/TCP pour HTTP et 443/TCP pour HTTPS.
+Quelle cmdlet crée une règle de pare-feu Windows ?,New-NetFirewallRule (ex. -DisplayName HTTP -Direction Inbound -Protocol TCP -LocalPort 80 -Action Allow).
+Qu'enregistrent les journaux IIS pour chaque requête ?,"L'IP du client, l'URL demandée, le code HTTP, le navigateur, la date et l'heure."
+Code HTTP 200 ?,Succès.
+Code HTTP 301 ?,Redirection permanente.
+Code HTTP 403 ?,Accès interdit (permissions NTFS ou restrictions IIS).
+Code HTTP 404 ?,Ressource introuvable.
+Code HTTP 500 ?,Erreur interne du serveur.
+Code HTTP 503 ?,"Service indisponible, souvent parce qu'un pool d'applications est arrêté."
+Que vérifier en premier face à une erreur 503 sur IIS ?,L'état des pools d'applications dans IIS Manager.
+Que surveille-t-on sur un serveur IIS ?,"Le CPU, la mémoire, le temps de réponse et la disponibilité des pools."
+Qu'est-ce que le recyclage d'un pool (recycling) ?,Le redémarrage périodique du processus worker pour éviter les fuites mémoire et gagner en stabilité.
+Quel risque présente le recyclage d'un pool ?,La perte des sessions en cours si l'application ne gère pas la persistance de session (Session State).
+Qu'apporte la compression HTTP ?,Une réduction de la taille des données échangées.
+Qu'est-ce qu'ARR ?,Application Request Routing : module IIS de reverse proxy et de répartition de charge entre serveurs backend.
+ARR est-il installé par défaut avec IIS ?,"Non, c'est un module supplémentaire à installer."

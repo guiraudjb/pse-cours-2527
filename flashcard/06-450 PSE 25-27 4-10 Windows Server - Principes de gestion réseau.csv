@@ -1,0 +1,53 @@
+Qu'est-ce qu'un groupe de travail (Workgroup) ?,"Une organisation réseau simple où chaque ordinateur reste indépendant, avec ses propres comptes et sa propre sécurité, sans serveur central."
+Sur quel mode communiquent les machines d'un groupe de travail ?,En pair-à-pair (Peer to Peer).
+Quels sont les avantages d'un groupe de travail ?,"Mise en place simple, faible coût, adapté aux petits réseaux."
+Quels sont les inconvénients d'un groupe de travail ?,"Administration difficile, comptes non centralisés, sécurité limitée, mauvaise évolutivité."
+Où utilise-t-on surtout un groupe de travail ?,"Dans les petits bureaux, les réseaux domestiques et les environnements de test."
+Pourquoi le groupe de travail ne convient-il pas à une entreprise moyenne ou grande ?,"Sans gestion centralisée, il faut créer et gérer les comptes séparément sur chaque machine."
+Qu'est-ce qu'un domaine Windows ?,"Une architecture réseau centralisée administrée par Windows Server, reposant sur un contrôleur de domaine et Active Directory."
+Quel est le rôle d'un contrôleur de domaine ?,"Authentifier les utilisateurs, gérer l'annuaire Active Directory et appliquer les politiques réseau (GPO)."
+Que contient Active Directory ?,"Les utilisateurs, groupes, ordinateurs, imprimantes et ressources réseau du domaine."
+Que signifie GPO ?,Group Policy Objects : stratégies de groupe.
+À quoi servent les GPO ?,"Configurer automatiquement les postes, appliquer des règles de sécurité et limiter certaines actions des utilisateurs."
+Que contrôle le serveur lors de l'ouverture de session dans un domaine ?,"Les identifiants, les mots de passe, les droits d'accès et les politiques de sécurité."
+Quels sont les avantages d'un domaine Windows ?,"Administration centralisée, sécurité renforcée, gestion simplifiée, déploiement automatisé, contrôle des accès."
+Quels sont les inconvénients d'un domaine Windows ?,"Infrastructure plus complexe, serveurs dédiés nécessaires, maintenance plus importante."
+Quel service est indispensable au fonctionnement d'Active Directory ?,"Le DNS : sa panne bloque l'authentification, les GPO et les services dépendants."
+Exemple : comment interdire l'accès aux paramètres système sur tous les postes d'un domaine ?,"En définissant une GPO appliquée à tout le domaine, sans intervenir sur chaque machine."
+Quel est le nom moderne du Terminal Server ?,Remote Desktop Services (RDS).
+Que permet un Terminal Server (RDS) ?,À plusieurs utilisateurs d'exécuter des applications ou un bureau Windows à distance.
+"Avec RDS, où s'exécutent les applications et qu'est-ce qui transite vers le client ?",Elles s'exécutent entièrement sur le serveur ; seul l'affichage est transmis au client.
+Qu'envoie le client RDS au serveur ?,"Ses actions : clavier, souris, commandes."
+Quel protocole et quel port utilise RDS ?,"RDP, sur le port 3389 TCP."
+Quels sont les avantages du Terminal Server ?,"Applications centralisées, moins de besoins matériels côté client, administration simplifiée, accès distant sécurisé."
+Quels sont les inconvénients du Terminal Server ?,"Forte dépendance au serveur, forte consommation de ressources serveur, besoin d'une bonne bande passante."
+Citez des cas d'usage du Terminal Server.,"Télétravail, administration distante, virtualisation de postes, accès à des applications métiers depuis des postes légers."
+Quelles licences les RDS imposent-ils ?,Des licences CAL (Client Access License) par utilisateur ou par appareil.
+Que signifie NAS ?,Network Attached Storage : serveur de stockage connecté directement au réseau.
+Quels protocoles utilise un NAS ?,SMB/CIFS sous Windows et NFS sous Linux/Unix.
+Comment les utilisateurs accèdent-ils aux fichiers d'un NAS ?,"Via le réseau, comme à un lecteur réseau partagé (ex. lecteur Z:)."
+Quels sont les avantages d'un NAS ?,"Installation simple, stockage mutualisé, sauvegardes centralisées, coût raisonnable."
+Quels sont les inconvénients d'un NAS ?,Performances inférieures à un SAN et dépendance au réseau Ethernet commun.
+Pour quels usages emploie-t-on un NAS ?,"Partage de fichiers, sauvegardes, archivage, stockage collaboratif."
+Que signifie SAN ?,Storage Area Network : réseau spécialisé dédié au stockage haute performance.
+Quelle est la différence principale entre NAS et SAN ?,Le NAS partage des fichiers sur le réseau ; le SAN fournit des volumes vus comme des disques locaux par les serveurs.
+Quelles technologies utilise un SAN ?,"Fibre Channel, iSCSI et FCoE."
+Qu'est-ce que Fibre Channel ?,"Une technologie de réseau de stockage sur fibre optique, à très haut débit et faible latence."
+Qu'est-ce qu'iSCSI ?,"Un protocole qui transporte les commandes SCSI sur un réseau IP Ethernet, alternative moins chère au Fibre Channel."
+Qu'est-ce que FCoE ?,Fibre Channel over Ethernet : encapsulation du Fibre Channel dans des trames Ethernet.
+Quelle précaution prendre pour un SAN iSCSI ?,Utiliser un VLAN dédié pour isoler le trafic de stockage du trafic de données.
+Quels sont les avantages d'un SAN ?,"Très hautes performances, haute disponibilité, grande capacité, redondance avancée."
+Quels sont les inconvénients d'un SAN ?,"Coût élevé, administration complexe, infrastructure spécialisée."
+Où utilise-t-on un SAN ?,"Datacenters, virtualisation, bases de données, clusters de serveurs."
+Qu'est-ce qu'un cluster ?,"Un ensemble de serveurs travaillant ensemble pour assurer haute disponibilité, tolérance de panne et continuité de service."
+Comment s'appelle la fonctionnalité de cluster sous Windows Server ?,Failover Clustering.
+Comment appelle-t-on la reprise automatique par un autre nœud en cas de panne ?,Le basculement (Failover).
+Quels sont les deux types de clusters ?,Le cluster de basculement (continuité de service) et le cluster d'équilibrage de charge NLB (performances).
+Que signifie NLB ?,Network Load Balancing : répartition des connexions entrantes entre plusieurs serveurs.
+Que nécessite généralement un cluster ?,"Plusieurs serveurs, un réseau fiable, un stockage partagé et une synchronisation correcte entre les nœuds."
+Pourquoi un NAS seul ne suffit-il généralement pas pour un Failover Clustering avancé ?,Les nœuds doivent accéder au même stockage partagé en mode bloc (SAN ou iSCSI).
+Quels sont les avantages d'un cluster ?,"Haute disponibilité, moins d'interruptions, meilleures performances, maintenance sans coupure de service."
+Quels sont les inconvénients d'un cluster ?,"Complexité technique, coût matériel, administration avancée nécessaire."
+Qu'apporte un SAN iSCSI à un cluster Hyper-V ?,"Un stockage partagé entre hôtes, permettant la migration à chaud des VM (Live Migration)."
+Quelle technologie n'offre ni gestion centralisée ni haute disponibilité ?,Le groupe de travail.
+Quelles technologies offrent à la fois gestion centralisée et haute disponibilité ?,Le SAN et le cluster.

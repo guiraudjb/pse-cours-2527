@@ -1,0 +1,56 @@
+Qu'est-ce qu'un système de fichiers ?,"La méthode d'organisation des données sur un support : comment les fichiers sont nommés, stockés, protégés et récupérés."
+Quelles sont les limites de FAT32 ?,"4 Go maximum par fichier, 2 To par volume, pas de permissions, pas de journalisation."
+Où utiliser FAT32 ?,"Uniquement sur les clés USB, cartes mémoire et supports de démarrage, jamais sur un disque de serveur."
+Quel système de fichiers a été conçu pour remplacer FAT32 sur les supports amovibles ?,exFAT (Extended FAT).
+Quels sont les avantages et limites d'exFAT ?,"Avantages : fichiers de plus de 4 Go, compatible Windows, macOS et Linux. Limites : pas de sécurité avancée ni de journalisation."
+Quel est le système de fichiers par défaut de Windows Server 2016 ?,"NTFS (New Technology File System), présent depuis Windows NT Server 3.1."
+Quelles tailles maximales NTFS supporte-t-il ?,"256 To par fichier, 256 To par volume, chemins de 32 000 caractères Unicode."
+Qu'est-ce que la MFT ?,"La Master File Table : élément central de NTFS, avec une entrée pour chaque fichier et répertoire."
+Pourquoi la MFT est-elle dupliquée ?,"Pour des raisons de sécurité : sans MFT valide, le volume est inaccessible."
+Quelle structure NTFS utilise-t-il pour organiser les répertoires ?,"Un arbre B+ (B+ Tree), pour localiser rapidement les fichiers."
+Que décrit le fichier Bitmap de NTFS ?,L'état d'allocation des clusters du volume.
+Comment fonctionne la journalisation NTFS ?,Chaque opération est inscrite au journal (redo/undo) avant d'être appliquée au disque.
+Que fait NTFS au redémarrage après une panne ?,Il rejoue les transactions terminées et annule les transactions incomplètes.
+Que sont les ACL NTFS ?,"Des listes de contrôle d'accès définissant les permissions (Lecture, Écriture, Modification, Contrôle total) par utilisateur ou groupe."
+Qu'est-ce qu'EFS ?,Encrypting File System : chiffrement transparent des fichiers sur NTFS.
+Que permettent les quotas NTFS ?,Limiter l'espace disque par utilisateur (uniquement sur NTFS).
+Citez des fonctionnalités de NTFS.,"ACL, journalisation, compression native, chiffrement EFS, quotas, liens symboliques, jonctions et liens physiques."
+Que signifie ReFS et depuis quelle version existe-t-il ?,"Resilient File System, introduit avec Windows Server 2012."
+Pour quels usages ReFS est-il conseillé ?,"Hyper-V, les sauvegardes et les grands espaces de stockage."
+Comment ReFS détecte-t-il les corruptions ?,"Par des checksums sur les métadonnées, vérifiés à chaque lecture."
+Qu'est-ce que le Copy-on-Write de ReFS ?,"ReFS écrit une nouvelle version des métadonnées avant de remplacer l'ancienne, ce qui évite la corruption en cas de panne."
+Quelles tailles maximales ReFS supporte-t-il ?,35 Po par fichier et par volume.
+Quelle est la taille de cluster de ReFS ?,"64 Ko, fixe et non modifiable."
+Comment ReFS se répare-t-il automatiquement ?,"Associé à Storage Spaces en miroir, il récupère les données corrompues depuis la copie saine, sans interruption."
+Quelles sont les limites de ReFS ?,"Pas de disque système bootable, pas de quotas, pas d'EFS, pas de noms courts DOS, pas de transactions NTFS, cluster fixe de 64 Ko."
+Peut-on installer Windows sur un volume ReFS ?,Non : le volume système doit être en NTFS.
+Comment est organisé un disque basique ?,"En partitions : 4 primaires maximum, ou 3 primaires + 1 étendue contenant des lecteurs logiques."
+Qu'apporte un disque dynamique ?,Des volumes pouvant s'étendre sur plusieurs disques et être redimensionnés sans redémarrage.
+Peut-on revenir d'un disque dynamique à un disque basique sans perte ?,Non : il faut une sauvegarde avant toute conversion.
+Qu'est-ce qu'un volume simple ?,Un volume occupant l'espace d'un seul disque.
+Qu'est-ce qu'un volume multiple (fractionné) ?,Un volume utilisant plusieurs disques (32 max) de façon séquentielle : la perte d'un disque entraîne la perte de toutes les données.
+Qu'est-ce qu'un agrégat par bandes (RAID 0) ?,"Écriture simultanée sur plusieurs disques (32 max) pour les performances, sans tolérance de pannes."
+Que signifie l'état « En état avec risque » d'un volume dynamique ?,Le volume est accessible mais des erreurs d'entrée/sortie ont été détectées.
+Que signifie l'état « Erreur » d'un volume dynamique ?,Le volume ne peut pas redémarrer automatiquement et doit être réparé.
+Quels niveaux de RAID logiciel Windows Server gère-t-il ?,"RAID 1 et RAID 5, sur disques dynamiques uniquement, via le Gestionnaire de disques."
+Qu'est-ce que le RAID 1 ?,Le miroir (mirroring) : duplication identique des données sur deux disques.
+Combien de disques pour un RAID 1 sous Windows Server ?,Deux exactement (minimum et maximum).
+Quel espace utile offre un RAID 1 ?,La taille du plus petit des deux disques.
+Qu'est-ce que le RAID 5 ?,"Un agrégat par bandes avec parité, réparti sur 3 à 32 disques."
+Que se passe-t-il en RAID 5 si un disque tombe en panne ?,"Les données manquantes sont régénérées à partir de la parité, puis le RAID est reconstruit après remplacement du disque."
+"Quelle part de l'espace la parité occupe-t-elle en RAID 5, comparé au RAID 1 ?","L'équivalent d'un disque (20 % avec 5 disques), contre 50 % pour le RAID 1."
+Qu'est-ce que Storage Spaces ?,"Une gestion de stockage par pool logiciel, similaire au RAID, avec modes simple, miroir et parité."
+Que protège WRP (Windows Resource Protection) ?,"Les fichiers et clés de registre critiques (DLL, EXE, OCX, SYS) contre les modifications non autorisées."
+Où sont les copies de sauvegarde des fichiers WRP ?,Dans %windir%\WinSxS\Backup.
+Qu'est-ce que BitLocker ?,"Le chiffrement complet des volumes, contre le vol ou l'accès physique non autorisé."
+Qu'est-ce qu'une Shadow Copy ?,Un cliché instantané permettant de restaurer des versions précédentes de fichiers ou de volumes.
+Quels sont les symptômes d'une corruption du système de fichiers ?,"Fichiers inaccessibles, erreurs de lecture, disque affiché en RAW."
+Quelle commande répare un volume NTFS et ses secteurs défectueux ?,chkdsk D: /f /r.
+Quel outil répare un volume ReFS ?,"ReFSUtil, ou la réparation automatique avec Storage Spaces redondant."
+Comment remédier à la saturation d'un volume ?,"Nettoyer les fichiers inutiles, étendre le volume ou mettre en place des quotas."
+Quels symptômes signalent une défaillance physique d'un disque ?,"Erreurs SMART, lenteurs, secteurs défectueux."
+Comment corriger des erreurs de permissions NTFS ?,Rétablir les ACL (héritage) et reprendre la propriété des fichiers.
+Quelles sont les actions face à un ransomware ?,"Isoler immédiatement le serveur, restaurer depuis des sauvegardes saines, analyse antivirus, restauration Shadow Copy si disponible."
+Pourquoi les permissions NTFS ne protègent-elles pas d'un ransomware ?,Il chiffre les fichiers avec les droits de l'utilisateur connecté ; seules les sauvegardes hors ligne et les Shadow Copies protègent.
+Quelle commande liste les clichés instantanés ?,vssadmin list shadows.
+Exemple de permissions NTFS appliquant le moindre privilège sur un dossier RH ?,"Groupe RH en Lecture/Écriture, Direction en Contrôle total, Invités sans accès."

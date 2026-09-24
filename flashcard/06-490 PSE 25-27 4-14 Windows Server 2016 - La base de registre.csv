@@ -1,0 +1,53 @@
+Qu'est-ce que la base de registre Windows ?,"Une base de données hiérarchique centralisée qui stocke la configuration du système, des utilisateurs, du matériel et des applications."
+Quels anciens fichiers de configuration la base de registre remplace-t-elle ?,"AUTOEXEC.BAT, CONFIG.SYS et les fichiers INI."
+À quoi peut-on comparer une clé de registre ?,À un dossier : elle contient des sous-clés et des valeurs.
+À quoi peut-on comparer une valeur de registre ?,À un fichier contenant une donnée.
+De quoi se compose une valeur de registre ?,"D'un nom, d'un type de données et d'une donnée."
+Par quel préfixe commencent les clés racines ?,HKEY_.
+Que contient HKEY_LOCAL_MACHINE (HKLM) ?,"Les paramètres globaux de l'ordinateur, indépendants de l'utilisateur : matériel, pilotes, services, logiciels installés, démarrage."
+Citez les principales sous-clés de HKLM.,"HKLM\SYSTEM, HKLM\SOFTWARE, HKLM\SECURITY, HKLM\SAM et HKLM\BCD."
+Que contient HKLM\SYSTEM ?,"Les paramètres de démarrage et des services (pilotes, matériel)."
+Que contient HKEY_CURRENT_USER (HKCU) ?,"Les paramètres de l'utilisateur connecté : bureau, imprimantes, préférences, configuration des applications."
+D'où proviennent les données de HKCU ?,"Du profil utilisateur, fichier \Users\<utilisateur>\NTUSER.DAT."
+Quel lien existe entre HKCU et HKU ?,HKCU est un raccourci vers la sous-clé de l'utilisateur connecté dans HKEY_USERS.
+Que contient HKEY_USERS (HKU) ?,L'ensemble des profils utilisateurs chargés sur le système.
+À quoi correspond HKU\.DEFAULT ?,"Au profil système de base, utilisé avant toute connexion."
+Que contient HKEY_CLASSES_ROOT (HKCR) ?,"Les associations de fichiers, les composants COM et l'intégration des applications."
+Quelle clé racine détermine quel programme ouvre un fichier ?,HKEY_CLASSES_ROOT (HKCR).
+Que contient HKEY_CURRENT_CONFIG (HKCC) ?,Le profil matériel actif au démarrage.
+Vers où pointe HKCC ?,Vers HKLM\SYSTEM\CurrentControlSet\Hardware Profiles\Current.
+Que contient HKEY_PERFORMANCE_DATA (HKPD) ?,Les compteurs de performance du système.
+Qu'est-ce qu'une ruche (Hive) ?,"Un groupe de clés, sous-clés et valeurs chargé en mémoire au démarrage ou à la connexion d'un utilisateur."
+Où sont stockées physiquement les ruches système ?,Dans C:\Windows\System32\Config.
+Où est stockée la ruche d'un utilisateur ?,Dans C:\Users\<utilisateur>\NTUSER.DAT.
+Type REG_SZ ?,Une chaîne de caractères (ex. SRV-FICHIERS).
+Type REG_DWORD ?,Un entier sur 32 bits (ex. EnableFirewall = 1).
+Type REG_QWORD ?,Un entier sur 64 bits.
+Type REG_BINARY ?,Des données binaires de taille variable.
+Type REG_MULTI_SZ ?,Une liste de chaînes de caractères.
+Type REG_EXPAND_SZ ?,Une chaîne contenant des variables système (ex. %SystemRoot%).
+Que lit Windows dans HKLM\SYSTEM au démarrage ?,"Les pilotes, les services et les paramètres matériels à charger."
+Quelle clé centrale est lue au démarrage pour charger pilotes et services ?,HKLM\SYSTEM\CurrentControlSet ; sa corruption empêche Windows de démarrer.
+Qu'est-ce que Regedit ?,"L'éditeur graphique du registre (regedit.exe) : consulter, modifier, exporter, importer."
+Pourquoi utiliser Regedit avec prudence ?,Il ne vérifie aucun paramètre et applique les modifications immédiatement : une erreur peut rendre le système inutilisable.
+Que faut-il faire avant de modifier une clé de registre ?,Sauvegarder (exporter) la clé concernée.
+Qu'est-ce que REG.EXE ?,"L'outil en ligne de commande pour interroger, ajouter, modifier, supprimer, exporter, importer, sauvegarder, restaurer et comparer le registre."
+Quelle commande affiche le contenu de HKLM\SOFTWARE ?,reg query HKLM\SOFTWARE.
+Quelle commande crée une valeur REG_DWORD égale à 1 ?,reg add HKLM\SOFTWARE\Test /v Parametre /t REG_DWORD /d 1.
+Quelle commande PowerShell consulte une clé de registre ?,Get-ItemProperty (ex. Get-ItemProperty HKLM:\SOFTWARE).
+Comment déployer des paramètres de registre sur tout un parc ?,"Par GPO (locales ou Active Directory), sans intervention poste par poste."
+Pourquoi préférer les GPO aux modifications manuelles du registre en entreprise ?,"Gestion centralisée, documentation et réversibilité des paramètres."
+Comment sont protégées les clés de registre ?,"Par des ACL (Lecture, Écriture, Contrôle total), comme les fichiers."
+Comment exporter une clé depuis Regedit ?,Fichier puis Exporter : on obtient un fichier .reg.
+Quelle commande réimporte un fichier .reg ?,reg import sauvegarde.reg.
+Quelles méthodes système de sauvegarde du registre sont recommandées ?,"Windows Server Backup, la sauvegarde de l'état système (System State) et les points de restauration."
+Quelles sont les causes d'une corruption du registre ?,"Arrêts brutaux, pannes de disque, malwares, erreurs de manipulation."
+Quels sont les symptômes d'un registre corrompu ?,"Écrans bleus (BSOD), erreurs système, impossibilité de démarrer Windows."
+Comment remédier à la suppression accidentelle d'une clé ?,"Restaurer depuis une sauvegarde, importer un fichier .reg ou restaurer l'état système."
+Pourquoi les malwares ciblent-ils le registre ?,"Pour assurer leur persistance, se lancer au démarrage et modifier la configuration."
+Quelle clé de démarrage automatique les malwares ciblent-ils souvent ?,HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run.
+Qu'est-ce que le BCD ?,"Boot Configuration Data : la configuration du démarrage, sous HKLM\BCD."
+Quel fichier le BCD remplace-t-il ?,Le fichier Boot.ini des anciennes versions de Windows.
+Quel outil utiliser pour modifier le démarrage ?,"bcdedit.exe, et non une édition directe du registre."
+Quand une application prend-elle en compte un changement de registre ?,"À son redémarrage, car elle lit sa configuration au lancement."
+Faut-il utiliser des logiciels de « nettoyage du registre » ?,Non : ils peuvent supprimer des clés valides et provoquer des dysfonctionnements graves.

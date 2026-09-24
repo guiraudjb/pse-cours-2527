@@ -1,0 +1,57 @@
+Que signifie DHCP et quelle RFC le définit ?,"Dynamic Host Configuration Protocol, défini par la RFC 2131."
+Quels paramètres le DHCP distribue-t-il aux clients ?,"Adresse IP, masque, passerelle, serveurs DNS, nom de domaine et durée de bail."
+Quels sont les objectifs du DHCP ?,"Automatiser la configuration TCP/IP, centraliser l'administration, éviter les conflits d'adresses, simplifier le déploiement et permettre la mobilité."
+Quels ports utilise le DHCP ?,UDP 67 pour le serveur et UDP 68 pour le client.
+Que signifie l'acronyme DORA ?,"Discover, Offer, Request, Acknowledge : les quatre étapes du DHCP."
+DORA - Que fait le client à l'étape Discover ?,"Démarré sans adresse IP, il diffuse une requête broadcast pour localiser un serveur DHCP."
+DORA - Que fait le serveur à l'étape Offer ?,"Il propose une adresse IP disponible avec le masque, la passerelle, les DNS et la durée du bail."
+DORA - Que fait le client à l'étape Request ?,Il accepte l'offre et envoie une requête confirmant son choix.
+DORA - Que fait le serveur à l'étape Acknowledge ?,Il confirme officiellement l'attribution de l'adresse.
+Qu'est-ce qu'une étendue DHCP (Scope) ?,"La plage d'adresses IP distribuée aux clients (ex. 192.168.1.10 à 192.168.1.200), avec masque, bail et exclusions."
+Qu'est-ce qu'un bail DHCP (Lease) ?,La durée pendant laquelle une adresse IP est attribuée à un client.
+À quel moment (T1) le client tente-t-il de renouveler son bail auprès du même serveur ?,À 50 % de la durée du bail.
+"Que se passe-t-il à T2 (87,5 % du bail) ?",Le client tente le renouvellement auprès d'autres serveurs DHCP si le premier n'a pas répondu.
+Qu'est-ce qu'une réservation DHCP ?,L'association permanente entre une adresse MAC et une adresse IP précise.
+Qu'est-ce qu'une exclusion DHCP ?,Une adresse ou une plage de l'étendue qui ne doit jamais être distribuée (réservée aux équipements en IP statique).
+Pourquoi configurer des exclusions dans une étendue ?,"Pour éviter les conflits avec les adresses statiques des serveurs, routeurs et imprimantes."
+Quelle commande PowerShell installe le rôle DHCP ?,Install-WindowsFeature DHCP -IncludeManagementTools.
+Par quels moyens peut-on installer le rôle DHCP ?,"Le Gestionnaire de serveur, PowerShell ou Windows Admin Center."
+Quelle commande autorise un serveur DHCP dans Active Directory ?,Add-DhcpServerInDC.
+Pourquoi faut-il autoriser le serveur DHCP dans Active Directory ?,Pour éviter les serveurs DHCP pirates (rogue DHCP) : un serveur non autorisé est ignoré dans un domaine AD.
+Quelle commande PowerShell crée une étendue DHCP ?,Add-DhcpServerv4Scope (ex. -Name LAN -StartRange 192.168.1.10 -EndRange 192.168.1.200 -SubnetMask 255.255.255.0).
+Quelle commande PowerShell crée une réservation DHCP ?,Add-DhcpServerv4Reservation.
+Quelle commande liste les étendues DHCP ?,Get-DhcpServerv4Scope.
+Quelle commande liste les baux DHCP actifs ?,Get-DhcpServerv4Lease.
+Option DHCP 003 ?,La passerelle (routeur par défaut).
+Option DHCP 006 ?,Les serveurs DNS.
+Option DHCP 015 ?,Le nom de domaine DNS.
+À quoi servent les options DHCP 066 et 067 ?,Au démarrage réseau PXE : serveur et fichier de démarrage.
+Où sont stockées les données DHCP sous Windows Server ?,"Dans %systemroot%\System32\dhcp (baux, réservations, journaux, configuration des étendues)."
+Qu'apporte la haute disponibilité DHCP ?,"Le basculement (failover), la répartition de charge et la redondance entre deux serveurs DHCP."
+Quelles RFC définissent le DNS ?,Les RFC 1034 et 1035.
+Quel port et quel protocole le DNS utilise-t-il pour les requêtes classiques ?,UDP 53.
+Quand le DNS utilise-t-il TCP 53 ?,"Pour les transferts de zone et les réponses volumineuses (plus de 512 octets, ou 4096 avec EDNS)."
+Enregistrement DNS A ?,Nom vers adresse IPv4.
+Enregistrement DNS AAAA ?,Nom vers adresse IPv6.
+Enregistrement DNS PTR ?,Résolution inverse : adresse IP vers nom.
+Enregistrement DNS CNAME ?,Un alias vers un autre nom.
+Enregistrement DNS MX ?,Le serveur de messagerie du domaine.
+Enregistrement DNS NS ?,Le serveur DNS faisant autorité pour la zone.
+Enregistrement DNS SRV ?,"La localisation des services Active Directory (contrôleurs de domaine, Kerberos, LDAP)."
+Que se passe-t-il si les enregistrements SRV sont absents ou corrompus ?,Les postes ne trouvent plus les contrôleurs de domaine pour s'authentifier.
+Qu'est-ce qu'une zone DNS principale ?,Une zone modifiable contenant les enregistrements originaux.
+Qu'est-ce qu'une zone DNS secondaire ?,"Une copie en lecture seule d'une zone principale, pour la redondance."
+Qu'est-ce qu'une zone DNS intégrée à Active Directory ?,"Une zone stockée dans AD DS, avec réplication automatique, sécurisation et tolérance aux pannes."
+Pourquoi préférer une zone intégrée AD dans un domaine ?,"La réplication se fait automatiquement par AD, sans configurer de transferts de zone manuels."
+Différence entre zone directe et zone inverse ?,Directe : nom vers IP. Inverse : IP vers nom (domaine .in-addr.arpa).
+Qu'est-ce que le DNS dynamique (DDNS) ?,L'enregistrement et la mise à jour automatiques des machines et de leurs adresses IP dans le DNS.
+Qu'est-ce qu'un redirecteur DNS ?,"Un serveur DNS qui transmet les requêtes qu'il ne sait pas résoudre vers d'autres serveurs (FAI, DNS publics, serveurs internes)."
+À quoi sert la mise en cache DNS ?,À améliorer les performances et réduire le trafic en conservant temporairement les réponses.
+Qu'est-ce que DNSSEC ?,Une extension du DNS qui signe numériquement les enregistrements pour garantir leur authenticité.
+Citez les mesures de sécurisation DNS sous Windows Server.,"Mises à jour sécurisées, contrôle des transferts de zone, DNSSEC et journalisation DNS."
+Que garantissent les mises à jour DNS sécurisées ?,Seules les machines membres du domaine peuvent enregistrer des noms.
+Quelle commande PowerShell installe le rôle DNS ?,Install-WindowsFeature DNS -IncludeManagementTools.
+Quelle commande crée une zone DNS principale ?,Add-DnsServerPrimaryZone (ex. -Name entreprise.local -ZoneFile entreprise.local.dns).
+Quelle commande ajoute un enregistrement A ?,"Add-DnsServerResourceRecordA (avec -Name, -ZoneName et -IPv4Address)."
+Quelles commandes listent les zones et les enregistrements DNS ?,Get-DnsServerZone et Get-DnsServerResourceRecord.
+Comment DHCP et DNS fonctionnent-ils ensemble dans un domaine ?,Le DHCP attribue l'adresse puis enregistre automatiquement le poste dans le DNS ; les autres machines peuvent alors résoudre son nom.

@@ -1,0 +1,60 @@
+Quel modèle en couches Windows Server utilise-t-il principalement ?,"Le modèle TCP/IP à 4 couches : Accès réseau, Internet, Transport, Application."
+Que gère la couche Accès réseau du modèle TCP/IP ?,"Le matériel, les pilotes et les cartes réseau : envoi physique, trames Ethernet, adresses MAC."
+Quels protocoles appartiennent à la couche Internet du modèle TCP/IP ?,"IP, ICMP et ARP (adressage IP, routage, découpage en paquets)."
+Quels sont les deux protocoles de la couche Transport ?,TCP (fiable) et UDP (rapide).
+Citez des protocoles de la couche Application utilisés par Windows Server.,"DNS, DHCP, HTTPS, SMB et IIS."
+Pourquoi organiser le réseau en couches ?,"Pour la modularité, une maintenance simplifiée, l'indépendance du matériel et l'évolution des technologies sans modifier toutes les applications."
+Sur combien de bits est codée une adresse IPv4 ? Et une adresse IPv6 ?,IPv4 : 32 bits (ex. 192.168.1.10). IPv6 : 128 bits (ex. 2001:db8::1).
+Pourquoi Microsoft recommande-t-il de ne pas désactiver IPv6 sous Windows Server ?,Parce qu'Active Directory utilise IPv6 en interne : le désactiver peut provoquer des dysfonctionnements de l'annuaire.
+Que signifie SLAAC ?,Stateless Address Autoconfiguration : auto-configuration d'adresses IPv6 sans serveur DHCP.
+Quelles sont les trois phases d'une communication TCP ?,"Ouverture de connexion, échange de données, fermeture de connexion."
+Que garantit TCP que UDP ne garantit pas ?,"La livraison des données, l'ordre des paquets et la détection des erreurs."
+Pour quel type d'application utilise-t-on UDP ?,Les applications qui privilégient la rapidité et tolèrent les pertes.
+Quel est le rôle du DNS ?,Traduire les noms de machines en adresses IP (ex. serveur.local vers 192.168.1.20).
+Quels paramètres le DHCP attribue-t-il automatiquement ?,"L'adresse IP, le masque, la passerelle et les serveurs DNS."
+À quoi sert le protocole SMB ?,"Au partage de fichiers, au partage d'imprimantes et à l'accès distant aux ressources."
+Quel port utilise le DNS ?,Le port 53.
+Quels ports utilise le DHCP ?,67 côté serveur et 68 côté client.
+Quels ports utilisent HTTP et HTTPS ?,HTTP : 80. HTTPS : 443.
+Quel port utilise SMB dans ses versions modernes ?,Le port 445.
+Quel port utilise RDP ?,Le port 3389 TCP.
+Que signifie RDP ?,Remote Desktop Protocol : protocole propriétaire Microsoft de connexion à distance à un bureau Windows.
+Qu'ajoute HTTPS par rapport à HTTP ?,Le chiffrement TLS des échanges.
+Qu'est-ce qu'IIS ?,Internet Information Services : le serveur web intégré à Windows Server (HTTP et HTTPS).
+Qu'est-ce que Winsock ?,"L'API réseau principale de Windows : création de sockets, connexions TCP/UDP, envoi et réception de données."
+À quoi sert l'API NetAPI ?,"À l'administration réseau, à la gestion des partages et des sessions réseau."
+Que signifie WMI et à quoi sert-il ?,"Windows Management Instrumentation : supervision, automatisation et administration distante (ex. récupérer des infos IP, surveiller les cartes réseau)."
+Que signifie WFP et qui l'utilise ?,"Windows Filtering Platform : infrastructure de filtrage réseau utilisée par le Pare-feu Windows, les logiciels de sécurité et IPSEC."
+Que signifie NDIS ?,Network Driver Interface Specification : spécification qui standardise l'interface entre Windows et les pilotes de cartes réseau.
+Quel élément constitue le cœur du réseau Windows ?,"La pile TCP/IP : elle traite les protocoles, segmente les données, gère le routage et contrôle les connexions."
+Citez des services réseau fournis au-dessus de la pile TCP/IP.,"DNS Server, DHCP Server, Remote Access, IIS et SMB Server."
+Que signifie SDN ?,"Software Defined Networking : réseau défini par logiciel, centralisé, automatisé et programmable."
+Quel est le principe clé du SDN ?,Séparer le plan de contrôle du plan de transport des données.
+Via quoi Windows Server met-il en œuvre le SDN ?,"Via Hyper-V, les commutateurs virtuels, les réseaux virtuels et des politiques réseau centralisées."
+Qu'est-ce qu'Hyper-V ?,"L'hyperviseur Microsoft intégré à Windows Server : VM, commutateurs virtuels, VLAN, NAT virtuel, cartes réseau virtuelles."
+Quels sont les trois types de commutateurs virtuels Hyper-V ?,"Externe (accès au réseau physique), interne (hôte et VM seulement), privé (VM totalement isolées)."
+Qu'est-ce que le NIC Teaming ?,L'agrégation de plusieurs cartes réseau physiques pour augmenter la bande passante et assurer la tolérance aux pannes.
+Qu'est-ce que le Failover Clustering ?,Un mécanisme de haute disponibilité où un autre nœud reprend automatiquement les services en cas de panne.
+Citez des pannes réseau fréquentes sous Windows Server.,"Mauvaise configuration IP, DNS incorrect, passerelle absente, port bloqué par le pare-feu, service arrêté, conflit d'adresse IP, problème de VLAN."
+Quelle commande affiche la configuration IP complète de toutes les interfaces ?,"ipconfig /all (IP, masque, passerelle, DNS, adresse MAC, statut DHCP)."
+Quelle commande teste la connectivité réseau via ICMP ?,ping (ex. ping 8.8.8.8).
+Quelle commande affiche le chemin réseau vers une destination ?,tracert (ex. tracert google.com).
+Quelle commande teste la résolution DNS ?,nslookup (ex. nslookup serveur.local).
+Que permet la commande netstat -an ?,"Afficher les connexions actives, les ports ouverts et les statistiques réseau."
+Que fait la commande pathping ?,Elle combine ping et tracert avec une analyse statistique des pertes de paquets sur chaque saut.
+Quel outil externe permet la capture et l'analyse de paquets ?,Wireshark.
+Quelle cmdlet PowerShell affiche les adresses IP ?,Get-NetIPAddress.
+Quelle cmdlet PowerShell liste les interfaces réseau ?,Get-NetAdapter.
+Que teste la cmdlet Test-NetConnection ?,La résolution DNS et la connectivité TCP vers une destination.
+Quelle cmdlet PowerShell effectue une résolution DNS ?,Resolve-DnsName.
+Quelle cmdlet PowerShell affiche les connexions TCP actives ?,Get-NetTCPConnection.
+Combien de caractères au maximum pour un nom NetBIOS ?,15 caractères.
+Quelles sont les méthodes de résolution des noms NetBIOS ?,"Le broadcast, WINS, le fichier LMHOSTS et le DNS."
+Qu'est-ce que WINS ?,Windows Internet Name Service : serveur centralisant les noms NetBIOS et leurs adresses IP.
+Qu'est-ce que le fichier LMHOSTS ?,"Un fichier local statique associant des noms NetBIOS à des adresses IP, équivalent de /etc/hosts pour NetBIOS."
+Pourquoi désactiver NetBIOS sur TCP/IP quand c'est possible ?,"Pour réduire la surface d'attaque : c'est un système ancien, remplacé par le DNS."
+Pourquoi SMB v1 doit-il être désactivé ?,Il est obsolète et vulnérable (exploit EternalBlue utilisé par WannaCry).
+Comment protéger un accès RDP exposé ?,"Restreindre l'accès par pare-feu, changer le port et activer l'authentification NLA (Network Level Authentication)."
+Quelles sont les conséquences d'une panne DNS dans un domaine Active Directory ?,"Une indisponibilité en chaîne de l'authentification, des GPO et des services Windows."
+Citez des mécanismes de sécurité réseau intégrés à Windows Server.,"Pare-feu Windows, IPSEC, TLS/HTTPS, filtrage réseau, contrôle des ports, authentification réseau."
+Que permet IPSEC ?,Le chiffrement et l'authentification des communications réseau.
