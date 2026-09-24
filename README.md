@@ -2,8 +2,12 @@
 
 Révision des cours du parcours Programmeur Système d'Exploitation 2025-2027 (Linux, Windows Server, réseaux).
 
-61 modules, consultables depuis l'application de révision
-https://guiraudjb.github.io/PSE25-27/ (ce dépôt en fournit les données via GitHub Pages).
+61 modules. **Module de formation autonome** : https://guiraudjb.github.io/pse-cours-2527/
+(page `index.html` à la racine, `catalogue.json` limité à ce dépôt). Ses modules
+apparaissent aussi dans l'application commune https://guiraudjb.github.io/PSE25-27/.
+
+`index.html`, `sw.js` et les icônes sont une copie de la page commune
+(`PSE25-27/`) : les modifier là-bas puis lancer `scripts/sync-web.py`, jamais ici.
 
 ## Séries
 
