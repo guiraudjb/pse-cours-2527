@@ -2,6 +2,7 @@
   "titre": "PSE 25-27 — Révision",
   "description": "Révision des cours du parcours Programmeur Système d'Exploitation 2025-2027 (Linux, Windows Server, réseaux).",
   "series": {
+    "00": "À la une",
     "06": "Cours PSE 25-27",
     "07": "Compléments Linux et réseau"
   }
