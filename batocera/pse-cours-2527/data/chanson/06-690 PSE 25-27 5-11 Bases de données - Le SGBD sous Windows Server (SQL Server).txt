@@ -1,0 +1,53 @@
+TITRE : SQL Server Riddim
+
+[Intro]
+Écoute le moteur qui tourne sous Windows Server
+Pour gérer tes données, faut de la rigueur
+
+[Couplet 1]
+Le SGBD crée et stocke avec précision
+Une instance peut vivre sur une seule machine en action
+Le moteur traite les requêtes et la sécurité
+Dans le modèle client serveur, la donnée est libérée
+Le niveau logique organise tables et index
+Le niveau physique gère les fichiers et les complexes
+Le niveau système dépend de Windows et du réseau
+VSS et NTFS gardent le contrôle du niveau
+
+[Refrain]
+ACID pour la cohérence et la durabilité
+Le journal de transactions assure la stabilité
+Logique, physique ou système, ne les confonds pas
+SQL Server guide tes pas
+
+[Couplet 2]
+La clé primaire identifie chaque ligne unique
+La clé étrangère lie les tables, c'est magique
+Les contraintes imposent des règles de non-nullité
+Les vues offrent une lecture avec simplicité
+Les procédures stockées regroupent les instructions
+Mais attention au CPU et à la consommation
+L'index accélère la lecture et les recherches
+Mais trop d'index rend les écritures de travers et de marches
+
+[Refrain]
+ACID pour la cohérence et la durabilité
+Le journal de transactions assure la stabilité
+Logique, physique ou système, ne les confonds pas
+SQL Server guide tes pas
+
+[Pont]
+BEGIN TRANSACTION pour commencer le travail
+COMMIT pour valider sans aucun faux pas
+ROLLBACK pour annuler si l'erreur est là
+L'isolation protège contre les lectures sales et les combats
+
+[Refrain final]
+ACID pour la cohérence et la durabilité
+Le journal de transactions assure la stabilité
+Logique, physique ou système, ne les confonds pas
+SQL Server guide tes pas
+
+[Outro]
+Pas de deadlock, pas de blocage dans le système
+Juste la base de données qui chante son propre thème
