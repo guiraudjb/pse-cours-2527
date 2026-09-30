@@ -1,6 +1,6 @@
 # Inventaire des modules et des médias — pse-cours-2527
 
-Généré le 30/09/2026 à 00:21 par `scripts/inventaire_medias.py` (62 modules). ✅ présent, ❌ absent ; pour QCM, flashcards et TP, nombre d'éléments (0 = absent).
+Généré le 30/09/2026 à 07:20 par `scripts/inventaire_medias.py` (62 modules). ✅ présent, ❌ absent ; pour QCM, flashcards et TP, nombre d'éléments (0 = absent).
 
 ## Synthèse
 
