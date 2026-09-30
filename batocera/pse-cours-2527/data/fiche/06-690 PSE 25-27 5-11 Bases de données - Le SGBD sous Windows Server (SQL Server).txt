@@ -1,0 +1,209 @@
+LE SYSTÈME DE GESTION DE BASES DE DONNÉES SQL SERVER SOUS WINDOWS SERVER : NOTIONS, OBJETS LOGIQUES ET TRANSACTIONS.
+
+LEXIQUE COMPLET.
+
+      Le SGBD désigne le logiciel qui crée, stocke, interroge, sécurise, sauvegarde et restaure des données organisées.
+
+      La base de données désigne un ensemble logique contenant des tables, des vues, des index, des procédures stockées et des métadonnées.
+
+      L'instance désigne l'environnement d'exécution du moteur qui peut être multiplié sur une même machine selon les configurations.
+
+      Le moteur désigne le composant chargé de traiter les requêtes, de gérer le stockage, les transactions, les journaux, la mémoire et la sécurité.
+
+      Le modèle ACID désigne un ensemble de propriétés incluant l'atomicité, la cohérence, l'isolation et la durabilité pour garantir la validité des transactions.
+
+      Le journal de transactions désigne un composant critique qui enregistre les modifications pour permettre la récupération après une défaillance système.
+
+      Le niveau logique désigne l'organisation des données via les tables, les clés, les contraintes, les vues et les index.
+
+      Le niveau physique désigne la gestion des fichiers de données, des fichiers journaux, des pages et des volumes.
+
+      Le niveau système désigne l'environnement lié aux services Windows, aux comptes, au NTFS, à la mémoire, au réseau et au VSS.
+
+      Le VSS désigne un service lié aux sauvegardes et à la cohérence des données lors des opérations de restauration.
+
+      Le Transact-SQL désigne le langage utilisé pour les instructions de traitement et la gestion des niveaux d'isolation.
+
+      Le CLR désigne une technologie permettant l'exécution de procédures stockées côté serveur.
+
+COURS DÉTAILLÉ.
+
+I. DÉFINITION, FINALITÉ ET PÉRIMÈTRE SYSTÈME DU SGBD.
+
+   A. Le SGBD, service applicatif dépendant du système Windows.
+
+      Un SGBD est le logiciel chargé de créer, stocker, interroger, sécuriser, sauvegarder et restaurer des données organisées.
+
+      Dans un environnement Windows Server, il doit être considéré comme un service applicatif qui possède une forte dépendance vis-à-vis du système.
+
+      Cette dépendance implique une gestion étroite des comptes de service, des volumes, du système NTFS et de la mémoire.
+
+      Le bon fonctionnement nécessite également une surveillance du réseau, des journaux, du service VSS et de la supervision.
+
+   B. Fichiers de données et fichiers journaux de SQL Server.
+
+      Le SGBD relationnel de référence est Microsoft SQL Server.
+
+      Le moteur de SQL Server utilise deux types de fichiers essentiels pour son fonctionnement.
+
+      Les fichiers de données contiennent l'ensemble des objets qui composent la base de données.
+
+      Les fichiers journaux sont indispensables pour assurer la récupération des transactions.
+
+   C. Notions fondamentales : base, instance, moteur, client-serveur.
+
+      La base de données constitue un ensemble logique regroupant les tables, les vues, les index, les procédures stockées et les métadonnées.
+
+      L'instance représente l'environnement d'exécution du moteur, sachant qu'une machine peut héberger plusieurs instances selon les configurations.
+
+      Le moteur est le composant chargé de traiter les requêtes et de gérer le stockage, les transactions, les journaux, la mémoire et la sécurité.
+
+      Le SGBD agit comme un médiateur entre les applications, les utilisateurs et les fichiers physiques en appliquant la cohérence et le contrôle d'accès.
+
+      Dans le modèle client/serveur, l'application cliente transmet une requête que le SGBD vérifie, exécute et renvoie sous forme de résultat.
+
+II. LES TROIS NIVEAUX À NE PAS CONFONDRE.
+
+   A. Le niveau logique et ses erreurs typiques.
+
+      Le niveau logique se concentre sur l'organisation interne de la base de données à travers les tables, les clés, les contraintes, les vues et les index.
+
+      Il permet de définir la structure des données en utilisant des colonnes pour les attributs et des lignes pour les enregistrements.
+
+      Les erreurs typiques à ce niveau concernent des données incohérentes, des requêtes fausses ou un modèle de données mal conçu.
+
+   B. Le niveau physique : fichiers, pages et volumes.
+
+      Le niveau physique traite de la gestion concrète du stockage via les fichiers de données, les fichiers journaux, les pages et les volumes.
+
+      Le moteur utilise des fichiers de données pour contenir les objets de la base et des fichiers journaux pour la récupération des transactions.
+
+      Les problèmes majeurs incluent un volume plein, une corruption des données ou une croissance non maîtrisée des fichiers.
+
+   C. Le niveau système : services, comptes, NTFS, réseau et sauvegarde.
+
+      Le niveau système englobe l'environnement Windows Server incluant les services, les comptes, le système NTFS, la mémoire, le réseau, le VSS et la sauvegarde.
+
+      Le SGBD doit être considéré comme un service applicatif fortement dépendant de ces composants de l'infrastructure.
+
+      Les erreurs classiques sont un service arrêté, des droits insuffisants, un pare-feu bloquant ou une erreur liée au VSS.
+
+III. LES OBJETS LOGIQUES DE LA BASE RELATIONNELLE.
+
+   A. Tables, types de données, clés primaires et étrangères.
+
+      La table constitue la structure principale de stockage logique où les données sont organisées en lignes et en colonnes. Chaque colonne décrit un attribut spécifique tandis que chaque ligne représente un enregistrement unique.
+
+      Le type de données définit la nature des valeurs acceptées au sein des colonnes. Ce choix influe directement sur la taille du stockage, la gestion des index, les conversions et la cohérence globale.
+
+      La clé primaire sert à identifier chaque ligne d'une table de manière unique. Elle est souvent indexée et joue un rôle crucial pour les jointures et le maintien de l'intégrité.
+
+      La clé étrangère permet de relier une table à une autre pour assurer la cohérence. Ce mécanisme préserve l'intégrité référentielle mais peut impacter les performances lors des écritures.
+
+      Il est important de noter que chaque objet logique peut produire une charge sur le disque, la mémoire ou le processeur. Une table peut entraîner des scans complets ou une croissance de volume non maîtrisée.
+
+   B. Contraintes, vues et procédures stockées.
+
+      Les contraintes imposent des règles strictes telles que l'unicité, la non-nullité ou une condition spécifique. Elles réduisent les incohérences mais peuvent bloquer des écritures si elles sont invalides.
+
+      Une vue est une requête enregistrée qui offre une représentation logique des données. Elle peut masquer la complexité du modèle, tandis qu'une vue indexée permet de matérialiser physiquement les données.
+
+      La procédure stockée regroupe un ensemble d'instructions pour centraliser un traitement spécifique. Elle peut consommer du CPU, de l'appel mémoire ou générer des verrous sur le serveur.
+
+      Certaines procédures peuvent être de type CLR et sont exécutées directement côté serveur. Ces objets logiques doivent être surveillés pour leur impact sur les ressources système.
+
+   C. Les index : accélérateurs mais pas remède universel.
+
+      Un index est conçu pour accélérer les lectures, les recherches, les tris et les jointures. Cependant, une mauvaise conception peut devenir une source majeure de problèmes de performance.
+
+      L'absence d'index sur une colonne filtrée provoque souvent une lecture complète de la table. Dans ce cas, l'analyse des requêtes réelles et des plans est la réponse attendue.
+
+      Un excès d'index rend les écritures plus coûteuses et augmente l'espace disque utilisé. Il convient alors de supprimer ou de consolider les index inutiles.
+
+      Un index mal choisi n'est pas utilisé par l'optimiseur, ce qui nécessite de revoir la sélectivité ou l'ordre des clés. Les statistiques obsolètes peuvent également fausser l'estimation de la cardinalité.
+
+   D. Syntaxe minimale de création des objets.
+
+      La création d'une table peut s'effectuer avec la commande CREATE TABLE suivie du nom et des colonnes. Par exemple, la commande CREATE TABLE Client (IdClient int PRIMARY KEY, Nom nvarchar(cent) NOT NULL) définit une structure de base.
+
+      Pour accélérer la recherche sur une colonne, on utilise la commande CREATE INDEX. L'exemple CREATE INDEX IX_Client_Nom ON Client(Nom) permet d'indexer le champ Nom.
+
+      La création d'une représentation logique se fait via la commande CREATE VIEW. L'instruction CREATE VIEW vClient AS SELECT IdClient, Nom FROM Client illustre cette fonction.
+
+      Enfin, la centralisation d'un traitement s'opère avec la commande CREATE PROCEDURE. La syntaxe CREATE PROCEDURE pClientListe AS SELECT IdClient, Nom FROM Client permet de regrouper ces instructions.
+
+IV. TRANSACTIONS, JOURNAL, ISOLATION ET CONCURRENCE.
+
+   A. La transaction et les propriétés ACID.
+
+      Une transaction constitue une unité logique de travail regroupant une ou plusieurs opérations.
+
+      Ces opérations doivent être validées ensemble ou annulées ensemble pour garantir la cohérence.
+
+      L'atomicité impose qu'une transaction soit exécutée entièrement ou qu'elle soit totalement annulée.
+
+      La cohérence assure que la base de données passe d'un état valide à un autre état valide.
+
+      L'isolation garantit que les transactions simultanées ne se perturbent pas de manière incohérente.
+
+      La durabilité signifie qu'une transaction validée doit survivre à une panne grâce aux mécanismes de journalisation.
+
+   B. Le journal de transactions, composant critique.
+
+      Chaque base SQL Server possède un journal de transactions qui enregistre les modifications associées.
+
+      Ce composant est critique car il permet de ramener la base à un état cohérent après une défaillance.
+
+      Il est impératif de ne pas supprimer ni déplacer le journal sans une procédure maîtrisée.
+
+      Le journal intervient directement lors des processus de redémarrage et des restaurations.
+
+      Il peut subir une forte croissance et nécessite une surveillance de l'espace disque et des sauvegardes.
+
+      La latence sur le volume des journaux peut ralentir l'ensemble des transactions.
+
+   C. Niveaux d'isolation, lectures sales, fantômes, blocages et deadlocks.
+
+      Les niveaux d'isolation contrôlent le comportement de verrouillage et de versionnement des lignes.
+
+      La lecture sale correspond à la lecture d'une donnée qui n'est pas encore validée.
+
+      Une lecture non reproductible survient quand une même ligne change entre deux lectures successives.
+
+      La lecture fantôme se manifeste par l'apparition de nouvelles lignes visibles entre deux lectures.
+
+      Le blocage se produit lorsqu'une transaction attend une ressource qui est actuellement verrouillée.
+
+      Le deadlock arrive quand deux transactions s'attendent mutuellement, nécessitant une analyse de l'ordre d'accès.
+
+   D. Commandes BEGIN TRANSACTION, COMMIT et ROLLBACK.
+
+      La commande BEGIN TRANSACTION permet de débuter une unité de travail logique.
+
+      L'instruction COMMIT est utilisée pour valider définitivement les opérations effectuées.
+
+      En cas d'erreur ou de nécessité d'annulation, on utilise la commande ROLLBACK.
+
+      La commande SET TRANSACTION ISOLATION LEVEL READ COMMITTED permet de définir le niveau d'isolation.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le niveau logique qui concerne les tables et les vues avec le niveau physique qui traite des fichiers de données et des volumes.
+
+      Une erreur classique consiste à ignorer que le niveau système, incluant les services Windows et le réseau, peut bloquer l'accès aux données même si la base est saine.
+
+      L'utilisation excessive d'index peut paradoxalement dégrader les performances en rendant les écritures plus coûteuses et en augmentant l'espace disque utilisé.
+
+      Le journal de transactions ne doit pas être considéré comme un simple fichier accessoire car il est indispensable pour la récupération après une défaillance.
+
+      Il est crucial de distinguer le blocage où une transaction attend une ressource du deadlock où deux transactions s'attendent mutuellement.
+
+EXEMPLES CITÉS.
+
+      L'absence d'index sur une colonne filtrée peut forcer le moteur à effectuer une lecture complète de la table.
+
+      Une procédure stockée peut consommer des ressources importantes comme le CPU, l'appel mémoire ou provoquer des verrous.
+
+      Le modèle de données peut être illustré par la création d'une table Client avec un IdClient de type int comme clé primaire.
+
+      Une lecture sale correspond à la lecture d'une donnée qui n'a pas encore été validée par une transaction.
