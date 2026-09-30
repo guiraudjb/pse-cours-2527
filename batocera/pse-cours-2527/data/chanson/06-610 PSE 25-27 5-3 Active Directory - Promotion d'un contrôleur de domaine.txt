@@ -1,0 +1,53 @@
+TITRE : Le Rythme de l'AD Riddim
+
+[Intro]
+Écoute la vibration du serveur qui s'éveille,
+Pour bâtir ton domaine, sans aucune merveille.
+
+[Couplet 1]
+Avant de commencer, configure ton réseau,
+L'adresse dix point deux point vingt-cinq point trente-cinq en cadeau.
+Pas de DHCP, l'IP statique est la loi,
+Avec la passerelle dix point deux point vingt-cinq point un pour toi.
+Le DNS sur dix point deux point vingt-cinq point dix est requis,
+Nomme ton serveur DC1 pour que tout soit réussi.
+Applique les mises à jour avec WSUS en toute sécurité,
+Pour que ton infrastructure soit prête pour l'éternité.
+
+[Refrain]
+Promouvoir le serveur, créer la forêt,
+AD DS et DNS, c'est la clé du succès.
+Le premier contrôleur, le cœur du système,
+Gère les rôles FSMO, c'est le thème.
+
+[Couplet 2]
+Ouvre le Gestionnaire de serveur pour l'installation,
+Ou utilise PowerShell pour une automatisation.
+Install-Windows-WindowsFeature avec le paramètre AD-Domain-Services,
+Ajoute les outils de gestion pour éviter les sacrifices.
+Choisis ajouter une nouvelle forêt, entreprise point local,
+Le niveau fonctionnel doit être récent et idéal.
+N'oublie pas le mot de passe DSRM pour la restauration,
+Si la corruption arrive, c'est ta seule solution.
+
+[Refrain]
+Promouvoir le serveur, créer la forêt,
+AD DS et DNS, c'est la clé du succès.
+Le premier contrôleur, le cœur du système,
+Gère les rôles FSMO, c'est le thème.
+
+[Pont]
+Vérifie le SYSVOL et ses partages bien sécurisés,
+Et les enregistrements SRV dans le DNS bien localisés.
+Si Netlogon ne travaille pas, redémarre ce service,
+Pour que nslookup trouve le domaine sans un artifice.
+
+[Refrain final]
+Promouvoir le serveur, créer la forêt,
+AD DS et DNS, c'est la clé du succès.
+Le premier contrôleur, le cœur du système,
+Gère les rôles FSMO, c'est le thème.
+
+[Outro]
+Le domaine est debout, la réplication est en marche,
+Reste vigilant, car la sécurité est une tâche.

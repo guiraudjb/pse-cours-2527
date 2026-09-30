@@ -1,0 +1,53 @@
+TITRE : Réplication Active Directory Riddim
+
+[Intro]
+Écoute le rythme du KCC qui travaille,
+Pour que la forêt soit toujours équilibrée.
+
+[Couplet 1]
+L'USN est un compteur qui monte sans fin,
+Chaque transaction laisse une trace sur le chemin.
+Mais attention au rollback si l'InvocationID change,
+La virtualisation sécurisée est le seul avantage.
+Le DSA GUID identifie chaque contrôleur,
+Pour que dans les métadonnées tout soit sans erreur.
+Le vecteur à jour empêche les boucles infinies,
+Avec repadmin on inspecte toute la vie.
+
+[Refrain]
+Réplique les données, propage la lumière,
+Du Schéma au SYSVOL, partout sur la terre.
+Si la topologie tombe, l'utilisateur souffre,
+Garde tes contrôleurs de domaine toujours en ordre.
+
+[Couplet 2]
+En intrasite l'anneau est bidirectionnel,
+Le RPC sur IP est un flux essentiel.
+Quinze secondes de délai pour la première notification,
+Puis trois secondes pour la suite de la transmission.
+Mais entre les sites l'arbre couvrant est le roi,
+Le coût de la liaison dicte la loi.
+Cent pour la fibre, mille pour l'international,
+Trois mille deux cent soixante-sept pour le satellite spatial.
+
+[Refrain]
+Réplique les données, propage la lumière,
+Du Schéma au SYSVOL, partout sur la terre.
+Si la topologie tombe, l'utilisateur souffre,
+Garde tes contrôleurs de domaine toujours en ordre.
+
+[Pont]
+Le serveur bridgehead sert de passerelle,
+Pour que la réplication intersites soit réelle.
+Cent quatre-vingts minutes est l'intervalle par défaut,
+Pour économiser la bande passante, c'est le plus beau.
+
+[Refrain final]
+Réplique les données, propage la lumière,
+Du Schéma au SYSVOL, partout sur la terre.
+Si la topologie tombe, l'utilisateur souffre,
+Garde tes contrôleurs de domaine toujours en ordre.
+
+[Outro]
+Utilise repadmin pour surveiller ton réseau,
+Active Directory reste toujours au plus haut.

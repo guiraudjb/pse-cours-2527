@@ -1,0 +1,53 @@
+TITRE : L'Architecture du Système Riddim
+
+[Intro]
+Écoute le rythme de l'infrastructure,
+L'administrateur guide toute la structure.
+
+[Couplet 1]
+L'architecture définit les moyens matériels,
+Les logiciels de base et les flux essentiels.
+L'administrateur conçoit et il dimensionne,
+Pour que la plateforme avec sécurité résonne.
+On étudie la volumétrie statique et dynamique,
+Pour éviter la saturation ou le coût léthargique.
+On calcule le stockage, le CPU et la mémoire,
+Pour que chaque serveur remplisse son rôle et son histoire.
+
+[Refrain]
+De la définition jusqu'à l'exploitation,
+L'ingénierie assure la bonne administration.
+Avec le PCA et le PRA pour la continuité,
+On garantit le service et la disponibilité.
+
+[Couplet 2]
+Cinq critères guident tous nos choix techniques,
+La volumétrie et la charge rendent le système critique.
+La disponibilité se mesure en nombre de neuf,
+Pour un niveau très élevé, le coût est un peu neuf.
+On utilise le RAID pour la tolérance aux pannes,
+Le RAID six protège même quand deux disques s'en vont.
+Le DAS, le NAS et le SAN pour le stockage,
+Chaque technologie répond à un besoin de passage.
+
+[Refrain]
+De la définition jusqu'à l'exploitation,
+L'ingénierie assure la bonne administration.
+Avec le PCA et le PRA pour la continuité,
+On garantit le service et la disponibilité.
+
+[Pont]
+Trois copies, deux supports, une copie hors-site,
+La règle trois-deux-un rend la sauvegarde parfaite.
+On passe par un bastion pour la sécurité,
+Le durcissement évite toute l'inactivité.
+
+[Refrain final]
+De la définition jusqu'à l'exploitation,
+L'ingénierie assure la bonne administration.
+Avec le PCA et le PRA pour la continuité,
+On garantit le service et la disponibilité.
+
+[Outro]
+Le REX de l'exploitation nourrit la définition,
+C'est le cycle de vie de notre mission.

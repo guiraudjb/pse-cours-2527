@@ -1,0 +1,53 @@
+TITRE : Debian Sécurité Riddim
+
+[Intro]
+Écoute le rythme de la protection,
+La sécurité Debian en pleine ascension.
+
+[Couplet 1]
+Le DICP guide notre analyse de risque,
+Disponibilité et intégrité, c'est le principe.
+Confidentialité et preuve pour la traçabilité,
+Contre la menace et la vulnérabilité.
+L'aspect technique et l'aspect humain,
+L'aspect physique et l'aspect juridique aussi, mon ami.
+Réduis la surface d'attaque avec sagesse,
+Le moindre privilège pour éviter la détresse.
+
+[Refrain]
+Défense en profondeur, protège ton système,
+Avec la PSSI, on évite les problèmes.
+De la sauvegarde aux accès bien contrôlés,
+Sur Debian treize, on reste sécurisés.
+
+[Couplet 2]
+Trois copies sur deux supports, c'est la règle d'or,
+Trois-deux-un pour ne pas perdre tes trésors.
+Trois-deux-un-un-zéro pour l'immuable et l'hors ligne,
+Pour que la restauration soit toujours sans signe.
+Utilise nftables pour filtrer les flux,
+Et fail2ban pour bannir les intrus.
+Le noyau sysctl durcit les paramètres,
+Contre l'IP spoofing, on reste de fer.
+
+[Refrain]
+Défense en profondeur, protège ton système,
+Avec la PSSI, on évite les problèmes.
+De la sauvegarde aux accès bien contrôlés,
+Sur Debian treize, on reste sécurisés.
+
+[Pont]
+PAM gère l'authentification avec précision,
+Le protocole RADIUS suit le principe AAA.
+L'ANSSI réglemente la cryptographie en France,
+Et le RGPD impose la conformité en toute confiance.
+
+[Refrain final]
+Défense en profondeur, protège ton système,
+Avec la PSSI, on évite les problèmes.
+De la sauvegarde aux accès bien contrôlés,
+Sur Debian treize, on reste sécurisés.
+
+[Outro]
+EBIOS RM pour l'analyse structurée,
+La sécurité Debian est enfin maîtrisée.

@@ -1,0 +1,53 @@
+TITRE : Windows Security Riddim
+
+[Intro]
+Écoute le rythme de la sécurité Windows Server deux mille seize
+Pour que ton système reste libre et sans aucune faiblesse
+
+[Couplet 1]
+L'authentification vérifie qui tu es vraiment
+L'autorisation décide de tes droits et tes mouvements
+Le SID est l'identifiant unique et précieux
+Le jeton d'accès contient tes privilèges sous les cieux
+Le SAM gère les comptes sur un serveur autonome
+La LSA est le cœur qui protège chaque royaume
+Le processus LSASS.EXE héberge la sécurité
+Et la SSPI permet aux applications de s'authentifier
+
+[Refrain]
+Authentifie l'identité pour savoir qui est là
+Autorise les accès selon la loi du SID et l'ACL
+Dans le domaine Kerberos et le KDC sont rois
+La sécurité Windows est notre seule voie
+
+[Couplet 2]
+Winlogon.exe gère ton ouverture de session
+Dans l'Active Directory tout est en pleine gestion
+Le protocole Kerberos utilise des tickets pour toi
+Le mode Negotiate choisit Kerberos ou bien NTLM avec joie
+Schannel sécurise les échanges avec le chiffrement
+Les GPO centralisent la configuration et le règlement
+Le principe du moindre privilège est notre devoir
+Pour limiter les risques et ne jamais s'effondrer
+
+[Refrain]
+Authentifie l'identité pour savoir qui est là
+Autorise les accès selon la loi du SID et l'ACL
+Dans le domaine Kerberos et le KDC sont rois
+La sécurité Windows est notre seule voie
+
+[Pont]
+L'audit enregistre tout dans l'Observateur d'événements
+Pour détecter les attaques et les mauvais mouvements
+Les permissions NTFS utilisent des ACE et des ACL
+Pour protéger tes données et tes fichiers essentiels
+
+[Refrain final]
+Authentifie l'identité pour savoir qui est là
+Autorise les accès selon la loi du SID et l'ACL
+Dans le domaine Kerberos et le KDC sont rois
+La sécurité Windows est notre seule voie
+
+[Outro]
+Windows Server deux mille seize sous le contrôle du système
+Reste vigilant et garde toujours le bon rythme

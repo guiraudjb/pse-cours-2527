@@ -1,0 +1,53 @@
+TITRE : Réseau AD Riddim
+
+[Intro]
+Écoute le son de l'infrastructure,
+Active Directory en pleine lumière.
+
+[Couplet 1]
+Le DNS localise les services par les enregistrements SRV,
+Le DHCP automatise l'adresse IP pour les clients en mouvement.
+Le NPS est le serveur RADIUS pour l'accès centralisé,
+Le RRAS devient routeur ou VPN pour les sites isolés.
+Le W32Time synchronise l'heure pour Kerberos et sa loi,
+Pas plus de cinq minutes de décalage pour garder la foi.
+Le PDC est la source de temps au sommet de la hiérarchie,
+Configure-le sur un NTP externe pour éviter l'anarchie.
+
+[Refrain]
+Services intégrés, réseau bien sécurisé,
+DNS, DHCP et NPS pour tout piloter.
+Synchronise le temps, protège chaque accès,
+Dans l'annuaire AD, tout est orchestré.
+
+[Couplet 2]
+Les zones intégrées dans l'annuaire NTDS.dit sont répliquées,
+Le scavenging nettoie les vieux enregistrements obsolètes.
+NoRefresh plus Refresh multiplié par deux pour le délai,
+Le DHCP doit être autorisé pour ne pas être rejeté.
+Le PEAP-MSCHAPv2 offre une sécurité très élevée,
+L'EAP-TLS utilise des certificats pour être bien protégé.
+Désactive LLMNR et NetBIOS pour stopper les attaquants,
+Évite que Responder ne capture les hashs des clients.
+
+[Refrain]
+Services intégrés, réseau bien sécurisé,
+DNS, DHCP et NPS pour tout piloter.
+Synchronise le temps, protège chaque accès,
+Dans l'annuaire AD, tout est orchestré.
+
+[Pont]
+Le DNSSEC signe les réponses pour éviter l'empoisonnement,
+Les mises à jour dynamiques sécurisées sont le seul engagement.
+Le PPTP et le L2TP sont désactivés dans deux mille vingt-cinq,
+Pour que la sécurité de ton réseau soit enfin sereine.
+
+[Refrain final]
+Services intégrés, réseau bien sécurisé,
+DNS, DHCP et NPS pour tout piloter.
+Synchronise le temps, protège chaque accès,
+Dans l'annuaire AD, tout est orchestré.
+
+[Outro]
+Reste connecté, reste bien synchronisé,
+Le guide complet est enfin maîtrisé.

@@ -1,0 +1,53 @@
+TITRE : Active Directory Riddim
+
+[Intro]
+Écoute le rythme du réseau et de la gestion
+Active Directory Domain Services en pleine ascension
+
+[Couplet 1]
+Dans la forêt le schéma définit chaque classe
+Le maître du schéma contrôle la base
+L'architecture logique est un monde de conteneurs
+L'unité d'organisation délègue pour les administrateurs
+Le domaine est une partition de sécurité
+L'arbre lie les domaines en toute continuité
+Le catalogue global indexe toute la forêt
+Pour que l'information soit toujours bien trouvée
+
+[Refrain]
+AD DS c'est le cœur de ton système
+Centralise les accès pour que tout soit en ordre et en paix
+De la forêt au domaine la structure est bien tracée
+Pour la gestion des identités tout est orchestré
+
+[Couplet 2]
+Le fichier NTDS.dit est géré par l'ESE
+Le moteur indexe les données avec sagesse
+Kerberos utilise des tickets pour la sécurité
+Mais NTLM reste pour la compatibilité
+Le KCC gère la réplication sur chaque serveur
+En intra-site la vitesse est sans aucune lenteur
+En inter-sites le spanning tree est la loi
+Le DFSR remplace le FRS pour faire le bon choix
+
+[Refrain]
+AD DS c'est le cœur de ton système
+Centralise les accès pour que tout soit en ordre et en paix
+De la forêt au domaine la structure est bien tracée
+Pour la gestion des identités tout est orchestré
+
+[Pont]
+Les rôles FSMO évitent les conflits majeurs
+Le maître RID distribue les identifiants avec rigueur
+L'émulateur PDC gère le temps et les mots de passe
+Si le maître du schéma tombe la structure s'efface
+
+[Refrain final]
+AD DS c'est le cœur de ton système
+Centralise les accès pour que tout soit en ordre et en paix
+De la forêt au domaine la structure est bien tracée
+Pour la gestion des identités tout est orchestré
+
+[Outro]
+Utilise le moindre privilège pour ta sécurité
+Respecte les bonnes pratiques pour toute l'éternité

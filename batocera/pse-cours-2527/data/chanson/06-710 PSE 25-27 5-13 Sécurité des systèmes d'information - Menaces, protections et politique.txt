@@ -1,0 +1,53 @@
+TITRE : Cyber Sécurité Riddim
+
+[Intro]
+Écoute le rythme de la protection,
+Pour ton système, une vraie direction.
+
+[Couplet 1]
+L'ANSSI est née en deux mille neuf pour nous guider,
+La confidentialité ne doit jamais s'effondrer.
+L'intégrité protège contre toute altération,
+Le déni de service cherche la saturation.
+L'authentification évite l'usurpation,
+La non-répudiation prouve chaque transaction.
+L'EBIOS analyse les risques et les menaces,
+Pour que les vulnérabilités ne fassent plus de traces.
+
+[Refrain]
+Confidentialité, intégrité, sécurité,
+Chiffre tes données pour la liberté.
+Pare-feu, VPN et la PSSI,
+Protège ton réseau, protège ta vie.
+
+[Couplet 2]
+Le chiffrement symétrique est rapide et efficace,
+Mais partager la clé reste un défi de classe.
+L'asymétrique utilise deux clés liées,
+La clé publique et la privée pour communiquer.
+Le protocole RSA utilise les nombres premiers,
+Le RSA chiffre et signe pour le bien commun.
+La PKI gère les certificats X.cinq cent quatre-vingt-dix,
+Pour que la confiance dans le réseau se fixe.
+
+[Refrain]
+Confidentialité, intégrité, sécurité,
+Chiffre tes données pour la liberté.
+Pare-feu, VPN et la PSSI,
+Protège ton réseau, protège ta vie.
+
+[Pont]
+La DMZ isole les serveurs exposés,
+Entre le réseau interne et le monde extérieur posé.
+Le VPN crée un tunnel pour le télétravail,
+IPsec au niveau trois assure le travail.
+
+[Refrain final]
+Confidentialité, intégrité, sécurité,
+Chiffre tes données pour la liberté.
+Pare-feu, VPN et la PSSI,
+Protège ton réseau, protège ta vie.
+
+[Outro]
+ISO vingt-sept mille deux pour la gestion,
+La cybersécurité est notre mission.

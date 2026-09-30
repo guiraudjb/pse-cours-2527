@@ -1,0 +1,53 @@
+TITRE : Active Directory Riddim
+
+[Intro]
+Écoute le rythme du service d'annuaire
+Pour sécuriser ton réseau et ta vie
+
+[Couplet 1]
+L'architecture logique organise tes données
+La forêt et les domaines sont bien structurés
+L'arbre et les unités d'organisation
+Donnent une délégation pour toute la nation
+Mais la structure physique gère le matériel
+Les sites et sous-réseaux sont essentiels
+Le contrôleur de domaine héberge la partition
+Avec le KCC pour la réplication
+
+[Refrain]
+AD DS c'est le cœur de l'identité
+Entre logique et physique, la sécurité
+LDAP et Kerberos pour tout connecter
+Dans l'annuaire, tout est bien classé
+
+[Couplet 2]
+Le fichier NTDS.DIT est la base de données
+Le moteur ESE garde tout bien indexé
+Le schéma définit les classes et les attributs
+Le maître du schéma évite les faux pas et les chutes
+Les rôles FSMO protègent l'infrastructure
+Maître RID et infrastructure pour la structure
+L'émulateur PDC gère l'heure et les mots de passe
+Pour que Kerberos ne laisse aucune trace
+
+[Refrain]
+AD DS c'est le cœur de l'identité
+Entre logique et physique, la sécurité
+LDAP et Kerberos pour tout connecter
+Dans l'annuaire, tout est bien classé
+
+[Pont]
+Cinq minutes de tolérance pour l'heure de Kerberos
+Le DFSR remplace le FRS pour les fichiers gros
+La réplication différentielle est plus efficace
+Pour le dossier SYSVOL, c'est la voie de grâce
+
+[Refrain final]
+AD DS c'est le cœur de l'identité
+Entre logique et physique, la sécurité
+LDAP et Kerberos pour tout connecter
+Dans l'annuaire, tout est bien classé
+
+[Outro]
+Repadmin pour voir si la réplication est là
+Reggae de l'annuaire, ne l'oublie pas

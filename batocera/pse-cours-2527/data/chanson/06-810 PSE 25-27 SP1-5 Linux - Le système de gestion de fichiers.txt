@@ -1,0 +1,53 @@
+TITRE : L'Arborescence Riddim
+
+[Intro]
+Écoute le rythme du noyau et du disque,
+Dans l'arborescence, tout est fichier, c'est le risque.
+
+[Couplet 1]
+L'inode décrit le type et la taille,
+Le SGF organise sans aucune faille.
+Le VFS est la couche d'abstraction,
+Pour offrir au système une seule interface de gestion.
+Un fichier est un flot d'octets en blocs,
+Le répertoire fait le lien sans aucun choc.
+Le lien physique pointe l'inode directement,
+Le lien symbolique suit le nom, c'est plus léger.
+
+[Refrain]
+Tout est fichier sous le ciel de Linux,
+De la racine au bloc, sans aucun subterfuge.
+Droits et permissions pour garder la sécurité,
+C'est la gestion des données en toute liberté.
+
+[Couplet 2]
+UGO pour l'utilisateur, le groupe et les autres,
+Avec chmod et chown, on gère les fautes.
+L'ACL offre des droits plus fins et précis,
+Le SUID permet de prendre l'identité du propriétaire ici.
+Le SGID définit le groupe par défaut,
+Le Sticky Bit protège le répertoire de tout défaut.
+L'umask de vingt-deux calcule les droits initiaux,
+Six cent quarante-quatre pour les fichiers, c'est le signal.
+
+[Refrain]
+Tout est fichier sous le ciel de Linux,
+De la racine au bloc, sans aucun subterfuge.
+Droits et permissions pour garder la sécurité,
+C'est la gestion des données en toute liberté.
+
+[Pont]
+Le LVM sépare le physique du logique,
+Le RAID protège les disques, c'est magique.
+Le RAID cinq tolère la perte d'un seul disque,
+Le tmpfs en mémoire vive est un vrai bénéfice.
+
+[Refrain final]
+Tout est fichier sous le ciel de Linux,
+De la racine au bloc, sans aucun subterfuge.
+Droits et permissions pour garder la sécurité,
+C'est la gestion des données en toute liberté.
+
+[Outro]
+De la racine slash jusqu'au dernier bloc,
+Le système de fichiers est solide comme un roc.

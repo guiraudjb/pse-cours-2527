@@ -1,0 +1,53 @@
+TITRE : Windows Server Riddim Riddim
+
+[Intro]
+Écoute le rythme de l'administration,
+Windows Server en pleine vibration.
+
+[Couplet 1]
+AD DS stocke les objets du réseau,
+DNS traduit les noms pour le niveau.
+DHCP donne les adresses IP sans délai,
+MMC gère les consoles avec la clarté.
+GPO applique les paramètres de sécurité,
+NTFS contrôle les permissions avec précision.
+ReFS apporte la résilience et la protection,
+SMB partage les dossiers avec l'application.
+
+[Refrain]
+Administre ton serveur avec sagesse,
+Vérifie les sauvegardes et la rudesse.
+De l'Active Directory au stockage de fichiers,
+Garde ton système toujours bien surveillé.
+
+[Couplet 2]
+VSS coordonne la sauvegarde à un instant,
+FSRM gère les quotas de façon constante.
+SNMP supervise par agents et par traps,
+WMI expose les classes sans aucun gap.
+Le contrôleur de domaine est un élément critique,
+Moindre privilège rend la défense efficace et unique.
+Utilise PowerShell pour l'automatisation,
+Et les commandes net pour la gestion.
+
+[Refrain]
+Administre ton serveur avec sagesse,
+Vérifie les sauvegardes et la rudesse.
+De l'Active Directory au stockage de fichiers,
+Garde ton système toujours bien surveillé.
+
+[Pont]
+La permission effective est la plus restrictive,
+Entre le partage SMB et l'accès NTFS.
+Un seul compteur de performance est insuffisant,
+Croise les indicateurs pour un diagnostic pertinent.
+
+[Refrain final]
+Administre ton serveur avec sagesse,
+Vérifie les sauvegardes et la rudesse.
+De l'Active Directory au stockage de fichiers,
+Garde ton système toujours bien surveillé.
+
+[Outro]
+Respecte les groupes de sécurité,
+Pour une infrastructure de haute qualité.

@@ -1,0 +1,53 @@
+TITRE : Automatisation Linux Riddim
+
+[Intro]
+Écoute le rythme de l'automatisation,
+L'Institut de la Gestion publique te donne la direction.
+
+[Couplet 1]
+Avec Init on démarre le système,
+Dans le fichier inittab on écrit le programme.
+Pour un service rigoureux et bien contrôlé,
+Dans le répertoire init point d'un fichier placé.
+On crée des liens symboliques pour l'action,
+Avec le préfixe S pour le démarrage en fonction.
+Mais si le service doit s'arrêter ou être kill,
+Le préfixe K est le seul qui est utile.
+
+[Refrain]
+At pour une fois, Cron pour la récurrence,
+Systemd et Init, c'est la science.
+Automatise ton Linux avec sagesse,
+Pour que tes tâches tournent sans aucune faiblesse.
+
+[Couplet 2]
+Systemd utilise des fichiers d'unité,
+Dans le répertoire system pour la modernité.
+Une section Unit définit la dépendance,
+Et la section Service lance la performance.
+Si tu veux un timer pour remplacer le cron,
+Utilise une unité timer pour une nouvelle option.
+Pour une tâche unique on utilise la commande at,
+Dans le répertoire spool le travail est mis en état.
+
+[Refrain]
+At pour une fois, Cron pour la récurrence,
+Systemd et Init, c'est la science.
+Automatise ton Linux avec sagesse,
+Pour que tes tâches tournent sans aucune faiblesse.
+
+[Pont]
+La crontab est individuelle par utilisateur,
+Dans le répertoire spool de cron pour tout gérer.
+Le contrôle d'accès se fait par allow et deny,
+Dans le répertoire etc pour que tout soit bien fini.
+
+[Refrain final]
+At pour une fois, Cron pour la récurrence,
+Systemd et Init, c'est la science.
+Automatise ton Linux avec sagesse,
+Pour que tes tâches tournent sans aucune faiblesse.
+
+[Outro]
+VTom et Dollar Universe orchestrent la cadence,
+L'automatisation Linux est notre seule chance.

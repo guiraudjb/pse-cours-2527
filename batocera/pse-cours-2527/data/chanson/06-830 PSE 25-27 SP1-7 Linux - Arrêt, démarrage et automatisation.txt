@@ -1,0 +1,53 @@
+TITRE : Boot Linux Riddim
+
+[Intro]
+Écoute le rythme du système qui s'éveille,
+Du BIOS au noyau, la machine est sans pareille.
+
+[Couplet 1]
+Le BIOS est le firmware dans la mémoire flash,
+Le POST teste le CPU pour éviter le crash.
+Le MBR est le secteur de démarrage sur le disque,
+Le vmlinuz est le noyau compressé, c'est le risque.
+L'initrd est le système de fichiers minimaliste,
+Le loader passe du stage un au stage deux, c'est le reste.
+Le stage un fait quatre cent quarante-six octets,
+Le second niveau lance Grub ou Lilo pour la vérité.
+
+[Refrain]
+De SysV vers systemd, le parallélisme arrive,
+Les unités et les targets font vibrer la drive.
+Oublie les run-levels, les targets sont la clé,
+Pour un démarrage rapide et un système bien géré.
+
+[Couplet 2]
+L'ancien init utilisait le fichier inittab,
+Avec les run-levels de zéro à six, c'est le combat.
+Le niveau zéro arrête et le six redémarre,
+Le cinq est le mode graphique, sans aucun retard.
+Les scripts de /etc/init.d sont lents et séquentiels,
+Mais systemd arrive avec un flux essentiel.
+Il utilise des unités comme des sockets ou des mounts,
+Pour lancer les services sans faire de mauvais comptes.
+
+[Refrain]
+De SysV vers systemd, le parallélisme arrive,
+Les unités et les targets font vibrer la drive.
+Oublie les run-levels, les targets sont la clé,
+Pour un démarrage rapide et un système bien géré.
+
+[Pont]
+Syslogd et klogd collectent les messages,
+Dans /var/log, les traces gardent le courage.
+De debug à emerg, la criticité est là,
+La rotation des logs par logrotate fera.
+
+[Refrain final]
+De SysV vers systemd, le parallélisme arrive,
+Les unités et les targets font vibrer la drive.
+Oublie les run-levels, les targets sont la clé,
+Pour un démarrage rapide et un système bien géré.
+
+[Outro]
+Systemctl est l'outil pour tout administrer,
+Le processus de boot est enfin maîtrisé.

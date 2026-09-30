@@ -1,0 +1,53 @@
+TITRE : Le Rythme du SGBDR Riddim
+
+[Intro]
+Écoute la vibration de la donnée structurée,
+Le SGBDR arrive pour tout organiser.
+
+[Couplet 1]
+En mille neuf cent soixante-dix Edgar Frank Codd a créé,
+Le modèle relationnel pour nous guider.
+Chamberlin et Boyce en mille neuf cent soixante-quatorze,
+Ont fait le SEQUEL pour que le SQL s'exerce.
+L'ANSI normalise tout en mille neuf cent quatre-vingt-six,
+L'ISO suit en mille neuf cent quatre-vingt-sept, quel exercice.
+Le LDD définit le schéma et les types de données,
+Le LMD manipule les lignes avec agilité.
+
+[Refrain]
+C'est le principe ACID pour la fiabilité,
+Atomicité, Cohérence, Isolation, Durabilité.
+Tout ou rien dans la transaction, c'est la loi,
+Le SGBDR gère la base avec joie.
+
+[Couplet 2]
+Le LID interroge avec le WHERE et le GROUP BY,
+Le LCD contrôle les privilèges, GRANT et REVOKE, oh yeah.
+Le TCL encadre les transactions avec COMMIT,
+Ou ROLLBACK si l'erreur rend le système petit.
+Les tables sont des relations avec des tuples et des clés,
+La clé primaire assure l'unicité de la donnée.
+La clé étrangère fait le lien, la jointure crée le pont,
+INNER JOIN ou LEFT JOIN, on garde la bonne direction.
+
+[Refrain]
+C'est le principe ACID pour la fiabilité,
+Atomicité, Cohérence, Isolation, Durabilité.
+Tout ou rien dans la transaction, c'est la loi,
+Le SGBDR gère la base avec joie.
+
+[Pont]
+Le redo log enregistre en temps réel les changements,
+L'index B-Tree accélère les recherches rapidement.
+La metabase est le dictionnaire de la structure,
+Entre logique et physique, le moteur assure la mesure.
+
+[Refrain final]
+C'est le principe ACID pour la fiabilité,
+Atomicité, Cohérence, Isolation, Durabilité.
+Tout ou rien dans la transaction, c'est la loi,
+Le SGBDR gère la base avec joie.
+
+[Outro]
+Du relationnel au NoSQL, le monde évolue,
+Mais la base de données reste la valeur absolue.

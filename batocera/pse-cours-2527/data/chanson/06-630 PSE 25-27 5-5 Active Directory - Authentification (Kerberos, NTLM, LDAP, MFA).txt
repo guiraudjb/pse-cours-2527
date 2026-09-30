@@ -1,0 +1,53 @@
+TITRE : Kerberos Rhythm Riddim
+
+[Intro]
+Écoute le rythme de l'annuaire et de la sécurité
+Active Directory Domain Services, la vérité.
+
+[Couplet 1]
+Le KDC est au cœur du contrôleur de domaine
+Pour gérer les comptes et stopper les problèmes
+Kerberos est le protocole par défaut depuis deux mille
+Avec des tickets pour que l'accès soit tranquille
+Le client demande un ticket granting ticket nommé TGT
+Pour que le service de ressources puisse le valider
+Le SPN doit être enregistré pour que tout fonctionne
+Sinon Kerberos perd sa force et sa zone.
+
+[Refrain]
+Authentification, protège ton identité
+Kerberos et les clés pour la sécurité
+Pas de LDAP en clair, utilise le LDAPS
+Dans l'Active Directory, on garde le cap.
+
+[Couplet 2]
+NTLM est ancien et présente des dangers
+Le pass-the-hash peut causer des ravages
+Désactive le NTLMv1 pour plus de protection
+Utilise le NTLMv2 avec sa bonne encryption
+Pour les comptes privilégiés utilise la FGPP
+Avec quatorze caractères pour une sécurité de haut niveau
+Une durée de vie de trente à quarante-cinq jours
+C'est la règle d'or pour les administrateurs de pouvoir.
+
+[Refrain]
+Authentification, protège ton identité
+Kerberos et les clés pour la sécurité
+Pas de LDAP en clair, utilise le LDAPS
+Dans l'Active Directory, on garde le cap.
+
+[Pont]
+Attention au décalage de plus de cinq minutes
+La synchronisation horaire est une règle absolue
+L'ID quatre mille six cent vingt-cinq signale l'échec
+Et l'ID quatre mille six cent vingt-quatre est un succès.
+
+[Refrain final]
+Authentification, protège ton identité
+Kerberos et les clés pour la sécurité
+Pas de LDAP en clair, utilise le LDAPS
+Dans l'Active Directory, on garde le cap.
+
+[Outro]
+MFA via NPS pour renforcer le système
+Riddim de l'AD, pour que tout soit en ordre et sans problème.

@@ -1,0 +1,53 @@
+TITRE : Le Rythme du Processus Riddim
+
+[Intro]
+Écoute le noyau qui chante sa mélodie,
+Le scheduler dirige toute la vie.
+
+[Couplet 1]
+Un programme est un fichier qui attend son heure,
+Mais le processus est l'entité active et victorieuse.
+Le bloc de contrôle ou PCB garde ses ressources,
+Le compteur ordinal guide sa course.
+Le PID est un numéro unique et sacré,
+Le processus zéro est créé manuellement au démarrage.
+Puis vient le processus un, l'init, le grand ancêtre,
+Qui accueille les orphelins pour ne pas les faire renaître.
+
+[Refrain]
+C'est la multiprogrammation, le pseudoparallélisme,
+Le processeur jongle entre les tâches, quel beau mécanisme.
+Le quantum de temps s'écoule pour chaque processus,
+Sous Linux, le système gère tout avec adresse.
+
+[Couplet 2]
+L'appel système fork crée le fils et le père,
+La commutation de contexte est une opération amère.
+C'est un overhead coûteux pour le processeur,
+Sauvegarder l'ancien et charger le nouveau avec rigueur.
+Pour changer la priorité, utilise le paramètre nice,
+Ou la commande renice pour que le processus s'ajuste.
+Le répertoire proc est un pseudo système de fichiers,
+Pour voir les informations de tous les processus ouverts.
+
+[Refrain]
+C'est la multiprogrammation, le pseudoparallélisme,
+Le processeur jongle entre les tâches, quel beau mécanisme.
+Le quantum de temps s'écoule pour chaque processus,
+Sous Linux, le système gère tout avec adresse.
+
+[Pont]
+L'exclusion mutuelle évite la famine,
+Une ressource pour un seul, c'est la loi divine.
+Le signal SIGINT arrive avec CTRL-C,
+Pour interrompre le code et libérer la vie.
+
+[Refrain final]
+C'est la multiprogrammation, le pseudoparallélisme,
+Le processeur jongle entre les tâches, quel beau mécanisme.
+Le quantum de temps s'écoule pour chaque processus,
+Sous Linux, le système gère tout avec adresse.
+
+[Outro]
+Le scheduler a le PID zéro dans son cœur,
+La gestion des processus est la clé du bonheur.

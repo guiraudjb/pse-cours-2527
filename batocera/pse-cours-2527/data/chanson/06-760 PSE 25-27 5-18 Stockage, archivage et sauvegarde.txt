@@ -1,0 +1,53 @@
+TITRE : La Data Riddim Riddim
+
+[Intro]
+Écoute le rythme de la donnée,
+Pour ne jamais rien perdre, faut bien organiser.
+
+[Couplet 1]
+Le stockage c'est l'espace pour travailler au quotidien,
+Mais sans la sauvegarde, le système est fragile et vain.
+L'archivage organise la vie des données moins actives,
+Pour des archives intermédiaires ou bien définitives.
+Le RPO c'est le volume de perte que l'on peut accepter,
+Le RTO c'est le temps pour pouvoir se remettre à travailler.
+La CNIL rappelle qu'on ne garde pas tout indéfiniment,
+Il faut fixer une durée pour rester en accord avec le moment.
+
+[Refrain]
+Trois copies, deux supports, une copie hors site,
+La stratégie trois-deux-un protège ta vie.
+Sauvegarder c'est restaurer, c'est là le vrai secret,
+Pour que tes données restent en toute sécurité.
+
+[Couplet 2]
+La sauvegarde complète est une base de restauration fiable,
+L'incrémentale copie les changements, c'est très agile.
+La différentielle part de la complète pour faire le lien,
+Mais n'oublie jamais de tester pour ne pas subir de déclin.
+Une sauvegarde non testée n'est pas une vraie garantie,
+Si le fichier est corrompu, la reprise est finie.
+Identifie le périmètre, choisis le bon point de restauration,
+Et documente chaque étape avec une grande précision.
+
+[Refrain]
+Trois copies, deux supports, une copie hors site,
+La stratégie trois-deux-un protège ta vie.
+Sauvegarder c'est restaurer, c'est là le vrai secret,
+Pour que tes données restent en toute sécurité.
+
+[Pont]
+Face au ransomware, il faut un assainissement,
+Et restaurer une copie isolée avec détermination.
+Sépare l'archive intermédiaire de la base active,
+Physiquement ou logiquement, pour que la règle soit effective.
+
+[Refrain final]
+Trois copies, deux supports, une copie hors site,
+La stratégie trois-deux-un protège ta vie.
+Sauvegarder c'est restaurer, c'est là le vrai secret,
+Pour que tes données restent en toute sécurité.
+
+[Outro]
+Respecte le cycle de vie, garde la traçabilité,
+La donnée est précieuse, protège sa réalité.

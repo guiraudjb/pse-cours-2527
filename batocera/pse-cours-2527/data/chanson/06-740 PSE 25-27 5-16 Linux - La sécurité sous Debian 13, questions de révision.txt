@@ -1,0 +1,53 @@
+TITRE : Debian Security Riddim
+
+[Intro]
+Écoute le rythme de la sécurité,
+Pour Debian treize, la clarté est arrivée.
+
+[Couplet 1]
+Le sigle DICP protège tes données,
+Disponibilité et Intégrité pour la vérité.
+Confidentialité et Preuve ou Traçabilité,
+C'est la base de la sécurité.
+Trois copies des données pour ne rien perdre,
+Sur deux supports différents pour ne pas s'en défaire.
+Une copie externalisée hors site est la règle,
+Pour que face au sinistre, ton système soit agile.
+
+[Refrain]
+Défense en profondeur, couches de protection,
+Contre les attaques, cherche la perfection.
+De l'ANSSI au NIST, les règles sont claires,
+Sécurise ton système, reste toujours fier.
+
+[Couplet 2]
+Dans le fichier slash etc slash shadow,
+Le SHA-cinq cent douze cache le mot.
+Le préfixe dollar six identifie le hachage,
+Avec un sel aléatoire pour éviter le naufrage.
+Le protocole RADIUS utilise le modèle AAA,
+Authentication, Authorization et Accounting pour briller.
+Oublie le bit SUID root pour tes processus,
+Les capabilities Linux sont bien plus précises.
+
+[Refrain]
+Défense en profondeur, couches de protection,
+Contre les attaques, cherche la perfection.
+De l'ANSSI au NIST, les règles sont claires,
+Sécurise ton système, reste toujours fier.
+
+[Pont]
+EBIOS Risk Manager pour ton plan d'action,
+Le RGS de l'ANSSI guide ta direction.
+Proscris le MD5 et le SHA-un sans délai,
+Utilise le SHA deux cent cinquante-six, c'est le vrai.
+
+[Refrain final]
+Défense en profondeur, couches de protection,
+Contre les attaques, cherche la perfection.
+De l'ANSSI au NIST, les règles sont claires,
+Sécurise ton système, reste toujours fier.
+
+[Outro]
+ClamAV et freshclam pour la vigilance,
+La sécurité Debian, c'est notre espérance.

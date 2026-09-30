@@ -1,0 +1,53 @@
+TITRE : La Révolution Data Riddim
+
+[Intro]
+Écoute le rythme de la révolution numérique,
+Le Big Data arrive, c'est une force organique.
+
+[Couplet 1]
+Yahoo, Google et Facebook ont ouvert la voie,
+Dès les années deux mille, ils ont imposé leur loi.
+Le Volume est immense, des pétabytes par jour,
+La Variété des formats nous donne de la vigueur.
+La Vélocité demande un flux en temps réel,
+Pour que l'analyse soit un outil essentiel.
+Les bases SQL ne suffisent plus désormais,
+Face aux données massives, elles doivent s'effacer.
+
+[Refrain]
+Volume, Variété et Vélocité,
+C'est le Big Data, la nouvelle réalité.
+Passons à la culture data-driven dès maintenant,
+Pour créer de la valeur à travers le présent.
+
+[Couplet 2]
+L'ERP et le CRM donnent des données structurées,
+Le SCM produit des masses très organisées.
+Mais l'IoT et le mobile apportent la complexité,
+Avec cent cinquante interactions par journée.
+Le NoSQL offre une flexibilité sans égale,
+Clé-valeur, colonne, document ou graphe spatial.
+Hadoop utilise le HDFS pour le stockage,
+Et MapReduce pour un traitement sans fatigue ni mensonge.
+
+[Refrain]
+Volume, Variété et Vélocité,
+C'est le Big Data, la nouvelle réalité.
+Passons à la culture data-driven dès maintenant,
+Pour créer de la valeur à travers le présent.
+
+[Pont]
+Le NameNode dirige et les DataNodes stockent,
+YARN planifie les travaux sans faire de fautes.
+Le traitement in-memory accélère la cadence,
+Le streaming analyse les flux avec une grande aisance.
+
+[Refrain final]
+Volume, Variété et Vélocité,
+C'est le Big Data, la nouvelle réalité.
+Passons à la culture data-driven dès maintenant,
+Pour créer de la valeur à travers le présent.
+
+[Outro]
+Vingt-sept milliards d'euros pour l'Open Data en Europe,
+La révolution des données est notre seule troupe.

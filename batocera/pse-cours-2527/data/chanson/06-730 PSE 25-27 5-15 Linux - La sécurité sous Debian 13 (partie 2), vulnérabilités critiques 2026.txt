@@ -1,0 +1,53 @@
+TITRE : Sécurité Debian Riddim
+
+[Intro]
+Écoute le son de la vigilance,
+Pour protéger ton système et ton existence.
+
+[Couplet 1]
+Au printemps deux mille vingt-six la vague est arrivée,
+Mille neuf cents CVE le noyau a enregistrées.
+L'IA a trouvé des bogues de dix-huit ans,
+Copy Fail par Theori est apparu en avril, c'est troublant.
+Le vingt-neuf avril deux mille vingt-six le score est de sept virgule huit,
+Le cache de pages est détourné pour faire un saut de nuit.
+L'algorithme authencesn écrit quatre octets en trop,
+Le binaire SUID perd ses droits, c'est le chaos.
+
+[Refrain]
+Défense en profondeur pour la sécurité,
+Moindre privilège et de la traçabilité.
+Défense en profondeur pour la sécurité,
+Réduis la surface pour la sérénité.
+
+[Couplet 2]
+La famille Dirty Frag arrive le sept mai,
+Hyunwoo Kim voit les erreurs de conception se multiplier.
+Januscape en juillet deux mille vingt-six sur x86,
+L'évasion KVM fait trembler tous les processeurs complexes.
+GhostLock et Bad Epoll sont des courses de concurrence,
+Comme Dirty Cow, ils demandent de la patience.
+Telnet reste une cible avec un score de neuf virgule huit,
+GNU InetUtils est vulnérable, ne reste pas dans l'ennui.
+
+[Refrain]
+Défense en profondeur pour la sécurité,
+Moindre privilège et de la traçabilité.
+Défense en profondeur pour la sécurité,
+Réduis la surface pour la sérénité.
+
+[Pont]
+DICP pour la preuve, l'intégrité et la confidentialité,
+La PSSI guide ta stratégie avec autorité.
+AppArmor et les capabilities pour bien cloisonner,
+Un processus continu pour ne jamais s'arrêter.
+
+[Refrain final]
+Défense en profondeur pour la sécurité,
+Moindre privilège et de la traçabilité.
+Défense en profondeur pour la sécurité,
+Réduis la surface pour la sérénité.
+
+[Outro]
+Fais tes sauvegardes et tes mises à jour,
+Pour que ton système reste toujours en sécurité.

@@ -1,0 +1,53 @@
+TITRE : Le Rythme du PSE Riddim
+
+[Intro]
+Écoute le son de l'IGPDE qui résonne,
+Pour le PSE, la préparation s'ordonne.
+
+[Couplet 1]
+Quatre heures de combat pour l'épreuve deux,
+Dix sur vingt pour réussir le jeu.
+Quinze à trente minutes pour bien analyser,
+Puis un heure quinze au brouillon pour préparer.
+Une heure trente pour organiser ses idées,
+Deux heures de rédaction pour tout détailler.
+Quinze dernières minutes pour bien relire,
+Et pour la réussite, ne pas s'en défaire.
+
+[Refrain]
+Système et métier, garde la structure,
+Introduction, développement, conclusion, c'est la mesure.
+Pas d'effet catalogue, reste technique et précis,
+Situe l'OS dans le SI, c'est ainsi.
+
+[Couplet 2]
+Évite les anglicismes et le jargon excessif,
+Développe tes sigles pour être plus décisif.
+Ne sois pas un utilisateur, reste un expert,
+Le plan doit être équilibré pour l'examinateur.
+En deux mille vingt, la migration est au menu,
+Vers des machines virtuelles, le sujet est connu.
+En deux mille quinze, les erreurs cinq cents et cinq cent quatre,
+Sont des problèmes HTTP qu'il faut traquer.
+
+[Refrain]
+Système et métier, garde la structure,
+Introduction, développement, conclusion, c'est la mesure.
+Pas d'effet catalogue, reste technique et précis,
+Situe l'OS dans le SI, c'est ainsi.
+
+[Pont]
+De la sécurité au Green IT, les enjeux sont là,
+Le Cloud et la virtualisation guident tes pas.
+NFS ou CIFS pour les droits de fichiers,
+SSH pour Linux, pour bien te connecter.
+
+[Refrain final]
+Système et métier, garde la structure,
+Introduction, développement, conclusion, c'est la mesure.
+Pas d'effet catalogue, reste technique et précis,
+Situe l'OS dans le SI, c'est ainsi.
+
+[Outro]
+Identifie ta direction et ton service,
+Pour le PSE, finis ton exercice.

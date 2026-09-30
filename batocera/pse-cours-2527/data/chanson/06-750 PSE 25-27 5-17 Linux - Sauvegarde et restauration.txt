@@ -1,0 +1,53 @@
+TITRE : Sauvegarde et Continuité Riddim
+
+[Intro]
+Écoute le rythme de la donnée qui circule
+Pour que ton système jamais ne bascule
+
+[Couplet 1]
+Avant de copier tes fichiers sur un disque
+Identifie les risques pour éviter le précipice
+Le RTO c'est le temps d'arrêt admissible
+Le RPO c'est la perte de données la plus possible
+Ne mélange pas les deux dans ta réflexion
+C'est la base de toute la stratégie de gestion
+Planifie tes tâches la nuit ou le week-end
+Pour ne pas perturber les utilisateurs de l'instant
+
+[Refrain]
+Sauvegarde complète ou bien incrémentale
+La restauration doit être toujours opérationnelle
+Teste tes données pour ne pas rester dans le noir
+Garde tes copies loin pour ne pas perdre l'espoir
+
+[Couplet 2]
+Avec tar tu archives en gardant les permissions
+Avec rsync tu synchronises par différences et précisions
+La commande dd clone les disques en bas niveau
+Mais attention à l'erreur qui cause un grand étau
+Utilise cron pour automatiser tes processus
+À deux heures du matin pour éviter le stress
+Vers le cloud S3 avec rclone ou l'AWS CLI
+Externalise tes données pour une meilleure vie
+
+[Refrain]
+Sauvegarde complète ou bien incrémentale
+La restauration doit être toujours opérationnelle
+Teste tes données pour ne pas rester dans le noir
+Garde tes copies loin pour ne pas perdre l'espoir
+
+[Pont]
+Bacula est modulaire avec son Director
+Veeam protège le virtuel et le cloud secteur
+LTO pour l'archivage de longue durée
+NAS ou SAN pour la mutualisation assurée
+
+[Refrain final]
+Sauvegarde complète ou bien incrémentale
+La restauration doit être toujours opérationnelle
+Teste tes données pour ne pas rester dans le noir
+Garde tes copies loin pour ne pas perdre l'espoir
+
+[Outro]
+Une sauvegarde non testée est inutile
+Reste vigilant pour un système agile

@@ -1,0 +1,53 @@
+TITRE : Kerberos Vibration Riddim
+
+[Intro]
+Écoute le rythme du Key Distribution Center,
+Pour sécuriser ton domaine, c'est le tiers de confiance.
+
+[Couplet 1]
+Dans l'Active Directory Domain Services c'est la loi,
+Depuis Windows deux mille Kerberos est le roi.
+Fini le NTLM et ses hachages MD4 ou MD5,
+Avec la version cinq, la sécurité est vive.
+Le client demande l'AS-REQ pour son identité,
+Le KDC répond par un AS-REP bien crypté.
+Il reçoit son TGT pour pouvoir avancer,
+Et l'authentification mutuelle peut commencer.
+
+[Refrain]
+Kerberos, tickets et cryptographie symétrique,
+Pour protéger ton réseau, c'est la méthode authentique.
+Du TGT au ticket de service, tout est sous contrôle,
+Dans l'environnement AD, il joue son plus grand rôle.
+
+[Couplet 2]
+Le TGS intervient pour le KRB_TGS_REQ,
+Il donne le ticket de service sans aucun défaut.
+L'utilisateur envoie le KRB_AP_REQ au serveur,
+L'autorité de sécurité locale crée le jeton de valeur.
+Mais attention aux attaques, reste bien vigilant,
+Le Kerberoasting veut casser le compte de service en attendant.
+Le Golden Ticket utilise la clé du compte krbtgt,
+Et le Silver Ticket falsifie le service pour un effet.
+
+[Refrain]
+Kerberos, tickets et cryptographie symétrique,
+Pour protéger ton réseau, c'est la méthode authentique.
+Du TGT au ticket de service, tout est sous contrôle,
+Dans l'environnement AD, il joue son plus grand rôle.
+
+[Pont]
+Vérifie tes SPN avec la commande setspn,
+Si l'horloge est décalée, le KRB_AP_ERR_MODIFIED vient.
+Utilise AES deux cent cinquante-six pour plus de force,
+Et réinitialise le krbtgt pour éviter l'écorce.
+
+[Refrain final]
+Kerberos, tickets et cryptographie symétrique,
+Pour protéger ton réseau, c'est la méthode authentique.
+Du TGT au ticket de service, tout est sous contrôle,
+Dans l'environnement AD, il joue son plus grand rôle.
+
+[Outro]
+klist pour voir tes tickets dans le cache,
+La sécurité Kerberos, c'est la seule vraie tâche.
