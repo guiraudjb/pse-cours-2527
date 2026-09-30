@@ -1,0 +1,299 @@
+SYNTHÈSE COMPLÈTE DE LA SÉCURITÉ SUR DEBIAN treize.
+
+LEXIQUE COMPLET.
+
+      L'acronyme DICP désigne les critères de disponibilité, intégrité, confidentialité et preuve qui servent de grille de lecture à toute analyse de risque.
+
+      Le sigle RGPD désigne le règlement relatif à la protection des données à caractère personnel qui impose des obligations de conformité.
+
+      L'ANSSI désigne l'Agence nationale de la sécurité des systèmes d'information qui est l'organisme compétent pour la réglementation de la cryptographie en France.
+
+      Le terme PSSI désigne la politique de sécurité des systèmes d'information qui formalise les objectifs, les règles et les responsabilités d'une organisation.
+
+      L'acronyme AAA désigne les principes d'authentification, d'autorisation et de comptabilité utilisés par le protocole RADIUS.
+
+      Le sigle CVE désigne les vulnérabilités connues qui sont répertoriées pour permettre le maintien à jour des logiciels.
+
+      Le terme Orange Book désigne le Trusted Computer System Evaluation Criteria qui est un premier référentiel structuré d'évaluation de la sécurité informatique publié en mille neuf cent quatre-vingt-trois.
+
+      L'acronyme MAC désigne le contrôle d'accès obligatoire qui permet d'imposer une politique de sécurité indépendamment de la volonté du propriétaire d'un fichier.
+
+      Le sigle SUID désigne un bit spécial du modèle Unix qui permet à un binaire de s'exécuter avec les droits de son propriétaire.
+
+      Le terme EBIOS RM désigne la méthode d'analyse de risque structurée en ateliers successifs qui est utilisée en France.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET ENJEUX DE LA SÉCURITÉ.
+
+   A. Critères DICP et vocabulaire de référence.
+
+      La sécurité des systèmes d'information s'articule autour de quatre critères majeurs désignés par l'acronyme DICP. Ces piliers servent de grille de lecture pour toute analyse de risque structurée.
+
+      La disponibilité garantit que le système et les données restent accessibles aux utilisateurs autorisés, luttant ainsi contre les dénis de service ou les pannes matérielles.
+
+      L'intégrité assure que les données et les programmes ne subissent aucune altération non autorisée ou accidentelle, comme une corruption de base de données.
+
+      La confidentialité limite l'accès aux seules personnes autorisées pour éviter les fuites de données ou les élévations de privilèges.
+
+      La preuve ou traçabilité permet d'attribuer chaque action à un responsable de manière horodatée et non répudiable.
+
+      Il est crucial de distinguer la vulnérabilité, qui est une faiblesse du système, de la menace, qui est l'événement susceptible d'exploiter cette faille.
+
+      Le risque représente la combinaison d'une menace exploitant une vulnérabilité, pondérée par sa probabilité et la gravité de son impact sur les enjeux DICP.
+
+   B. Les différents aspects de la sécurité.
+
+      La sécurisation d'un environnement Linux ne se limite pas aux seules mesures techniques mais nécessite une approche multidimensionnelle.
+
+      L'aspect organisationnel définit les responsabilités et les procédures comme la gestion des incidents ou des changements via une politique formalisée.
+
+      L'aspect technique concerne le durcissement du système d'exploitation, du réseau et des applications pour protéger le cœur du système.
+
+      L'aspect humain traite de la sensibilisation des utilisateurs et des administrateurs pour contrer l'ingénierie sociale, vecteur d'intrusion majeur.
+
+      L'aspect physique assure le contrôle d'accès aux locaux et la protection des équipements contre le vol, l'incendie ou les coupures électriques.
+
+      L'aspect juridique et réglementaire garantit la conformité au RGPD et respecte les obligations sectorielles ou la réglementation sur la cryptographie.
+
+   C. Principes directeurs et analyse de risque.
+
+      Trois principes directeurs classiques guident les choix techniques pour assurer la robustesse et la maintenabilité des systèmes.
+
+      La réduction de la surface d'attaque consiste à n'installer et n'activer que le strict nécessaire pour limiter les opportunités offertes à un attaquant.
+
+      Le principe du moindre privilège impose qu'un utilisateur ou un processus ne dispose que des droits strictement nécessaires à sa fonction.
+
+      La défense en profondeur repose sur la superposition de plusieurs lignes de défense indépendantes pour éviter une compromission totale en cas de défaillance.
+
+      L'analyse de risque peut s'appuyer sur des méthodes comme EBIOS RM ou la norme ISO vingt-sept mille cinq pour structurer la démarche de protection.
+
+      Le travail de l'administrateur consiste à réduire les vulnérabilités, limiter l'impact des compromissions par le cloisonnement et détecter les exploitations via la journalisation.
+
+II. SECTEURS DE LA SÉCURITÉ ET ACTEURS.
+
+   A. Sécurité physique, système et réseau.
+
+      La sécurité physique assure la protection des équipements par le contrôle d'accès aux locaux, la vidéosurveillance et la détection incendie. Elle est indispensable car un accès direct à la machine peut contourner tout durcissement logiciel.
+
+      La sécurité du système d'exploitation constitue le socle de la protection via la gestion des comptes, le partitionnement et le durcissement du noyau. L'administrateur systèmes utilise des outils comme PAM ou les mises à jour pour maintenir ce socle.
+
+      La sécurité réseau englobe le filtrage par pare-feu, la segmentation comme les VLAN ou DMZ, et le chiffrement des flux. L'administrateur réseau déploie des solutions telles que nftables ou le protocole RADIUS pour sécuriser les accès.
+
+      Le durcissement réseau peut également passer par l'ajustement des paramètres du noyau via sysctl pour limiter les risques d'IP spoofing. Des outils comme fail2ban complètent cette protection en bannissant les adresses IP lors de tentatives de bruteforce.
+
+   B. Sécurité applicative et des données.
+
+      La sécurité applicative vise les logiciels et services exposés en validant les entrées utilisateur et en isolant les processus. Le développeur ou le DevOps utilise des mécanismes comme chroot, les capabilities ou AppArmor pour limiter l'impact d'une faille.
+
+      La sécurité des données concerne la protection de l'information par le chiffrement au repos et en transit ainsi que par les sauvegardes. L'administrateur ou le RSSI doit garantir la disponibilité et l'intégrité des données stockées.
+
+      Pour les sauvegardes, la règle trois-deux-un préconise de conserver trois copies des données sur deux supports différents dont un copie externalisée. Une version plus récente est la règle trois-deux-un-un-zéro qui ajoute une copie immuable et hors ligne.
+
+      Le cloisonnement applicatif peut être renforcé par l'usage de chroot pour restreindre l'arborescence visible par un processus. Cependant, ce mécanisme ne garantit pas une isolation complète des processus ou du réseau.
+
+   C. Sécurité organisationnelle, humaine et juridique.
+
+      L'aspect organisationnel définit les responsabilités et les procédures comme la gestion des incidents ou des changements. Le RSSI et la direction s'appuient sur une politique de sécurité formalisée pour structurer la défense.
+
+      L'aspect humain traite de la sensibilisation des utilisateurs et de la gestion des habilitations pour contrer l'ingénierie sociale. Une charte informatique est un outil essentiel pour encadrer les comportements au sein de l'organisation.
+
+      La sécurité juridique et réglementaire assure la conformité au RGPD et aux obligations sectorielles. Le DPO ou le service juridique veillent au respect de la conservation légale des journaux de connexion.
+
+      En France, l'usage de la cryptologie est encadré par le Code de la défense et relève de la compétence de l'ANSSI. L'utilisation de moyens cryptographiques pour la confidentialité est libre depuis la loi LCEN de deux mille quatre.
+
+III. MESURES DE PROTECTION DU SYSTÈME ET DES DONNÉES.
+
+   A. Stratégies de sauvegarde et règle trois-deux-un.
+
+      La sauvegarde garantit la disponibilité et l'intégrité des données en permettant un retour à un état connu après une panne, une erreur humaine ou un rançongiciel.
+
+      Il existe trois types de sauvegardes : la complète qui copie l'intégralité des données, l'incrémentale qui ne copie que les modifications depuis la dernière sauvegarde, et la différentielle qui copie les modifications depuis la dernière complète.
+
+      La règle trois-deux-un préconise de conserver trois copies des données sur deux supports différents, dont un copie externalisée hors site.
+
+      Une version plus récente nommée règle trois-deux-un-un-zéro ajoute une copie hors ligne immuable et exige zéro erreur de restauration constatée lors des tests.
+
+      Sur Debian treize, les outils de référence incluent tar et rsync pour des usages simples, ainsi que borgbackup ou restic pour la déduplication et le chiffrement.
+
+   B. Partitionnement et durcissement du stockage.
+
+      Le découpage du stockage en partitions distinctes permet d'appliquer des options de montage restrictives et d'éviter qu'un remplissage disque ne bloque tout le système.
+
+      Il est recommandé de séparer les répertoires critiques comme /boot, /tmp, /var, /var/log et /home avec des options de montage telles que nosuid, nodev ou noexec.
+
+      L'usage de LVM est préconisé en environnement de production pour sa souplesse de redimensionnement des volumes logiques.
+
+      L'option noexec sur /tmp renforce la sécurité mais peut nécessiter une validation préalable car elle peut bloquer certains installeurs ou scripts.
+
+      Le durcissement peut aussi passer par les attributs étendus du système de fichiers comme l'immuabilité avec chattr +i ou l'ajout seul avec chattr +a.
+
+   C. Gestion des mises à jour et des vulnérabilités.
+
+      Le maintien à jour des paquets est la mesure corrective directe contre les vulnérabilités connues nommées CVE.
+
+      Debian publie des avis de sécurité officiels appelés DSA et maintient un dépôt security dédié pour la distribution Trixie.
+
+      Le paquet unattended-upgrades permet d'automatiser l'application des correctifs de sécurité sans intervention manuelle.
+
+      L'outil debsecan permet de comparer les paquets installés à la base des vulnérabilités connues pour signaler les CVE applicables.
+
+      Une politique de mise à jour efficace doit distinguer les correctifs de sécurité, à appliquer idéalement sous trente jours pour les vulnérabilités critiques, des montées de version fonctionnelles.
+
+IV. CONTRÔLE DES ACCÈS ET AUTHENTIFICATION.
+
+   A. Infrastructure PAM et utilisation de sudo.
+
+      PAM est l'infrastructure standard d'authentification des systèmes Linux qui découple les applications des mécanismes d'authentification effectifs. Elle délègue ces derniers à des modules empilables et configurables dans le répertoire /etc/pam.d/.
+
+      Chaque configuration utilise des types de gestion comme auth, account, password ou session. Les contrôles associés peuvent être de type required, requisite, sufficient ou optional pour définir la manière dont la pile est évaluée.
+
+      Le module pam_faillock.so permet de verrouiller un compte après un certain nombre d'échecs répétés. Sous Debian treize, on peut configurer un verrouillage avec deny=cinq et un unlock_time=neuf cents.
+
+      L'outil sudo s'appuie sur PAM pour appliquer le principe de moindre privilège lors des tâches d'administration. Il permet d'accorder des droits élevés de façon ciblée et journalisée à des comptes nominatifs.
+
+      La configuration de sudo doit être réalisée via la commande visudo pour garantir la validité de la syntaxe. On peut ainsi autoriser un groupe d'administrateurs ou permettre l'exécution d'une commande précise sans mot de passe.
+
+   B. Politique des mots de passe et clés SSH.
+
+      Les empreintes des mots de passe sont stockées dans le fichier /etc/shadow avec l'algorithme de hachage SHA-cinq cent douze. Ce mécanisme utilise un sel aléatoire pour empêcher la comparaison directe d'empreintes identiques.
+
+      Le paquet libpam-pwquality permet d'imposer des règles de robustesse comme une longueur minimale de douze caractères. On peut également définir des contraintes sur les classes de caractères et la durée de vie des comptes.
+
+      La politique de durée de vie peut être gérée via /etc/login.defs ou la commande chage pour les comptes existants. Par exemple, on peut fixer un maximum de quatre-vingt-dix jours pour le changement de mot de passe.
+
+      L'authentification par clés SSH constitue une alternative classique et robuste au mot de passe pour les accès distants. L'utilisation de la paire de clés asymétriques de type ed25519 est recommandée pour ses performances.
+
+      La clé privée doit impérativement être protégée par une phrase de passe pour éviter toute compromission. La clé publique est quant à elle déployée sur le serveur cible dans le fichier authorized_keys.
+
+   C. Serveur RADIUS et principe AAA.
+
+      Le protocole RADIUS est un standard utilisé pour l'authentification, l'autorisation et la traçabilité centralisées. Il repose sur le principe AAA qui définit ces trois fonctions essentielles.
+
+      L'étape d'authentication vérifie l'identité de l'utilisateur par des moyens comme le mot de passe ou un certificat. L'étape d'authorization détermine les droits et les profils d'accès accordés après la vérification.
+
+      La composante accounting assure la journalisation de l'usage comme la durée de connexion ou le volume de données. Cela permet de répondre aux besoins d'audit ou de facturation.
+
+      FreeRADIUS est l'implémentation de référence sur Debian treize pour mettre en place ce service. Il est utilisé pour centraliser les accès au Wi-Fi d'entreprise ou aux connexions VPN.
+
+      La sécurité de l'installation repose sur le secret partagé entre le client RADIUS et le serveur. Ce secret doit être robuste et unique par équipement pour éviter la falsification des requêtes.
+
+V. SÉCURITÉ RÉSEAU ET PROTECTION DES FLUX.
+
+   A. Filtrage avec nftables et fail2ban.
+
+      Depuis Debian dix, le framework de filtrage par défaut est nftables, qui remplace iptables. Il est la référence pour tout nouveau déploiement sur Debian treize.
+
+      Le pare-feu peut être configuré avec un jeu de règles minimal qui rejette par défaut tout flux entrant. Il permet d'autoriser spécifiquement le trafic SSH, le HTTP ou le HTTPS.
+
+      L'outil fail2ban complète le filtrage statique en surveillant les journaux des services comme SSH. Il détecte les tentatives d'authentification échouées pour bannir les adresses IP malveillantes.
+
+      L'action de bannissement de fail2ban s'effectue dynamiquement via le mécanisme nftables. Cela offre une protection efficace contre les attaques par force brute.
+
+   B. Segmentation et chiffrement des communications.
+
+      La segmentation réseau utilise des outils comme les VLAN ou les zones démilitarisées pour limiter la propagation latérale d'une compromission. Un serveur en DMZ ne doit jamais avoir d'accès direct non filtré vers le réseau interne.
+
+      Le chiffrement des flux est un pilier essentiel pour protéger les communications. Il est impératif de proscrire les protocoles en clair comme Telnet, FTP ou HTTP.
+
+      Les administrateurs doivent privilégier leurs équivalents chiffrés tels que SSH, SFTP, HTTPS ou SNMPv3. L'accès administratif distant doit exclusivement transiter par SSH.
+
+      Pour renforcer la sécurité, l'authentification par clé est préférable au mot de passe seul. Il est également recommandé de désactiver la connexion directe de root sur le service SSH.
+
+   C. Durcissement des paramètres noyau sysctl.
+
+      Le noyau Linux expose de nombreux paramètres réseau ajustables via sysctl pour améliorer la sécurité. Ces réglages complètent le filtrage par pare-feu sans s'y substituer.
+
+      Le durcissement permet notamment de désactiver le routage IP si la machine n'est pas un routeur. On peut aussi ignorer les redirections ICMP pour se protéger contre le détournement de route.
+
+      La configuration peut inclure la protection contre l'IP spoofing en désactivant le source routing. L'activation des SYN cookies est également préconisée pour résister aux inondations SYN.
+
+      Enfin, il est possible de journaliser les paquets aux adresses source invraisemblables appelées martians. L'application immédiate de ces paramètres se fait avec la commande sysctl --system.
+
+VI. TRAÇABILITÉ ET MÉCANISMES DE CLOISONNEMENT.
+
+   A. Journalisation avec journald et auditd.
+
+      La journalisation constitue le socle de la traçabilité et l'outil principal pour la détection et l'investigation lors d'un incident. Sous Debian treize, le système systemd centralise la collecte des données via le mécanisme journald.
+
+      Il est possible de consulter les journaux d'un service spécifique comme SSH depuis le dernier démarrage avec la commande journalctl. Pour assurer la persistance des journaux entre les redémarrages, il faut créer le répertoire /var/log/journal.
+
+      Le sous-système auditd permet une traçabilité beaucoup plus fine en s'appuyant sur l'audit du noyau Linux. Il permet de définir des règles précises pour surveiller des événements comme l'accès à des fichiers sensibles ou les appels système.
+
+      Une règle peut être configurée pour surveiller toute modification du fichier des mots de passe avec la commande auditctl. Les événements associés à une règle spécifique peuvent ensuite être recherchés à l'aide de la commande ausearch.
+
+   B. Comptabilité système et historique des connexions.
+
+      La comptabilité système ou process accounting est distincte de la journalisation applicative car elle trace l'exécution de chaque commande au niveau du noyau. Elle enregistre l'utilisateur ayant lancé la commande, sa durée et les ressources consommées.
+
+      Sur Debian treize, l'installation du paquet acct permet d'activer ce mécanisme. La commande lastcomm permet de consulter l'historique des commandes exécutées par tous les utilisateurs du système.
+
+      La traçabilité des connexions est une pratique courante en exploitation qui repose sur des commandes dédiées. La commande last permet de consulter l'historique des connexions à partir du fichier /var/log/wtmp.
+
+      Pour identifier les tentatives de connexion qui ont échoué, on utilise la commande lastb qui lit le fichier /var/log/btmp. Enfin, la commande lastlog permet de connaître la date de la dernière connexion pour chaque utilisateur.
+
+   C. Mécanisme chroot et ses limites.
+
+      Le mécanisme chroot modifie la racine apparente du système de fichiers pour un processus donné. Le processus et ses descendants ne voient alors plus qu'une arborescence restreinte sans accès direct au reste du système.
+
+      Ce dispositif est utilisé pour isoler des services réseau comme un serveur DNS ou un serveur FTP. Il est également employé pour proposer des accès SFTP restreints où l'utilisateur est cantonné à son répertoire personnel.
+
+      La mise en œuvre peut se faire en créant un environnement Debian minimal avec l'outil debootstrap. Une fois l'environnement préparé, la commande chroot permet d'entrer dans cette nouvelle racine.
+
+      Cependant, chroot ne constitue pas une véritable isolation de sécurité car il ne cloisonne ni les processus, ni le réseau, ni les utilisateurs. Un processus disposant des privilèges root à l'intérieur du chroot peut parfois en sortir.
+
+      Pour obtenir un cloisonnement robuste, il est préférable d'utiliser les mécanismes modernes de conteneurisation comme les namespaces ou les cgroups. Le chroot doit être utilisé avec prudence et ne doit jamais servir de sandbox face à un utilisateur root.
+
+VII. GESTION AVANCÉE DES DROITS ET GOUVERNANCE.
+
+   A. Droits étendus, ACL et capabilities.
+
+      Le modèle Unix classique repose sur des bits spéciaux comme le SUID qui permet à un binaire de s'exécuter avec les droits de son propriétaire. Le SGID permet l'héritage du groupe pour les nouveaux fichiers et le sticky bit protège la suppression des fichiers dans un répertoire.
+
+      Les listes de contrôle d'accès ou ACL POSIX permettent d'attribuer des droits à plusieurs utilisateurs ou groupes distincts sur un même fichier. On utilise la commande setfacl pour définir des accès spécifiques ou des droits par défaut hérités.
+
+      Les attributs étendus du système de fichiers comme l'immuabilité ou l'ajout seul sont gérés par les commandes chattr et lsattr. Un fichier rendu immuable ne peut être ni modifié ni supprimé même par l'utilisateur root.
+
+      Les capabilities Linux constituent une alternative plus fine au bit SUID root en accordant des privilèges précis et limités. Cela permet par exemple à un service d'ouvrir un port privilégié inférieur à mille vingt-quatre sans disposer de l'intégralité des droits root.
+
+   B. Contrôle d'accès obligatoire avec AppArmor.
+
+      AppArmor est un mécanisme de contrôle d'accès obligatoire intégré par défaut dans Debian depuis la version dix. Il associe des profils de sécurité à des chemins de binaires pour définir les fichiers et les capacités accessibles.
+
+      Ce système de confinement s'applique indépendamment des droits de l'utilisateur qui exécute le programme. Il permet de restreindre précisément les interfaces réseau et les fichiers qu'un processus peut manipuler.
+
+      L'administrateur peut utiliser la commande aa-status pour consulter les profils chargés sur le système. La commande aa-enforce permet de passer un profil en mode strict pour appliquer les restrictions de manière effective.
+
+   C. Politique de sécurité PSSI et référentiels historiques.
+
+      La politique de sécurité des systèmes d'information ou PSSI formalise les objectifs et les responsabilités d'une organisation. Elle sert de lien indispensable entre les enjeux de sécurité et les mesures techniques déployées.
+
+      L'élaboration d'une telle politique peut s'appuyer sur la méthode EBIOS Risk Manager de l'ANSSI. Cette démarche permet de structurer l'analyse des risques et de prioriser les plans d'action.
+
+      L'Orange Book est un référentiel historique publié en mille neuf cent quatre-vingt-trois par le département de la Défense des États-Unis. Il a introduit des concepts fondamentaux comme le contrôle d'accès obligatoire dès la classe B1.
+
+      Ce document a posé les bases du vocabulaire de sécurité utilisé dans les normes actuelles. Il a notamment ouvert la voie aux Critères Communs qui sont aujourd'hui la norme internationale de certification.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la vulnérabilité qui est une faiblesse avec la menace qui est l'événement susceptible de l'exploiter. Le risque est le résultat de la combinaison de ces deux notions pondérée par la gravité de l'impact.
+
+      La sécurité technique est nécessaire mais elle n'est jamais suffisante car elle doit être complétée par les aspects organisationnels, humains, physiques et juridiques. Un système durci peut rester vulnérable si les procédures de gestion ou la sensibilisation font défaut.
+
+      Le mécanisme chroot permet d'isoler une arborescence de fichiers mais il ne constitue pas une véritable sandbox de sécurité. Un processus disposant des privilèges root à l'intérieur du chroot peut potentiellement en sortir.
+
+      L'usage des capabilities est une alternative plus fine au bit SUID root car il permet d'accorder un privilège précis au lieu de donner l'intégralité des droits du propriétaire. Cela respecte mieux le principe du moindre privilège.
+
+      Une sauvegarde n'a de valeur réelle que si sa restauration est régulièrement testée et documentée. La règle trois-deux-un-un-zéro recommande d'ajouter une copie hors ligne et immuable pour renforcer la protection contre les rançongiciels.
+
+EXEMPLES CITÉS.
+
+      La règle trois-deux-un impose de conserver trois copies des données sur deux supports différents dont un copie externalisée hors site.
+
+      L'algorithme de hachage par défaut sur Debian pour les mots de passe est le SHA-cinq cent douze ce qui est identifiable par le préfixe $six$ dans le fichier /etc/shadow.
+
+      Pour la protection du réseau, l'administrateur peut utiliser nftables pour le filtrage et fail2ban pour bannir dynamiquement les adresses IP après des tentatives d'authentification échouées.
+
+      Le cadre juridique français sur la cryptologie est régi par le Code de la défense notamment les articles L. deux mille trois cent vingt et un-un et suivants.
+
+      L'Orange Book définit plusieurs classes de sécurité allant de la classe D pour une protection minimale jusqu'à la classe A1 pour une conception vérifiée.

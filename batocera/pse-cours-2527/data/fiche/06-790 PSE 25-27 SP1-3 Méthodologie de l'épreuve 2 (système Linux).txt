@@ -1,0 +1,227 @@
+GUIDE MÉTHODOLOGIQUE POUR LA PRÉPARATION DE L'ÉPREUVE SYSTÈME DU PSE-TRAD.
+
+LEXIQUE COMPLET.
+
+      Le PSE désigne la qualification professionnelle dont l'épreuve système permet de vérifier les aptitudes aux fonctions de métier.
+
+      L'IGPDE désigne l'Institut de la Gestion publique et du Développement économique qui propose la préparation à l'examen.
+
+      L'épreuve deux désigne l'épreuve écrite dite système qui dure quatre heures et nécessite une note de dix/vingt pour la réussite.
+
+      Le SI désigne le système d'information dont l'architecture globale doit être prise en compte pour situer l'OS dans son environnement.
+
+      L'OS désigne le système d'exploitation qui doit être situé dans son environnement global lors de la rédaction de la copie.
+
+      Le SAU désigne le service qui peut signaler des anomalies via un serveur de supervision comme Nagios.
+
+      Le SSH désigne un mode de connexion en console utilisé pour accéder aux serveurs Linux.
+
+      Le NFS désigne un protocole dont les droits d'accès ont des conséquences sur la sécurité des fichiers.
+
+      Le CIFS désigne un protocole lié aux droits d'accès des fichiers en complément du protocole NFS.
+
+      Le HTTP désigne un protocole dont les erreurs cinq cents et cinq cent quatre peuvent signaler des difficultés de fonctionnement applicatif.
+
+COURS DÉTAILLÉ.
+
+I. COMPRÉHENSION DE L'ÉPREUVE SYSTÈME.
+
+   A. Nature et objectifs de l'épreuve métier.
+
+      L'épreuve écrite n°deux est qualifiée d'épreuve dite système.
+
+      Elle constitue une épreuve cœur de métier pour l'examen PSE-Trad.
+
+      L'objectif principal est la vérification des connaissances sur le système choisi.
+
+      Le jury cherche à vérifier les aptitudes aux fonctions de PSE.
+
+      L'épreuve dure quatre heures et la réussite est fixée à dix/vingt.
+
+   B. Attentes du jury et format de la copie.
+
+      Le jury attend une copie rédigée qui expose une solution au problème posé par le sujet.
+
+      La production doit respecter une structure comprenant une introduction, un développement structuré et une conclusion.
+
+      Il est nécessaire d'apporter un soin particulier à la présentation et à la rédaction.
+
+      Le niveau de technicité et de détail doit être adapté à la qualification PSE.
+
+      La copie doit être lisible et capable de convaincre l'examinateur par une syntaxe et une orthographe soignées.
+
+   C. Domaines de connaissances techniques requis.
+
+      Le candidat doit maîtriser l'architecture et le fonctionnement interne du système.
+
+      Il est nécessaire de connaître les commandes, les fichiers et les outils.
+
+      Les aspects liés à l'administration métier PSE sont indispensables.
+
+      Les thèmes transversaux comme la sécurité, les performances et la qualité de service doivent être abordés.
+
+      L'architecture globale du SI est requise pour situer l'OS dans son environnement.
+
+      Le candidat doit toujours respecter le cadre défini par le sujet.
+
+II. MÉTHODOLOGIE DE TRAVAIL ET GESTION DU TEMPS.
+
+   A. Répartition du temps durant l'examen.
+
+      L'épreuve dure au total quatre heures et nécessite une gestion rigoureuse du temps pour réussir.
+
+      La première étape consiste à analyser le sujet et à réfléchir pendant une durée de quinze à trente min.
+
+      Le travail au brouillon doit occuper entre un h quinze et un h trente de la session.
+
+      La phase de rédaction de la copie doit durer environ deux heures.
+
+      Il est indispensable de conserver les quinze dernières minutes pour relire et corriger le travail.
+
+   B. Travail préparatoire au brouillon.
+
+      La préparation de la réponse au sujet demande un investissement d'environ un h quarante-cinq.
+
+      Il faut d'abord analyser l'énoncé du sujet afin de déterminer précisément le périmètre de la réponse.
+
+      L'étape suivante consiste à chercher les idées les plus pertinentes pour répondre à la problématique.
+
+      Pendant cette phase au brouillon, il est nécessaire de sélectionner et d'organiser les idées.
+
+      Il faut également préparer l'introduction ainsi que la conclusion de la copie.
+
+   C. Élaboration d'un plan structuré et équilibré.
+
+      Le candidat doit privilégier le plan le plus simple, lequel est parfois dicté par l'énoncé lui-même.
+
+      La conception du plan doit impérativement viser un équilibre entre les différentes parties.
+
+      Le développement doit permettre d'exposer toutes les idées indispensables au sujet.
+
+      La structure doit être clairement mise en évidence dans la copie pour faciliter la lecture.
+
+      Le plan doit servir de base à un discours structuré utilisant des transitions et des mots de liaison.
+
+III. RÉDACTION ET PRÉSENTATION DE LA COPIE.
+
+   A. Structure de la réponse et rédaction.
+
+      La copie doit impérativement comporter une introduction, un développement structuré et une conclusion.
+
+      Il est nécessaire de proposer une solution concrète au problème posé par le sujet de l'épreuve.
+
+      Le candidat doit concevoir un plan équilibré qui expose les idées indispensables à la réponse.
+
+      Il est conseillé de privilégier le plan le plus simple, lequel est parfois dicté par l'énoncé lui-même.
+
+   B. Qualité de la présentation et des schémas.
+
+      La présentation doit être soignée avec une écriture propre et une copie aérée pour faciliter la lecture.
+
+      Le candidat doit mettre en évidence le plan utilisé afin de structurer visuellement son argumentation.
+
+      Il convient de faire un bon usage des schémas pour appuyer le propos technique.
+
+      L'utilisation de schémas ne doit pas être une simple introduction de l'élément pour lui-même.
+
+   C. Style rédactionnel et clarté du discours.
+
+      Le candidat doit soigner la syntaxe et l'orthographe en optant pour un style simple mais clair.
+
+      Le discours doit être structuré par l'emploi de mots de liaison et de transitions.
+
+      Il faut éviter l'accumulation de jargon, d'anglicismes ou de sigles qui ne sont pas développés.
+
+      L'objectif est d'assurer la lisibilité de la copie pour convaincre l'examinateur.
+
+      Il est impératif de ne pas adopter une approche de type utilisateur dans la rédaction.
+
+IV. ERREURS CRITIQUES À ÉVITER.
+
+   A. Erreurs de posture et de contenu.
+
+      Il est impératif de ne pas présenter une approche de type utilisateur lors de la rédaction de la copie.
+
+      Le candidat doit éviter l'effet catalogue qui consiste à lister des éléments sans analyse.
+
+      La réponse doit démontrer un niveau de technicité et de détail adapté à la qualification PSE.
+
+      Le contenu doit impérativement respecter le cadre défini par le sujet posé.
+
+   B. Problèmes de forme et de terminologie.
+
+      L'usage excessif du jargon est une erreur qu'il faut absolument éviter.
+
+      Il ne faut pas accumuler des sigles sans les avoir préalablement développés.
+
+      L'utilisation d'anglicismes non justifiés doit être proscrite dans la rédaction.
+
+      Le schéma ne doit pas être introduit pour lui-même sans apporter de valeur ajoutée.
+
+   C. Oublis administratifs et erreurs de contexte.
+
+      Le candidat ne doit pas oublier l'identification de sa direction.
+
+      L'identification de son service est également un élément obligatoire à ne pas omettre.
+
+V. ANALYSE DES TYPES DE SUJETS ET EXEMPLES.
+
+   A. Typologie des sujets possibles.
+
+      L'examen propose quatre formats distincts de sujets pour évaluer les compétences.
+
+      Le premier format est la question de cours ouverte qui permet de vérifier la maîtrise théorique.
+
+      Il existe également la question de cours plus ciblée pour un domaine précis.
+
+      La mise en situation place le candidat dans un contexte professionnel concret.
+
+      Enfin, la résolution de problème demande de trouver une solution technique à un incident.
+
+   B. Étude des annales et cas pratiques.
+
+      Les annales de deux mille vingt portent sur la migration de serveurs LINUX vers des machines virtuelles.
+
+      Le sujet de deux mille dix-sept traite de la sécurité des fichiers et des droits d'accès lors d'une migration sous Linux.
+
+      L'épreuve de deux mille quinze demande de diagnostiquer des problèmes de ressources systèmes et réseaux suite à des travaux de modernisation.
+
+      En deux mille neuf, le candidat doit proposer une architecture sécurisée pour l'administration et la supervision de serveurs Linux.
+
+      Le sujet de deux mille sept concerne la mise en réseau de cinquante PC avec des besoins de partage, de quotas et de sauvegarde.
+
+      Les archives de deux mille treize et deux mille onze abordent respectivement le démarrage de serveur et le partage de fichiers sous Linux.
+
+   C. Thématiques d'actualité et enjeux technologiques.
+
+      Les sujets récents s'orientent vers les problématiques de réseau et de haute disponibilité.
+
+      Le Cloud et la virtualisation ainsi que la containérisation sont des thèmes majeurs.
+
+      La sécurité demeure un axe central des réflexions techniques attendues.
+
+      Le Green IT constitue également un enjeu technologique actuel pour les systèmes.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas adopter une approche utilisateur mais de rester sur un niveau de technicité adapté à la qualification PSE.
+
+      L'effet catalogue et l'accumulation de sigles non développés ou d'anglicismes constituent des erreurs majeures à éviter.
+
+      Le candidat doit éviter d'introduire un schéma pour lui-même et doit toujours respecter le cadre spécifique du sujet posé.
+
+      Une confusion fréquente consiste à oublier de situer l'OS dans son environnement global au sein de l'architecture du SI.
+
+      La rédaction doit privilégier un style simple et clair tout en structurant le discours avec des mots de liaison et des transitions.
+
+EXEMPLES CITÉS.
+
+      L'épreuve dure quatre heures et la réussite est fixée à dix/vingt.
+
+      Le temps recommandé pour l'analyse du sujet est de quinze à trente min, tandis que la rédaction doit occuper deux heures.
+
+      L'annale de deux mille vingt porte sur la migration de serveurs LINUX vers des machines virtuelles avec une base CentOS, Apache httpd, Postgres et Tomcat.
+
+      L'annale de deux mille quinze demande d'investiguer des erreurs HTTP cinq cent quatre et cinq cents en utilisant des commandes de diagnostic sur des serveurs Linux.
+
+      L'annale de deux mille sept propose de mettre en réseau cinquante PC avec des problématiques de quotas de disque et de sauvegarde automatisée.

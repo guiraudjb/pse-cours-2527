@@ -1,0 +1,291 @@
+GUIDE COMPLET D'ADMINISTRATION ET D'OPTIMISATION DE WINDOWS SERVER.
+
+LEXIQUE COMPLET.
+
+      AD DS désigne Active Directory Domain Services, le service qui stocke les informations sur les objets du réseau pour les rendre accessibles aux utilisateurs et administrateurs autorisés.
+
+      DNS désigne le Domain Name System, un service qui traduit les noms en adresses IP et permet l'accès aux ressources réseau.
+
+      DHCP désigne le Dynamic Host Configuration Protocol, un service qui attribue automatiquement les paramètres IP aux clients.
+
+      MMC désigne Microsoft Management Console, un outil permettant d'utiliser des consoles spécialisées comme la gestion du DNS ou du DHCP via des snap-ins.
+
+      GPO désigne les Group Policy Objects, qui permettent d'appliquer des paramètres cohérents comme l'audit ou le pare-feu sur les systèmes.
+
+      NTFS désigne le New Technology File System, un système de fichiers généraliste utilisé pour le contrôle fin des permissions via des ACL.
+
+      ReFS désigne le Resilient File System, un système de fichiers orienté vers la résilience et certains scénarios de stockage modernes.
+
+      SMB désigne le Server Message Block, un protocole utilisé pour exposer des dossiers sur le réseau via des partages.
+
+      VSS désigne le Volume Shadow Copy Service, un service qui coordonne une sauvegarde cohérente à un instant donné.
+
+      FSRM désigne le File Server Resource Manager, un outil permettant de gérer les quotas, le filtrage de fichiers et les rapports sur les serveurs de fichiers.
+
+      SNMP désigne le Simple Network Management Protocol, un protocole utilisé pour la supervision par agents via des MIB, des OID et des traps.
+
+      WMI désigne le Windows Management Instrumentation, une infrastructure Windows permettant d'exposer des informations de gestion via des classes et des fournisseurs.
+
+COURS DÉTAILLÉ.
+
+I. OUTILS D'ADMINISTRATION ET DE GESTION DU SYSTÈME.
+
+   A. Interfaces graphiques et Windows Admin Center.
+
+      Windows Server peut être administré localement ou à distance via diverses interfaces graphiques qui restent essentielles pour la vérification et l'exploitation courante des rôles d'infrastructure.
+
+      Windows Admin Center constitue l'interface moderne accessible via un navigateur pour la gestion des serveurs, du stockage, des rôles, des certificats, des journaux et du pare-feu.
+
+      Le Server Manager permet l'ajout ou la suppression de rôles et de fonctionnalités tout en offrant un accès aux outils locaux et la gestion de plusieurs serveurs.
+
+      Les consoles MMC avec leurs snap-ins spécialisés servent à gérer l'AD DS, le DNS, le DHCP, les GPO ou encore l'Event Viewer.
+
+      Le Gestionnaire de serveur permet de gérer les services, les utilisateurs locaux, les disques et les dossiers partagés sur un serveur autonome ou membre.
+
+      D'autres outils comme le Gestionnaire de performances facilitent le diagnostic via des compteurs et des alertes, tandis que le FSRM gère les quotas et le filtrage de fichiers.
+
+   B. Administration en ligne de commande et PowerShell.
+
+      PowerShell est l'outil prioritaire pour l'automatisation des tâches sur Windows Server.
+
+      Sur les installations Server Core, l'administration repose principalement sur PowerShell, les outils en ligne de commande et les outils distants.
+
+      L'interface graphique est utile pour contrôler et comprendre le système, alors que PowerShell permet de reproduire, d'automatiser et de documenter les actions.
+
+      Les commandes classiques restent utiles pour les diagnostics rapides et l'exécution de scripts historiques.
+
+   C. Commandes de diagnostic et de gestion de services.
+
+      Pour la gestion des fonctionnalités et des services, on utilise des commandes comme Get-WindowsFeature ou Get-Service pour filtrer les services en cours d'exécution.
+
+      Le diagnostic de l'Active Directory et de la réplication s'effectue avec des outils tels que dcdiag ou repadmin pour obtenir des résumés de réplication.
+
+      La gestion des stratégies de groupe repose sur les commandes gpupdate /force et gpresult /r pour appliquer ou vérifier les résultats.
+
+      L'analyse des journaux d'événements peut être réalisée avec Get-EventLog pour consulter les vingt derniers messages du journal System.
+
+      Les commandes net comme net start ou net stop permettent de démarrer, lister ou arrêter des services de manière rapide.
+
+II. STRATÉGIES DE SAUVEGARDE ET DE PROTECTION DES DONNÉES.
+
+   A. Types de sauvegardes et utilités.
+
+      La sauvegarde protège contre la suppression, la corruption, la panne, l'erreur de configuration et l'incident de sécurité.
+
+      Elle ne possède de valeur que si la restauration est possible, documentée et testée.
+
+      La récupération granulaire permet de restaurer des fichiers ou des dossiers après une suppression ou une modification.
+
+      La restauration d'un volume permet de récupérer l'intégralité d'un volume de données.
+
+      L'état du système protège le registre, les fichiers de démarrage, les composants système et l'AD DS/SYSVOL sur un contrôleur de domaine.
+
+      La reconstruction d'un serveur complet après une perte majeure est assurée par la sauvegarde serveur complet ou bare metal.
+
+   B. Utilisation de Windows Server Backup et wbadmin.
+
+      Windows Server Backup et l'outil wbadmin fournissent les fonctions de sauvegarde et de récupération.
+
+      Les droits requis pour ces tâches sont élevés et nécessitent d'être administrateur, opérateur de sauvegarde ou disposer d'une délégation équivalente.
+
+      La commande wbadmin get versions permet de consulter les sauvegardes disponibles.
+
+      L'exécution de wbadmin start backup avec l'option -backupTarget:E: -include:C: -allCritical -quiet permet une sauvegarde automatisée.
+
+      La commande wbadmin start systemstatebackup avec l'option -backupTarget:E: est utilisée pour l'état du système.
+
+      Les commandes wbadmin start systemstaterecovery, wbadmin start sysrecovery et wbadmin start systemstaterecovery servent à la restauration.
+
+   C. Fonctionnement du Volume Shadow Copy Service (VSS).
+
+      Le Volume Shadow Copy Service coordonne une sauvegarde cohérente à un instant donné.
+
+      Le processus repose sur trois acteurs où le demandeur demande la sauvegarde, le writer prépare l'application et le fournisseur crée le cliché.
+
+      Les clichés instantanés de dossiers partagés facilitent la récupération de versions précédentes.
+
+      Ces clichés ne remplacent pas une sauvegarde externe ou isolée.
+
+      La commande vssadmin list writers permet de vérifier l'état des composants.
+
+      La commande vssadmin list shadows permet de lister les clichés existants.
+
+III. GESTION DE L'IDENTITÉ ET SÉCURISATION DU CONTRÔLEUR DE DOMAINE.
+
+   A. Gestion des utilisateurs, groupes et unités d'organisation.
+
+      L'identité d'une personne, d'un service ou d'un processus est représentée par un utilisateur.
+
+      Les groupes de sécurité permettent l'attribution de permissions sur les ressources partagées du réseau.
+
+      Les groupes de distribution sont utilisés pour la messagerie et ne servent pas à attribuer des droits d'accès Windows.
+
+      L'unité d'organisation constitue une organisation logique des objets et permet le ciblage des GPO.
+
+      Le compte de service doit respecter le principe du moindre privilège pour garantir la sécurité.
+
+      La bonne pratique consiste à accorder les permissions aux groupes puis à gérer les utilisateurs par leur appartenance à ces groupes.
+
+   B. Principes de sécurisation du contrôleur de domaine.
+
+      Le contrôleur de domaine est un élément critique qui contient la base AD DS et participe à l'authentification.
+
+      La sécurisation repose sur la réduction de la surface d'attaque, le moindre privilège et la surveillance constante.
+
+      Il est recommandé de limiter les domaines d'administration et de créer des comptes d'administration dédiés.
+
+      L'administration des systèmes de confiance doit se faire uniquement depuis des postes d'administration sécurisés.
+
+      L'usage bureautique comme la navigation web ou la messagerie est proscrit sur un contrôleur de domaine.
+
+      Il faut appliquer des paramètres cohérents via des baselines et des GPO pour l'audit, le pare-feu et les services.
+
+   C. Surveillance et diagnostic de l'Active Directory.
+
+      La surveillance nécessite l'observation régulière des journaux de sécurité, de l'AD DS, du DNS et de la réplication.
+
+      L'outil dcdiag permet de réaliser des diagnostics sur le contrôleur de domaine.
+
+      La commande repadmin /replsummary est utilisée pour vérifier l'état de la réplication.
+
+      Pour analyser les événements récents, on peut utiliser la commande Get-EventLog avec le paramètre LogName Directory Service.
+
+      Les commandes Get-ADDomain et Get-ADForest permettent d'interroger la structure de l'annuaire.
+
+IV. GESTION DU STOCKAGE ET DES RESSOURCES DE FICHIERS.
+
+   A. Administration des disques et systèmes de fichiers.
+
+      La gestion des disques inclut l'initialisation, le partitionnement, le formatage, l'extension et la surveillance de la capacité.
+
+      Les cmdlets du module de stockage permettent d'administrer les disques, les partitions, les volumes et les pools.
+
+      Le choix du système de fichiers dépend de l'usage avec NTFS qui reste généraliste et ReFS qui est orienté vers la résilience.
+
+      Les commandes utiles incluent Get-Disk pour lister les disques et Initialize-Disk pour préparer un disque avant la création de partitions.
+
+      On peut utiliser New-Partition pour créer une partition avec une lettre et Format-Volume pour formater en NTFS ou ReFS.
+
+      Il est nécessaire de surveiller des indicateurs comme l'espace libre, la latence disque, les files d'attente et les erreurs système.
+
+   B. Configuration des partages SMB et permissions NTFS.
+
+      Un partage expose un dossier sur le réseau via le protocole SMB en utilisant deux couches de permissions distinctes.
+
+      La permission de partage définit l'accès réseau tandis que la permission NTFS permet un contrôle plus fin comme l'héritage.
+
+      La permission effective correspond toujours au résultat le plus restrictif entre les deux couches de sécurité appliquées.
+
+      Une bonne pratique consiste à rester simple au niveau du partage puis à affiner les accès avec NTFS et des groupes de sécurité.
+
+      L'énumération basée sur l'accès ou ABE permet de masquer les dossiers pour lesquels l'utilisateur n'a pas d'autorisation.
+
+      Le chiffrement SMB assure la protection du trafic si cette option est activée sur le partage.
+
+   C. Gestion des quotas et des clichés instantanés.
+
+      Les clichés instantanés s'appuient sur le service VSS pour conserver des versions précédentes de fichiers et revenir à un état antérieur.
+
+      Ces clichés sont utiles contre les erreurs des utilisateurs mais ils restent liés au stockage local ou au volume configuré.
+
+      Ils ne remplacent pas une sauvegarde de sécurité qui doit être conservée sur un support séparé.
+
+      La gestion des quotas via FSRM permet de limiter ou de surveiller la consommation d'espace par dossier ou par modèle.
+
+      Un quota dur bloque l'écriture lorsque la limite est atteinte alors qu'un quota souple se contente de signaler le dépassement.
+
+      Les rapports FSRM permettent d'analyser les fichiers volumineux, les doublons et les tendances de consommation.
+
+V. MÉTROLOGIE, PERFORMANCE ET OPTIMISATION DES RESSOURCES.
+
+   A. Indicateurs de performance CPU, mémoire et disque.
+
+      La métrologie consiste à mesurer avant de corriger en utilisant le moniteur de performance, le moniteur de ressources ou le journal des évènements.
+
+      L'optimisation suit une séquence précise qui part du symptôme pour aller vers l'identification de la ressource limite, la correction et une nouvelle mesure.
+
+      Pour le CPU, il faut surveiller le % du temps d'utilisation du processeur, la longueur de file processeur et les processus consommateurs.
+
+      La mémoire se contrôle via les MBytes disponibles, les Pages/sec, le commit et le working set.
+
+      Le disque nécessite une surveillance de la latence lecture/écriture, de la queue longueur, de l'espace libre et des erreurs.
+
+      Le réseau et les services sont également surveillés via le débit, la connectivité, l'état des services et les dépendances.
+
+   B. Analyse de la mémoire et de la pagination.
+
+      La mémoire sert au noyau, aux pilotes, aux services, aux processus, au cache système, aux machines virtuelles et aux applications.
+
+      La RAM physique représente la mémoire installée et utilisable par le système tandis que la mémoire virtuelle est l'espace adressable par les processus.
+
+      Le pagefile est le fichier d'échange utilisé lorsque la mémoire physique ne suffit pas ou pour certains dumps.
+
+      Le working set correspond à la mémoire résidentielle d'un processus et le standby cache est un cache réutilisable par le système.
+
+      Le commit est la mémoire engagée devant pouvoir être soutenue par la RAM ou le pagefile.
+
+      Une forte pagination peut signaler une pression mémoire mais l'analyse doit toujours croiser plusieurs compteurs car un seul ne suffit pas à conclure.
+
+   C. Supervision via SNMP et WMI/CIM.
+
+      SNMP est un protocole de supervision qui utilise des agents, des MIB, des OID et des traps.
+
+      WMI est une infrastructure Windows d'interrogation et d'administration qui expose des informations de gestion via des classes et des fournisseurs.
+
+      En PowerShell moderne, les cmdlets CIM sont privilégiées pour interroger WMI/CIM.
+
+      La commande Get-CimInstance permet d'interroger Win32_OperatingSystem, Win32_LogicalDisk ou Win32_Service.
+
+      La commande netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable=yes permet d'activer le service.
+
+VI. SERVICES D'INFRASTRUCTURE RÉSEAU DHCP ET DNS.
+
+   A. Configuration et déploiement du service DHCP.
+
+      Le service DHCP permet l'attribution automatique des paramètres IP aux clients du réseau. Il prend en charge des fonctionnalités essentielles comme les étendues, les baux, les exclusions, les réservations, les options, le filtrage, la journalisation et le failover.
+
+      Une étendue représente la plage d'adresses IP attribuables sur un sous-réseau spécifique. Le bail constitue l'attribution temporaire d'une adresse à un client, tandis que l'exclusion permet de ne pas distribuer certaines adresses automatiquement.
+
+      La réservation permet de dédier une adresse à un client identifié souvent par son adresse MAC. Les options fournissent des paramètres supplémentaires comme la passerelle, le DNS, le domaine ou d'autres paramètres aux clients.
+
+      Le mécanisme de failover DHCP assure la redondance et la répartition entre deux serveurs DHCP pour maintenir le service si l'un d'eux devient indisponible. Pour le déploiement, le serveur doit posséder une adresse IPv4 statique et les droits administratifs nécessaires.
+
+      Dans un domaine AD DS, le serveur DHCP doit être autorisé avant de pouvoir distribuer des adresses. L'installation peut se faire via la commande Install-WindowsFeature DHCP -IncludeManagementTools.
+
+      L'administration via PowerShell permet de créer une étendue avec Add-DhcpServerv4Scope et de configurer des options avec Set-DhcpServerv4OptionValue. On peut également consulter les statistiques avec Get-DhcpServerv4ScopeStatistics.
+
+   B. Fonctionnement et zones du service DNS.
+
+      Le service DNS traduit les noms en adresses IP et est indispensable dans un domaine Active Directory pour la localisation des contrôleurs de domaine. Un problème DNS peut empêcher l'ouverture de session, la jonction au domaine ou l'application des GPO.
+
+      La zone directe assure la résolution du nom vers l'adresse, alors que la zone inverse permet la résolution de l'adresse vers le nom. Une zone primaire fait autorité pour les modifications, tandis qu'une zone secondaire est une copie en lecture seule.
+
+      Les zones intégrées AD permettent le stockage et la réplication via AD DS. Le service utilise également des redirecteurs pour transmettre les requêtes externes vers un autre serveur DNS et le scavenging pour nettoyer les enregistrements obsolètes.
+
+      Les enregistrements DNS incluent les types A, AAAA, CNAME, MX, NS, PTR et SRV selon l'usage. L'installation du rôle s'effectue avec la commande Install-WindowsFeature DNS -IncludeManagementTools.
+
+      La mise en œuvre peut inclure l'ajout d'une zone primaire avec Add-DnsServerPrimaryZone et la création d'un enregistrement A avec Add-DnsServerResourceRecordA. On peut aussi configurer un redirecteur avec Add-DnsServerForwarder.
+
+      Le diagnostic s'appuie sur des outils comme Resolve-DnsName, nslookup ou la commande dnscmd /info. Il est crucial de vérifier l'adresse DNS configurée sur le client et les enregistrements SRV.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre les groupes de sécurité qui servent à l'attribution de permissions avec les groupes de distribution qui sont réservés à l'usage messagerie.
+
+      La permission effective sur un partage de fichiers correspond toujours au résultat le plus restrictif entre les permissions de partage et les permissions NTFS.
+
+      Les clichés instantanés basés sur le service VSS facilitent la récupération de versions précédentes mais ne constituent pas une véritable sauvegarde externe ou isolée.
+
+      Pour la gestion des utilisateurs, il est préférable d'accorder des permissions à des groupes plutôt que d'affecter des droits individuellement à chaque compte.
+
+      Une erreur courante est de croire qu'un seul compteur de performance suffit pour diagnostiquer une ressource car l'analyse doit toujours croiser plusieurs indicateurs.
+
+EXEMPLES CITÉS.
+
+      Pour créer un utilisateur nommé Martin Dupont avec l'identifiant mdupont via PowerShell, on utilise la commande New-ADUser.
+
+      L'exemple de commande pour formater un volume nommé DATA en NTFS sur le disque numéro deux est Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel 'DATA'.
+
+      Dans une configuration DHCP, une étendue nommée LAN-Paris peut être configurée avec une plage d'adresses allant de cent quatre-vingt-douze.168.10.50 à cent quatre-vingt-douze.168.10.200.
+
+      Pour tester la résolution d'un nom de serveur, on peut utiliser la commande nslookup srv01.domaine.local ou la commande Resolve-DnsName.

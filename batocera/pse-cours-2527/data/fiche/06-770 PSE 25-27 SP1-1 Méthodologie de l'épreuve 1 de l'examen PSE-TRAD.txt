@@ -1,0 +1,233 @@
+GUIDE MÉTHODOLOGIQUE POUR LA PRÉPARATION DE L'ÉPREUVE un DE L'EXAMEN PROFESSIONNEL PSE-TRAD.
+
+LEXIQUE COMPLET.
+
+      Le sigle PSE-TRAD désigne l'examen professionnel pour lequel cette méthodologie de préparation est conçue.
+
+      L'épreuve n° un de l'admissibilité est une composition sur un sujet relatif aux principes généraux du logiciel d'une durée de deux heures.
+
+      La DINUM désigne la Direction interministérielle du numérique qui préconise l'ouverture des codes sources.
+
+      Le sigle SILL désigne le socle interministériel logiciel libre et marché interministériel associé.
+
+      Le sigle SLL désigne le support logiciel libre et marché ministériel associé.
+
+      Le sigle RGI désigne le référentiel général d'interopérabilité.
+
+      Le sigle RGS désigne le référentiel général de sécurité.
+
+      Le sigle ANSSI désigne l'organisme qui propose des guides de sécurité dédiés aux logiciels libres.
+
+      Le sigle DAT désigne le dossier d'architecture.
+
+      Le sigle DIT désigne le dossier d'installation.
+
+      Le sigle DEX désigne le dossier d'exploitation.
+
+      Le sigle MOE désigne la maîtrise d'œuvre.
+
+COURS DÉTAILLÉ.
+
+I. PRÉSENTATION DE L'EXAMEN PSE-TRAD.
+
+   A. Nature et déroulement des épreuves d'admissibilité et d'admission.
+
+      L'admissibilité se compose de deux épreuves distinctes pour le candidat.
+
+      L'épreuve n° un est une composition sur un sujet relatif aux principes généraux du logiciel d'une durée de deux heures.
+
+      L'épreuve n° deux permet d'apprécier la connaissance du système d'exploitation choisi sur une liste fixée par arrêté du ministre intéressé et publiée six mois avant le début des épreuves, pour une durée de quatre heures.
+
+      L'admission consiste en une interrogation portant sur le programme déterminé par l'arrêté du dix juin mille neuf cent quatre-vingt-deux.
+
+      Cette épreuve d'admission nécessite une préparation de trente mn pour une durée totale de trente mn.
+
+   B. Attentes du jury sur le fond et la forme.
+
+      Sur le fond, le candidat doit démontrer sa capacité à comprendre et à répondre clairement à la question posée.
+
+      Il est également attendu qu'il démontre ses capacités d'analyse et de synthèse tout en faisant bon usage de ses connaissances en informatique.
+
+      Le candidat doit être compréhensible par un non informaticien lors de sa rédaction.
+
+      Sur la forme, la maîtrise des principes de construction d'une note et de la structure du devoir est indispensable.
+
+      La copie doit être propre et lisible, avec une longueur comprise entre quatre et six pages selon l'écriture.
+
+      Il faut valoriser ses qualités rédactionnelles notamment par le style, l'orthographe et la qualité de l'écriture.
+
+   C. Retours d'expérience et erreurs fréquentes des candidats.
+
+      Les rapports de jury indiquent que les plans des copies sont généralement bien indiqués et relativement bien respectés.
+
+      Certains candidats font preuve d'un manque de connaissance sur le domaine abordé ou proposent des connaissances hors sujet et hors contexte.
+
+      Des copies trop généralistes apportent peu de réponses au sujet et certains candidats s'égarent vers des thèmes hors sujet.
+
+      Le jury note que les conclusions sont souvent quasiment inexistantes ou n'apportent que très peu d'éléments nouveaux.
+
+      Les plans sont parfois intéressants mais malheureusement souvent déséquilibrés.
+
+      Enfin, certains candidats ont du mal à replacer leurs connaissances théoriques dans un contexte opérationnel ou posent des interrogations sans apporter de solutions.
+
+II. MÉTHODOLOGIE DE TRAVAIL ET PHASES ESSENTIELLES.
+
+   A. Lecture approfondie et analyse du sujet.
+
+      Il est impératif de prendre le temps nécessaire pour effectuer une lecture attentive du sujet proposé.
+
+      Le candidat doit identifier les mots importants afin de comprendre précisément de quoi traite la question.
+
+      Chaque notion identifiée doit être définie pour bien cerner ce que recouvre chaque terme du sujet.
+
+      L'analyse doit permettre de situer le sujet dans le cycle de vie d'un projet informatique.
+
+      Il convient de déterminer les aspects spécifiques à évoquer tout en définissant le périmètre et le hors périmètre.
+
+   B. Réflexion, recherche d'idées et outils d'analyse.
+
+      La recherche d'informations doit servir à construire une réponse personnalisée et adaptée au contexte.
+
+      La méthode de l'arbre peut être utilisée en faisant découler des mots liés aux termes de la question.
+
+      L'outil QQOQCCP est recommandé pour déterminer avec précision les enjeux et les objectifs de la problématique.
+
+      Le candidat doit mobiliser ses connaissances dans divers domaines informatiques pour enrichir sa réflexion.
+
+   C. Construction d'un plan équilibré et structuré.
+
+      Toutes les idées doivent être listées au brouillon de manière désordonnée avant de construire le plan.
+
+      Le plan doit identifier les grands thèmes, les aspects généraux et les parties principales du devoir.
+
+      Le plan le plus simple à élaborer est celui qui est directement dicté par l'énoncé du sujet.
+
+      L'organisation des parties doit être équilibrée en fonction du nombre d'idées trouvées pour chaque axe.
+
+      Chaque partie doit contenir deux à trois idées et être structurée en sous-parties avec des titres explicites.
+
+      Le candidat doit veiller à ce que les parties soient équilibrées pour éviter les déséquilibres critiqués par le jury.
+
+III. RÉDACTION ET STRUCTURATION DE LA COPIE.
+
+   A. Rédaction de l'introduction et de la conclusion.
+
+      L'introduction doit être structurée en trois étapes précises pour poser le cadre du sujet.
+
+      Il faut d'abord définir de quoi il s'agit en situant le sujet dans un contexte d'actualité ou dans le contexte fixé par l'énoncé.
+
+      La deuxième étape consiste à expliquer pourquoi le sujet est pertinent afin de montrer son intérêt.
+
+      La troisième étape sert à annoncer le plan qui sera suivi dans le développement.
+
+      La conclusion est obligatoire au même titre que l'introduction pour clore le devoir.
+
+      Elle doit synthétiser les points forts ou l'essentiel du travail dans un premier paragraphe.
+
+      Un second paragraphe doit ensuite proposer des perspectives d'ouverture ou d'évolution sur le sujet.
+
+   B. Techniques de rédaction et mise en forme du corps du devoir.
+
+      Le candidat doit respecter un plan simple et équilibré composé de deux ou trois parties.
+
+      Chaque partie doit être structurée en sous-parties pour faciliter la lecture.
+
+      Il est nécessaire d'utiliser des titres explicites qui permettent de synthétiser le contenu de chaque partie.
+
+      Le développement doit exposer, développer et illustrer les idées proposées.
+
+      Il est recommandé de proposer entre deux et trois idées par partie.
+
+      La rédaction doit privilégier des phrases courtes et mettre en avant l'articulation logique du devoir.
+
+   C. Gestion du temps et relecture.
+
+      Une bonne gestion du temps est indispensable pour mener à bien l'épreuve de deux heures.
+
+      Le candidat doit impérativement prévoir un temps pour la relecture de son devoir.
+
+      La relecture permet de s'assurer de la qualité de la copie avant le rendu final.
+
+      Il est important de présenter une copie propre et lisible de quatre à six pages selon l'écriture.
+
+      Le candidat doit valoriser ses qualités rédactionnelles en soignant son style et son orthographe.
+
+IV. PRÉPARATION CONTINUE ET VEILLE TECHNOLOGIQUE.
+
+   A. Sources d'information interministérielles et de référence.
+
+      Pour assurer une veille efficace, il est conseillé de consulter les sites interministériels ou de référence comme numerique.gouv.fr ou data.gouv.fr.
+
+      Les plateformes etalab.gouv.fr, api.gouv.fr et franceconnect.gouv.fr constituent également des ressources essentielles pour l'examen.
+
+      Le site de l'ANSSI, accessible via ssi.gouv.fr, est une source de référence pour les questions de sécurité.
+
+      Il est également recommandé de consulter les sites intranets des directions du Ministère.
+
+   B. Sites d'actualité technologique généralistes.
+
+      La veille peut s'appuyer sur des sites généralistes tels que 01net.com ou zdnet.fr.
+
+      D'autres sources d'information pertinentes incluent lejournaldunet.com, silicon.fr ou encore infodsi.com.
+
+      Le suivi de l'actualité peut aussi se faire via lejournalduhacker.net ou lemondeinformatique.fr.
+
+V. APPLICATION PRATIQUE ET ÉTUDE DE CAS.
+
+   A. Différenciation entre sujet court et sujet avec contexte.
+
+      Le sujet court se caractérise par une formulation directe et sans mise en situation particulière comme l'exemple des logiciels libres.
+
+      À l'inverse, le sujet avec contexte intègre une problématique métier précise au sein d'une administration.
+
+      Dans le cas pratique présenté, le contexte porte sur la modernisation des applications stratégiques et la participation d'une DSI à un groupe de travail.
+
+      La mission consiste alors à préparer une note sur l'intérêt de migrer vers le cloud et les étapes de vérifications préalables nécessaires.
+
+   B. Exemple de recherche d'idées et de structuration de plan.
+
+      La recherche d'idées s'appuie sur des acteurs comme l'ANSSI ou la DINUM et des concepts tels que les licences ou le code source.
+
+      Le plan proposé s'organise en deux parties principales pour traiter les enjeux stratégiques et les enjeux opérationnels.
+
+      La première partie démontre que les logiciels libres répondent aux besoins des directions du Ministère et garantissent l'interopérabilité.
+
+      La seconde partie traite des enjeux de formation des MOE et du renforcement de la sécurité tout au long du cycle de vie.
+
+      L'introduction doit inclure une accroche sur la circulaire data du Premier Ministre de deux mille vingt et un et définir les concepts de base.
+
+      La conclusion doit synthétiser les points forts et proposer une ouverture vers les communs numériques préconisés par la DINUM.
+
+   C. Glossaire des acronymes et termes techniques.
+
+      La DINUM désigne la Direction interministérielle du numérique.
+
+      Le SILL correspond au Socle interministériel logiciel libre et marché interministériel associé.
+
+      Le SLL signifie Support logiciel libre et marché ministériel associé.
+
+      Le RGI et le RGS désignent respectivement le Référentiel général d'interopérabilité et le Référentiel général de sécurité.
+
+      Les documents techniques incluent le DAT pour le Dossier d'architecture, le DIT pour le Dossier d'installation et le DEX pour le Dossier d'exploitation.
+
+POINTS D'ATTENTION.
+
+      Il faut éviter de produire une copie trop généraliste qui ne répondrait pas précisément à la question posée.
+
+      Le jury souligne que des connaissances théoriques ne suffisent pas si elles ne sont pas replacées dans un contexte opérationnel.
+
+      Un plan déséquilibré ou une conclusion quasiment inexistante sont des erreurs fréquentes signalées dans les rapports.
+
+      Il est crucial de ne pas se perdre dans des thèmes hors sujet au détriment des informations essentielles demandées.
+
+      La rédaction doit être compréhensible par un non informaticien tout en démontrant une capacité d'analyse et de synthèse.
+
+EXEMPLES CITÉS.
+
+      L'épreuve d'admissibilité n° un est une composition sur un sujet relatif aux principes généraux du logiciel d'une durée de deux heures.
+
+      Le cas pratique sur les logiciels libres montre comment lier des notions comme le SILL ou la DINUM à une stratégie ministérielle.
+
+      L'introduction doit suivre trois étapes précises en situant le sujet, en montrant son intérêt et en annonçant le plan.
+
+      La conclusion doit obligatoirement synthétiser les points forts du devoir et proposer des perspectives d'ouverture.

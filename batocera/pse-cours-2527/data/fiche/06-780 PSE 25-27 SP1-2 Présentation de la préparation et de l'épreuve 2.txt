@@ -1,0 +1,255 @@
+GUIDE DE PRÉPARATION ET MÉTHODOLOGIE POUR L'ÉPREUVE deux DE L'EXAMEN PSE TRAD.
+
+LEXIQUE COMPLET.
+
+      Le PSE TRAD désigne l'examen dont la préparation est présentée par l'Institut de la gestion publique et du développement économique.
+
+      L'Institut de la gestion publique et du développement économique désigne l'organisme chargé de la présentation de la méthodologie de l'épreuve deux.
+
+      L'épreuve deux désigne une épreuve technique de 4h00 permettant d'apprécier la connaissance du système d'exploitation choisi par le candidat.
+
+      L'arrêté du dix-neuf décembre deux mille dix-sept désigne le texte réglementaire qui fixe la liste des systèmes d'exploitation comme UNIX, LINUX, WINDOWS SERVEURS, IOS et Android.
+
+      Le jury désigne l'instance technique et bienveillante qui évalue les candidats avec pour but de leur accorder la note de dix/vingt.
+
+      Le rapport du jury désigne le document de la session deux mille vingt-trois qui souligne l'importance de l'orthographe, du soin et de la contextualisation des réponses.
+
+      L'analyse du sujet désigne la première étape de la gestion du temps qui doit durer quinze minutes.
+
+      Le plan détaillé désigne la phase de construction du devoir qui doit durer trente minutes.
+
+      L'introduction désigne la partie du devoir comprenant le rappel du contexte et l'annonce du plan.
+
+      La conclusion désigne la partie finale du devoir qui résume les points forts et présente les possibilités d'évolution.
+
+      La rédaction désigne la phase principale de l'épreuve qui doit durer 2h50.
+
+      La relecture du devoir désigne la dernière étape de la gestion du temps qui doit durer dix minutes.
+
+COURS DÉTAILLÉ.
+
+I. NATURE ET CARACTÉRISTIQUES DE L'ÉPREUVE.
+
+   A. Objectifs et format de l'examen.
+
+      L'examen vise l'obtention d'une note de dix/vingt pour chaque épreuve sans système de quota.
+
+      Le jury se veut technique et bienveillant envers les candidats.
+
+      L'épreuve de 4h00 est une épreuve métier qui repose sur la rédaction d'une solution.
+
+      Le candidat doit démontrer sa connaissance du système d'exploitation choisi.
+
+   B. Différences avec l'épreuve un.
+
+      L'épreuve un dure 2h00 tandis que l'épreuve deux dure 4h00.
+
+      L'orientation de l'épreuve un est généraliste alors que l'épreuve deux est technique.
+
+   C. Systèmes d'exploitation concernés.
+
+      La liste des systèmes d'exploitation est fixée par un arrêté du ministre intéressé.
+
+      Cette liste est publiée au moins six mois avant la date de début des épreuves.
+
+      L'arrêté du dix-neuf décembre deux mille dix-sept fixe la liste des systèmes comme UNIX, LINUX, WINDOWS SERVEURS, IOS et Android.
+
+II. RETOURS D'EXPÉRIENCE ET POINTS DE VIGILANCE.
+
+   A. Constats du rapport du jury.
+
+      Le rapport du jury de la session deux mille vingt-trois révèle que le niveau de connaissances requis pour cet examen n'est pas souvent atteint.
+
+      Sur soixante-dix-sept personnes présentes lors de cette session, seules dix-huit personnes ont été déclarées admissibles.
+
+      Le jury constate que peu de copies sont excellentes et que beaucoup de candidats ne traitent pas tous les aspects du sujet.
+
+      Il est également remarqué que de nombreux points ne sont pas traités alors que les questions sont assez bien identifiées dans les sujets.
+
+   B. Importance de la forme et de l'orthographe.
+
+      Les candidats qui ne prennent pas soin de leur écriture et de l'orthographe doivent prendre conscience que cela les pénalise.
+
+      Le soin apporté à la copie est un élément déterminant pour la réussite de l'épreuve.
+
+   C. Risques de hors sujet et de manque d'exhaustivité.
+
+      Une lecture attentive du sujet est nécessaire pour répondre de façon exhaustive et surtout contextualisée.
+
+      Des connaissances qui sont justes mais hors sujet ou hors contexte ne rapportent aucun point.
+
+      Il est indispensable de bien comprendre le sujet et de cerner le problème ainsi que le champ de réponse pour éviter le hors sujet.
+
+      Le candidat doit veiller à traiter toutes les questions, même partiellement, pour éviter les manques.
+
+III. ORGANISATION ET GESTION DU TEMPS.
+
+   A. Répartition chronologique de la séance.
+
+      L'épreuve de 4h00 nécessite une gestion rigoureuse du temps pour réussir la rédaction de la solution.
+
+      La première étape consiste à consacrer quinze minutes à l'analyse du sujet.
+
+      Il convient ensuite de dédier trente minutes à l'élaboration d'un plan détaillé.
+
+      La rédaction d'une vraie introduction et d'une vraie conclusion doit prendre quinze minutes.
+
+      La phase de rédaction proprement dite occupe une durée de 2h50.
+
+      Enfin, il est indispensable de garder dix minutes pour la relecture du devoir.
+
+   B. Importance des examens blancs.
+
+      Les examens blancs constituent un outil essentiel pour la préparation des candidats.
+
+      Ils permettent d'affiner la gestion du temps qui est propre à chaque individu.
+
+      Cette pratique aide à s'entraîner à la rédaction sous la contrainte de la durée.
+
+   C. Structure de la solution rédigée.
+
+      Le devoir doit présenter un plan apparent avec des titres de parties et de sous-parties numérotés.
+
+      L'introduction doit impérativement comporter un rappel du contexte et l'annonce du plan.
+
+      La conclusion doit résumer les points forts et présenter les possibilités d'évolution.
+
+      Des phrases de liaison doivent être utilisées entre les sous-parties pour assurer un enchaînement logique.
+
+      Il est recommandé de faire varier l'angle d'approche du sujet en abordant le coût, la technique, la sécurité ou l'administration.
+
+      La sécurité doit être traitée comme un axe principal de la rédaction.
+
+IV. MÉTHODOLOGIE DE CONSTRUCTION DU DEVOIR.
+
+   A. Analyse et compréhension du sujet.
+
+      Il est impératif de lire le sujet avec calme sans se jeter immédiatement sur la feuille de copie.
+
+      Une pause est nécessaire pour prendre du recul et relire le sujet sous l'éclairage de la nature de l'épreuve et des questions posées.
+
+      Cette étape permet de comprendre le sujet, de cerner le problème ainsi que le champ de réponse pour éviter le hors sujet.
+
+      Une lecture attentive est indispensable pour répondre de façon exhaustive et surtout contextualisée.
+
+      Il faut veiller à ce que les connaissances ne soient pas justes mais hors sujet ou hors contexte car cela ne rapporte aucun point.
+
+   B. Élaboration du plan et recherche de matière.
+
+      La recherche de matière commence par la délimitation du problème via le périmètre.
+
+      L'organisation consiste à analyser l'existant et à prévoir la planification humaine et matérielle.
+
+      Il convient de filtrer ses axes de réflexion et de chercher des illustrations concrètes dans son domaine.
+
+      La réalisation d'un schéma au brouillon peut être utile durant cette phase de construction.
+
+      L'analyse du sujet doit occuper quinze minutes de la gestion du temps totale de 4h00.
+
+   C. Organisation des parties et des sous-parties.
+
+      Le candidat doit construire et organiser son plan en dégageant les différentes parties du devoir.
+
+      Il faut prêter une attention particulière à la formulation des questions pour savoir si le plan est sous-jacent ou imposé.
+
+      Le choix des sous-parties doit être effectué après avoir structuré l'ensemble du devoir.
+
+      Le plan doit être apparent avec des titres de parties et de sous-parties numérotés.
+
+      L'équilibre entre les différentes parties doit être respecté lors de la rédaction.
+
+      Des phrases de liaison doivent être utilisées entre les sous-parties pour assurer un enchaînement logique.
+
+V. TECHNIQUES DE RÉDACTION.
+
+   A. Structure de l'introduction et de la conclusion.
+
+      L'introduction doit impérativement comporter un rappel du contexte.
+
+      Elle doit également inclure l'annonce du plan de la rédaction.
+
+      La conclusion sert à résumer les points forts du devoir.
+
+      Elle permet aussi de présenter les possibilités d'évolution.
+
+   B. Présentation du plan et des transitions.
+
+      Le plan doit être apparent avec des titres de parties et de sous-parties numérotés.
+
+      Il est nécessaire d'utiliser des phrases de liaison entre les sous-parties pour assurer un enchaînement logique.
+
+      Le candidat doit respecter l'équilibre des différentes parties du devoir.
+
+      Il convient de traiter toutes les questions du sujet même de façon partielle.
+
+   C. Utilisation des schémas et des acronymes.
+
+      Il est recommandé de faire un schéma au brouillon si cela est nécessaire.
+
+      La partie écrite doit être cohérente avec le schéma utilisé.
+
+      Les acronymes et les sigles doivent être explicités lors de leur première utilisation.
+
+      Il faut proscrire l'utilisation de simples listes dans la rédaction.
+
+VI. CONSEILS STRATÉGIQUES ET RECOMMANDATIONS.
+
+   A. Qualité du contenu et choix techniques.
+
+      Il est impératif de traiter tous les aspects du sujet et de répondre à l'ensemble des questions posées, même de façon partielle.
+
+      La rédaction doit être soignée en accordant une attention particulière à l'écriture et à l'orthographe pour éviter toute pénalité.
+
+      Lorsqu'un choix doit être fait ou que plusieurs options sont envisageables, il faut exposer les différentes possibilités de manière succincte.
+
+      Chaque choix technique doit être systématiquement justifié pour démontrer la pertinence de la solution retenue.
+
+      Il est nécessaire d'expliciter tous les sigles lors de leur première utilisation dans la copie.
+
+      Le candidat doit éviter de produire des listes et doit privilégier une rédaction structurée avec des phrases de liaison logiques.
+
+   B. Approches multidimensionnelles du sujet.
+
+      La réponse doit être contextualisée et ne pas se limiter à des connaissances théoriques qui seraient hors sujet.
+
+      Il est recommandé de faire varier l'angle d'approche du sujet en intégrant des dimensions comme le coût, la technique, la sécurité ou l'administration.
+
+      La sécurité doit être traitée comme un axe principal de la réflexion.
+
+      L'analyse doit impérativement dégager les contraintes initiales telles que le budget, les délais et le réseau existant.
+
+      Il convient également de recenser l'ensemble des acteurs concernés par la problématique posée.
+
+   C. Simplicité et maîtrise des solutions.
+
+      La stratégie consiste à privilégier une solution banale mais parfaitement maîtrisée plutôt qu'une proposition originale mais mal présentée.
+
+      Il faut faire simple sans pour autant tomber dans le simplisme technique.
+
+      Le candidat ne doit pas chercher à en faire trop sur le plan technique pour éviter de perdre en clarté.
+
+      La gestion du temps est cruciale et nécessite de s'entraîner à la rédaction sous contrainte de durée.
+
+      L'équilibre entre les différentes parties du devoir doit être rigoureusement respecté.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre cet examen avec un concours car il n'y a pas de quota et l'objectif est d'obtenir dix/vingt.
+
+      Une confusion fréquente réside dans la nature de l'épreuve car l'épreuve un est généraliste alors que l'épreuve deux est technique.
+
+      Il est crucial de ne pas traiter le sujet de manière hors sujet ou hors contexte car des connaissances justes sans contextualisation ne rapportent aucun point.
+
+      Le candidat doit éviter de faire des listes et doit impérativement expliciter les sigles lors de leur première utilisation.
+
+      Il faut veiller à ne pas tout rédiger au brouillon et à respecter l'équilibre des différentes parties du devoir.
+
+EXEMPLES CITÉS.
+
+      L'épreuve deux dure 4h00 contre 2h00 pour l'épreuve un.
+
+      La liste des systèmes d'exploitation fixée par l'arrêté du dix-neuf décembre deux mille dix-sept comprend UNIX, LINUX, WINDOWS SERVEURS, IOS et Android.
+
+      Lors de la session deux mille vingt-trois, seulement dix-huit personnes sur soixante-dix-sept présentes ont été admissibles.
+
+      Une gestion du temps efficace prévoit quinze' pour l'analyse, trente' pour le plan, quinze' pour l'introduction et la conclusion, 2h50' pour la rédaction et dix' pour la relecture.

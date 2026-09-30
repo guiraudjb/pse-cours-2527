@@ -1,0 +1,185 @@
+GUIDE DE L'AUTOMATISATION SOUS LINUX.
+
+LEXIQUE COMPLET.
+
+      L'Institut de la Gestion publique et du Développement économique est l'organisme auteur de ce support sur l'automatisation sous Linux.
+
+      Init désigne le processus de gestion du démarrage qui permet une automatisation simple via le fichier /etc/inittab ou une gestion rigoureuse via /etc/init.d.
+
+      Systemd désigne le système moderne de gestion des services qui utilise des fichiers d'unité service et des fichiers d'unité timer pour l'automatisation.
+
+      At désigne une commande de soumission de tâches permettant l'exécution d'une tâche une seule fois.
+
+      Cron désigne un système permettant l'exécution de tâches de manière récurrente à l'aide d'une table appelée crontab.
+
+      Crontab désigne la table des tâches cron qui est individuelle pour chaque utilisateur et stockée dans le répertoire /var/spool/cron.
+
+      Login désigne le processus de connexion qui peut être configuré pour enchaîner sur un script de gestion spécifique défini dans /etc/passwd.
+
+      S désigne le préfixe utilisé dans les noms de fichiers de l'arborescence /etc/rc.d/ pour indiquer un démarrage de service.
+
+      K désigne le préfixe utilisé dans les noms de fichiers de l'arborescence /etc/rc.d/ pour indiquer un arrêt de service.
+
+      VTom désigne un outil d'orchestration mentionné dans le lexique de l'automatisation.
+
+      Dollar Universe désigne un outil d'orchestration utilisé pour l'automatisation des systèmes.
+
+COURS DÉTAILLÉ.
+
+I. GESTION DU DÉMARRAGE AVEC INIT.
+
+   A. Approche simple via le fichier inittab.
+
+      L'approche la plus simple pour l'automatisation consiste à effectuer une action uniquement au démarrage du système.
+
+      Cette méthode repose sur l'ajout d'une ligne spécifique directement dans le fichier inittab.
+
+      La structure de la ligne à utiliser suit le format id:runlevels:action:process.
+
+   B. Configuration rigoureuse avec les scripts init.d.
+
+      Pour assurer un démarrage et un arrêt rigoureux des services, il faut procéder par la création d'un fichier de lancement.
+
+      Ces fichiers de lancement doivent impérativement être placés sous le répertoire /etc/init.d.
+
+      Cette méthode permet une gestion plus structurée et contrôlée des processus du système.
+
+   C. Gestion des niveaux d'exécution et des liens symboliques S et K.
+
+      La gestion des services nécessite la création d'un lien symbolique entre l'arborescence native de lancement /etc/init.d et l'arborescence du niveau de lancement et d'arrêt.
+
+      Les répertoires concernés sont /etc/rc.d/rc3.d ou /sbin/rc.d/rc3.d pour certains niveaux, ou /etc/rc.d/rc0.d ou /sbin/rc.d/rc0.d pour d'autres.
+
+      Les scripts sont identifiés par un préfixe spécifique selon l'action souhaitée.
+
+      Un shell préfixé par la lettre S est utilisé pour le démarrage des services.
+
+      Un shell préfixé par la lettre K est utilisé pour l'arrêt ou le kill des services.
+
+II. GESTION DES SERVICES AVEC SYSTEMD.
+
+   A. Structure d'un fichier d'unité service.
+
+      L'automatisation d'un service avec systemd nécessite la création d'un fichier d'unité spécifique situé dans le répertoire /etc/systemd/system/monservice.service.
+
+      La section Unit permet de définir la description du service et de spécifier les dépendances comme l'attente de l'état network-online.target.
+
+      La section Service contient des paramètres essentiels tels que le type de service défini comme simple et le chemin vers le script via la commande ExecStart.
+
+   B. Configuration de l'installation et activation du service.
+
+      Pour que le service soit correctement installé, il faut inclure une section Install avec la directive WantedBy pointant vers multi-user.target.
+
+      L'activation du service pour qu'il soit pris en compte par le système se réalise grâce à la commande systemctl enable monservice.service.
+
+   C. Alternative aux tâches récurrentes avec les unités timer.
+
+      Systemd propose une alternative aux tâches de type cron par l'utilisation combinée d'un fichier d'unité service et d'un fichier d'unité timer.
+
+      Le fichier de service est créé dans /etc/systemd/system/matache.service tandis que le fichier timer est placé dans /etc/systemd/system/matache.timer.
+
+      L'unité timer utilise la section Timer avec des paramètres comme OnCalendar=weekly et l'option Persistent=true pour gérer la récurrence.
+
+      L'activation de cette automatisation se fait avec la commande systemctl enable matache.timer et la consultation des tâches s'effectue via systemctl list-timers.
+
+III. EXÉCUTION DE TÂCHES PONCTUELLES AVEC AT.
+
+   A. Mécanisme de soumission et stockage des tâches.
+
+      La commande at permet de réaliser la soumission de tâches à exécuter une seule fois.
+
+      Le système utilise le répertoire /var/spool/at pour le stockage des tâches at.
+
+      Pour soumettre une tâche, on utilise la commande echo suivie du contenu et de la redirection vers at avec un délai.
+
+      Un exemple de commande est echo "hello" | at now +cinq minutes.
+
+      Il est également possible d'utiliser l'option -m comme dans echo "hello" | at -m now +cinq minutes.
+
+   B. Contrôle d'accès via allow et deny.
+
+      Le contrôle d'accès aux tâches est possible via des fichiers de configuration spécifiques.
+
+      Les fichiers utilisés pour cette gestion sont /etc/at.allow et /etc/at.deny.
+
+   C. Commandes de gestion et de visualisation.
+
+      La commande at -l permet de lister les tâches.
+
+      Pour visualiser une tâche spécifique, on utilise la commande at -c suivie du job_number.
+
+      La commande atq est également disponible pour la gestion des tâches.
+
+IV. PLANIFICATION DE TÂCHES RÉCURRENTES AVEC CRON.
+
+   A. Utilisation de la crontab par utilisateur.
+
+      La crontab est la table des cron et elle est spécifique à chaque utilisateur.
+
+      Chaque utilisateur possède sa propre table pour gérer ses tâches récurrentes.
+
+      L'utilisateur peut lister le contenu de sa table avec la commande crontab -l.
+
+      Pour modifier ou éditer sa table de tâches, il faut utiliser la commande crontab -e.
+
+   B. Syntaxe de la ligne de commande cron.
+
+      La syntaxe d'une ligne de commande cron suit un ordre précis pour définir la récurrence.
+
+      La structure est composée de la minute, de l'heure, du jour, du mois et du jour de la semaine suivis de la commande.
+
+      Le format est représenté par la séquence #MIN HEURE JOUR MOIS JOUR-SEMAINE CMD.
+
+      Un exemple concret est la commande */dix * * * * /home/test/check-disk qui s'exécute toutes les dix minutes.
+
+   C. Gestion des droits et stockage des tâches.
+
+      Le répertoire /var/spool/cron est l'endroit où sont stockées les différentes tâches cron.
+
+      Le contrôle d'accès aux tâches peut être configuré via des fichiers spécifiques.
+
+      L'accès est autorisé ou refusé par l'intermédiaire des fichiers /etc/cron.allow et /etc/cron.deny.
+
+V. AUTOMATISATION LORS DE LA CONNEXION UTILISATEUR.
+
+   A. Configuration du shell de démarrage dans passwd.
+
+      L'automatisation lors de la connexion peut être réalisée en modifiant le fichier /etc/passwd.
+
+      Ce fichier contient les informations relatives aux utilisateurs du système.
+
+      La structure d'une ligne dans ce fichier permet de définir un script spécifique après les informations de l'utilisateur.
+
+      Par exemple, une ligne peut se présenter sous la forme user:x:dix mille:dix mille:Mon User:/home/user:<script.sh>.
+
+   B. Lancement de scripts de gestion au login.
+
+      La connexion d'un utilisateur peut être configurée pour enchaîner directement sur un script.
+
+      Ce processus permet de lancer automatiquement un menu de gestion dès l'ouverture de la session.
+
+      L'utilisation d'un fichier comme script.sh permet de personnaliser l'environnement de l'utilisateur dès son login.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'utilisation de at qui sert pour une tâche ponctuelle avec celle de cron qui est destinée à une exécution récurrente.
+
+      Une confusion possible existe entre la gestion du démarrage via init et celle via systemd car les méthodes de configuration diffèrent totalement.
+
+      L'automatisation avec init nécessite de bien distinguer les préfixes S pour le démarrage et K pour l'arrêt lors de la création des liens symboliques.
+
+      Il est important de noter que les timers systemd constituent une alternative moderne aux tâches de type cron.
+
+      Le contrôle d'accès pour at et cron se gère via des fichiers spécifiques nommés allow et deny situés dans le répertoire etc.
+
+EXEMPLES CITÉS.
+
+      Pour lancer une tâche unique dans cinq minutes, on utilise la commande echo hello pipe at now plus cinq minutes.
+
+      La configuration d'un service systemd nécessite la création d'un fichier d'unité dans le répertoire /etc/systemd/system/monservice.service.
+
+      Dans la table cron, une commande comme */dix * * * * permet d'exécuter le script /home/test/check-disk toutes les dix minutes.
+
+      L'automatisation au démarrage avec init peut se faire simplement en ajoutant une ligne dans le fichier /etc/inittab.
+
+      Un utilisateur peut être configuré pour lancer automatiquement un menu de gestion via un script nommé script.sh défini dans /etc/passwd.

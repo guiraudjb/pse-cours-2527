@@ -1,0 +1,211 @@
+GUIDE COMPLET SUR LE STOCKAGE, L'ARCHIVAGE ET LA SAUVEGARDE DES DONNÉES.
+
+LEXIQUE COMPLET.
+
+      Le stockage désigne l'espace utilisé par les systèmes et les utilisateurs pour travailler au quotidien.
+
+      L'archivage désigne l'organisation de la conservation de données moins actives selon une durée, des règles d'accès et un cycle de vie.
+
+      La sauvegarde désigne la création d'une copie destinée à restaurer un système, un volume, un fichier ou une application après un incident.
+
+      Le RPO désigne le volume maximal de données que l'organisation accepte de perdre.
+
+      Le RTO désigne la durée maximale admissible pour revenir en service après un incident.
+
+      La CNIL désigne l'organisme qui rappelle que les données personnelles ne peuvent pas être conservées indéfiniment.
+
+      L'archive intermédiaire désigne une donnée qui n'est plus nécessaire à l'activité immédiate mais présente un intérêt administratif, juridique ou opérationnel.
+
+      L'archive définitive désigne les données conservées sans limitation de durée selon un cadre spécifique, notamment dans le secteur public.
+
+      La sauvegarde complète désigne une copie complète du périmètre protégé servant de base de restauration fiable.
+
+      La sauvegarde incrémentale désigne une copie des changements effectués depuis la dernière sauvegarde.
+
+      La sauvegarde différentielle désigne une copie des changements effectués depuis la dernière sauvegarde complète.
+
+      La stratégie trois-deux-un désigne un principe de prudence consistant à avoir trois copies, sur deux types de supports, dont un copie hors site ou isolée.
+
+COURS DÉTAILLÉ.
+
+I. DISTINCTION ENTRE STOCKAGE, ARCHIVAGE ET SAUVEGARDE.
+
+   A. Définitions et fonctions respectives.
+
+      Le stockage correspond à l'espace utilisé par les systèmes et les utilisateurs pour travailler au quotidien. Il sert de support actif pour les données utilisées.
+
+      L'archivage organise la conservation de données moins actives selon une durée, des règles d'accès et un cycle de vie. Il permet de gérer les données courantes, intermédiaires ou définitives.
+
+      La sauvegarde crée une copie destinée à restaurer un système, un volume, un fichier ou une application après un incident. Sa qualité se mesure à la capacité de reprise.
+
+      Ces trois fonctions mobilisent des composants différents et doivent être pensées comme une chaîne cohérente. Un stockage performant mais non sauvegardé reste fragile.
+
+      Une archive mal classée devient difficile à retrouver tandis qu'une sauvegarde incohérente ne permet pas une restauration fiable.
+
+   B. Erreurs fréquentes à éviter.
+
+      Il ne faut pas confondre le stockage avec une protection contre la perte de données. Le stockage est uniquement un support actif.
+
+      L'erreur concernant l'archivage consiste à le confondre avec une sauvegarde restaurable rapidement. L'archivage est une conservation organisée de données peu ou plus utilisées.
+
+      Pour la sauvegarde, il est dangereux de croire qu'une sauvegarde non testée constitue une garantie. Une sauvegarde n'est réellement utile que si elle permet une restauration.
+
+   C. Indicateurs de performance RPO et RTO.
+
+      Le RPO indique le volume maximal de données que l'organisation accepte de perdre. Par exemple, un RPO de vingt-quatre heures signifie qu'une sauvegarde quotidienne peut être suffisante.
+
+      Le RTO indique la durée maximale admissible pour revenir en service. Un RTO de deux heures impose une restauration rapide et des sauvegardes accessibles.
+
+      Ces deux indicateurs servent à choisir la fréquence des sauvegardes et le type de support. Ils permettent aussi de définir le niveau de redondance et les scénarios de reprise.
+
+      Une stratégie correcte précise ce qui est protégé et où la copie est stockée. Elle définit aussi qui peut restaurer et comment la restauration est testée.
+
+II. PRINCIPES ET GESTION DE L'ARCHIVAGE.
+
+   A. Cycle de vie des données et cadre légal.
+
+      L'archivage ne se limite pas au simple déplacement de fichiers anciens mais organise un véritable cycle de vie des données.
+
+      Les données courantes sont utilisées quotidiennement par les utilisateurs et les systèmes.
+
+      Les archives intermédiaires ne sont plus nécessaires à l'activité immédiate mais conservent un intérêt administratif, juridique ou opérationnel.
+
+      Les archives définitives concernent les données conservées sans limitation de durée selon un cadre spécifique, notamment dans le secteur public.
+
+      La CNIL rappelle que les données personnelles ne peuvent pas être conservées indéfiniment.
+
+      Une durée de conservation doit être fixée selon la finalité qui justifie la collecte des données.
+
+   B. Dimensions de contrôle : durée, accès et sort final.
+
+      La première dimension à vérifier est la durée de conservation pour déterminer combien de temps les données doivent être gardées.
+
+      Il est nécessaire d'appliquer une durée de conservation qui soit à la fois justifiée et documentée.
+
+      La deuxième dimension concerne l'accès pour définir précisément qui est autorisé à consulter les données.
+
+      L'exigence pratique consiste à limiter la consultation aux seules personnes habilitées.
+
+      La troisième dimension est le sort final qui détermine ce qu'il convient de faire à l'échéance de la conservation.
+
+      Les options possibles sont de détruire les données, de les anonymiser ou de les verser en archive définitive selon le cadre.
+
+   C. Séparation de la base active et points de vigilance.
+
+      Une archive intermédiaire doit être séparée de la base active de manière physique ou logique.
+
+      La séparation physique repose sur l'utilisation d'un espace ou d'une base d'archivage dédié.
+
+      La séparation logique s'appuie sur des habilitations qui rendent les données inaccessibles aux utilisateurs courants.
+
+      L'archive doit rester lisible malgré le temps, car un support ancien ou un format obsolète peut rendre la conservation inutile.
+
+      L'archive doit être protégée car des droits trop larges exposent les données à la fuite ou à l'altération.
+
+      L'archive doit être traçable pour savoir qui conserve, qui accède, qui détruit et selon quelle règle.
+
+      L'archive ne remplace pas la sauvegarde car elle peut aussi être perdue ou corrompue si elle n'est pas protégée.
+
+III. STRATÉGIES ET TYPES DE SAUVEGARDE.
+
+   A. Objectif de restauration et indicateurs de qualité.
+
+      L'objectif réel d'une sauvegarde n'est pas simplement de créer une copie mais de garantir une restauration efficace. La qualité d'une stratégie se mesure à sa capacité à restaurer des données dans un délai et avec une perte compatibles avec les besoins de l'organisation.
+
+      Le RPO indique le volume maximal de données que l'organisation accepte de perdre lors d'un incident. Par exemple, un RPO de vingt-quatre heures signifie qu'une sauvegarde quotidienne peut être jugée suffisante.
+
+      Le RTO représente la durée maximale admissible pour revenir en service après une interruption. Un RTO de deux heures impose une procédure de restauration rapide et des sauvegardes facilement accessibles.
+
+      Ces deux indicateurs servent de base pour choisir la fréquence des sauvegardes, le type de support utilisé et le niveau de redondance nécessaire. Ils permettent également de définir les scénarios de reprise et de protéger ce qui doit l'être.
+
+   B. Comparaison des types de sauvegardes : complète, incrémentale et différentielle.
+
+      La sauvegarde complète consiste à réaliser une copie intégrale de tout le périmètre protégé. Elle constitue une base de restauration très fiable mais elle est particulièrement volumineuse en termes d'espace.
+
+      La sauvegarde incrémentale copie uniquement les changements effectués depuis la dernière sauvegarde effectuée. Elle permet une économie d'espace importante mais rend la chaîne de restauration plus dépendante des étapes intermédiaires.
+
+      La sauvegarde différentielle copie les changements enregistrés depuis la dernière sauvegarde complète. Elle offre un compromis entre le volume de données stockées et la simplicité de la procédure de restauration.
+
+IV. PROCESSUS ET MÉTHODOLOGIE DE RESTAURATION.
+
+   A. Importance des tests de restauration.
+
+      La qualité d'une stratégie de sauvegarde ne se mesure pas au simple fait de réaliser une copie. Elle se juge réellement par la capacité effective de l'organisation à restaurer les données.
+
+      Une sauvegarde peut être présente physiquement mais s'avérer totalement inutilisable lors d'un incident. Plusieurs facteurs peuvent provoquer cet échec comme un fichier corrompu ou une chaîne de sauvegarde incomplète.
+
+      L'inaccessibilité du support ou l'utilisation d'une version incompatible peuvent également empêcher la reprise. Des droits d'accès insuffisants ou une procédure de restauration inconnue constituent d'autres risques majeurs.
+
+      Il est donc indispensable d'inclure systématiquement des tests de restauration pour valider la stratégie. Ces tests permettent de s'assurer que le délai de restauration respecte le RTO et que la perte de données reste dans les limites du RPO.
+
+   B. Étapes logiques de la procédure de restauration.
+
+      La première étape consiste à identifier précisément le périmètre à restaurer. Cela peut concerner un fichier, un volume, une application, l'état du système ou un serveur complet.
+
+      Il faut ensuite choisir le point de restauration approprié. Ce choix doit garantir le respect du RPO et assurer la disponibilité de la version souhaitée.
+
+      L'étape suivante est la vérification du support de sauvegarde. L'opérateur doit contrôler l'accès, l'intégrité des données, les droits nécessaires ainsi que l'espace disponible sur la destination.
+
+      La phase de restauration proprement dite doit être exécutée en respectant scrupuleusement la procédure établie et en tenant compte des dépendances applicatives.
+
+      Enfin, un test final est indispensable pour valider le démarrage, l'accès aux données, la cohérence fonctionnelle et la consultation des journaux.
+
+   C. Documentation et contrôle des résultats.
+
+      Chaque opération de restauration doit faire l'objet d'une documentation rigoureuse. Cette traçabilité est essentielle pour le suivi de l'activité et la gestion de l'historique.
+
+      Le document doit impérativement mentionner la date de l'opération et l'identité de l'opérateur ayant réalisé la tâche.
+
+      Il est également nécessaire de consigner la cause de l'incident et la version exacte des données qui ont été restaurées.
+
+      Enfin, la documentation doit répertorier tous les écarts constatés lors de la procédure pour permettre une amélioration continue du système.
+
+V. GESTION DES INCIDENTS ET PROTECTION DES DONNÉES.
+
+   A. Typologie des incidents et scénarios de reprise.
+
+      La suppression accidentelle nécessite la restauration d'un fichier, d'une version précédente ou l'utilisation d'une sauvegarde ciblée.
+
+      En cas de corruption logique, il est nécessaire de restaurer une version saine tout en procédant à une analyse de la cause.
+
+      Une panne disque impose le remplacement du matériel, la reconstruction selon la redondance et la restauration si cela est nécessaire.
+
+      Face à un ransomware, la procédure impose un assainissement complet du système suivi d'une restauration depuis une copie isolée.
+
+      La perte d'un contrôleur de domaine requiert une procédure spécifique appuyée sur l'état du système et les règles AD DS.
+
+   B. Mesures de protection et règle de sauvegarde trois-deux-un.
+
+      Les sauvegardes doivent être traitées comme des données sensibles car elles peuvent contenir des fichiers, des configurations, des secrets ou des bases de données.
+
+      La protection des données repose sur la limitation des droits, l'isolation d'au moins une copie, le contrôle des supports et le chiffrement si nécessaire.
+
+      Il est indispensable de conserver un historique suffisant pour garantir la sécurité des informations.
+
+      La stratégie trois-deux-un constitue un principe de prudence opérationnelle efficace.
+
+      Cette règle préconise de posséder trois copies, d'utiliser deux types de supports différents et de conserver un copie hors site ou isolée.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le stockage qui est l'espace de travail quotidien avec la sauvegarde qui est une protection contre la perte.
+
+      L'archivage ne doit pas être confondu avec une sauvegarde car il sert à la conservation organisée de données peu ou plus utilisées.
+
+      Une sauvegarde non testée ne constitue pas une garantie de reprise après incident.
+
+      L'archivage doit être distingué d'une conservation illimitée et non maîtrisée conformément aux rappels de la CNIL.
+
+      Une archive intermédiaire doit être séparée de la base active de manière physique ou logique.
+
+      La qualité d'une stratégie de sauvegarde se mesure à la capacité de restauration et non au simple fait de copier des données.
+
+EXEMPLES CITÉS.
+
+      Un RPO de vingt-quatre heures signifie qu'une sauvegarde quotidienne peut être suffisante pour l'organisation.
+
+      Un RTO de deux heures impose une restauration rapide avec une procédure préparée et des sauvegardes accessibles.
+
+      La stratégie trois-deux-un recommande d'avoir trois copies, deux types de supports et un copie hors site ou isolée.
+
+      En cas de ransomware, la procédure consiste en une restauration depuis une copie isolée après un assainissement complet du système.

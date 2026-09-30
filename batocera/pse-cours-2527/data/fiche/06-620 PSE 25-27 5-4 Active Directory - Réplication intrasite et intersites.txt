@@ -1,0 +1,215 @@
+GUIDE COMPLET DE LA RÉPLICATION ACTIVE DIRECTORY : MÉCANISMES, TOPOLOGIES ET DÉPANNAGE.
+
+LEXIQUE COMPLET.
+
+      Le KCC désigne le Knowledge Consistency Checker, un processus intégré à chaque contrôleur de domaine qui est responsable de la création et de la maintenance automatique de la topologie de réplication.
+
+      L'USN désigne l'Update Sequence Number, un compteur incrémental des modifications AD qui permet de suivre les transactions d'écriture sur un contrôleur de domaine.
+
+      L'InvocationID désigne l'identifiant unique de chaque instance de la base de données d'un contrôleur de domaine, utilisé pour détecter les risques d'USN rollback.
+
+      Le GC désigne le Global Catalog, qui est un sous-ensemble des attributs de tous les objets de la forêt stocké sur certains contrôleurs de domaine.
+
+      Le SYSVOL désigne la partition contenant les scripts et les stratégies de groupe qui est répliquée sur tous les contrôleurs de domaine du domaine.
+
+      Le DSA GUID désigne l'identifiant unique du contrôleur de domaine utilisé pour l'identification individuelle dans les métadonnées de réplication.
+
+      La liaison de site désigne un objet AD représentant un lien réseau logique entre deux sites ou plus, permettant au KCC de construire une topologie intersites.
+
+      Le serveur bridgehead désigne un contrôleur de domaine sélectionné par le KCC pour servir de passerelle lors des échanges de réplication intersites.
+
+      Le repadmin désigne l'outil de ligne de commande ou PowerShell indispensable pour inspecter, diagnostiquer et gérer l'état de la réplication Active Directory.
+
+      Le RPC désigne le protocole RPC sur IP utilisé pour la réplication intrasite sans compression car la bande passante est considérée comme élevée.
+
+      Le GPO désigne la Stratégie de Groupe qui est un objet dont la non-application peut résulter d'une défaillance de la réplication.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET ENJEUX DE LA RÉPLICATION.
+
+   A. Importance de la propagation des modifications.
+
+      Active Directory fonctionne comme un annuaire distribué au sein de l'infrastructure.
+
+      Toute modification effectuée sur un contrôleur de domaine doit impérativement être propagée à tous les autres contrôleurs de la forêt.
+
+      C'est précisément ce rôle de propagation qui définit le mécanisme de réplication.
+
+   B. Conséquences des défaillances de réplication.
+
+      Une mécanique de réplication défaillante entraîne des conséquences immédiates et graves pour l'entreprise.
+
+      Un utilisateur peut être créé sur un contrôleur de domaine mais rester totalement absent sur un autre.
+
+      Le décalage de réplication peut provoquer des échecs d'authentification pour les utilisateurs.
+
+      Les dernières Stratégies de Groupe ne sont pas appliquées correctement en cas de problème.
+
+      L'échec de la promotion d'un nouveau contrôleur de domaine peut survenir si la topologie est incorrecte.
+
+   C. Concepts d'objets et de partitions.
+
+      Seules les modifications d'objets sont répliquées, comme la création d'un utilisateur ou la modification d'un attribut.
+
+      L'annuaire est divisé en partitions nommées des contextes de nommage dont la portée de réplication diffère.
+
+      La partition Schéma et la partition Configuration sont répliquées dans toute la forêt Active Directory.
+
+      La partition des objets du domaine est répliquée sur tous les serveurs DNS de la forêt.
+
+      La partition Global Catalog contient un sous-ensemble des attributs de tous les objets.
+
+      La partition SYSVOL est répliquée sur tous les contrôleurs de domaine du domaine pour les scripts et les stratégies de groupe.
+
+II. MÉCANISMES TECHNIQUES DE SYNCHRONISATION.
+
+   A. Gestion des USN et de l'InvocationID.
+
+      Chaque contrôleur de domaine attribue un numéro de séquence de mise à jour, appelé USN, à chaque transaction d'écriture de manière monotone et croissante.
+
+      Lorsqu'un contrôleur de domaine interroge son partenaire, il fournit son USN le plus élevé pour que le partenaire renvoie toutes les modifications dont l'USN est supérieur.
+
+      L'InvocationID est un identifiant unique qui permet de reconnaître chaque instance de la base de données d'un contrôleur de domaine.
+
+      Si un contrôleur de domaine est restauré à partir d'un instantané ancien sans que le moteur AD n'en soit conscient, l'InvocationID ne change pas mais l'USN peut régresser.
+
+      Cette situation de restauration USN est un risque majeur qui rend la virtualisation sécurisée des contrôleurs de domaine essentielle depuis Windows Server deux mille douze.
+
+   B. Le vecteur à jour et prévention des boucles.
+
+      Le vecteur à jour est une table qui contient l'USN le plus récent reçu en provenance de chaque contrôleur de domaine source connu.
+
+      Ce mécanisme est utilisé pour empêcher les boucles de réplication infinies en s'assurant qu'un contrôleur de domaine ne renvoie pas à son partenaire des modifications qu'il a lui-même reçues de ce même partenaire.
+
+      L'outil repadmin /showutdvec permet d'afficher ce vecteur à jour entre deux contrôleurs de domaine.
+
+      La commande PowerShell Get-ADReplicationUpToDatenessVectorTable -Target peut également être utilisée pour inspecter ce vecteur.
+
+   C. Métadonnées et attributs de réplication.
+
+      La réplication repose sur des métadonnées d'objet AD complètes qui permettent la traçabilité des changements et l'audit.
+
+      L'ObjectGUID sert d'identifiant unique et permanent pour chaque objet, tandis que le DSA GUID identifie de manière unique le contrôleur de domaine.
+
+      La version d'un attribut AD est utilisée pour l'arbitrage des conflits et pour éviter l'écrasement de données lors de modifications simultanées.
+
+      L'horodatage de modification indique le contrôleur de domaine ayant créé la modification et permet de gérer la traçabilité.
+
+      L'utilisation de ces métadonnées est cruciale pour l'analyse complexe lors d'un incident majeur ou pour des besoins de forensic.
+
+III. LE RÔLE DU KCC ET LES TOPOLOGIES DE RÉPLICATION.
+
+   A. Fonctionnement du Knowledge Consistency Checker.
+
+      Le Knowledge Consistency Checker est un processus intégré qui s'exécute sur chaque contrôleur de domaine. Il est responsable de la création et de la maintenance automatique de la topologie de réplication.
+
+      Ce processus ajuste dynamiquement la topologie en cas d'ajout ou de suppression de contrôleur de domaine, de changement de site, de coût ou de disponibilité temporaire d'un serveur.
+
+      L'administrateur peut désactiver cette fonctionnalité si une topologie manuelle est nécessaire via l'attribut options de l'objet NTDS Settings. Les valeurs binaires 0x00000001 et 0x00000010 permettent respectivement de désactiver la topologie automatique intrasite ou intersites.
+
+   B. Topologie en anneau intrasite.
+
+      À l'intérieur d'un site, le KCC construit une topologie en anneau bidirectionnel. Chaque contrôleur de domaine se connecte à au moins deux partenaires.
+
+      Des connexions de raccourci peuvent être ajoutées dans les grands sites afin de réduire la latence.
+
+      Le délai de vérification du KCC est de quinze minutes, période durant laquelle il vérifie et ajuste la topologie de réplication intrasite.
+
+   C. Algorithme de l'arbre couvrant intersites.
+
+      Entre les sites, le KCC utilise un algorithme d'arbre couvrant à coût minimal appelé least-cost spanning tree pour éviter les chemins redondants et limiter la bande passante.
+
+      Le processus commence par l'analyse de tous les sites et liens disponibles pour ensuite calculer le coût de chaque chemin.
+
+      L'algorithme construit un arbre couvrant reliant tous les sites en choisissant les chemins les moins coûteux tout en évitant les boucles inutiles.
+
+      Le KCC ajoute de la redondance lorsque cela est nécessaire et recalcule automatiquement la structure en cas de panne ou de changement d'infrastructure.
+
+IV. CONFIGURATION ET OPTIMISATION DES FLUX.
+
+   A. Paramètres de la réplication intrasite.
+
+      La réplication intrasite repose sur un protocole RPC sur IP qui n'utilise pas la compression car la bande passante est considérée comme élevée.
+
+      Le délai de notification est fixé par défaut à quinze secondes après une modification pour prévenir les partenaires.
+
+      Un espacement de trois secondes est appliqué entre l'envoi de chaque notification à chaque partenaire.
+
+      Le processus KCC vérifie et ajuste la topologie de réplication intrasite toutes les quinze minutes.
+
+      L'administrateur peut modifier ces délais via ADSIEdit en utilisant les attributs msDSReplication-Notify-First-DSA-Delay et msDS-Replication-Notify-Subsequent-DSADelay.
+
+   B. Gestion des liaisons de site et du coût.
+
+      Une liaison de site est un objet AD nécessaire pour permettre au KCC de construire une topologie de réplication entre les sites.
+
+      Le KCC calcule le coût total d'une route en additionnant les coûts des différentes liaisons empruntées pour privilégier le chemin le plus bas.
+
+      Une valeur de coût de cent est la valeur par défaut pour une liaison de type fibre intra-pays.
+
+      Pour une liaison internationale, il est recommandé d'utiliser un coût compris entre cinq cents et mille.
+
+      Les connexions très lentes comme le satellite doivent recevoir une valeur de coût comprise entre deux mille et trente-deux mille sept cent soixante-sept.
+
+   C. Planification et compression intersites.
+
+      L'objectif principal de la réplication intersites est l'économie de la bande passante grâce à l'activation par défaut de la compression.
+
+      L'intervalle de réplication par défaut est de cent quatre-vingts minutes mais peut être ajusté entre quinze et dix mille quatre-vingts minutes.
+
+      La programmation horaire permet de définir des créneaux de réplication par tranches de quinze minutes pour autoriser ou interdire les échanges.
+
+      Le transport utilisé est l'IP par défaut, bien que le transport SMTP soit mentionné comme étant obsolète.
+
+      Le serveur tête de pont est un contrôleur de domaine sélectionné par le KCC pour gérer les échanges intersites.
+
+V. ADMINISTRATION AVANCÉE ET MAINTENANCE.
+
+   A. Serveurs tête de pont et ponts de sites.
+
+      Le KCC sélectionne automatiquement un ou plusieurs contrôleurs de domaine comme serveurs tête de pont pour gérer les échanges de réplication intersites. L'administrateur a la possibilité de désigner des serveurs passerelles préférés si les besoins de l'infrastructure l'exigent.
+
+      Par défaut, l'option Bridge all site links est activée, ce qui rend toutes les liaisons de site transitives. Cela signifie qu'un site A peut répliquer avec un site C via un site B sans qu'une liaison explicite ne soit configurée entre A et C.
+
+      Si le réseau n'est pas totalement routé, il est possible de désactiver cette transitivité. L'administrateur peut alors créer des ponts entre des sous-ensembles de liaisons spécifiques via la console Sites et Services.
+
+   B. Outils de diagnostic et commandes repadmin.
+
+      L'outil indispensable pour l'administration est repadmin, qui peut être utilisé en ligne de commande ou via PowerShell. La commande repadmin /replsummary permet d'obtenir un aperçu global de l'état de la réplication.
+
+      Pour obtenir un détail précis des réplications sortantes et entrantes ainsi que des connexions et des USN, il faut utiliser repadmin /showrepl. La commande repadmin /syncall /AeP est utilisée pour forcer une réplication complète avec tous les partenaires.
+
+      Le recalcul de la topologie par le KCC peut être forcé avec la commande repadmin /kcc. Enfin, l'inspection du vecteur à jour d'un contrôleur de domaine se fait avec repadmin /showutdvec ou via la commande PowerShell Get-ADReplicationUpToDatenessVectorTable.
+
+   C. Surveillance des événements critiques et bonnes pratiques.
+
+      Il est crucial de surveiller les événements critiques comme l'ID mille trois cent onze qui indique un site orphelin, ou l'ID mille neuf cent vingt-cinq lié à un échec DNS. Les événements mille neuf cent quatre-vingt-huit et deux mille quarante-deux signalent respectivement la réintroduction d'un objet traînant et une divergence trop importante entre les contrôleurs de domaine.
+
+      Pour une infrastructure performante, il est recommandé d'avoir au moins deux contrôleurs de domaine par site et un GC par site. La surveillance quotidienne doit être effectuée avec repadmin /replsummary ou un script PowerShell automatisé.
+
+      Avant toute opération sensible comme une migration ou un décommissionnement, il faut toujours exécuter repadmin /replsummary et dcdiag. Il est également conseillé d'éviter de désactiver la topologie automatique du KCC sauf cas exceptionnel.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'USN qui est un compteur local à chaque DC avec l'InvocationID qui identifie de manière unique l'instance de la base de données.
+
+      Une erreur majeure consiste à restaurer un DC à partir d'un instantané ancien sans gestion de virtualisation sécurisée, ce qui provoque un USN rollback.
+
+      La réplication intrasite utilise un anneau bidirectionnel tandis que la réplication intersites repose sur un arbre couvrant à moindre coût.
+
+      Il est crucial de distinguer la partition Schema qui concerne toute la forêt de la partition DomainDnsZones qui est limitée aux serveurs DNS du domaine.
+
+      La confusion est possible entre le rôle du KCC qui crée la topologie et celui des bridgehead servers qui servent de passerelles pour les échanges intersites.
+
+EXEMPLES CITÉS.
+
+      Le KCC utilise des délais de notification de quinze secondes pour la première modification et de trois secondes pour les suivantes en intrasite.
+
+      Pour une liaison de site internationale, il est recommandé d'utiliser un coût compris entre cinq cents et mille alors qu'une connexion satellite peut monter à trente-deux mille sept cent soixante-sept.
+
+      L'intervalle de réplication par défaut pour les liaisons intersites est fixé à cent quatre-vingts minutes.
+
+      L'utilisation de la commande repadmin /replsummary permet d'obtenir un aperçu global de l'état de la réplication sur l'infrastructure.
+
+      L'événement mille trois cent onze indique la présence d'un site orphelin ou non inclus dans une liaison de réplication.

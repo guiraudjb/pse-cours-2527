@@ -1,0 +1,251 @@
+GUIDE DE RÉVISION DE LA SÉCURITÉ SOUS DEBIAN treize.
+
+LEXIQUE COMPLET.
+
+      Le sigle DICP désigne la Disponibilité, l'Intégrité, la Confidentialité et la Preuve ou Traçabilité.
+
+      La règle de sauvegarde trois-deux-un consiste à conserver trois copies des données sur deux supports différents dont un copie externalisée hors site.
+
+      Le fichier /etc/shadow stocke les empreintes hachées des mots de passe avec l'algorithme SHA-cinq cent douze par défaut.
+
+      Le paquet ClamAV fournit une solution antivirus avec les commandes freshclam pour les signatures et clamscan pour l'analyse.
+
+      Le sigle AAA désigne l'Authentication, l'Authorization et l'Accounting dans le contexte d'un serveur RADIUS.
+
+      La méthode EBIOS Risk Manager de l'ANSSI est une structure d'analyse de risque qui aboutit à un plan d'action alimentant la PSSI.
+
+      Le RGS de l'ANSSI est un référentiel qui recommande des algorithmes de chiffrement comme AES-deux cent cinquante-six ou de hachage comme SHA256.
+
+      Le mécanisme de chroot permet de cloisonner un système mais ne garantit pas l'isolation des processus, du réseau ou des utilisateurs.
+
+      Les capabilities Linux permettent d'accorder un privilège précis et limité à un processus au lieu d'utiliser le bit SUID root.
+
+      L'Orange Book ou TCSEC est un référentiel qui a introduit la classe B1 basée sur le contrôle d'accès obligatoire.
+
+      Le modèle DAC désigne le contrôle d'accès discrétionnaire où le propriétaire décide seul des droits sur un fichier.
+
+      Le principe de défense en profondeur consiste à multiplier les couches de sécurité pour qu'une défaillance ne compromette pas tout le système.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX DE LA SÉCURITÉ DE L'INFORMATION.
+
+   A. Concepts DICP et DICT.
+
+      L'acronyme DICP désigne les piliers de la sécurité de l'information que sont la Disponibilité, l'Intégrité, la Confidentialité et la Preuve ou la Traçabilité.
+
+      La variante DICT est une extension de ce concept qui peut ajouter la Traçabilité comme un critère distinct de la Preuve selon les référentiels utilisés.
+
+   B. Stratégie de sauvegarde trois-deux-un.
+
+      La règle de sauvegarde trois-deux-un impose de conserver trois copies des données pour garantir leur sécurité.
+
+      Ces données doivent être réparties sur deux supports différents afin de limiter les risques de défaillance matérielle unique.
+
+      Enfin, il est impératif de posséder un copie externalisée hors site pour parer aux sinistres locaux.
+
+   C. Méthodologie d'analyse de risque EBIOS Risk Manager.
+
+      La méthode EBIOS Risk Manager est une approche développée par l'ANSSI pour structurer l'analyse de risque de manière méthodique.
+
+      Elle organise le travail à travers des ateliers successifs incluant le cadrage, les sources de risque, les scénarios stratégiques, les scénarios opérationnels et le traitement du risque.
+
+      Cette démarche structurée aboutit concrètement à la rédaction d'un plan d'action priorisé.
+
+      Ce plan d'action sert de base fondamentale pour alimenter la PSSI, qui est la politique de sécurité des systèmes d'information.
+
+II. GESTION DES ACCÈS ET AUTHENTIFICATION.
+
+   A. Sécurité des mots de passe et hachage SHA-cinq cent douze.
+
+      Sur Debian treize, les empreintes hachées des mots de passe sont stockées dans le fichier /etc/shadow.
+
+      Ce fichier est distinct de /etc/passwd pour garantir une meilleure sécurité du système.
+
+      L'algorithme utilisé par défaut pour le hachage est le SHA-cinq cent douze, identifiable par le préfixe $six$.
+
+      Chaque compte bénéficie d'un sel aléatoire propre pour renforcer la protection des données.
+
+   B. Configuration et modules PAM.
+
+      Le système PAM permet de gérer l'authentification via différents types de modules de contrôle.
+
+      Un module de type required doit réussir pour que l'accès soit accordé, mais l'évaluation de la pile continue même en cas d'échec.
+
+      Un module de type requisite doit également réussir, mais un échec interrompt immédiatement le processus d'authentification.
+
+      L'utilisation de required permet notamment d'assurer une journalisation systématique avant de notifier le refus d'accès.
+
+      L'usage de requisite permet d'éviter l'exécution de modules de session inutiles en cas d'échec précoce.
+
+   C. Protocoles d'authentification centralisée RADIUS (AAA).
+
+      Le protocole RADIUS repose sur le concept AAA qui signifie Authentication, Authorization et Accounting.
+
+      L'Authentication sert à vérifier l'identité de l'utilisateur lors de sa connexion.
+
+      L'Authorization détermine les droits et les privilèges qui seront accordés à l'utilisateur.
+
+      L'Accounting assure la journalisation de l'usage et des activités effectuées sur le système.
+
+      Un cas d'usage typique en entreprise est l'authentification centralisée des accès Wi-Fi via le standard huit cent deux.1X ou WPA2-Enterprise.
+
+   D. Recommandations de l'ANSSI et du NIST pour les mots de passe.
+
+      Les recommandations de l'ANSSI et du NIST SP huit cents-63B s'opposent à certaines pratiques de gestion de mots de passe.
+
+      Le renouvellement forcé et trop fréquent des mots de passe est déconseillé car il incite les utilisateurs à créer des variations prévisibles.
+
+      L'authentification par clé SSH est considérée comme un mécanisme structurellement plus robuste que les mots de passe.
+
+      La clé privée ne transite jamais sur le réseau et reste insensible aux attaques par brute force.
+
+      Désactiver les clés SSH pour simplifier la gestion affaiblit la sécurité globale du système au lieu de la renforcer.
+
+III. PROTECTION DU SYSTÈME ET DURCISSEMENT.
+
+   A. Gestion des privilèges : SUID root vs Capabilities Linux.
+
+      Le bit SUID root accorde l'intégralité des privilèges root à un processus sans aucune granularité.
+
+      Cette approche présente un risque élevé car elle donne tous les droits au binaire concerné.
+
+      Les capabilities Linux permettent d'accorder un privilège précis et limité au lieu de donner tous les droits root.
+
+      Par exemple, la capability cap_net_bind_service permet d'ouvrir un port inférieur à mille vingt-quatre sans être root.
+
+      L'utilisation des capabilities respecte le principe de moindre privilège en réduisant la surface d'exploitation.
+
+      Cela limite les conséquences en cas de faille détectée dans un binaire spécifique.
+
+   B. Contrôle d'accès obligatoire et AppArmor.
+
+      Le contrôle d'accès obligatoire est un concept introduit par la classe B1 de l'Orange Book.
+
+      Ce mécanisme permet d'imposer une politique de sécurité indépendamment de la volonté du propriétaire d'un fichier.
+
+      AppArmor repose sur ce principe de confinement pour appliquer des règles de sécurité strictes.
+
+      La politique de sécurité s'applique au binaire quel que soit l'utilisateur qui l'exécute.
+
+      Cela se distingue du modèle discrétionnaire classique où le propriétaire décide seul des droits.
+
+   C. Isolation des processus : chroot vs Namespaces.
+
+      Le mécanisme chroot permet de changer le répertoire racine d'un processus mais offre des garanties limitées.
+
+      Il ne permet pas de cloisonner les processus via un PID namespace ou de gérer le réseau.
+
+      Les utilisateurs partagent également les mêmes UID avec l'hôte dans un environnement chroot.
+
+      Un processus root à l'intérieur d'un chroot peut parfois s'en échapper par un chroot breakout.
+
+      Les namespaces offrent une isolation réelle de ces différentes dimensions du système.
+
+   D. Configuration des montages sécurisés comme noexec.
+
+      L'option de montage noexec sur le répertoire /tmp est une mesure recommandée pour le durcissement.
+
+      Cette option empêche l'exécution de binaires directement depuis ce répertoire.
+
+      Cependant, cette configuration peut poser des problèmes lors de l'utilisation de certains outils en production.
+
+      Certains installeurs ou scripts tiers extraient et exécutent des fichiers temporaires depuis /tmp.
+
+      L'activation de noexec peut donc faire échouer ces opérations et casser des outils légitimes.
+
+      Il est nécessaire de valider cette option dans un environnement de test avant tout déploiement.
+
+IV. SÉCURITÉ RÉSEAU ET SURVEILLANCE.
+
+   A. Filtrage de trafic avec nftables et fail2ban.
+
+      Le filtrage réseau repose sur l'utilisation de règles nftables pour gérer le trafic entrant.
+
+      Une politique de sécurité efficace peut consister à appliquer une règle de type drop sur l'input par défaut.
+
+      L'outil fail2ban intervient comme une couche de protection supplémentaire pour bloquer les tentatives d'accès malveillantes.
+
+      Ces deux mécanismes agissent sur l'accès initial au système pour prévenir les intrusions avant qu'elles ne soient établies.
+
+   B. Analyse des journaux avec journald.
+
+      Le système utilise journald pour la gestion et la consultation des journaux de bord.
+
+      Il est possible de consulter les journaux d'un service précis en utilisant la commande journalctl.
+
+      L'option --since today permet de limiter l'affichage des événements depuis le dernier démarrage du système.
+
+      L'utilisation de l'argument -u permet de cibler spécifiquement un service pour faciliter l'analyse de sécurité.
+
+   C. Détection et protection antivirus avec ClamAV.
+
+      La solution antivirus disponible sur Debian est fournie par le paquet ClamAV.
+
+      L'installation nécessite les paquets clamav et clamav-daemon pour assurer un fonctionnement optimal.
+
+      La commande freshclam est utilisée pour effectuer la mise à jour des signatures de virus.
+
+      L'analyse du système peut être lancée avec la commande clamscan ou clamdscan en mode démon.
+
+V. CRYPTOGRAPHIE ET CONFORMITÉ.
+
+   A. Algorithmes recommandés et proscrits par le RGS.
+
+      Le RGS de l'ANSSI définit des standards pour garantir la robustesse des échanges cryptographiques.
+
+      Il est impératif de proscrire l'utilisation des algorithmes de chiffrement symétrique DES et RC4.
+
+      Ces anciens protocoles doivent être remplacés par l'utilisation de l'algorithme AES-deux cent cinquante-six.
+
+      Concernant les fonctions de hachage, les algorithmes MD5 et SHA-un sont désormais interdits.
+
+      Leurs remplaçants recommandés sont les algorithmes SHA256 ou des versions de sécurité supérieure.
+
+   B. Principes de la défense en profondeur.
+
+      La défense en profondeur repose sur l'idée que la défaillance d'une couche ne doit pas entraîner la compromission totale du système.
+
+      Chaque mesure de sécurité couvre un vecteur d'attaque différent pour limiter les capacités d'un attaquant.
+
+      Par exemple, AppArmor peut limiter les actions d'un processus compromis même si l'accès initial a été obtenu.
+
+      L'utilisation des capabilities au lieu du bit SUID root réduit la surface d'exploitation en appliquant le principe de moindre privilège.
+
+      Renforcer une couche secondaire ne doit jamais se faire au détriment d'une couche fondamentale comme l'authentification par clé SSH.
+
+   C. Évolution des référentiels de sécurité de l'Orange Book aux Critères Communs.
+
+      L'Orange Book, aussi nommé TCSEC, est aujourd'hui un référentiel obsolète remplacé par les Critères Communs.
+
+      Il reste néanmoins pertinent pour comprendre des mécanismes actuels comme AppArmor grâce à la classe B1.
+
+      La classe B1 introduit le concept de contrôle d'accès obligatoire ou MAC via des étiquettes de sensibilité.
+
+      Ce principe permet d'imposer une politique de sécurité indépendamment de la volonté du propriétaire d'un fichier.
+
+      Cela s'oppose au modèle discrétionnaire classique où l'utilisateur décide seul des droits sur ses ressources.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le fichier /etc/passwd avec /etc/shadow car ce dernier contient les empreintes hachées des mots de passe.
+
+      Une confusion courante existe entre les modules PAM required et requisite car le premier continue l'évaluation même en cas d'échec alors que le second interrompt immédiatement le processus.
+
+      L'utilisation du bit SUID root est moins sécurisée que les capabilities Linux car elle accorde la totalité des privilèges root au lieu d'un droit précis et limité.
+
+      Le mécanisme chroot est moins robuste que la conteneurisation par namespaces car il ne permet pas d'isoler réellement les processus, le réseau ou les utilisateurs.
+
+      Le renforcement excessif de la complexité des mots de passe peut être contre-productif selon l'ANSSI et le NIST SP huit cents-63B car cela incite à des variations prévisibles.
+
+EXEMPLES CITÉS.
+
+      La règle de sauvegarde trois-deux-un impose de conserver trois copies des données sur deux supports différents dont un copie externalisée.
+
+      Pour la protection antivirus sur Debian treize, l'utilisation de ClamAV nécessite les commandes freshclam pour les signatures et clamscan pour l'analyse.
+
+      L'algorithme de hachage par défaut pour les mots de passe sur Debian treize est le SHA-cinq cent douze qui est identifiable par le préfixe $six$.
+
+      Le protocole RADIUS utilise le modèle AAA pour l'authentification, l'autorisation et la comptabilité, comme dans le cas du Wi-Fi d'entreprise en huit cent deux.1X.
+
+      Le remplacement des algorithmes obsolètes comme le MD5 ou le SHA-un par le SHA256 est une recommandation du RGS de l'ANSSI.

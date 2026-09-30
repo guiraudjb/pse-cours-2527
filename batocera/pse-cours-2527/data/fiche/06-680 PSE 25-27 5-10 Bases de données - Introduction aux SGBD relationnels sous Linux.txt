@@ -1,0 +1,275 @@
+INTRODUCTION ET FONCTIONNEMENT DES SYSTÈMES DE GESTION DE BASES DE DONNÉES RELATIONNELS.
+
+LEXIQUE COMPLET.
+
+      Le SGBDR désigne un ensemble de programmes qui permet de gérer une base de données relationnelle en fournissant divers services comme la gestion des transactions ou l'optimisation du requêtage.
+
+      Le SQL désigne le langage de haut niveau utilisé pour l'interrogation et la gestion des données au sein des bases de données relationnelles.
+
+      L'ANSI désigne l'American National Standards Institute qui a normalisé le langage SQL en mille neuf cent quatre-vingt-six.
+
+      Le LDD désigne le langage de définition de données qui permet de définir le schéma relationnel, les types de données et les relations entre les tables.
+
+      Le LMD désigne le langage de manipulation de données qui permet d'ajouter, de supprimer ou de modifier des données dans la base.
+
+      Le LID désigne le langage d'interrogation de données qui regroupe l'interrogation des données et les clauses pour les combiner.
+
+      Le LCD désigne le langage de contrôle de données qui gère la sécurité par l'attribution et le retrait de privilèges sur les objets.
+
+      Le TCL désigne le langage de contrôle des transactions qui encadre les opérations pour garantir les propriétés ACID.
+
+      Le principe ACID désigne les propriétés d'atomicité, de cohérence, d'isolation et de durabilité qui garantissent la fiabilité des transactions.
+
+      Le redo log désigne un journal de transaction en ligne qui enregistre en temps réel toutes les modifications apportées à la base.
+
+      L'index B-Tree désigne une structure de données arborescente utilisée pour stocker les valeurs des clés de façon ordonnée afin de retrouver rapidement une valeur.
+
+      La métabase désigne un dictionnaire de données centralisé qui décrit la structure, la nature et les règles de gestion de toutes les données de la base.
+
+COURS DÉTAILLÉ.
+
+I. PRÉSENTATION ET FONCTIONNALITÉS DES SGBDR.
+
+   A. Définition et rôle du SGBDR.
+
+      Une base de données relationnelle est un ensemble d'informations structurées et organisées dans des tables à deux dimensions.
+
+      Le SGBDR est un logiciel composé d'un ensemble de programmes qui permet de gérer ces bases de données relationnelles.
+
+      Il fournit de nombreux services tels que l'implémentation du langage SQL, la gestion de la structure des données et l'application de contraintes d'intégrité.
+
+      Ce système assure également la gestion des transactions, l'indexation des données, la sécurité ainsi que l'optimisation du requêtage.
+
+      Le SGBDR offre une abstraction vis-à-vis de la plateforme matérielle, du système d'exploitation et de l'organisation du stockage sous-jacent.
+
+      Il intègre des fonctions d'administration, une tolérance aux pannes et des capacités de répartition de charge.
+
+   B. Historique et évolution du langage SQL.
+
+      Le mathématicien Edgar Frank Codd, chercheur chez IBM, invente le modèle relationnel en mille neuf cent soixante-dix.
+
+      En mille neuf cent soixante-quatorze, les chercheurs Donald Chamberlin et Raymond Boyce créent le langage SEQUEL pour tester ce nouveau modèle.
+
+      Le nom SEQUEL est par la suite raccourci pour devenir le SQL.
+
+      L'American National Standards Institute normalise le langage SQL en mille neuf cent quatre-vingt-six, puis l'ISO le fait en mille neuf cent quatre-vingt-sept.
+
+      Bien qu'il existe une norme, le SQL possède différents dialectes comme le PL/SQL pour Oracle Database ou le plpgsql pour Postgresql.
+
+      Ces dialectes permettent d'ajouter des fonctionnalités procédurales tout en respectant les commandes standards comme SELECT, UPDATE, DELETE, INSERT et WHERE.
+
+   C. Les cinq langages du SQL.
+
+      Le LDD est le langage de définition de données qui permet de définir le schéma relationnel, les types de données et les relations entre les tables.
+
+      Il utilise des commandes telles que CREATE, ALTER, DROP et RENAME pour agir sur les objets de la base.
+
+      Le LMD est le langage de manipulation de données qui sert à ajouter, supprimer ou modifier les données via les commandes SELECT, INSERT, UPDATE et DELETE.
+
+      Le LID est le langage d'interrogation de données qui regroupe l'interrogation et les clauses de combinaison comme FROM, WHERE, GROUP BY, HAVING et ORDER BY.
+
+      Le LCD est le langage de contrôle de données qui gère la sécurité par l'attribution et le retrait de privilèges avec les instructions GRANT et REVOKE.
+
+      Le TCL est le langage de contrôle des transactions qui garantit les propriétés ACID grâce aux instructions BEGIN, COMMIT et ROLLBACK.
+
+II. LE MODÈLE RELATIONNEL ET LA MANIPULATION DES DONNÉES.
+
+   A. Structure des relations et typologie des données.
+
+      Dans le modèle relationnel, une base de données est composée d'un ensemble de tables à deux dimensions appelées des relations.
+
+      Chaque relation contient un ensemble de lignes que l'on nomme des tuples.
+
+      Les colonnes de ces tables constituent des attributs qui peuvent servir de clés d'accès, soit par un seul attribut, soit par une clé composite.
+
+      Chaque champ ou valeur peut être d'un type défini comme un entier, un réel, du texte, un booléen ou une chaîne de caractères.
+
+      Les éditeurs de bases de données proposent leurs propres implémentations de ces typologies de données.
+
+   B. Clés, contraintes et intégrité.
+
+      Une clé est un groupe d'attributs permettant d'identifier un enregistrement unique au sein d'une relation.
+
+      Toute relation doit disposer au minimum d'une clé candidate pour garantir l'unicité de la donnée.
+
+      La clé primaire est une clé candidate choisie pour servir de clé étrangère dans d'autres relations.
+
+      La clé étrangère est un attribut dont la valeur sert de référence à la clé primaire d'une autre relation.
+
+      Des contraintes d'unicité, de clés primaires ou étrangères et des contraintes d'intégrité sont appliquées pour garantir la cohérence des données.
+
+   C. Les types de jointures et les vues.
+
+      Pour extraire des données de plusieurs relations, on utilise la notion de jointure afin de définir la plage de données à retourner.
+
+      La jointure interne ou INNER JOIN ne retourne que les tuples possédant une correspondance exacte dans les deux relations.
+
+      La jointure externe gauche ou LEFT JOIN retourne tous les tuples de la relation de gauche, même sans correspondance à droite.
+
+      La jointure externe droite ou RIGHT JOIN conserve tous les tuples de la relation de droite, tandis que la jointure externe complète ou FULL JOIN conserve tous les tuples des deux relations.
+
+      Une vue SQL est une table virtuelle qui affiche dynamiquement les données des tables sources au moment de l'interrogation.
+
+      L'utilisation de vues permet de simplifier le code applicatif et de restreindre l'accès à certaines données sensibles.
+
+III. GESTION DES TRANSACTIONS ET PROPRIÉTÉS ACID.
+
+   A. Principe du tout ou rien.
+
+      Une transaction est définie comme une suite d'opérations SQL exécutée sous la forme d'un bloc unique et indissociable.
+
+      Le principe fondamental repose sur la notion du tout ou rien pour garantir la fiabilité des opérations.
+
+      Soit l'intégralité des opérations de la transaction réussit et est enregistrée définitivement dans la base de données.
+
+      Soit une seule opération échoue et l'intégralité du bloc est alors annulée pour ramener la base à son état initial.
+
+      Une transaction débute par l'instruction BEGIN et se termine par une opération COMMIT pour valider l'ensemble de la procédure.
+
+      Si l'opération de COMMIT échoue, une procédure de ROLLBACK est lancée afin d'annuler toute opération enregistrée durant la transaction.
+
+   B. Les quatre propriétés ACID.
+
+      Les propriétés ACID garantissent la fiabilité, la sécurité et la stabilité d'une base de données lors de l'exécution des transactions.
+
+      L'atomicité considère qu'une transaction est une entité unique et indivisible qui ne peut pas être validée partiellement.
+
+      La cohérence impose que la transaction fasse impérativement passer la base de données d'un état valide à un autre état valide.
+
+      L'isolation assure que chaque transaction s'exécute comme si elle était la seule sur la base de données sans interférence.
+
+      La durabilité garantit qu'une fois la transaction validée, ses effets sont définitifs et ne peuvent plus être perdus.
+
+IV. ORGANISATION PHYSIQUE ET LOGIQUE DES DONNÉES.
+
+   A. Abstraction entre logique et stockage physique.
+
+      Le système d'exploitation ne possède pas la notion de table mais utilise uniquement la notion de fichier.
+
+      Le moteur de base de données relationnelle assure la liaison entre l'organisation logique sous forme de tables et le stockage physique sous forme de fichiers.
+
+      Les objets logiques tels que les tables ou les index sont stockés dans des espaces logiques nommés tablespaces.
+
+      Une base de données est composée de plusieurs tablespaces qui sont stockés dans un espace physique constitué de fichiers.
+
+      Ces fichiers de données sont appelés datafiles sous Oracle ou PGDATA sous Postgresql.
+
+   B. Rôle des schémas et des tablespaces.
+
+      Le schéma sert de conteneur logique au sein d'une base de données et fait office d'espace de noms pour organiser les objets comme les tables, les vues ou les fonctions.
+
+      L'utilisation des schémas permet de segmenter et de gérer les objets de manière structurée afin d'améliorer l'organisation, la sécurité et la gestion des données.
+
+      On fait généralement correspondre deux tablespaces à chaque schéma de base de données, l'un pour les données et l'autre pour les index.
+
+      Chaque tablespace étant monté sur un espace de stockage dédié, cela permet par exemple de dédier un système de stockage plus rapide d'accès pour les données.
+
+   C. Le dictionnaire de données et la gestion du cache.
+
+      Un dictionnaire de données centralisé appelé metabase sert de référentiel en décrivant la structure, la nature et les règles de gestion de toutes les données.
+
+      La metabase assure la conservation de la liste exhaustive des tables, des champs et des relations pour garantir l'unicité du nommage et éviter les incohérences.
+
+      Les bases de données utilisent une gestion optimisée du cache mémoire car la mémoire vive est un million de fois plus rapide que la mémoire de stockage.
+
+      Le système conserve en cache les blocs manipulés le plus récemment, les requêtes récentes ainsi que leur plan d'exécution pour réduire les accès au disque dur.
+
+      Le dictionnaire des données peut également être conservé en cache pour améliorer de manière notable les performances.
+
+V. SÉCURITÉ, CONTINUITÉ ET OPTIMISATION DU STOCKAGE.
+
+   A. Gestion des journaux redo log et archive log.
+
+      Le SGBDR utilise des journaux internes pour garantir la sécurité des données et la tolérance aux pannes.
+
+      Les redo log sont des journaux de transaction en ligne constitués de fichiers binaires circulaires qui enregistrent les modifications en temps réel.
+
+      Un processus dédié écrit les transactions dans ces fichiers avant leur écriture sur les fichiers de données pour permettre un crash recovery en cas de panne.
+
+      Les archive log sont des copies de redo log pleins qui permettent une restauration complète des données à un point précis dans le temps.
+
+      Leur utilisation facilite également l'exécution de sauvegardes à chaud pendant que la base de données est en ligne.
+
+   B. Fonctionnement et utilité des index B-Tree.
+
+      Les index servent à accélérer la recherche de données dans les tables en évitant de parcourir l'ensemble des enregistrements.
+
+      Un index contient la clé de recherche ainsi qu'une référence vers l'enregistrement et permet d'appliquer des méthodes de recherche par dichotomie.
+
+      Les index B-Tree utilisent une structure arborescente où les valeurs des clés sont stockées de façon ordonnée de la racine vers les feuilles.
+
+      Comme les feuilles sont chaînées entre elles, le SGBDR peut effectuer des recherches séquentielles de feuille en feuille sans remonter les branches.
+
+      Si les index améliorent les performances de lecture, ils peuvent dégrader les performances en écriture car le SGBDR doit les maintenir à jour.
+
+VI. ARCHITECTURE INTERNE ET PROCESSUS DE TRAITEMENT.
+
+   A. Analyse et contrôle des requêtes.
+
+      Le processus débute par l'analyseur qui reçoit les commandes de définition de schéma ou les requêtes SQL pour les traiter.
+
+      L'analyseur effectue une analyse syntaxique pour vérifier la conformité à la grammaire et une analyse sémantique pour valider la vue référencée ou le schéma.
+
+      Une fois analysée, la requête est traduite en un format interne où les noms sont remplacés par des références internes.
+
+      Le contrôleur assure ensuite la transcription des requêtes sur les vues en remplaçant les références aux objets de la vue par leur définition en termes d'objets du schéma.
+
+      C'est à ce niveau que le système gère le contrôle des droits d'accès pour l'autorisation de lire ou d'écrire un objet ainsi que le contrôle d'intégrité.
+
+   B. Optimisation et exécution des plans d'accès.
+
+      L'optimiseur a pour rôle essentiel d'élaborer un plan d'accès optimisé en décomposant les requêtes en opérations d'accès élémentaires.
+
+      Il choisit un ordre d'exécution optimal et les méthodes d'accès en s'appuyant souvent sur un modèle de coût pour évaluer chaque plan d'accès.
+
+      Le résultat de cette optimisation peut être exécuté directement ou sauvegardé en mémoire pour permettre des exécutions multiples ultérieures.
+
+      L'exécuteur prend ensuite le relais pour exécuter le plan d'accès choisi en utilisant les méthodes d'accès pour accéder aux fichiers via des index ou des liens.
+
+      Ce composant est également chargé de la gestion des problèmes de concurrence d'accès et de l'atomicité des transactions.
+
+VII. CONCLUSION ET PERSPECTIVES DU MODÈLE RELATIONNEL.
+
+   A. Limites face au Big Data et au Cloud.
+
+      L'arrivée du Cloud et l'explosion de la volumétrie des données ont mis en évidence certaines limites des schémas relationnels stricts.
+
+      La grande variété des données à stocker et la vitesse de traitement attendue imposent de nouveaux défis technologiques.
+
+      Ces évolutions ont favorisé l'émergence des bases de données NoSQL qui offrent une flexibilité accrue pour les données hétérogènes.
+
+      Les modèles NoSQL orientés documents, clés-valeurs ou graphes permettent une meilleure scalabilité pour l'interrogation de ces données.
+
+   B. Convergence entre relationnel et NoSQL.
+
+      Le modèle relationnel demeure incontournable pour les applications exigeantes en termes d'intégrité comme la gestion de stocks ou les données financières.
+
+      Les SGBDR ont su évoluer en absorbant les innovations du secteur pour répondre aux nouvelles attentes du numérique.
+
+      Ils intègrent désormais des fonctionnalités NoSQL telles que le stockage de documents au format JSON.
+
+      L'adaptation au Cloud se traduit par une meilleure prise en charge de la répartition géographique des données et de l'indexation géospatiale.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le SQL qui est un langage avec le SGBDR qui est le logiciel gérant la base.
+
+      Le SQL n'est pas un langage de programmation pur mais il possède des extensions procédurales comme le PL/SQL ou le plpgsql.
+
+      Une confusion courante est de croire que les requêtes sont portables d'un système à un autre alors qu'elles dépendent des dialectes spécifiques.
+
+      Il est important de distinguer la vue qui est une table virtuelle de la vue matérialisée qui possède un stockage physique sur le disque.
+
+      L'index améliore les performances de lecture mais il peut dégrader les performances d'écriture car il doit être maintenu à jour.
+
+      Une transaction ne peut pas être validée partiellement car elle doit respecter l'atomicité du principe du tout ou rien.
+
+EXEMPLES CITÉS.
+
+      Le modèle relationnel a été inventé en mille neuf cent soixante-dix par le mathématicien Edgar Frank Codd chez IBM.
+
+      Les chercheurs Donald Chamberlin et Raymond Boyce ont créé le langage SEQUEL en mille neuf cent soixante-quatorze avant qu'il ne devienne le SQL.
+
+      Le langage SQL a été normalisé par l'ANSI en mille neuf cent quatre-vingt-six puis par l'ISO en mille neuf cent quatre-vingt-sept.
+
+      Les commandes standards comme SELECT, UPDATE, DELETE, INSERT et WHERE restent les mêmes malgré les différents dialectes.

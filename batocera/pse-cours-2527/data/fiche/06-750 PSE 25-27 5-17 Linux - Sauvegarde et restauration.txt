@@ -1,0 +1,295 @@
+GUIDE COMPLET SUR LA SAUVEGARDE ET LA RESTAURATION SOUS LINUX.
+
+LEXIQUE COMPLET.
+
+      Le RTO ou Durée Maximale d’Interruption Admissible désigne le temps maximal acceptable pendant lequel une application peut rester indisponible avant de causer un préjudice.
+
+      Le RPO ou Perte de Données Maximale Admissible désigne la quantité maximale de données qui peut être perdue entre deux sauvegardes successives.
+
+      Le sigle NAS désigne un système de stockage en réseau permettant de mutualiser les ressources de stockage.
+
+      Le sigle SAN désigne une technologie de stockage en réseau utilisée pour offrir des capacités importantes et faciliter la mutualisation.
+
+      Le sigle LTO désigne une technologie de bandes magnétiques offrant de grandes capacités et une bonne fiabilité pour l'archivage de longue durée.
+
+      Le protocole NDMP désigne un protocole de communication ouvert utilisé pour la sauvegarde des équipements de stockage en réseau de type NAS.
+
+      Le protocole S3 désigne un standard de stockage objet utilisé pour externaliser les sauvegardes vers des infrastructures cloud hautement disponibles.
+
+      La commande tar désigne un outil natif Linux permettant de créer des archives de fichiers et de répertoires tout en conservant les permissions.
+
+      La commande rsync désigne un outil permettant de synchroniser des fichiers entre deux systèmes en ne transférant que les différences détectées.
+
+      La commande dd désigne un outil de copie de bas niveau utilisé pour cloner des partitions ou des disques entiers.
+
+      Le logiciel Bacula désigne une solution de sauvegarde mutualisée reposant sur une architecture modulaire avec un Director, un Storage Daemon et un File Daemon.
+
+      Le logiciel VEEAM désigne une solution de sauvegarde moderne utilisée pour les infrastructures virtualisées et hybrides.
+
+COURS DÉTAILLÉ.
+
+I. CONCEPTION D'UNE ARCHITECTURE DE SAUVEGARDE.
+
+   A. Identification des besoins et des risques.
+
+      La construction d'une architecture de sauvegarde ne se limite pas à la simple copie de fichiers sur un support externe. Elle nécessite une réflexion stratégique pour garantir la sécurité des données et la continuité des services.
+
+      Il est indispensable d'identifier précisément les éléments à sauvegarder comme les systèmes de fichiers, les répertoires utilisateurs, les bases de données ou les fichiers de configuration. Une mauvaise identification des éléments critiques peut entraîner des conséquences importantes lors d'une restauration.
+
+      Les risques peuvent provenir de pannes matérielles rendant un disque inaccessible ou d'erreurs humaines provoquant la suppression de fichiers. Les corruptions logicielles et les attaques informatiques comme les ransomwares représentent également des menaces majeures.
+
+      Les catastrophes physiques telles que les incendies, les dégâts des eaux ou les coupures électriques doivent être prises en compte dans la stratégie. Cette étape permet de déterminer quelles données sont stratégiques ou irremplaçables.
+
+   B. Définition des objectifs de disponibilité RTO et RPO.
+
+      L'architecture de sauvegarde doit répondre à des objectifs de disponibilité précis pour chaque application. Il est nécessaire de déterminer la Durée Maximale d'Interruption Admissible, plus connue sous l'acronyme RTO.
+
+      Certaines applications critiques doivent pouvoir être restaurées en quelques minutes, tandis que d'autres tolèrent plusieurs heures d'arrêt. Ces paramètres influencent directement la fréquence des sauvegardes et le choix des technologies.
+
+      Il faut également définir la quantité maximale de données pouvant être perdues entre deux sauvegardes. Cette notion correspond à la Perte de Données Maximale Admissible, désignée par l'acronyme RPO.
+
+      La multiplication des points de sauvegarde permet de réduire le RPO. La stratégie de sauvegarde influe directement sur la capacité de l'entreprise à limiter cette perte de données.
+
+   C. Critères de volume et de performance.
+
+      Le volume des données est un critère essentiel car une quantité importante augmente les temps de sauvegarde et de restauration. Il devient alors nécessaire de mettre en place des mécanismes d'optimisation comme la compression ou la parallélisation.
+
+      Les sauvegardes incrémentales sont utilisées pour gérer ces volumes. Les performances de l'infrastructure doivent être prises en considération pour ne pas dégrader les serveurs de production.
+
+      Il est fréquent de devoir planifier les sauvegardes pendant les périodes de faible activité. Cela se fait généralement la nuit ou durant les week-ends pour éviter de perturber les utilisateurs.
+
+   D. Choix des supports et externalisation.
+
+      Le choix des supports représente une étape fondamentale et dépend du volume, de la vitesse, de la capacité et du budget. Les sauvegardes sur disque permettent des restaurations beaucoup plus rapides.
+
+      Les baies de stockage comme les baies NAS ou SAN offrent des capacités importantes et facilitent la mutualisation. Les bandes magnétiques de type LTO sont encore utilisées pour l'archivage de longue durée grâce à leur coût réduit.
+
+      L'externalisation des sauvegardes est une pratique essentielle pour se protéger contre les sinistres majeurs. Conserver les sauvegardes dans le même bâtiment que les serveurs de production représente un risque majeur.
+
+      Les structures mettent en place des copies distantes sur un second site ou sur des infrastructures externalisées. Cela peut se faire par réplication des données ou par le transport de bandes.
+
+II. STRATÉGIES ET MÉTHODES DE SAUVEGARDE.
+
+   A. Méthodes de sauvegarde complète, différentielle et incrémentale.
+
+      La sauvegarde complète consiste à copier l'intégralité des données sélectionnées pour offrir la meilleure sécurité possible. Cette méthode permet une restauration simple et rapide mais nécessite beaucoup d'espace de stockage et un temps important.
+
+      La sauvegarde différentielle enregistre uniquement les fichiers qui ont été modifiés depuis la dernière sauvegarde complète. Elle réduit la quantité de données à sauvegarder chaque jour tout en maintenant une restauration relativement simple.
+
+      La sauvegarde incrémentale sauvegarde uniquement les fichiers modifiés depuis la dernière sauvegarde, qu'elle soit complète ou incrémentale. Cette solution minimise l'espace utilisé et accélère les processus quotidiens mais rend la restauration plus complexe.
+
+      La restauration incrémentale est plus difficile car elle nécessite l'ensemble des sauvegardes intermédiaires pour fonctionner. Les entreprises modernes combinent souvent ces méthodes pour trouver un compromis entre rapidité, sécurité et coût.
+
+      La stratégie de sauvegarde influe directement sur la Perte de Données Maximale Admissible appelée PDMA ou RPO en anglais. La multiplication des points de sauvegarde permet de réduire efficacement ce paramètre critique.
+
+   B. Organisation des supports et procédures de restauration.
+
+      Les sauvegardes sur disque sont les plus répandues car elles permettent des restaurations rapides et une grande simplicité. Les baies NAS et SAN offrent des capacités importantes et facilitent la mutualisation du stockage.
+
+      Les bandes magnétiques de type LTO sont encore utilisées pour l'archivage de longue durée grâce à leur coût réduit. Elles permettent de stocker de très gros volumes de données avec une bonne fiabilité.
+
+      L'externalisation des sauvegardes est une pratique essentielle pour se protéger contre les sinistres majeurs. Les structures utilisent des copies distantes sur un second site ou des infrastructures externalisées.
+
+      La mise en place des procédures de restauration est aussi importante que la sauvegarde elle-même. Il faut définir précisément les méthodes de restauration, les priorités de remise en service et les délais d'interruption.
+
+      Les restaurations doivent être testées régulièrement pour vérifier l'intégrité des données et la validité des procédures. Une sauvegarde qui n'est pas testée peut s'avérer totalement inutilisable lors d'un incident réel.
+
+   C. Importance de la documentation et des tests.
+
+      Une architecture de sauvegarde efficace doit impérativement intégrer des procédures de contrôle et de validation. Il ne suffit pas de vérifier la fin des tâches, il faut s'assurer que les données sont récupérables.
+
+      Toute stratégie de sauvegarde doit être documentée de manière claire pour permettre une intervention rapide en cas de crise. Cette documentation doit être régulièrement mise à jour pour suivre l'évolution de l'infrastructure.
+
+      Les procédures de sauvegarde et de restauration doivent être décrites avec précision pour guider les intervenants. Beaucoup de projets découvrent trop tard que leurs sauvegardes sont inexploitables par manque de tests.
+
+      Les tests réguliers permettent de vérifier l'intégrité des données ainsi que les temps de restauration. Ils garantissent que les procédures documentées sont toujours applicables et efficaces en situation réelle.
+
+III. TYPOLOGIES DES ARCHITECTURES DE SAUVEGARDE.
+
+   A. L'architecture unitaire et ses limites.
+
+      L'architecture unitaire représente le modèle le plus simple où chaque serveur Linux réalise ses propres sauvegardes de manière autonome.
+
+      Les données sont généralement stockées sur un disque local, un périphérique externe ou une bande directement connectée au serveur en utilisant des outils natifs comme tar, cpio, dd ou dump.
+
+      Cette solution présente l'avantage d'être simple à mettre en œuvre avec des coûts relativement faibles, ce qui convient aux petites structures ou aux projets avec peu de serveurs.
+
+      Cependant, cette architecture atteint vite ses limites lorsque le nombre de serveurs augmente car chaque machine doit être administrée individuellement.
+
+      La gestion devient difficile à superviser et les risques d'erreur humaine augmentent, tout comme la complexité des restaurations si les supports sont répartis.
+
+      Enfin, ce modèle ne permet pas de mutualiser les ressources, ce qui peut entraîner une multiplication des coûts matériels pour chaque serveur.
+
+   B. L'architecture mutualisée et ses avantages.
+
+      L'architecture mutualisée repose sur la centralisation des sauvegardes sur un serveur dédié capable de gérer plusieurs clients Linux, Unix ou Windows.
+
+      Une baie NAS peut également devenir un client via le protocole NDMP, permettant ainsi d'envoyer les données vers ce serveur de sauvegarde centralisé.
+
+      L'administration est simplifiée puisque toutes les opérations sont pilotées depuis une console unique, ce qui diminue les erreurs humaines grâce à l'automatisation.
+
+      Cette approche permet de partager les lecteurs de bandes, les bibliothèques robotisées et les espaces de stockage entre plusieurs serveurs pour réduire les coûts.
+
+      La supervision est plus efficace car les administrateurs peuvent suivre l'état des sauvegardes, recevoir des alertes et consulter des rapports détaillés.
+
+      Les restaurations sont mieux organisées et plus rapides grâce à l'utilisation de catalogues centralisés qui référencent l'ensemble des données sauvegardées.
+
+   C. Les architectures hybrides.
+
+      Certaines structures choisissent de combiner plusieurs modèles pour obtenir une solution plus flexible et adaptée à leurs besoins.
+
+      Une architecture hybride peut par exemple utiliser des sauvegardes locales rapides associées à une réplication distante centralisée.
+
+      Dans ce schéma, les sauvegardes quotidiennes sont stockées localement pour permettre des restaurations rapides en cas de besoin immédiat.
+
+      Une copie supplémentaire est ensuite transférée vers un site distant ou vers une infrastructure mutualisée pour garantir la sécurité.
+
+      Cette approche combine ainsi la performance de restauration locale avec une sécurité renforcée des données en cas de sinistre majeur.
+
+IV. MISE EN ŒUVRE CONCRÈTE ET OUTILS NATIFS.
+
+   A. Définition de la politique de rétention et des données critiques.
+
+      La première étape consiste à définir une politique de sauvegarde qui trace la fréquence des opérations, les types de sauvegarde utilisés et la durée de conservation des données nommée rétention.
+
+      Les politiques de rétention permettent de définir des pools de volumes classés par durée comme un jour, un semaine, un mois, un année ou dix ans.
+
+      Il est important de ne pas mélanger les rétentions au sein d'un même pool afin d'optimiser le volume des données et le nombre de bandes.
+
+      L'identification des données critiques est essentielle car tous les éléments ne présentent pas le même niveau d'importance pour le projet.
+
+      Les répertoires utilisateurs, les fichiers de configuration dans /etc, les bases de données, les applications métiers et les journaux systèmes doivent être pris en compte.
+
+      Une mauvaise sélection des données peut entraîner des restaurations incomplètes ou des interruptions prolongées de services.
+
+   B. Utilisation des commandes natives tar, cpio et dd.
+
+      La commande tar est un outil très utilisé pour créer des archives de systèmes de fichiers ou d'arborescences complètes en conservant les permissions et les propriétaires.
+
+      On peut créer une archive complète du répertoire /home avec la commande tar cvf sauvegarde_home.tar /home ou utiliser la compression gzip avec tar czvf sauvegarde_home.tar.gz /home.
+
+      La commande cpio permet également de créer des archives et fonctionne généralement en association avec la commande find pour traiter des listes de fichiers.
+
+      Un exemple de sauvegarde complète avec find et cpio est la commande find /home -print | cpio -ocB > sauvegarde_home.cpio.
+
+      La commande dd réalise des copies de bas niveau pour cloner des partitions ou des disques entiers en sauvegardant les secteurs d'amorçage et les tables de partition.
+
+      L'utilisation de dd nécessite une grande précaution car une erreur de paramétrage peut entraîner l'écrasement de données importantes comme avec la commande dd if=/dev/sda of=/backup/disque_sda.img bs=64K.
+
+   C. Utilisation des commandes dump, restore et rsync.
+
+      Les outils dump et restore sont spécialisés dans la sauvegarde des systèmes de fichiers Linux en permettant des opérations incrémentales ou complètes.
+
+      On peut réaliser une sauvegarde complète d'un système de fichiers avec dump -0u -f /backup/usr.dump /usr ou une sauvegarde incrémentale avec dump -1u -f /backup/usr_inc.dump /usr.
+
+      La commande rsync est un outil incontournable qui synchronise des fichiers entre deux systèmes en ne transférant que les différences détectées.
+
+      Elle peut être utilisée localement avec rsync -av /home /backup ou à distance via SSH avec la commande rsync -avz /data serveur:/backup.
+
+      L'option --delete permet également de supprimer les fichiers obsolètes lors de la synchronisation avec rsync -av --delete /data serveur:/backup.
+
+   D. Automatisation via cron et sauvegarde vers le cloud S3.
+
+      L'automatisation des tâches sous Linux est généralement assurée par cron pour garantir la régularité des sauvegardes et réduire la charge de travail.
+
+      Une tâche cron peut être configurée pour exécuter une sauvegarde chaque nuit à 2h00 avec la ligne zéro deux * * * /usr/local/bin/sauvegarde.sh.
+
+      Le protocole S3 est devenu un standard pour le stockage objet permettant d'externaliser les sauvegardes vers des infrastructures cloud hautement disponibles.
+
+      Des outils comme rclone permettent la synchronisation vers un bucket S3 avec la commande rclone sync /backup remote-s3:serveur-linux.
+
+      L'utilisation de l'AWS CLI permet aussi de copier un répertoire vers S3 via la commande aws s3 cp /backup s3://sauvegardes-linux --recursive.
+
+V. GESTION DES OUTILS DE SAUVEGARDE MUTUALISÉS.
+
+   A. Principes de centralisation et d'automatisation.
+
+      Les solutions mutualisées reposent sur une architecture client/serveur où les machines Linux, Unix ou Windows transmettent leurs données vers un serveur central.
+
+      Ce serveur de sauvegarde pilote l'ensemble des opérations et héberge une base de données des sauvegardes ainsi que les médias de stockage.
+
+      Dans certains cas, des nœuds dédiés interviennent pour récupérer les données depuis les agents et les envoyer vers le support de stockage.
+
+      La centralisation permet aux administrateurs de gérer les stratégies, de planifier les tâches et de paramétrer les infrastructures comme les robots ou les baies depuis une console unique.
+
+      L'automatisation est assurée par des ordonnanceurs intégrés qui exécutent les sauvegardes selon des calendriers précis sans intervention humaine.
+
+      Pour les très grandes structures, l'ordonnancement peut être déporté vers des outils spécialisés tels que VTOM, $U, RedWood Cronacle ou cron.
+
+   B. Supervision, alertes et gestion des médias.
+
+      Les outils mutualisés intègrent des fonctions de supervision avancées permettant de suivre l'état des sauvegardes en temps réel.
+
+      Les administrateurs reçoivent des alertes en cas d'échec et peuvent consulter des rapports détaillés sur les performances et les volumes sauvegardés.
+
+      La gestion des médias est assurée par le pilotage des lecteurs de bandes, des bibliothèques robotisées et des espaces de stockage.
+
+      Les supports sont référencés dans des catalogues pour faciliter les restaurations et sont classés dans des pools selon leur niveau de rétention.
+
+      Une difficulté majeure réside dans le paramétrage pour garantir que les rétentions appliquées lors de la sauvegarde se déposent dans le bon pool.
+
+   C. Sécurité et chiffrement des données.
+
+      La sécurité des sauvegardes est renforcée par le chiffrement des communications réseau afin de protéger les données durant leurs transferts.
+
+      Les accès aux sauvegardes sont strictement contrôlés par des mécanismes d'authentification et une gestion rigoureuse des droits.
+
+      Certaines solutions permettent de dupliquer automatiquement les sauvegardes vers plusieurs sites pour améliorer la résilience de l'infrastructure.
+
+      L'utilisation du protocole S3 permet également d'externaliser les données vers le cloud de manière sécurisée en chiffrant les informations avant leur transfert.
+
+VI. PANORAMA DES LOGICIELS DE SAUVEGARDE PROFESSIONNELS.
+
+   A. Solutions open source comme Amanda et Bacula.
+
+      Amanda est une solution de sauvegarde réseau utilisée dans les environnements Linux qui permet de centraliser les sauvegardes de plusieurs serveurs. Elle offre des fonctions de planification, de supervision et de restauration centralisée tout en gérant différents types de supports de stockage.
+
+      Bacula est l'une des solutions les plus connues dans le monde Linux et repose sur une architecture modulaire composée de plusieurs services spécialisés. Le Director pilote les opérations tandis que le Storage Daemon gère les supports de stockage.
+
+      Le File Daemon est installé sur les machines clientes afin de transmettre les données vers le serveur central. Cette solution est particulièrement adaptée aux infrastructures importantes qui nécessitent un haut niveau d'automatisation.
+
+      Bacula offre des fonctionnalités avancées de catalogage, de supervision et de gestion des médias pour les administrateurs.
+
+   B. Solutions propriétaires comme NetBackup, Networker et VEEAM.
+
+      NetBackup est une solution professionnelle de sauvegarde centralisée utilisée dans les grandes entreprises pour gérer des environnements hétérogènes. Le logiciel permet de superviser un grand nombre de serveurs et peut être acquis avec une infrastructure matérielle.
+
+      NetBackup intègre des fonctions avancées de réplication, de restauration rapide et de gestion des bibliothèques robotisées.
+
+      Networker est une solution professionnelle développée par EMC et intégrée à l'écosystème de Dell Technologies. Elle est particulièrement adaptée aux architectures mutualisées nécessitant un haut niveau de disponibilité et de sécurité.
+
+      Le logiciel prend en charge les environnements Linux, Unix et Windows pour sauvegarder les systèmes de fichiers, les bases de données et les machines virtuelles. Il propose des fonctionnalités de duplication, de réplication et de gestion automatisée des bandes magnétiques.
+
+      VEEAM est une solution moderne largement utilisée dans les infrastructures virtualisées et hybrides. Elle est appréciée pour sa simplicité d'administration et ses performances de restauration rapides.
+
+      Le logiciel permet de réaliser des sauvegardes complètes, incrémentales et différentielles tout en optimisant les volumes grâce à la compression et la déduplication. Il propose également une protection contre les ransomwares et peut stocker les données sur des baies de stockage ou dans le cloud.
+
+   C. Solutions spécialisées comme Time Navigator.
+
+      Time Navigator, également appelé TINA, est une solution de sauvegarde orientée vers les grandes infrastructures. Le logiciel propose des fonctions avancées de planification, de gestion des catalogues et de restauration.
+
+      Cette solution permet de gérer différents supports de stockage et d'optimiser les performances des sauvegardes. Elle est très largement utilisée au sein du Ministère.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la sauvegarde avec la simple copie de fichiers car une architecture nécessite une réflexion stratégique sur la continuité des services.
+
+      Une erreur courante est de négliger les tests de restauration car une sauvegarde qui ne se restaure pas est considérée comme inutile.
+
+      Il est crucial de distinguer le RTO qui est la durée maximale d'interruption admissible du RPO qui est la perte de données maximale admissible.
+
+      La confusion entre sauvegarde différentielle et incrémentale est fréquente car la première se base sur la dernière sauvegarde complète tandis que la seconde se base sur la dernière sauvegarde quel que soit son type.
+
+      L'externalisation est une nuance majeure car conserver les sauvegardes dans le même bâtiment que les serveurs de production représente un risque en cas de sinistre.
+
+EXEMPLES CITÉS.
+
+      Une politique de rétention peut organiser des volumes de sauvegarde en pools classés par durées comme un jour, un semaine, un mois, un année ou dix ans.
+
+      L'outil tar permet de créer une archive du répertoire /home avec la commande tar czvf sauvegarde_home.tar.gz /home.
+
+      La commande dd peut être utilisée pour sauvegarder un disque complet avec l'exemple dd if=/dev/sda of=/backup/disque_sda.img bs=64K.
+
+      Pour l'automatisation, une tâche cron peut être configurée pour exécuter une sauvegarde chaque nuit à 2h00 avec la ligne zéro deux * * * /usr/local/bin/sauvegarde.sh.
+
+      Le protocole S3 est utilisé pour le stockage objet avec des outils comme rclone pour synchroniser un répertoire vers un bucket S3.

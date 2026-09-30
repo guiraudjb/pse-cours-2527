@@ -1,0 +1,265 @@
+COMPRÉHENSION DES PROCESSUS SOUS LINUX : PRINCIPES, CYCLE DE VIE, MÉMOIRE ET ORDONNANCEMENT.
+
+LEXIQUE COMPLET.
+
+      Le processus désigne un programme en cours d'exécution sur un ordinateur qui possède son propre compteur ordinal et ses propres ressources.
+
+      Le PCB ou bloc de contrôle du processus désigne la structure qui stocke l'ensemble des ressources et l'état courant d'un processus.
+
+      La multiprogrammation désigne la capacité d'un système d'exploitation à faire tourner plusieurs tâches à la fois en utilisant le pseudoparallélisme.
+
+      Le PID désigne l'identifiant numérique unique attribué à chaque processus, le processus zéro étant créé manuellement au démarrage.
+
+      Le processus init désigne le processus de PID un qui est l'ancêtre de tous les autres processus et qui accueille les processus orphelins.
+
+      Le signal désigne un mécanisme de communication entre processus identifié par un nombre entier, comme le signal SIGINT engendré par CTRL-C.
+
+      La commutation de contexte désigne l'opération coûteuse consistant à sauvegarder les informations du processus évincé et à charger celles du processus élu.
+
+      Le scheduler désigne l'ordonnanceur interne chargé de déclencher la commutation de processus selon un algorithme d'ordonnancement.
+
+      Le nice désigne le paramètre permettant d'influer manuellement sur la priorité d'un processus utilisateur.
+
+      Le répertoire /proc désigne un pseudo système de fichiers situé à la racine qui sert d'interface entre le noyau et l'utilisateur pour obtenir des informations sur les processus.
+
+      Le quantum de temps désigne la durée égale de temps processeur allouée à un processus avant que l'ordonnanceur ne procède à une préemption.
+
+      L'exclusion mutuelle désigne le principe consistant à affecter une ressource à un unique processus à la fois pour assurer un ordonnancement réussi.
+
+COURS DÉTAILLÉ.
+
+I. DÉFINITIONS ET PRINCIPES FONDAMENTAUX.
+
+   A. Définition du processus et distinction avec le programme.
+
+      Un processus est défini comme un programme en cours d'exécution sur un ordinateur.
+
+      Il s'agit d'une entité active possédant son propre compteur ordinal et l'ensemble des ressources qui lui sont associées.
+
+      La distinction avec un programme est mince car le processus possède le programme ainsi que l'état courant de celui-ci dans la mémoire.
+
+      Le programme représente l'ensemble des fichiers qui, lors de leur exécution, deviennent le processus.
+
+   B. Le bloc de contrôle du processus (PCB).
+
+      Le PCB ou bloc de contrôle du processus est l'élément qui stocke les informations et les ressources de chaque processus.
+
+      Un processus UNIX se décompose en un espace d'adressage visible par l'utilisateur et en ce bloc de contrôle.
+
+      Le PCB comprend une entrée dans la table des processus du noyau appelée struct proc définie dans <sys/proc.h>.
+
+      Il inclut également une structure struct user appelée zone u située dans <sys/user.h>.
+
+      Ce bloc contient des éléments essentiels comme le compteur ordinal, le registre d'état, le pointeur de pile et les registres généraux.
+
+   C. Concept de multiprogrammation et pseudoparallélisme.
+
+      La multiprogrammation ou multiplexage est la capacité de faire tourner plusieurs tâches à la fois au cœur des systèmes d'exploitation modernes.
+
+      Sur un ordinateur possédant un seul processeur, le système résout le problème de la simultanéité grâce au pseudoparallélisme.
+
+      Le processeur traite une tâche à la fois, s'interrompt, puis passe à la suivante de manière très rapide.
+
+      Cette commutation rapide donne l'illusion que l'ordinateur effectue un traitement simultané de plusieurs processus.
+
+      Les processus correspondent ainsi à l'exécution de travaux tels que les programmes utilisateurs ou la gestion des entrées-sorties.
+
+   D. Typologie des processus : utilisateurs, démons et systèmes.
+
+      Les processus utilisateurs correspondent à l'instanciation d'un programme autre que le système d'exploitation lui-même.
+
+      Ils possèdent une priorité moindre et s'exécutent la plupart du temps en mode utilisateur, bien qu'ils puissent effectuer des appels système en mode noyau.
+
+      Les processus démons sont similaires aux processus utilisateurs mais se distinguent par le fait qu'ils ne sont rattachés à aucun terminal.
+
+      Les processus systèmes correspondent à l'exécution d'une partie du noyau du système d'exploitation.
+
+      Ces processus systèmes bénéficient d'une priorité élevée pour assurer le fonctionnement de la machine.
+
+II. CYCLE DE VIE ET GESTION DES PROCESSUS.
+
+   A. Mécanisme de création par l'appel système fork.
+
+      Sous UNIX, la création d'un processus est réalisée par l'appel système int fork(void).
+
+      Tous les processus, à l'exception du processus d'identification zéro, sont créés par un appel à fork.
+
+      Le processus qui effectue l'appel est désigné comme le processus père, tandis que le nouveau processus est appelé processus fils.
+
+      Chaque processus possède un seul processus père, mais il peut avoir zéro ou plusieurs processus fils.
+
+   B. Hiérarchie des processus et rôle de l'init.
+
+      Le processus de PID=zéro est créé manuellement au démarrage de la machine et possède toujours un rôle système.
+
+      Le processus zéro utilise l'appel fork pour créer le processus init qui possède le PID=un.
+
+      Le processus init est l'ancêtre de tous les autres processus car le processus zéro ne réalise plus de fork après cela.
+
+      Le processus de PID=un accueille les processus orphelins de père afin de collecter les informations à la mort de chaque processus.
+
+   C. Communication par signaux et commande kill.
+
+      Les signaux constituent un mécanisme fondamental de communication entre processus et sont identifiés par un nombre entier.
+
+      Le signal SIGINT est couramment manipulé par l'utilisateur, notamment via la combinaison CTRL-C, pour interrompre des processus.
+
+      Le fichier /usr/include/signal.h contient la liste des signaux accessibles, dont les noms sont standards mais les valeurs numériques peuvent varier.
+
+      La commande kill permet d'émettre le signal de numéro sig à destination du processus de numéro pid.
+
+      Si le paramètre sig est nul, l'opération réussit si le processus de numéro pid existe, avec un retour de zéro en cas de succès.
+
+   D. Transitions d'états et changements de mode.
+
+      Les états Initialisation et Zombie sont considérés comme des états transitoires dans le cycle de vie.
+
+      Le passage entre l'état en cours d'exécution et l'état prêt à s'exécuter correspond à une opération de changement de contexte.
+
+      Le passage de l'état actif en mode noyau à l'état actif en mode utilisateur correspond à un changement de mode.
+
+      Les processus qui sont mis en SWAP sont prioritairement les processus qui sont en état endormi.
+
+      Lorsqu'une interruption survient, le processus est interrompu si le niveau de l'interruption est supérieur à celui du processus en cours.
+
+III. COMMUTATION DE CONTEXTE ET INTERRUPTIONS.
+
+   A. Mécanisme de la commutation de contexte.
+
+      La commutation de contexte se produit lorsque le système d'exploitation change le processus auquel est alloué le processeur. Cette opération est considérée comme coûteuse en temps CPU car elle représente un pur overhead.
+
+      Le processus est déclenché par l'ordonnanceur interne nommé le scheduler selon un algorithme d'ordonnancement spécifique. Ce mécanisme intervient lors de l'épuisement du temps alloué ou de l'attente d'une information en entrée-sortie.
+
+      Lors de la commutation, le système procède à la sauvegarde du contexte du processus évincé. Il effectue ensuite le chargement du contexte du processus élu pour permettre sa reprise.
+
+      Le contexte regroupe l'ensemble des informations nécessaires à l'exécution comme la valeur des registres et les informations mémoire. Ces données permettent de restituer l'état exact du processus après une suspension.
+
+   B. Gestion des interruptions et niveaux de priorité.
+
+      Lors de l'exécution d'un processus, une interruption peut survenir et modifier le déroulement de l'activité. Le traitement de cette interruption dépend de sa priorité par rapport au processus en cours.
+
+      Si le niveau de l'interruption est supérieur à celui du processus en cours d'exécution, celui-ci est interrompu. Le système traite alors l'interruption avant de reprendre le processus initial.
+
+      Dans le cas où le niveau de l'interruption est inférieur à celui du processus en cours d'exécution, l'interruption est simplement mise en attente. Le processus continue alors son exécution sans être dérangé.
+
+      Il est important de noter qu'un processus s'exécutant en mode noyau ne peut pas être préempté. Cependant, il peut tout de même subir une interruption selon les règles de priorité mentionnées.
+
+   C. Influence manuelle sur la priorité avec nice et renice.
+
+      Il est possible d'influer manuellement sur la priorité d'un processus en modifiant son niveau de nice. Cela permet par exemple de réduire la priorité d'un programme qui effectue une tâche lourde comme l'indexation d'un disque dur.
+
+      Pour lancer un nouveau programme avec une priorité spécifique, l'utilisateur doit utiliser la commande nice suivi de l'option -n et du niveau de nice souhaité. Cette commande définit la priorité dès la création du processus.
+
+      Si un processus est déjà en cours d'exécution, l'utilisateur peut modifier sa priorité avec la commande renice. Il suffit de préciser l'option -n avec le nouveau niveau de nice ainsi que le PID du processus.
+
+      Le seul paramètre permettant d'influer sur la priorité d'un processus utilisateur est sa valeur de nice. Les autres types de processus comme ceux du noyau possèdent des plages de priorité différentes.
+
+IV. STRUCTURE DE LA MÉMOIRE DES PROCESSUS.
+
+   A. Éléments du contexte et mot d'état.
+
+      Le contexte d'un processus regroupe l'ensemble des informations nécessaires au système pour assurer son exécution. Cet ensemble est également appelé mot d'état.
+
+      Le compteur ordinal indique l'adresse virtuelle de la prochaine instruction que l'unité centrale doit exécuter. Le registre d'état du processus précise le niveau courant d'exécution pour la gestion des interruptions.
+
+      Le pointeur de pile contient l'adresse courante de l'élément suivant dans la pile. Les registres généraux stockent les données générées par le processus durant son exécution.
+
+      Le registre décrivant l'espace mémoire définit l'espace d'adressage virtuel du processus. Des informations complémentaires comme l'adresse des tâches filles sont également intégrées.
+
+   B. Organisation de la table des processus.
+
+      La table des processus contient une entrée pour chaque processus présent sur le système à un instant T. Sa taille est fixe et déterminée par les paramètres du noyau selon le nombre maximum de processus autorisés.
+
+      Chaque entrée renseigne le système sur l'état courant du processus. Elle inclut des éléments comme le PID, le PPID, ainsi que les champs RUID, EUID, RGID et EGID.
+
+      La table répertorie aussi le répertoire et la racine courants, l'identifiant du terminal de rattachement et la table des descripteurs de fichiers. Elle contient les compteurs de temps d'exécution et les paramètres d'ordonnancement.
+
+      Des champs spécifiques permettent de gérer les signaux non traités et les descripteurs d'évènements pour les processus endormis. Des pointeurs vers d'autres tables mémoires comme celles de la mémoire ou des évènements sont également présents.
+
+   C. Gestion des régions de mémoire et droits d'accès.
+
+      La table des régions est une table privée du processus constituée de pointeurs. Chaque élément contient l'adresse virtuelle du début d'une région du processus.
+
+      Les régions se différencient selon leurs droits d'accès en étant soit partagées, soit privées. Elles se distinguent aussi par la nature des données qu'elles contiennent.
+
+      Les régions de code sont des zones partagées. Les régions de données peuvent être soit partagées, soit privées.
+
+      Les régions de pile sont des zones strictement privées. La table des régions répertorie toutes les régions actives sur le système et chaque entrée pointe vers la table des pages.
+
+   D. Interface d'information via le système de fichiers /proc.
+
+      Le répertoire /proc situé à la racine de l'arborescence est un pseudo système de fichiers présent uniquement en mémoire. Il sert d'interface entre le noyau et l'utilisateur pour obtenir des informations sur les processus.
+
+      Chaque processus actif possède son propre sous-répertoire nommé selon son PID, par exemple /proc/PID. Ce répertoire contient divers fichiers d'information essentiels.
+
+      Le fichier cmdline indique la ligne de commande utilisée pour lancer le processus. Le fichier cwd est un lien vers le répertoire courant et le fichier environ liste les variables d'environnement.
+
+      Le fichier exe est un lien vers le fichier contenant le code exécutable. Le fichier fd contient les entrées pour les fichiers et sockets ouverts, tandis que le fichier maps présente la cartographie mémoire du processus.
+
+V. ORDONNANCEMENT ET GESTION DU PROCESSEUR.
+
+   A. Objectifs et enjeux de l'ordonnancement.
+
+      L'ordonnancement des processus sur un système Linux sert à décider quel processus utilise le processeur, à quel moment et pendant combien de temps.
+
+      Cette gestion permet de répartir le temps CPU entre plusieurs programmes qui s'exécutent en même temps et d'assurer la réactivité du système pour les applications interactives.
+
+      L'ordonnancement optimise les performances en donnant la priorité aux tâches urgentes et évite qu'un processus ne monopolise le processeur.
+
+      Cette organisation permet enfin le multitâche, ce qui revient à faire tourner plusieurs programmes en parallèle sur un même cœur CPU.
+
+   B. Principes de partage et risques de famine ou exclusion mutuelle.
+
+      Le partage de l'unité centrale doit s'effectuer entre les processus utilisateurs et entre les différentes tâches du système comme le scheduler, les E/S ou les interruptions.
+
+      Un point clé d'un ordonnancement réussi est de respecter l'exclusion mutuelle, qui consiste à affecter une ressource à un unique processus à la fois.
+
+      Le système doit également éviter la famine, une situation où un processus se voit refuser l'accès à une ressource pendant un temps indéterminé.
+
+      Pour garantir un fonctionnement correct, la ressource doit toujours être donnée au bout d'un temps fini.
+
+   C. Gestion des priorités et du quantum de temps.
+
+      Plus la valeur numérique de la priorité est faible, plus la priorité du processus est élevée, la priorité la plus haute étant égale à zéro.
+
+      La priorité d'un processus diminue s'il a disposé du processeur pendant longtemps, alors qu'un processus demandeur en E/S devient plus prioritaire.
+
+      La priorité de départ dépend du type de processus, avec des valeurs entre zéro et quatre-vingt-dix-neuf pour le noyau ou le temps réel, et entre cent et cent trente-neuf pour l'utilisateur.
+
+      Le seul paramètre permettant d'influer sur la priorité d'un processus utilisateur est sa valeur nice.
+
+      L'ordonnanceur partage le CPU par quantum de temps, aussi appelé timeslice, pour donner l'impression à chaque utilisateur qu'il dispose de la totalité des ressources.
+
+   D. Mécanismes de préemption et de l'ordonnanceur.
+
+      Le processus chargé de gérer l'ordonnancement est le scheduler, qui possède le PID zéro.
+
+      La préemption d'un processus peut avoir lieu soit à la fin de son quantum de temps, soit au retour du mode noyau.
+
+      Un processus s'exécutant en mode noyau ne peut pas être préempté, mais il peut néanmoins être interrompu.
+
+      Si une interruption survient et que son niveau est supérieur à celui du processus en cours, le processus est interrompu le temps que l'interruption soit servie.
+
+      Si le niveau de l'interruption est inférieur à celui du processus en cours d'exécution, l'interruption est simplement mise en attente.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre un programme et un processus car le processus possède l'état courant en mémoire alors que le programme n'est qu'un ensemble de fichiers.
+
+      La distinction entre le processus zéro et le processus un est cruciale puisque le premier est créé manuellement au démarrage et le second est l'ancêtre de tous les autres.
+
+      Il existe une nuance importante entre la préemption et l'interruption car un processus en mode noyau peut être interrompu mais il ne peut pas être préempté.
+
+      La priorité d'un processus est inversement proportionnelle à sa valeur numérique puisque la priorité la plus haute correspond au chiffre zéro.
+
+      Il faut éviter la confusion entre le mode utilisateur et le mode noyau car un processus utilisateur peut effectuer des appels système pour passer en mode noyau.
+
+EXEMPLES CITÉS.
+
+      L'utilisation de la commande nice permet de lancer un programme avec une priorité spécifique tandis que la commande renice sert à modifier un PID déjà lancé.
+
+      Le répertoire /proc est un pseudo système de fichiers qui contient des informations comme le fichier cmdline pour la ligne de commande ou le fichier exe pour le lien vers l'exécutable.
+
+      Les processus utilisateurs ont une priorité comprise entre cent et cent trente-neuf alors que les processus de type noyau ou temps réel se situent entre zéro et quatre-vingt-dix-neuf.
+
+      Le signal SIGINT est un exemple de mécanisme de communication souvent utilisé par l'utilisateur via la combinaison de touches CTRL-C pour interrompre un processus.

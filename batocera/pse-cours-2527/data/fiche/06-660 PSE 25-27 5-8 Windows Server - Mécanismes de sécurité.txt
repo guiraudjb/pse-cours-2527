@@ -1,0 +1,297 @@
+SYNTHÈSE DES MÉCANISMES DE SÉCURITÉ SOUS WINDOWS SERVER deux mille seize.
+
+LEXIQUE COMPLET.
+
+      L'authentification désigne le processus consistant à vérifier l'identité d'un utilisateur, d'un ordinateur ou d'un service.
+
+      L'autorisation désigne l'action de déterminer les droits et les ressources auxquels une identité peut accéder après son authentification.
+
+      Le SID ou Security Identifier désigne l'identificateur unique permettant à Windows d'identifier de manière unique un compte ou un groupe.
+
+      Le jeton d'accès désigne le contexte de sécurité créé après une authentification réussie qui contient le SID de l'utilisateur, les SID des groupes et les privilèges.
+
+      Le SAM ou Security Accounts Manager désigne la base qui contient les informations nécessaires à la gestion des comptes locaux sur un serveur autonome.
+
+      La LSA ou Local Security Authority désigne le composant central qui assure le traitement des demandes d'ouverture de session et la validation des informations d'identification.
+
+      Le processus LSASS.EXE désigne le sous-système qui héberge les fonctionnalités de l'autorité de sécurité locale pour l'authentification.
+
+      La SSPI ou Security Support Provider Interface désigne l'interface commune permettant aux applications d'utiliser les mécanismes d'authentification Windows.
+
+      Le protocole Kerberos désigne le mécanisme d'authentification privilégié dans un domaine Active Directory qui utilise des tickets pour permettre l'authentification unique.
+
+      L'ACL ou Access Control List désigne la liste de contrôle d'accès qui contient des entrées appelées ACE pour indiquer les droits accordés ou refusés sur un objet.
+
+      La GPO ou Group Policy Object désigne l'objet permettant de centraliser la configuration de sécurité des utilisateurs et des ordinateurs dans un domaine.
+
+      Le KDC désigne le centre de distribution de clés Kerberos intégré aux services exécutés sur les contrôleurs de domaine.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET CONCEPTS DE LA SÉCURITÉ WINDOWS.
+
+   A. Objectifs de la sécurité et notions clés.
+
+      La sécurité de Windows Server deux mille seize vise à protéger les utilisateurs, les ordinateurs, les services et les ressources contre les accès non autorisés.
+
+      Elle cherche notamment à assurer la confidentialité des informations ainsi que l'intégrité des données et des systèmes.
+
+      Le système doit également garantir la disponibilité des ressources, l'authentification fiable des utilisateurs et le contrôle des accès.
+
+      Enfin, la sécurité repose sur la traçabilité des opérations pour permettre un contrôle efficace des activités.
+
+      Dans un environnement d'entreprise, il est nécessaire de déterminer qui peut accéder au système et comment l'identité est vérifiée.
+
+      Il faut aussi définir quelles ressources un utilisateur peut utiliser, quelles actions il peut effectuer et comment les activités sont enregistrées.
+
+   B. Distinction entre authentification et autorisation.
+
+      L'authentification consiste à vérifier l'identité d'un utilisateur, d'un ordinateur ou d'un service.
+
+      Elle répond à la question fondamentale de savoir qui est l'utilisateur en présence.
+
+      L'autorisation consiste à déterminer ce que cette identité est autorisée à faire après avoir été authentifiée.
+
+      Elle répond à la question de savoir quels droits sont accordés à l'identité vérifiée.
+
+      Lorsqu'un utilisateur tente d'accéder à une ressource, Windows doit d'abord déterminer l'identité de l'utilisateur puis ses droits.
+
+      Le mot de passe sert à prouver l'identité tandis que le jeton d'accès représente cette identité lors des contrôles d'autorisation.
+
+   C. Composants essentiels du système de sécurité.
+
+      La sécurité repose sur des éléments comme les comptes et groupes de sécurité, les SID et les jetons d'accès.
+
+      Elle utilise également les listes de contrôle d'accès ou ACL, les stratégies de sécurité et les GPO.
+
+      Le processus LSASS.EXE héberge les fonctionnalités de la LSA qui est un composant central pour le traitement des demandes d'ouverture de session.
+
+      Le composant Winlogon.exe gère l'ouverture de session interactive et transmet les informations au sous-système de sécurité.
+
+      L'interface SSPI permet aux applications d'utiliser les mécanismes d'authentification en masquant les détails des protocoles.
+
+      Le SAM gère les comptes locaux sur un serveur autonome alors que la base de données Active Directory gère les comptes de domaine.
+
+II. ARCHITECTURE ET COMPOSANTS DU SYSTÈME DE SÉCURITÉ.
+
+   A. Le modèle de sécurité et le flux d'accès.
+
+      Le modèle de sécurité de Windows Server deux mille seize contrôle les accès aux ressources à partir de l'identité et des droits associés à un utilisateur ou à un processus.
+
+      Le processus commence par l'authentification de l'utilisateur qui présente ses informations d'identification au système.
+
+      Une fois l'identité vérifiée, Windows construit un contexte de sécurité contenant notamment un jeton d'accès.
+
+      Ce jeton permet ensuite au système de déterminer si l'utilisateur peut accéder à une ressource spécifique.
+
+      Le flux se termine par l'autorisation de l'accès ou son refus, suivi de l'audit des activités.
+
+   B. Gestion des comptes via SAM et Active Directory.
+
+      Sur un serveur autonome, les comptes locaux sont gérés dans la base SAM, qui est le Security Accounts Manager.
+
+      Cette base contient les informations nécessaires à la gestion des comptes locaux du système.
+
+      Dans un environnement Active Directory, la gestion est différente car les comptes du domaine sont stockés dans la base de données Active Directory.
+
+      Cette base de données est située directement sur les contrôleurs de domaine.
+
+      Ces mécanismes permettent de centraliser la gestion des identités et des ressources au sein d'une entreprise.
+
+   C. Rôles de la LSA, de LSASS et de Winlogon.
+
+      La LSA, ou Local Security Authority, est le composant central qui traite les demandes d'ouverture de session et applique la stratégie de sécurité locale.
+
+      Elle assure également la validation des informations d'identification, la création des contextes de sécurité et la gestion des droits utilisateur.
+
+      Le processus LSASS.EXE, appelé Local Security Authority Subsystem Service, est celui qui héberge les fonctionnalités de l'autorité de sécurité locale.
+
+      Il joue un rôle essentiel dans l'authentification et l'application des règles de sécurité du système.
+
+      Le composant Winlogon.exe gère quant à lui le processus d'ouverture de session interactive.
+
+      Winlogon récupère les informations d'identification sur l'interface et les transmet au sous-système de sécurité.
+
+   D. L'interface SSPI.
+
+      La SSPI, ou Security Support Provider Interface, fournit une interface commune pour les applications et les services.
+
+      Elle permet d'utiliser les différents mécanismes d'authentification Windows de manière simplifiée.
+
+      Cette interface a pour rôle de masquer aux applications les détails techniques des différents protocoles d'authentification utilisés.
+
+      Elle permet notamment d'accéder à des mécanismes tels que Kerberos, NTLM, Negotiate, Schannel ou Digest.
+
+III. IDENTITÉS, IDENTIFICATEURS ET JETONS DE SÉCURITÉ.
+
+   A. Les principaux de sécurité et le SID.
+
+      Windows utilise la notion de principal de sécurité pour désigner une identité à laquelle des droits peuvent être attribués.
+
+      Un principal peut prendre la forme d'un utilisateur, d'un groupe, d'un ordinateur ou encore d'un service.
+
+      Chaque principal possède un identificateur unique appelé SID pour permettre une identification précise par le système.
+
+      Le SID permet à Windows d'identifier de manière unique un compte ou un groupe, car les autorisations sont associées aux SID plutôt qu'au simple nom affiché.
+
+      Lorsqu'un utilisateur est authentifié, Windows récupère son propre SID ainsi que les SID de tous les groupes auxquels il appartient.
+
+   B. Le fonctionnement du jeton d'accès.
+
+      Après une authentification réussie, Windows crée un jeton d'accès qui représente le contexte de sécurité de l'utilisateur ou du processus.
+
+      Ce jeton contient notamment le SID de l'utilisateur, les SID des groupes, les privilèges et différents attributs de sécurité.
+
+      Le mot de passe sert à prouver l'identité, tandis que le jeton d'accès sert à représenter cette identité lors des contrôles d'autorisation.
+
+      Lorsqu'un processus tente d'accéder à une ressource protégée, Windows utilise ce contexte pour déterminer si l'accès doit être autorisé.
+
+      Ce mécanisme permet de séparer clairement l'identité de l'utilisateur et les permissions qui lui sont accordées.
+
+   C. Le processus de vérification de l'identité.
+
+      Le processus débute par la présentation des informations d'identification par l'utilisateur pour entamer l'authentification.
+
+      Si l'authentification réussit, Windows construit un contexte de sécurité contenant notamment un jeton d'accès.
+
+      Ce jeton permet ensuite au système de déterminer si l'utilisateur peut accéder à une ressource spécifique.
+
+      Le fonctionnement suit une séquence allant de l'identification de l'utilisateur à la création du jeton d'accès, puis à la demande d'accès.
+
+      Le système effectue enfin une comparaison entre le jeton et les autorisations pour décider si l'accès est autorisé ou refusé.
+
+IV. PROTOCOLES ET SERVICES D'AUTHENTIFICATION.
+
+   A. Le protocole Kerberos et le KDC.
+
+      Dans un domaine Active Directory, Kerberos est le protocole d'authentification privilégié pour Windows Server deux mille seize.
+
+      Ce protocole implémente la version cinq de Kerberos pour assurer la sécurité des échanges au sein du réseau.
+
+      Le fonctionnement repose sur l'utilisation de tickets qui permettent à un utilisateur authentifié d'accéder aux services autorisés sans transmettre son mot de passe à chaque accès.
+
+      Le centre de distribution de clés, appelé KDC, est intégré aux services exécutés sur les contrôleurs de domaine et utilise les informations d'Active Directory.
+
+      Kerberos apporte des fonctionnalités essentielles comme l'authentification mutuelle, l'authentification unique, l'utilisation de tickets et la possibilité de délégation d'authentification.
+
+   B. Le mécanisme NTLM et le mode Negotiate.
+
+      Le protocole NTLM est une famille de protocoles d'authentification qui repose sur un mécanisme de challenge/réponse.
+
+      Ce mécanisme reste disponible dans Windows Server deux mille seize, notamment dans les situations où Kerberos ne peut pas être utilisé.
+
+      Lors d'une authentification NTLM, le serveur envoie un défi au client qui produit ensuite une réponse calculée à partir des informations d'identification.
+
+      Le mode Negotiate permet de sélectionner automatiquement le mécanisme d'authentification le plus approprié pour la situation donnée.
+
+      Dans les scénarios courants, Negotiate choisit Kerberos lorsque celui-ci est disponible et peut basculer sur NTLM si Kerberos ne peut pas être utilisé.
+
+   C. La sécurisation des communications avec Schannel.
+
+      Schannel est le composant qui fournit les mécanismes de sécurité liés aux protocoles TLS et SSL.
+
+      Ce service permet de sécuriser certaines communications réseau grâce à l'utilisation du chiffrement et de l'authentification.
+
+      Ces mécanismes de sécurité sont accessibles aux applications via l'architecture SSPI.
+
+V. GESTION DES DROITS ET MISE EN ŒUVRE DE LA SÉCURITÉ.
+
+   A. Permissions NTFS et listes de contrôle d'accès (ACL).
+
+      Le système de fichiers NTFS permet d'attribuer des permissions spécifiques aux utilisateurs et aux groupes.
+
+      Les permissions classiques incluent notamment la lecture, l'écriture, la modification ou le contrôle total.
+
+      Chaque objet protégé possède une ACL qui contient des entrées appelées ACE.
+
+      Une ACE indique l'identité concernée ainsi que les droits accordés ou refusés.
+
+      Le système compare les informations du jeton de sécurité avec les ACL de la ressource pour décider de l'accès.
+
+   B. Application du principe du moindre privilège.
+
+      La sécurité doit appliquer autant que possible le principe du moindre privilège.
+
+      Un utilisateur doit disposer uniquement des droits nécessaires à l'accomplissement de ses tâches.
+
+      Ce principe permet de limiter les conséquences d'une erreur humaine ou d'une compromission de compte.
+
+      Il protège également contre les logiciels malveillants ou une mauvaise configuration.
+
+   C. Utilisation des stratégies de groupe (GPO).
+
+      Les GPO permettent de centraliser la configuration de sécurité des utilisateurs et des ordinateurs.
+
+      Elles servent notamment à configurer les politiques de mots de passe et les paramètres de pare-feu.
+
+      Les GPO permettent aussi de gérer l'audit, les restrictions utilisateurs et les paramètres Windows Defender.
+
+      Dans un domaine Active Directory, ces paramètres sont distribués via les stratégies de groupe.
+
+   D. Protection via le pare-feu et Windows Defender.
+
+      Le Pare-feu Windows Defender contrôle les communications réseau entrantes et sortantes selon des règles définies.
+
+      Il permet notamment de limiter l'exposition des services réseau du serveur.
+
+      Windows Server deux mille seize intègre également des mécanismes de protection contre les logiciels malveillants avec Windows Defender.
+
+      Ces mécanismes participent à la protection du serveur contre différentes menaces.
+
+VI. AUDIT, SURVEILLANCE ET PROCESSUS D'OUVERTURE DE SESSION.
+
+   A. Stratégies d'audit et journaux d'événements.
+
+      L'audit permet de savoir ce qui s'est produit sur le système en enregistrant des activités comme les ouvertures de session ou les échecs d'authentification.
+
+      Il est possible de surveiller la gestion des comptes, l'utilisation des privilèges, l'accès aux objets et les modifications de stratégie.
+
+      Les stratégies d'audit avancées permettent de distinguer spécifiquement les événements réussis des événements ayant échoué.
+
+      Les événements de sécurité sont consultables via l'Observateur d'événements dans les journaux Windows sous la section Sécurité.
+
+      Ces journaux enregistrent des détails précis comme le compte utilisé, la date, l'heure, l'ordinateur concerné et le résultat de l'authentification.
+
+   B. Étapes détaillées de l'ouverture de session.
+
+      Le processus commence lorsque l'utilisateur saisit ses informations d'identification sur l'interface gérée par Winlogon.
+
+      Winlogon transmet ensuite ces informations au sous-système de sécurité où la LSA intervient pour le traitement et la validation.
+
+      Si le serveur appartient à un domaine Active Directory, la LSA utilise le mécanisme Kerberos via le KDC pour l'authentification.
+
+      Une fois l'authentification réussie, le système construit un contexte de sécurité et crée un jeton d'accès contenant le SID et les privilèges.
+
+      Les stratégies de sécurité et les GPO sont alors appliquées avant que l'ouverture de session ne soit finalisée.
+
+   C. Analyse des comportements et détection d'incidents.
+
+      L'audit doit être intégré dans une politique globale et peut être configuré avec l'éditeur de politique de sécurité locale.
+
+      Un nombre important d'échecs d'authentification peut révéler une erreur de configuration ou une tentative d'utilisation de compte.
+
+      Ces anomalies peuvent également indiquer une attaque par force brute ou un utilisateur ayant simplement oublié son mot de passe.
+
+      L'analyse des journaux permet ainsi à l'administrateur de détecter des comportements inhabituels et de contribuer à la gestion des incidents.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'authentification qui vérifie l'identité avec l'autorisation qui détermine les droits accordés.
+
+      Le mot de passe sert uniquement à prouver l'identité tandis que le jeton d'accès représente cette identité lors des contrôles d'autorisation.
+
+      Les autorisations sont associées aux SID et non au simple nom affiché du compte utilisateur.
+
+      Le protocole Negotiate ne crée pas de sécurité mais sélectionne automatiquement entre Kerberos et NTLM selon la disponibilité.
+
+      L'audit ne remplace pas la sécurité mais permet de détecter des incidents comme des attaques par force brute ou des erreurs de configuration.
+
+EXEMPLES CITÉS.
+
+      Dans un domaine entreprise.local, l'utilisateur Alice peut accéder à un dossier partagé si son jeton d'accès correspond aux permissions du groupe Comptabilité.
+
+      Le processus LSASS.EXE est le composant qui héberge les fonctionnalités de l'autorité de sécurité locale pour l'authentification.
+
+      Un administrateur peut utiliser les GPO pour centraliser la configuration de la sécurité comme les politiques de mots de passe ou le pare-feu.
+
+      L'observateur d'événements permet de consulter les journaux de sécurité pour analyser une tentative de connexion avec un mauvais mot de passe.

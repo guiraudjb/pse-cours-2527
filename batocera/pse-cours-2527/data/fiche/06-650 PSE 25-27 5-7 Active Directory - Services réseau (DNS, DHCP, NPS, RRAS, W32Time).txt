@@ -1,0 +1,253 @@
+GUIDE COMPLET DES SERVICES RÉSEAU INTÉGRÉS À ACTIVE DIRECTORY.
+
+LEXIQUE COMPLET.
+
+      Le DNS désigne le Domain Name System, un service qui permet la localisation des contrôleurs de domaine et des services Active Directory via des enregistrements SRV.
+
+      Le DHCP désigne le Dynamic Host Configuration Protocol, un service qui automatise la configuration réseau et l'attribution des adresses IP aux clients.
+
+      Le NPS désigne le Network Policy Server, qui est l'implémentation Microsoft d'un serveur RADIUS pour l'authentification centralisée des accès réseau.
+
+      Le sigle RADIUS désigne le Remote Authentication Dial-In User Service, utilisé pour gérer l'authentification, l'autorisation et la comptabilité des accès.
+
+      Le RRAS désigne le Routing and Remote Access, un service permettant de transformer un serveur Windows en routeur, en serveur VPN ou en passerelle NAT.
+
+      Le W32Time désigne le Windows Time Service, qui garantit la synchronisation horaire indispensable au bon fonctionnement du protocole Kerberos.
+
+      Le sigle VPN désigne le Virtual Private Network, utilisé via RRAS pour permettre les connexions à distance sécurisées.
+
+      Le protocole Kerberos désigne un mécanisme d'authentification dont le fonctionnement nécessite que le décalage horaire entre un client et un contrôleur de domaine ne dépasse pas cinq minutes.
+
+      Le sigle LLMNR désigne le Link-Local Multicast Name Resolution, un protocole de secours utilisé par les clients Windows en cas d'échec de la résolution DNS.
+
+      Le sigle NetBIOS désigne le Network Basic Input Output System, un protocole de résolution de noms qui peut être exploité par des attaquants s'il n'est pas désactivé.
+
+      Le DNSSEC désigne le Domain Name System Security Extensions, qui permet de signer cryptographiquement les réponses DNS pour éviter les empoisonnements de cache.
+
+      Le PDC désigne le Primary Domain Controller, qui doit être configuré comme la source de temps interne de référence au sommet de la hiérarchie temporelle.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET RÔLE DES SERVICES RÉSEAU.
+
+   A. Importance de l'intégration AD.
+
+      Dans une infrastructure Active Directory, les services réseau ne sont pas de simples options mais des briques essentielles au bon fonctionnement du domaine.
+
+      L'intégration de ces services avec Active Directory permet de gérer les accès de manière centralisée et sécurisée.
+
+      Cette synergie garantit que chaque composant réseau communique efficacement avec l'annuaire pour maintenir la cohérence de l'infrastructure.
+
+   B. Présentation des services clés (DNS, DHCP, NPS, RRAS, W32Time).
+
+      Le DNS permet la localisation des contrôleurs de domaine et des services AD via les enregistrements SRV.
+
+      Le DHCP automatise la configuration réseau, l'attribution des adresses IP et des paramètres DNS aux clients.
+
+      Le RADIUS ou NPS centralise l'authentification des accès réseau comme le VPN, le Wi-Fi sécurisé ou les commutateurs.
+
+      Le RRAS permet les connexions VPN et le routage entre les sites.
+
+      Le W32Time garantit la synchronisation horaire, ce qui est indispensable pour le protocole Kerberos.
+
+II. LE SERVICE DNS ET LA RÉSOLUTION DE NOMS.
+
+   A. Zones intégrées Active Directory et réplication.
+
+      Le DNS est indissociable d'Active Directory car les contrôleurs de domaine s'enregistrent automatiquement via des enregistrements SRV.
+
+      Les zones intégrées Active Directory stockent les données DNS directement dans l'annuaire NTDS.dit au lieu d'utiliser un fichier texte classique.
+
+      Cette méthode permet une réplication multi maître où tous les contrôleurs de domaine hébergent une copie modifiable de la zone.
+
+      La sécurité est renforcée par une gestion fine des ACL sur les enregistrements pour contrôler les modifications.
+
+      L'utilisation de ces zones simplifie la réplication dans les environnements multisite.
+
+   B. Types de zones DNS et cas d'usage.
+
+      La zone principale peut être locale ou intégrée dans AD DS pour permettre la réplication multi maître.
+
+      La zone secondaire est une copie en lecture seule sur un autre serveur DNS qui utilise le transfert de zone AXFR ou IXFR.
+
+      Les zones de stub contiennent uniquement les enregistrements SOA, NS et glue records pour un transfert limité.
+
+      La zone de recherche directe gère les enregistrements de type A, AAAA ou CNAME tandis que la zone inversée gère les enregistrements PTR.
+
+      La zone de délégation sert de référence vers les serveurs DNS autoritaires enfants.
+
+      La zone de cache est une mémoire locale du serveur DNS et la zone conditionnelle permet une résolution ciblée vers des domaines partenaires.
+
+      La zone DNSSEC est signée avec des signatures cryptographiques pour protéger contre l'empoisonnement.
+
+   C. Mises à jour dynamiques sécurisées et DNSSEC.
+
+      Les clients Windows s'enregistrent automatiquement dans le DNS via les mises à jour dynamiques suivant la norme RFC deux mille cent trente-six.
+
+      Le paramètre recommandé pour un environnement Active Directory est d'autoriser uniquement les mises à jour dynamiques sécurisées.
+
+      Cette configuration garantit que seuls les comptes AD authentifiés peuvent créer ou modifier des enregistrements.
+
+      Pour les clients Linux, l'utilisation de SSSD avec l'extension AD permet de rafraîchir les enregistrements de façon sécurisée.
+
+      Le DNSSEC permet de signer cryptographiquement les réponses DNS pour éviter les empoisonnements de cache.
+
+      La configuration de DNSSEC passe par la Name Resolution Policy Table qui est une GPO définissant les espaces de noms pour la validation obligatoire.
+
+   D. Nettoyage des enregistrements obsolètes par scavenging.
+
+      La fonction de scavenging permet de supprimer automatiquement les enregistrements qui ne sont plus rafraîchis par les clients.
+
+      Le processus nécessite l'activation de trois niveaux incluant les enregistrements sur chaque machine, sur la zone et sur le serveur.
+
+      Les enregistrements statiques avec un timestamp égal à zéro ne sont pas nettoyés par ce mécanisme.
+
+      Les enregistrements DDNS reçoivent un timestamp lors de leur création ou de leur modification.
+
+      La configuration de la zone repose sur les paramètres No-Refresh interval et Refresh interval.
+
+      La formule de calcul du délai avant suppression d'un enregistrement est généralement NoRefresh plus Refresh multiplié par deux.
+
+III. GESTION DE L'ADRESSAGE AVEC LE SERVICE DHCP.
+
+   A. Autorisation du serveur dans l'annuaire AD.
+
+      Un serveur DHCP qui s'exécute sur un serveur membre du domaine doit être autorisé dans Active Directory pour empêcher l'installation de serveurs non autorisés sur le réseau.
+
+      Cette autorisation peut être effectuée automatiquement par un administrateur de domaine lors de l'installation du rôle DHCP.
+
+      Il est également possible de réaliser cette opération manuellement depuis la console DHCP en effectuant un clic droit sur DHCP puis en sélectionnant Autoriser.
+
+      L'utilisation de la commande PowerShell Add-DhcpServerInDC permet de réaliser cette action avec les privilèges d'Enterprise Admins.
+
+   B. Configuration des étendues et des options.
+
+      La création d'une étendue DHCP s'effectue via la console DHCP ou par l'utilisation de commandes PowerShell.
+
+      Une fois l'étendue créée, l'administrateur doit configurer les options DHCP telles que le DNS, la passerelle et le suffixe DNS.
+
+      Après la configuration des options, il est nécessaire d'activer l'étendue DHCP pour qu'elle devienne opérationnelle.
+
+      L'administrateur peut également mettre en place des réservations DHCP pour garantir des adresses IP stables aux serveurs et aux équipements réseau critiques.
+
+   C. Mise à jour des enregistrements DNS par le DHCP.
+
+      Le serveur DHCP possède la capacité d'enregistrer et de supprimer les enregistrements DNS A en IPv4 et PTR en reverse à la place des clients.
+
+      Cette fonctionnalité est particulièrement utile pour les clients non-Windows qui ne supportent pas les mises à jour dynamiques ou ceux dont le pare-feu bloque ces mises à jour.
+
+      La configuration se gère dans les propriétés du serveur DHCP sous l'onglet DNS en cochant la mise à jour automatique des enregistrements.
+
+      Dans un environnement sécurisé, il convient de cocher l'option permettant de mettre à jour les enregistrements A et PTR pour les clients qui ne demandent pas de mise à jour.
+
+   D. Bonnes pratiques et haute disponibilité.
+
+      Pour les grandes organisations, il est recommandé de séparer les rôles DHCP et DC afin d'éviter qu'un serveur DHCP vulnérable ne compromette le contrôleur de domaine.
+
+      La haute disponibilité doit être configurée avec une répartition de charge ou un cluster DHCP pour éviter toute interruption des attributions d'IP en cas de panne.
+
+      Il est conseillé de limiter les plages DHCP inutilisées pour réduire les risques d'attribution frauduleuse d'adresses IP.
+
+      L'activation de l'audit des événements et la sauvegarde régulière de la configuration permettent de tracer les attributions et de restaurer rapidement le service après un incident.
+
+IV. AUTHENTIFICATION RADIUS ET ACCÈS DISTANTS.
+
+   A. Fonctionnement de NPS (Authentification, Autorisation, Comptabilité).
+
+      Network Policy Server est l'implémentation Microsoft du serveur RADIUS pour la gestion des accès réseau sécurisés.
+
+      Ce service assure l'authentification en vérifiant les identifiants des utilisateurs, généralement via l'Active Directory.
+
+      L'autorisation définit les règles précisant quels utilisateurs ou groupes peuvent accéder à un service selon des critères comme l'heure ou la machine.
+
+      La comptabilité permet la journalisation des débuts et des fins de session RADIUS pour assurer le suivi des accès.
+
+      Il est utilisé pour sécuriser le Wi-Fi huit cent deux.1X, les VPN d'entreprise et les commutateurs réseau avec authentification par port.
+
+   B. Méthodes d'authentification et niveaux de sécurité.
+
+      Le niveau de sécurité varie selon la méthode choisie, allant de très faible pour le protocole PAP à très élevé pour l'EAP-TLS.
+
+      La méthode PEAP-MSCHAPv2 offre un niveau de sécurité élevé en utilisant un tunnel TLS pour protéger l'authentification côté serveur.
+
+      L'EAP-TLS présente un niveau de sécurité très élevé et nécessite l'utilisation de certificats via une infrastructure PKI.
+
+      Les protocoles comme CHAP ou MS-CHAPv2 présentent des niveaux de sécurité faibles ou moyens et sont vulnérables à certains types d'attaques.
+
+      L'utilisation de l'EAP-TTLS offre un niveau de sécurité élevé mais présente une interopérabilité limitée sous certains constructeurs.
+
+   C. Configuration et protocoles du service RRAS.
+
+      Le service RRAS permet de transformer un serveur Windows en routeur, en serveur VPN ou en passerelle NAT.
+
+      Les protocoles VPN supportés par ce service incluent IKEv2, SSTP, L2TP et PPTP.
+
+      Dans Windows Server deux mille vingt-cinq, les nouvelles installations n'acceptent plus par défaut les connexions PPTP et L2TP car ils sont jugés moins sécurisés.
+
+      La configuration recommandée consiste à passer par NPS pour centraliser les politiques d'accès au lieu de valider les identifiants directement dans RRAS.
+
+      La mise en place d'un VPN nécessite l'installation du rôle Accès distant et la définition d'un pool d'adresses IP statique pour les clients.
+
+V. SYNCHRONISATION TEMPORELLE ET SÉCURITÉ RÉSEAU.
+
+   A. Hiérarchie temporelle et rôle du PDC.
+
+      La synchronisation horaire est un élément critique pour l'authentification Kerberos qui tolère un décalage maximum de cinq minutes entre un client et un contrôleur de domaine.
+
+      Dans une infrastructure Active Directory, les membres du domaine comme les clients et les serveurs non DC se synchronisent sur un contrôleur de domaine de leur site.
+
+      Les contrôleurs de domaine se synchronisent entre eux en suivant la topologie de réplication établie dans le réseau.
+
+      Au sommet de cette hiérarchie, l'émulateur PDC du domaine racine de la forêt sert de source de temps interne de référence.
+
+      Le PDC doit impérativement être configuré pour se synchroniser sur une source horaire externe nommée NTP autoritaire plutôt que sur sa propre horloge BIOS.
+
+   B. Commandes de gestion du service W32Time.
+
+      La commande w32tm /query /status permet d'afficher l'état actuel du service de temps Windows tandis que w32tm /query /source affiche la source de synchronisation NTP actuelle.
+
+      Pour obtenir la configuration complète du service W32Time, l'administrateur doit utiliser la commande w32tm /query /configuration.
+
+      La commande w32tm /resync est utilisée pour forcer une resynchronisation immédiate et l'option /force permet de la réaliser même en cas d'erreur.
+
+      L'outil w32tm /stripchart permet de mesurer le décalage horaire avec un ordinateur spécifique en utilisant des paramètres comme /samples:cinq ou /dataonly.
+
+      La configuration de serveurs NTP manuels s'effectue avec w32tm /config /manualpeerlist et la commande w32tm /config /syncfromflags:domhier permet de revenir à la synchronisation via la hiérarchie AD.
+
+      En cas de besoin de maintenance profonde, les commandes net stop w32time et net start w32time permettent de redémarrer le service, tandis que ununregister et register servent à réenregistrer le service.
+
+   C. Sécurisation contre les attaques LLMNR et NetBIOS.
+
+      Lorsque la résolution DNS échoue, les clients Windows utilisent des protocoles de secours non authentifiés comme LLMNR sur le port UDP cinq mille trois cent cinquante-cinq et NetBIOS-NS sur les ports UDP cent trente-sept-cent trente-huit.
+
+      Un attaquant peut exploiter ces protocoles avec un outil comme Responder pour répondre à la place du serveur légitime et capturer le hash NTLM de l'utilisateur.
+
+      Pour désactiver LLMNR, il faut passer par une GPO dans le chemin Configuration ordinateur vers Modèles d'administration, Réseau, puis Client DNS pour activer la désactivation de la résolution de noms par multidiffusion.
+
+      Le protocole mDNS peut également être configuré via la même GPO en utilisant le paramètre Configurer le répondeur mDNS avec l'option Désactivé.
+
+      La désactivation de NetBIOS s'effectue dans les Préférences du panneau de configuration sous les Options réseau et l'onglet WINS en choisissant Désactiver NetBIOS sur TCP/IP.
+
+      Il est recommandé de tester ces désactivations sur un groupe pilote avant un déploiement général car certaines applications anciennes peuvent dépendre de NetBIOS.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la zone principale qui est modifiable et la zone secondaire qui est une copie en lecture seule.
+
+      Une erreur courante consiste à oublier que le PDC du domaine racine doit être configuré sur une source NTP externe et non sur la hiérarchie AD.
+
+      Le nettoyage des enregistrements DNS nécessite l'activation de trois niveaux distincts pour fonctionner correctement.
+
+      Il est crucial de ne pas laisser les mises à jour dynamiques DNS en mode non sécurisé pour éviter l'injection d'enregistrements malveillants.
+
+      La désactivation de LLMNR et NetBIOS doit être testée sur un groupe pilote car certaines applications anciennes peuvent en dépendre.
+
+EXEMPLES CITÉS.
+
+      Le calcul du délai de suppression d'un enregistrement via le scavenging suit la formule NoRefresh plus Refresh fois deux.
+
+      Pour la synchronisation horaire, Kerberos tolère un décalage maximum de cinq minutes entre un client et un contrôleur de domaine.
+
+      Dans Windows Server deux mille vingt-cinq, les protocoles VPN PPTP et L2TP sont désactivés par défaut pour des raisons de sécurité.
+
+      Le serveur NPS assure les fonctions d'authentification, d'autorisation et de comptabilité pour les accès comme le Wi-Fi huit cent deux.1X.

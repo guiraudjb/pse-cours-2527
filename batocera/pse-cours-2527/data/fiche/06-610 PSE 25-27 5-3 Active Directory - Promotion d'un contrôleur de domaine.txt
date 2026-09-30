@@ -1,0 +1,233 @@
+GUIDE COMPLET DE PROMOTION D'UN SERVEUR WINDOWS EN CONTRÔLEUR DE DOMAINE.
+
+LEXIQUE COMPLET.
+
+      AD DS désigne les services de domaine Active Directory qui permettent d'installer les fichiers nécessaires au fonctionnement d'un annuaire.
+
+      DNS désigne le système de résolution de noms qui permet aux clients de trouver les contrôleurs de domaine en interrogeant la zone DNS.
+
+      DHCP désigne le protocole qui attribue automatiquement des adresses IP et que le serveur ne doit pas utiliser pour sa propre configuration.
+
+      DSRM désigne le mot de passe de restauration des services d'annuaire utilisé pour restaurer l'AD en cas de corruption grave.
+
+      FSMO désigne les rôles que le premier contrôleur de domaine hébergera pour servir de référence à toutes les authentifications.
+
+      IP désigne l'adresse statique qui doit être configurée sur le serveur pour éviter une attribution par DHCP.
+
+      Netlogon désigne le service dont le redémarrage permet de forcer l'enregistrement des enregistrements SRV dans le DNS.
+
+      SRV désigne les enregistrements DNS cruciaux pour que les clients puissent localiser les services de l'Active Directory.
+
+      SYSVOL désigne le dossier dont les autorisations de partage doivent être sécurisées car il constitue un vecteur d'attaque potentiel.
+
+      WSUS désigne l'outil utilisé pour appliquer les dernières mises à jour Windows sur le serveur.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET OBJECTIFS DU DÉPLOIEMENT.
+
+   A. Rôle du premier contrôleur de domaine.
+
+      Le déploiement vise à transformer un serveur Windows Server en contrôleur de domaine.
+
+      Cette opération permet de créer le cœur de l'infrastructure informatique.
+
+      Le premier contrôleur de domaine devient l'élément central du réseau.
+
+   B. Hébergement des rôles FSMO et authentification.
+
+      Ce premier contrôleur de domaine hébergera l'ensemble des rôles FSMO.
+
+      Il servira de référence absolue pour toutes les authentifications du système.
+
+II. PRÉREQUIS ET CONFIGURATION INITIALE.
+
+   A. Configuration réseau et IP statique.
+
+      Le serveur doit impérativement posséder une adresse IP statique au lieu d'une attribution par DHCP.
+
+      Un exemple de configuration valide pour ce déploiement est l'adresse dix.2.25.35.
+
+      Pour configurer cette adresse via PowerShell, on utilise la commande New-NetIPAddress avec l'interface Ethernet et le préfixe vingt-quatre.
+
+      La passerelle par défaut doit être définie sur dix.2.25.1 pour assurer la sortie du réseau.
+
+      Le serveur DNS doit également être configuré manuellement avec l'adresse dix.2.25.10.
+
+   B. Nommage du serveur et connectivité.
+
+      Il est nécessaire de donner au serveur un nom pertinent avant de lancer la promotion.
+
+      Un exemple de nommage recommandé pour ce premier contrôleur de domaine est DC1.
+
+      Le serveur doit être capable de se pinger lui-même pour valider sa propre connectivité.
+
+      Une connectivité réseau fonctionnelle est indispensable pour que le serveur puisse obtenir les mises à jour nécessaires.
+
+   C. Mises à jour de sécurité.
+
+      La sécurité du serveur doit être assurée avant toute installation de rôle.
+
+      Il est impératif d'appliquer les dernières mises à jour Windows disponibles.
+
+      L'utilisation du service WSUS permet de gérer et d'appliquer ces mises à jour de sécurité de manière efficace.
+
+III. PRÉPARATION DU SERVICE DNS.
+
+   A. Importance du lien AD et DNS.
+
+      Active Directory et DNS sont considérés comme des services inséparables.
+
+      Le bon fonctionnement de l'infrastructure repose sur cette relation étroite.
+
+      Les clients utilisent le DNS pour localiser les contrôleurs de domaine sur le réseau.
+
+      Sans une configuration DNS correcte, les services de domaine ne peuvent pas être trouvés.
+
+   B. Rôle du serveur DNS pour la nouvelle forêt.
+
+      Pour le premier contrôleur de domaine d'une nouvelle forêt, la solution la plus simple est que le serveur soit lui-même son propre serveur DNS.
+
+      L'assistant de promotion s'occupe d'installer automatiquement le rôle DNS lors du processus.
+
+      Ce même assistant crée également la zone DNS nécessaire pour votre nouveau domaine.
+
+      La création de la zone DNS est une étape indispensable pour accompagner la promotion du serveur.
+
+IV. INSTALLATION DU RÔLE AD DS.
+
+   A. Méthode via le Gestionnaire de serveur.
+
+      L'installation commence par l'ouverture de l'outil de gestion principal nommé le Gestionnaire de serveur.
+
+      Il convient ensuite de cliquer sur l'option permettant d'ajouter des rôles et des fonctionnalités au système.
+
+      L'utilisateur doit laisser sélectionnée l'installation basée sur un rôle ou une fonctionnalité puis choisir le serveur actuel dans la liste.
+
+      Dans la liste des rôles disponibles, il est nécessaire de cocher la case correspondant aux Services de domaine Active Directory.
+
+      Une fenêtre s'ouvre alors pour proposer l'ajout des fonctionnalités nécessaires au bon fonctionnement du service.
+
+      Il suffit de cliquer sur Suivant jusqu'à la fin du processus pour lancer l'installation finale.
+
+   B. Méthode automatisée via PowerShell.
+
+      Cette deuxième approche est recommandée pour les besoins d'automatisation des tâches informatiques.
+
+      L'utilisation de PowerShell permet une exécution rapide sans avoir recours à une interface graphique.
+
+      La commande spécifique à utiliser est Install-WindowsFeature avec le paramètre -Name AD-Domain-Services.
+
+      Il est indispensable d'ajouter l'option -IncludeManagementTools pour installer également les outils de gestion.
+
+      Cette méthode est décrite comme étant scriptable et très efficace pour les administrateurs.
+
+V. PROCESSUS DE PROMOTION DU CONTRÔLEUR DE DOMAINE.
+
+   A. Configuration de la nouvelle forêt et du domaine.
+
+      Pour débuter la promotion, il faut sélectionner l'option ajouter une nouvelle forêt dans l'assistant de configuration.
+
+      Le nom de domaine racine doit être saisi avec précision, par exemple entreprise.local.
+
+      L'assistant permet de définir le nom de la forêt qui servira de base à toute l'infrastructure.
+
+   B. Paramètres du contrôleur et mot de passe DSRM.
+
+      Le niveau fonctionnel de la forêt et du domaine doit être choisi selon la version la plus récente de l'environnement, comme Windows Server deux mille seize ou supérieur.
+
+      Le rôle des services de domaine doit rester sélectionné pour assurer la fonction de contrôleur de domaine.
+
+      Un mot de passe de restauration des services d'annuaire, appelé DSRM, doit être choisi et conservé en lieu sûr pour restaurer l'AD en cas de corruption grave.
+
+      Un avertissement concernant la délégation DNS peut apparaître durant cette étape, mais il peut être ignoré car une nouvelle zone est créée.
+
+      Les chemins d'accès pour la base de données NTDS.dit, les journaux et le dossier SYSVOL peuvent être spécifiés, bien que les valeurs par défaut soient conseillées pour un premier déploiement.
+
+   C. Vérification et finalisation de l'installation.
+
+      L'assistant affiche un résumé complet de la configuration choisie pour permettre une dernière vérification avant le lancement.
+
+      Une série de vérifications des prérequis est effectuée par le système pour s'assurer que tout est prêt.
+
+      Si tous les indicateurs sont au vert, il suffit de cliquer sur installer pour lancer le processus.
+
+      Le serveur redémarrera automatiquement une fois l'installation terminée pour finaliser la promotion.
+
+VI. VÉRIFICATIONS POST-DÉPLOIEMENT.
+
+   A. Contrôles via les outils graphiques.
+
+      Il convient d'ouvrir l'outil Utilisateurs et ordinateurs Active Directory depuis le Gestionnaire de serveur.
+
+      Vous devez vérifier que votre domaine entreprise.local est bien présent dans la console.
+
+      Développez le domaine pour confirmer que votre serveur est listé dans l'unité d'organisation Domain Controllers.
+
+      Assurez-vous également qu'un compte d'ordinateur a été correctement créé pour le DC.
+
+   B. Vérifications de l'état via PowerShell.
+
+      La commande Get-ADDomainController avec l'identité de votre machine permet de confirmer le rôle du serveur.
+
+      L'exécution de Get-Service pour Netlogon, DNS, KDC et DFSR permet de s'assurer que les services critiques sont en état Running.
+
+      La commande Test-ComputerSecureChannel avec l'option Verbose sert à vérifier la connexion et l'authentification avec le DC.
+
+   C. Tests de résolution DNS et de réplication.
+
+      L'outil DNS doit afficher une zone de recherche directe portant le nom de votre domaine entreprise.local.
+
+      Il est crucial de vérifier la présence des enregistrements SRV dans le dossier _tcp pour la localisation des services.
+
+      La commande nslookup avec le type SRV pour _ldap._tcp.entreprise.local permet de tester la résolution DNS.
+
+      La commande repadmin /replsummary permet d'afficher un résumé de l'état de réplication pour vos futurs DCs.
+
+VII. MAINTENANCE ET BONNES PRATIQUES.
+
+   A. Dépannage des erreurs courantes.
+
+      Si l'assistant de promotion échoue lors de la vérification des prérequis, il est nécessaire de lire attentivement le message d'erreur. Les causes fréquentes incluent une mauvaise configuration de l'IP statique ou un nom de serveur déjà utilisé sur le réseau.
+
+      En cas d'impossibilité pour les clients de joindre le domaine, il faut vérifier que le client utilise bien l'IP du DC comme serveur DNS. Il est également crucial de contrôler la présence des enregistrements SRV dans la zone DNS du contrôleur de domaine.
+
+      Si les enregistrements SRV sont absents du DNS, le redémarrage du service Netlogon sur le DC peut résoudre le problème. Cette action force l'enregistrement des records nécessaires au bon fonctionnement des services.
+
+   B. Sécurisation des comptes et de l'audit.
+
+      Le compte Administrateur du domaine possède des privilèges extrêmement puissants et doit être utilisé avec une grande parcimonie. Il est recommandé de créer un compte utilisateur standard pour les tâches quotidiennes afin de limiter les risques.
+
+      Pour les tâches d'administration, il convient d'utiliser la fonction Exécuter en tant que ou de passer par un compte d'administrateur délégué. Cette méthode permet de ne pas travailler en permanence avec le compte racine du domaine.
+
+      L'activation de l'audit des connexions et des modifications de l'AD est une étape essentielle pour tracer les activités. Cela permet de garder une trace précise des actions effectuées sur l'infrastructure.
+
+   C. Gestion du partage SYSVOL.
+
+      Le partage SYSVOL est un élément critique de l'infrastructure qui nécessite une attention particulière. Il est impératif de s'assurer que les autorisations sur ce partage restent intactes en permanence.
+
+      Une mauvaise configuration des droits sur le dossier SYSVOL représente un vecteur d'attaque potentiel pour l'environnement. Une surveillance régulière des accès est donc préconisée pour maintenir la sécurité du domaine.
+
+POINTS D'ATTENTION.
+
+      L'absence d'une IP statique est un piège majeur car le serveur ne doit pas utiliser le DHCP.
+
+      Il ne faut pas confondre l'installation du rôle AD DS et la promotion effective du serveur en contrôleur de domaine.
+
+      La confusion entre le rôle DNS et la zone DNS peut survenir car l'assistant installe les deux simultanément.
+
+      Le mot de passe DSRM est une nuance critique car il est indispensable pour la restauration en cas de corruption.
+
+      Un oubli de configuration DNS sur les clients empêchera systématiquement la jonction au domaine.
+
+EXEMPLES CITÉS.
+
+      Le serveur doit posséder une IP statique comme dix.2.25.35 avec une passerelle dix.2.25.1.
+
+      La commande PowerShell Install-WindowsFeature permet d'installer le rôle AD DS de manière automatisée.
+
+      Le nom de domaine racine peut être configuré comme entreprise.local lors de la création de la forêt.
+
+      L'outil de vérification utilise la commande nslookup pour tester les enregistrements SRV de entreprise.local.
+
+      Le service Netlogon peut être redémarré pour corriger l'absence d'enregistrements SRV dans le DNS.

@@ -1,0 +1,257 @@
+GUIDE COMPLET SUR LE PROTOCOLE KERBEROS DANS L'ENVIRONNEMENT ACTIVE DIRECTORY.
+
+LEXIQUE COMPLET.
+
+      Le sigle KDC désigne le Key Distribution Center, qui est le tiers de confiance hébergé sur les contrôleurs de domaine pour authentifier les utilisateurs et les services.
+
+      Le sigle TGT désigne le Ticket Granting Ticket, qui est un ticket initial obtenu après l'authentification et utilisé pour demander des tickets de service.
+
+      Le sigle SPN désigne le Service Principal Name, qui est un identifiant unique permettant de nommer un service dans le domaine.
+
+      Le sigle AD DS désigne Active Directory Domain Services, qui est l'environnement où Kerberos est utilisé comme protocole d'authentification par défaut.
+
+      Le terme Kerberos désigne un protocole d'authentification réseau basé sur des tickets et conçu pour sécuriser les communications dans un environnement non sécurisé.
+
+      Le sigle AS désigne l'Authentication Service, qui est le sous-service du KDC chargé d'authentifier le client et de délivrer le TGT.
+
+      Le sigle TGS désigne le Ticket Granting Service, qui est le sous-service du KDC fournissant des tickets de service basés sur le TGT.
+
+      Le terme Authenticator désigne une preuve d'identité temporaire incluse dans les requêtes pour éviter les attaques par rejeu.
+
+      Le sigle LSA désigne la Local Security Authority, qui est l'autorité sur l'ordinateur client créant un jeton d'accès à partir du ticket de service.
+
+      Le terme Kerberoasting désigne une attaque consistant à extraire les hachages de tickets de service pour tenter de casser les mots de passe des comptes de service.
+
+      Le terme Golden Ticket désigne une attaque où un attaquant falsifie un TGT avec des privilèges élevés en utilisant la clé du compte krbtgt.
+
+      Le terme Silver Ticket désigne la falsification d'un ticket de service pour un service spécifique.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET PRINCIPES DE KERBEROS.
+
+   A. Définition et principes de base.
+
+      Kerberos est un protocole d'authentification réseau basé sur des tickets qui a été conçu pour sécuriser les communications au sein d'un environnement non sécurisé.
+
+      Développé par le MIT, ce protocole repose sur l'utilisation de la cryptographie symétrique pour garantir la sécurité des échanges.
+
+      Le système utilise un tiers de confiance appelé le Key Distribution Center ou KDC pour authentifier les utilisateurs et les services.
+
+      Le fonctionnement de Kerberos s'appuie sur des preuves cryptographiques temporaires nommées tickets pour permettre l'accès à des ressources.
+
+      Les échanges sont sécurisés par des clés secrètes basées sur les mots de passe des utilisateurs ou des services.
+
+   B. Comparaison avec le protocole NTLM.
+
+      Kerberos est devenu le protocole d'authentification par défaut dans les environnements Active Directory Domain Services à partir de Windows deux mille.
+
+      Ce changement a permis de remplacer le protocole NTLM qui est considéré comme moins sécurisé que la version cinq de Kerberos.
+
+      Le protocole NTLM utilise des hachages moins robustes comme MD4 ou MD5 ce qui le rend vulnérable à certaines attaques.
+
+      L'une des faiblesses majeures de NTLM est sa vulnérabilité aux attaques de type pass-the-hash.
+
+      Contrairement à NTLM, Kerberos offre une authentification mutuelle et permet une gestion centralisée via le KDC pour réduire les risques d'usurpation.
+
+   C. Concepts de l'authentification mutuelle et de la délégation.
+
+      L'authentification mutuelle est un principe clé qui permet au client et au serveur de vérifier mutuellement leur identité.
+
+      Ce mécanisme garantit que l'utilisateur communique avec le bon service et que le service reconnaît bien l'utilisateur.
+
+      La délégation est une fonctionnalité qui permet à un service d'agir au nom d'un utilisateur pour accéder à d'autres ressources.
+
+      Cette capacité est essentielle pour permettre des processus complexes de communication entre différents services d'un domaine.
+
+II. ARCHITECTURE ET COMPOSANTS DU SYSTÈME.
+
+   A. Les trois acteurs principaux.
+
+      Le protocole repose sur trois entités fondamentales dont l'origine du nom est inspirée du chien à trois têtes nommé Kerberos.
+
+      Le client représente l'utilisateur ou l'entité qui demande l'accès à une ressource spécifique.
+
+      Le serveur de service est l'entité qui fournit la ressource demandée comme un partage de fichiers ou une application.
+
+      Le Key Distribution Center ou KDC agit comme un tiers de confiance pour authentifier les utilisateurs et les services.
+
+   B. Le rôle du Key Distribution Center (KDC).
+
+      Le KDC est hébergé sur les contrôleurs de domaine Active Directory et est divisé en deux sous-services distincts.
+
+      L'Authentication Service ou AS est chargé d'authentifier le client et de lui délivrer le TGT.
+
+      Le Ticket Granting Service ou TGS fournit les tickets de service basés sur le TGT obtenu précédemment.
+
+      Dans un domaine AD, chaque contrôleur de domaine héberge un KDC avec une base de données centralisée.
+
+      La commande nltest /dsgetdc:DOMAINE permet d'identifier le contrôleur de domaine utilisé comme KDC.
+
+   C. Les différents types de tickets et authentificateurs.
+
+      Le Ticket Granting Ticket ou TGT est le ticket initial obtenu après l'authentification pour demander des tickets de service.
+
+      Le ticket de service ou TS autorise l'accès à une ressource spécifique au sein du réseau.
+
+      L'authenticator est une preuve d'identité temporaire incluse dans les requêtes pour éviter les attaques par rejeu.
+
+      Le ticket de service est chiffré avec la clé du service et une clé de session est utilisée pour communiquer avec ce dernier.
+
+      L'authentification mutuelle permet au client et au serveur de vérifier réciproquement leur identité.
+
+III. LE PROCESSUS DÉTAILLÉ D'AUTHENTIFICATION.
+
+   A. Étape d'authentification initiale (AS-REQ/AS-REP).
+
+      L'utilisateur saisit son nom de connexion, son mot de passe et son domaine dans la boîte de dialogue d'ouverture de session Windows.
+
+      L'ordinateur client recherche un centre de distribution de clés, le KDC, en interrogeant un serveur DNS.
+
+      Le client envoie une demande de service d'authentification Kerberos, nommée KRB_AS_REQ, au contrôleur de domaine.
+
+      Les informations sur le compte d'utilisateur et l'heure système sont cryptées à l'aide de la clé partagée entre le compte et le KDC.
+
+      Le service d'authentification du KDC vérifie les informations et répond par un message AS-REP.
+
+      Ce message contient un TGT chiffré avec la clé du KDC ainsi qu'une clé de session chiffrée avec le mot de passe du client.
+
+   B. Demande et obtention du ticket de service (TGS-REQ/TGS-REP).
+
+      L'utilisateur envoie une demande d'échange de service d'accord de ticket, le KRB_TGS_REQ, au centre KDC pour obtenir un ticket de service.
+
+      Cette demande KRB_TGS_REQ contient un authentificateur ainsi que le ticket TGT qui a été délivré précédemment à l'utilisateur.
+
+      Le service d'accord de ticket du centre KDC vérifie la validité du ticket TGT et de l'authentificateur.
+
+      Si les deux éléments sont valides, le service génère un nouveau ticket de service.
+
+      Le KDC retourne ce ticket à l'utilisateur via une réponse de service d'accord de ticket Kerberos, le KRB_TGS_REP.
+
+      Le ticket de service est crypté avec la clé à long terme du service cible, connue uniquement du KDC et du service.
+
+   C. Accès final à la ressource (AP-REQ/AP-REP).
+
+      L'utilisateur envoie le ticket de service et l'authentificateur au serveur cible à l'aide d'une demande d'application Kerberos, le KRB_AP_REQ.
+
+      Sur l'ordinateur client, le ticket de service est présenté à l'autorité de sécurité locale, la LSA, qui crée un jeton d'accès.
+
+      Le serveur cible vérifie le ticket et l'authentificateur en décryptant la clé de session avec sa clé principale partagée avec le KDC.
+
+      Le serveur retourne un authentificateur à l'utilisateur dans une réponse d'application Kerberos, le KRB_AP_REP.
+
+      Grâce à cet échange, l'utilisateur et le serveur bénéficient ainsi d'une authentification mutuelle.
+
+      Tout processus agissant au nom de l'utilisateur peut alors accéder aux ressources de l'ordinateur local.
+
+IV. INTÉGRATION ET CONFIGURATION DANS ACTIVE DIRECTORY.
+
+   A. Rôle des contrôleurs de domaine et de la base de données.
+
+      Dans l'environnement AD DS, Kerberos est pleinement intégré pour assurer la sécurité.
+
+      La base de données AD stocke les comptes utilisateurs et les services ainsi que leurs clés secrètes.
+
+      Chaque contrôleur de domaine agit comme un KDC et est synchronisé par la réplication AD.
+
+      La commande nltest /dsgetdc:DOMAINE permet d'identifier le contrôleur de domaine utilisé comme KDC.
+
+   B. Gestion des comptes et des Service Principal Names (SPN).
+
+      Les comptes d'utilisateur utilisent leur mot de passe pour générer une clé secrète.
+
+      Les comptes de service sont identifiés par l'utilisation de SPN.
+
+      Un exemple de SPN est HTTP/serveur.domaine.com.
+
+      Les comptes d'ordinateur sont enregistrés automatiquement dans AD lors de leur ajout au domaine.
+
+      La commande setspn -L NOM_COMPTE permet de vérifier les SPN existants.
+
+      L'ajout d'un SPN se fait avec la commande setspn -s HTTP/serveur.domaine.com NOM_COMPTE.
+
+   C. Politiques de domaine et gestion des clés.
+
+      Les clés Kerberos sont dérivées des mots de passe et sont mises à jour régulièrement.
+
+      Par défaut, les clés des comptes d'ordinateur sont mises à jour tous les trente jours.
+
+      Les politiques de domaine comme la durée de vie des tickets sont configurées via la Default Domain Policy.
+
+V. SÉCURITÉ, MENACES ET BONNES PRATIQUES.
+
+   A. Analyse des attaques (Golden, Silver et Kerberoasting).
+
+      L'attaque du Golden Ticket consiste en une falsification de TGT avec des privilèges élevés en utilisant la clé du compte krbtgt.
+
+      L'attaque du Silver Ticket permet la falsification d'un ticket de service pour un service spécifique.
+
+      Le Kerberoasting est une technique consistant à extraire les hachages de tickets de service pour casser les mots de passe des comptes de service.
+
+   B. Mesures de protection et durcissement.
+
+      Il est nécessaire de protéger le compte krbtgt en réinitialisant régulièrement sa clé avec la commande Reset-KrbtgtKey.
+
+      L'utilisation de mots de passe forts pour les comptes de service est une mesure de protection essentielle.
+
+      Il faut activer le chiffrement AES en préférant AES-deux cent cinquante-six à RC4 dans les politiques de domaine.
+
+   C. Surveillance et journalisation des événements.
+
+      La surveillance doit passer par la vérification des événements Kerberos dans l'Observateur d'événements avec les identifiants quatre mille sept cent soixante-huit et quatre mille sept cent soixante-neuf.
+
+      L'activation des journaux Kerberos se fait via le registre en modifiant la valeur LogLevel à 0x1 dans le chemin HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos\Parameters.
+
+VI. DIAGNOSTIC ET OUTILS DE DÉPANNAGE.
+
+   A. Utilisation des commandes de diagnostic (klist, nltest, setspn).
+
+      La commande klist permet d'afficher les tickets Kerberos actuellement stockés dans le cache de l'ordinateur. En utilisant l'option klist tgt, l'administrateur peut spécifiquement visualiser le Ticket Granting Ticket.
+
+      L'outil nltest est indispensable pour vérifier la connectivité avec le centre de distribution de clés. La commande nltest /dsgetdc:DOMAINE permet d'identifier précisément le contrôleur de domaine utilisé comme KDC.
+
+      Pour tester la connectivité de manière plus globale, l'option nltest /sc_query:DOMAINE peut être employée. Cela aide à confirmer que la relation de confiance avec le domaine est opérationnelle.
+
+      La gestion des noms de principal de service repose sur la commande setspn. L'administrateur peut lister les SPN associés à un compte avec setspn -L NOM_COMPTE.
+
+      Pour ajouter un nouveau SPN, on utilise la syntaxe setspn -s HTTP/serveur.domaine.com NOM_COMPTE. Il est également possible de rechercher des SPN avec la commande setspn -Q.
+
+   B. Résolution des erreurs courantes.
+
+      Une erreur fréquemment rencontrée lors des processus d'authentification est l'erreur KRB_AP_ERR_MODIFIED. Ce message indique généralement un problème de configuration ou de synchronisation.
+
+      L'une des causes principales de cette erreur est un SPN incorrect associé au service. Il convient alors de vérifier l'exactitude des identifiants avec la commande setspn.
+
+      Une autre cause majeure réside dans une horloge système désynchronisée entre le client et le serveur. La synchronisation de l'heure peut être rétablie en utilisant la commande w32tm /resync.
+
+   C. Configuration du logging Kerberos.
+
+      Le suivi des activités Kerberos nécessite l'activation des journaux via le registre Windows. Cette opération se déroule dans le chemin HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos\Parameters.
+
+      L'administrateur doit créer ou modifier une valeur nommée LogLevel. Le type de cette valeur doit être défini sur REG_DWORD.
+
+      Pour activer le logging, la donnée de valeur doit être réglée sur 0x1. Cela permet de générer des informations utiles pour le diagnostic dans l'Observateur d'événements.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le TGT qui est le ticket initial avec le TS qui est le ticket de service.
+
+      Une confusion fréquente réside dans la distinction entre le KDC et ses deux sous services nommés AS et TGS.
+
+      L'authentification mutuelle est une nuance cruciale car elle permet au client et au serveur de vérifier leur identité réciproquement.
+
+      Il est important de noter que Kerberos remplace NTLM car ce dernier utilise des hachages moins robustes comme MD4 ou MD5.
+
+      Une erreur de type KRB_AP_ERR_MODIFIED peut provenir soit d'un SPN incorrect soit d'une horloge désynchronisée.
+
+EXEMPLES CITÉS.
+
+      L'utilisation de la commande setspn -L NOM_COMPTE permet de vérifier les SPN existants pour un compte.
+
+      L'attaque de type Golden Ticket utilise la clé du compte krbtgt pour falsifier un TGT avec des privilèges élevés.
+
+      Le chiffrement AES-deux cent cinquante-six est recommandé par rapport au RC4 dans les politiques de domaine pour renforcer la sécurité.
+
+      La commande nltest /dsgetdc:DOMAINE sert à identifier le contrôleur de domaine utilisé comme KDC.
+
+      Pour activer les journaux Kerberos via le registre, il faut définir la valeur LogLevel à 0x1.

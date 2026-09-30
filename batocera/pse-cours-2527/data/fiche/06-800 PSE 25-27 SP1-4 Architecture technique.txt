@@ -1,0 +1,325 @@
+GUIDE COMPLET SUR L'ARCHITECTURE TECHNIQUE ET LE CYCLE DE VIE DE L'ADMINISTRATION SYSTÈME.
+
+LEXIQUE COMPLET.
+
+      L'architecture technique désigne l'ensemble des moyens d'infrastructure qui structurent les moyens matériels, les logiciels de base et les éléments de communication.
+
+      Le sigle SLA désigne le Service Level Agreement qui définit le niveau de service et de disponibilité à garantir.
+
+      Le sigle PCA désigne le Plan de Continuité d'Activité qui permet de maintenir l'activité d'une organisation en mode dégradé.
+
+      Le sigle PRA désigne le Plan de Reprise d'Activité qui vise à reprendre l'activité après un incident majeur.
+
+      Le sigle PCI désigne le Plan de Continuité Informatique qui constitue le volet informatique du PCA.
+
+      Le sigle PRI désigne le Plan de Reprise Informatique qui constitue le volet informatique du PRA.
+
+      Le sigle SGBD désigne le Système de Gestion de Base de Données utilisé pour gérer les données de l'architecture.
+
+      Le sigle RAID désigne une méthode de stockage permettant d'assurer la tolérance aux pannes de disques.
+
+      Le sigle DAS désigne le stockage directement attaché au serveur qui est simple mais peu scalable.
+
+      Le sigle NAS désigne le stockage de fichiers sur un réseau LAN qui est partagé.
+
+      Le sigle SAN désigne un réseau de stockage dédié à haute performance qui fonctionne par blocs.
+
+      Le sigle TLS désigne un protocole utilisé pour garantir des flux et des certificats sécurisés.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET RÔLE DE L'ADMINISTRATEUR.
+
+   A. Définition et objectifs de l'architecture technique.
+
+      L'architecture technique structure les moyens d'infrastructure à mettre en œuvre pour répondre à un besoin métier.
+
+      Elle organise et décrit les moyens matériels, les logiciels de base ainsi que les éléments de communication.
+
+      Cette architecture doit impérativement s'inscrire dans l'architecture existante de l'organisation.
+
+      L'un des objectifs est de dimensionner les serveurs, le stockage et le réseau en fonction de la volumétrie.
+
+      Elle vise également à mettre en œuvre l'installation, le paramétrage et la sécurité de la plateforme.
+
+      Enfin, elle permet d'exploiter la plateforme via la supervision, les mises à jour et l'évolution du système.
+
+   B. Le rôle central de l'administrateur système.
+
+      L'administrateur système est l'acteur central de l'architecture technique.
+
+      Il conçoit et dimensionne l'infrastructure nécessaire au fonctionnement des services.
+
+      Il est chargé d'installer, de paramétrer et de sécuriser l'ensemble des composants.
+
+      Il assure l'exploitation courante ainsi que la résilience du système.
+
+      Il garantit la continuité de service et la conformité de la plateforme.
+
+      Il ne se limite pas à un rôle de simple installateur car il porte la démarche d'ingénierie de la plateforme.
+
+   C. Le cycle de vie de l'architecture de la définition à l'exploitation.
+
+      Le cycle de vie débute par la phase de définition qui comprend l'étude des besoins, le dimensionnement et les choix techniques.
+
+      La phase de mise en œuvre suit la définition par l'installation, le paramétrage, la sécurité et les tests.
+
+      L'exploitation constitue la phase suivante et englobe la supervision, la maintenance et l'évolution.
+
+      Le processus est cyclique car le REX de l'exploitation nourrit directement la définition des évolutions futures.
+
+II. CRITÈRES DE CONCEPTION ET ÉTUDE DE VOLUMÉTRIE.
+
+   A. Les cinq critères de choix d'une architecture.
+
+      Tout dimensionnement d'architecture repose sur cinq critères fondamentaux qui guident les choix techniques.
+
+      La volumétrie permet de déterminer la quantité de données à stocker ou à traiter par le système.
+
+      Les pics de charge servent à identifier la charge maximale ponctuelle que l'infrastructure doit être capable d'absorber.
+
+      La disponibilité définit le niveau de service ou le SLA que l'organisation souhaite garantir aux utilisateurs.
+
+      La criticité évalue l'impact qu'une interruption de service pourrait avoir sur les activités métier.
+
+      L'évolutivité vérifie si la solution proposée peut grandir et s'adapter dans le temps.
+
+   B. Analyse de la volumétrie statique et dynamique.
+
+      La volumétrie est l'élément qui conditionne l'ensemble de l'architecture concernant le CPU, la mémoire, le stockage et le réseau.
+
+      L'étude de la volumétrie statique se concentre sur ce qui occupe l'espace de stockage physique.
+
+      Elle prend en compte le nombre et la taille des données, l'historisation pour la rétention et l'archivage, ainsi que l'évolution de l'espace dans le temps.
+
+      Le volume physique total doit également intégrer l'overhead et la parité RAID.
+
+      L'étude de la volumétrie dynamique concerne les éléments qui sollicitent les ressources de calcul et le réseau.
+
+      Elle analyse le nombre d'utilisateurs, les transactions simultanées, les batchs, les connexions simultanées et le ratio entre l'écriture et la lecture.
+
+   C. Dimensionnement des ressources et estimation de capacité.
+
+      Sous-estimer la volumétrie entraîne une saturation du système tandis que la surestimer génère un surcoût inutile.
+
+      Le dimensionnement des serveurs doit être calculé en fonction de la volumétrie et de la charge prévue.
+
+      Pour une application de gestion documentaire avec cinquante mille documents par an de deux Mo chacun sur dix ans, il faut calculer le volume de stockage total hors overhead.
+
+      Le dimensionnement du serveur doit également prévoir le pic de cinquante utilisateurs simultanés parmi les deux cents utilisateurs internes.
+
+      L'estimation de capacité doit aussi vérifier la fenêtre disponible pour un batch nocturne d'indexation de quatre h.
+
+III. COMPOSANTS LOGICIELS ET EXIGENCES DE QUALITÉ.
+
+   A. Les briques logicielles d'infrastructure et choix technologiques.
+
+      Les briques logicielles d'infrastructure comprennent les systèmes d'exploitation, le middleware, les systèmes de fichiers, les compilateurs et les outils système.
+
+      On y retrouve également les serveurs Web, les serveurs d'application et les SGBD.
+
+      Tous ces choix technologiques doivent s'inscrire dans l'architecture existante en respectant le cadre d'architecture ou la matrice technologique.
+
+      Le choix des logiciels doit tenir compte du référentiel de logiciels libres de l'organisation pour éviter le verrou technologique et garantir la pérennité du support.
+
+   B. La disponibilité et les niveaux de SLA.
+
+      La disponibilité est une mesure de la qualité de service qui s'exprime en nombre de neuf.
+
+      Un niveau de quatre-vingt-dix-neuf pour cent correspond à une indisponibilité de trois virgule soixante-cinq jours par an et est considéré comme bas.
+
+      Un niveau de quatre-vingt-dix-neuf virgule neuf pour cent représente huit virgule soixante-seize h d'indisponibilité annuelle et constitue un niveau standard.
+
+      Un niveau de quatre-vingt-dix-neuf virgule quatre-vingt-dix-neuf pour cent offre cinquante-deux virgule six min d'indisponibilité et est qualifié d'élevé.
+
+      Un niveau de quatre-vingt-dix-neuf virgule neuf cent quatre-vingt-dix-neuf pour cent limite l'indisponibilité à cinq virgule trois min par an pour un service très élevé.
+
+      Chaque neuf supplémentaire augmente le coût de l'architecture de manière exponentielle et conditionne la redondance ou le PRA.
+
+   C. Stratégies de réplication et plans de continuité (PCA/PRA).
+
+      La réplication synchrone garantit zéro perte de données car la donnée est écrite sur le réplique avant l'accusé de réception client, mais elle augmente la latence.
+
+      La réplication asynchrone offre de meilleures performances et une tolérance réseau accrue, mais elle présente un risque de perte de données lors d'un incident.
+
+      Le PCA ou Plan de Continuité d'Activité vise à maintenir l'activité en mode dégradé.
+
+      Le PRA ou Plan de Reprise d'Activité permet de reprendre l'activité après un incident majeur.
+
+      Le PCI et le PRI sont les déclinaisons informatiques respectives du PCA et du PRA.
+
+      La sauvegarde est un pilier de la continuité qui doit suivre la stratégie trois-deux-un avec trois copies, deux supports et un copie hors-site.
+
+IV. ARCHITECTURE PHYSIQUE ET INFRASTRUCTURE DE STOCKAGE.
+
+   A. Dimensionnement des serveurs et modes de clustering.
+
+      Le dimensionnement des serveurs repose sur l'analyse de la puissance et du nombre de processeurs nécessaires.
+
+      Il faut également estimer les besoins en mémoire physique et le nombre total de serveurs en fonction de la volumétrie et de la charge.
+
+      L'architecture peut utiliser un cluster en mode actif/actif où les deux nœuds traitent la charge pour une meilleure utilisation des ressources.
+
+      Le mode actif/passif utilise un seul nœud actif avec un second en veille pour permettre une bascule simple.
+
+      Le choix entre ces modes dépend du coût, de la complexité et du niveau de SLA visé.
+
+      La plateforme doit prévoir plusieurs environnements comme le dev, l'intégration, l'exploitation et le secours.
+
+   B. Les niveaux de protection RAID.
+
+      Le RAID zéro offre de la performance mais ne possède aucune redondance ni tolérance aux pannes.
+
+      Le RAID un utilise le principe du miroir pour assurer la protection avec un disque de tolérance.
+
+      Le RAID cinq répartit la parité sur les disques et permet de supporter la panne de un disque.
+
+      Le RAID six utilise une double parité pour garantir la tolérance de panne de deux disques.
+
+      Le RAID dix combine le miroir et l'agrégat pour offrir une protection robuste.
+
+   C. Les types de stockage DAS, NAS et SAN.
+
+      Le stockage DAS consiste en des disques directement attachés au serveur, ce qui est simple mais peu scalable.
+
+      Le stockage NAS permet de partager des fichiers sur un réseau LAN.
+
+      Le stockage SAN est un réseau de stockage dédié haute performance qui fonctionne par blocs.
+
+V. MISE EN ŒUVRE, SÉCURITÉ ET INSTALLATION.
+
+   A. Zonage, positionnement et architecture d'exploitation.
+
+      L'architecture d'exploitation est une structure distincte de l'architecture applicative qui organise les machines par rôles et noms conventionnés.
+
+      Elle définit les flux nécessaires à la sauvegarde, à la supervision et à l'administration de la plateforme.
+
+      Le positionnement des machines repose sur un cloisonnement strict des zones comprenant la DMZ, l'application, les données et l'exploitation.
+
+      Cette zone d'exploitation dédiée doit être totalement cloisonnée pour garantir l'intégrité du système.
+
+   B. Processus d'installation et durcissement des systèmes.
+
+      L'installation débute par le raccordement du matériel au réseau suivi de la mise en place des systèmes et des logiciels d'infrastructure.
+
+      Le paramétrage inclut la configuration des services, des SGBD, des serveurs Web ou d'application et l'intégration à l'annuaire.
+
+      Le durcissement systématique d'un serveur de production impose de désactiver tous les services inutiles.
+
+      Il est nécessaire de configurer la rotation des logs, le démarrage automatique des services critiques et l'utilisation de répartiteurs de charge.
+
+      Le paramétrage par défaut n'est jamais considéré comme adapté pour un environnement de production.
+
+   C. Sécurisation des flux, certificats et accès par bastion.
+
+      La sécurisation des flux sensibles repose sur l'utilisation de protocoles chiffrés tels que HTTPS, LDAPS ou le TLS pour les échanges avec le SGBD.
+
+      L'installation des certificats peut se faire via une autorité de certification interne ou publique avec une gestion du renouvellement automatisé comme ACME ou Let's Encrypt.
+
+      L'administration des systèmes ne doit jamais se faire par un accès direct aux machines.
+
+      Les flux d'exploitation et d'administration doivent être maîtrisés et passer obligatoirement par un bastion ou un jump host.
+
+      L'usage du bastion permet de garantir la journalisation des actions et l'application du MFA.
+
+VI. VALIDATION TECHNIQUE ET STRATÉGIES DE SAUVEGARDE.
+
+   A. Typologie des tests de charge, performance et stress.
+
+      Les tests de charge permettent de valider que l'application peut supporter le nombre d'utilisateurs attendu.
+
+      Les tests de performance visent à mesurer les temps de réponse au niveau des utilisateurs, du réseau et des requêtes.
+
+      Les tests de dégradation servent à isoler précisément les transactions qui impactent négativement le système.
+
+      Les tests de stress consistent à simuler l'activité maximale en combinant tous les scénarios possibles.
+
+      Les tests de robustesse consistent à maintenir une charge forte et soutenue sur une période prolongée.
+
+      Les tests de capacité permettent de déterminer la charge limite que le système peut atteindre.
+
+   B. Tests de bascule et de sécurité.
+
+      Les tests de bascule simulent des défaillances tant au niveau système qu'applicatif pour vérifier la récupération sur incident.
+
+      Ces tests permettent de vérifier le respect des indicateurs RTO et RPO lors de la reprise.
+
+      Les tests de sécurité incluent la réalisation de tests d'intrusion ou pentest ainsi que l'analyse de l'accès au code source.
+
+      Ils vérifient également la présence d'injections SQL et la qualité du chiffrement des données et des flux.
+
+   C. Stratégie de sauvegarde trois-deux-un et réplication.
+
+      La stratégie de sauvegarde trois-deux-un repose sur la conservation de trois copies des données sur deux supports différents avec un copie située hors-site.
+
+      La fréquence de ces sauvegardes doit être adaptée à la criticité via le RPO et la rétention doit suivre le cycle de vie des données.
+
+      Une restauration doit être testée régulièrement car sans test, aucune sauvegarde n'est considérée comme fiable.
+
+      La réplication assure la continuité par des outils comme DRBD, IBM Global Mirror, Rsync ou GlusterFS.
+
+      Il faut distinguer la sauvegarde qui offre un RPO long de la réplication qui permet une bascule rapide.
+
+      La mise en œuvre d'une solution de secours doit être couplée avec le plan PRA ou le plan PCI.
+
+VII. EXPLOITATION ET AMÉLIORATION CONTINUE.
+
+   A. Supervision, maintenance et gestion des mises à jour.
+
+      La supervision permet de surveiller les métriques telles que le CPU, la RAM, le disque et le réseau pour anticiper les problèmes plutôt que de les subir.
+
+      Elle utilise des outils comme Prometheus/Grafana, Nagios ou Zabbix et repose sur la définition de seuils d'alerte et de procédures d'escalade.
+
+      La maintenance préventive s'appuie sur une stratégie de patch basée sur la criticité et la fréquence des mises à jour.
+
+      Toute mise à jour doit être effectuée durant des fenêtres de maintenance planifiées avec un rollback systématique prévu.
+
+      Les correctifs doivent être testés en environnement de qualification avant d'être déployés en production pour suivre les CVE et les bulletins de sécurité.
+
+   B. Évolution de la plateforme et gestion de la capacité.
+
+      L'architecture technique est un cycle continu qui nécessite d'ajouter des ressources via le scale-up ou le scale-out pour augmenter la capacité.
+
+      La plateforme doit pouvoir absorber la croissance de l'usage pour assurer la montée en charge.
+
+      Le processus inclut également le décommissionnement des composants obsolètes et la réalisation de migrations planifiées.
+
+      Une veille technologique constante est nécessaire pour accompagner l'évolution de l'infrastructure dans le temps.
+
+   C. Professionnalisation via l'automatisation et le retour d'expérience.
+
+      L'exploitation se professionnalise par l'utilisation de processus comme l'ITSM ou l'ITIL pour la gestion des changements, des incidents et des capacités.
+
+      L'automatisation est mise en œuvre via des outils comme Ansible, des scripts ou des pipelines.
+
+      L'utilisation de runbooks permet de disposer de procédures documentées et automatisées pour les tâches récurrentes.
+
+      Chaque incident doit faire l'objet d'un post-mortem pour analyser les causes et améliorer les processus.
+
+      Le retour d'expérience de l'exploitation est essentiel car il nourrit directement la phase de définition des évolutions futures.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la volumétrie statique qui concerne le stockage avec la volumétrie dynamique qui sollicite le calcul et le réseau.
+
+      Une erreur classique consiste à sous-estimer la volumétrie ce qui mène à la saturation ou à la surestimer ce qui génère un surcoût inutile.
+
+      Il est crucial de distinguer le PCA et le PRA qui sont des démarches métier du PCI et du PRI qui sont leurs déclinaisons informatiques.
+
+      La sauvegarde garantit un point de récupération long tandis que la réplication permet une bascule rapide pour la continuité.
+
+      L'administrateur système n'est pas un simple installateur mais l'acteur central qui porte toute la démarche d'ingénierie de la plateforme.
+
+      Le paramétrage par défaut d'un serveur n'est jamais adapté à la production et nécessite un durcissement systématique.
+
+EXEMPLES CITÉS.
+
+      Pour une application de gestion documentaire avec cinquante mille documents par an de deux Mo chacun sur dix ans le calcul du stockage est essentiel.
+
+      Le niveau de disponibilité de quatre-vingt-dix-neuf virgule neuf cent quatre-vingt-dix-neuf pour cent ne permet que cinq virgule trois min d'indisponibilité par an ce qui impose une architecture très coûteuse.
+
+      La stratégie de sauvegarde recommandée suit la règle trois-deux-un avec trois copies sur deux supports dont un hors-site.
+
+      Le RAID six permet de tolérer la panne de deux disques grâce à une double parité contrairement au RAID cinq qui n'en tolère qu'un seul.
+
+      Un test de charge sert à valider l'application pour le nombre d'utilisateurs attendus alors que le test de stress simule l'activité maximale.

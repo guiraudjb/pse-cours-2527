@@ -1,0 +1,265 @@
+GUIDE DE RÉVISION SUR L'ARRÊT, LE DÉMARRAGE ET L'AUTOMATISATION SOUS GNU/LINUX.
+
+LEXIQUE COMPLET.
+
+      Le BIOS désigne le Basic Input Output System, un logiciel situé dans des mémoires flash de la carte mère qui assure l'amorçage et le test du matériel.
+
+      Le POST désigne le Power On Self Test, une séquence qui vérifie le bon fonctionnement du BIOS et effectue des tests matériels comme le test du CPU ou de la mémoire.
+
+      Le MBR désigne le Master Boot Record, qui correspond au secteur de démarrage situé sur le disque.
+
+      Le vmlinuz désigne le noyau Linux compressé qui est chargé lors de la deuxième étape du chargeur de démarrage.
+
+      L'initrd désigne le système de fichier minimaliste utilisé lors du chargement du noyau.
+
+      Le fichier inittab désigne le fichier de configuration utilisé par le système init pour décrire la table d'initialisation du système.
+
+      Le run-level désigne un niveau d'exécution du système, comme le mode mono ou multi utilisateurs.
+
+      Le syslog désigne un logiciel de journalisation qui collecte les messages via syslogd et klogd pour les écrire dans des fichiers traces.
+
+      Le systemd désigne le successeur d'init qui permet le lancement parallèle des services en utilisant des unités.
+
+      La notion d'unité désigne la manière dont systemd raisonne pour gérer les cibles, les services, les sockets ou les points de montage.
+
+      Le target désigne l'équivalent des run-levels sous systemd, comme le graphical.target pour le mode graphique.
+
+      L'Institut de la Gestion publique et du Développement économique désigne l'organisme responsable de ce module de préparation à l'examen PSE-Trad.
+
+COURS DÉTAILLÉ.
+
+I. LE PROCESSUS DE DÉMARRAGE MATÉRIEL ET DU NOYAU.
+
+   A. Le rôle du BIOS et de l'UEFI.
+
+      Le BIOS ou UEFI est un logiciel situé dans plusieurs types de mémoires flash de la carte mère comme l'EPROM, la NVRAM ou l'EFI.
+
+      Ce logiciel est également appelé firmware ou microcode.
+
+      Le firmware est constitué d'un ensemble d'appliances qui sont de petits programmes élémentaires de reconnaissance du matériel.
+
+      Ces appliances permettent d'identifier le CPU, la RAM, les contrôleurs de bus et les ports.
+
+      Chaque appliance est spécifique au constructeur et au modèle de la machine.
+
+   B. Le test de diagnostic POST.
+
+      Le BIOS détecte les composants hardware puis enchaîne sur le POST qui signifie Power-On Self Test.
+
+      Le POST vérifie d'abord le bon fonctionnement du BIOS lui-même.
+
+      Ce test effectue des tests hard comme le test du CPU et le test de stabilité de l'alimentation électrique.
+
+      Il vérifie également l'intégrité du BIOS, la mémoire et l'intégrité de la carte mère incluant l'horloge interne et le contrôleur d'interruption.
+
+      La séquence se poursuit par l'initialisation des entrées et sorties comme le clavier et la carte graphique.
+
+      Enfin, le POST gère la séquence de boot et le chargement du MBR situé au secteur un tête de cylindre zéro virgule zéro.
+
+   C. Le chargement du noyau et du système de fichiers minimaliste.
+
+      Le chargement du noyau se déroule en deux étapes avec le loader.
+
+      Le stage un est le premier niveau du loader et possède une taille de quatre cent quarante-six octets avant d'appeler le second niveau.
+
+      Le stage deux exécute le second niveau du loader comme Grub, Lilo, Loadlin, Isolinux, PXElinux ou Ntldr.
+
+      La configuration de ces chargeurs se trouve dans des fichiers tels que /etc/grub.conf ou /etc/lilo.conf.
+
+      Le loader assure ensuite la décompression et le lancement du noyau Linux via vmlinuz et initrd.
+
+      Le fichier vmlinuz correspond au kernel tandis que l'initrd est un système de fichier minimaliste qui permet la création du premier processus swapper ou sceduler.
+
+II. LE SYSTÈME D'INITIALISATION CLASSIQUE AVEC INIT (SYSTEMV).
+
+   A. Fonctionnement du fichier inittab.
+
+      Le processus de démarrage avec Init sous GNU/Linux repose sur le fichier de table d'initialisation nommé /etc/inittab. Ce fichier est utilisé par le processus /sbin/init pour décrire le fonctionnement du système.
+
+      La syntaxe de ce fichier se compose de quatre champs distincts séparés par le caractère deux-points. Ces champs permettent de définir l'identifiant, le niveau d'exécution, l'action et la commande ou le script associé.
+
+      L'étiquette initdefault correspond à l'identifiant qui définit le run-level par défaut du système. L'étiquette sysinit est également cruciale car elle appelle le script /etc/rc.d/rc.sysinit pour l'initialisation.
+
+      L'initialisation du système via sysinit permet d'effectuer des tâches comme le montage et le contrôle des systèmes de fichiers, la gestion des quotas, du swap ou des périphériques.
+
+      Les étiquettes de type rc utilisent l'action wait pour appeler les scripts de commandes associés au niveau d'exécution choisi. Cela permet de lancer les services nécessaires selon le mode de fonctionnement.
+
+   B. Les niveaux d'exécution run-levels.
+
+      Le concept de run-level ou niveau d'exécution permet de définir le mode de fonctionnement du système comme le mode mono ou multi utilisateurs. Ces niveaux déterminent quels services sont actifs à un instant donné.
+
+      Les niveaux d'exécution sont représentés par des chiffres allant de zéro à six. Chaque chiffre correspond à un état spécifique du système pour répondre aux besoins de l'utilisateur ou de l'administration.
+
+      Le niveau zéro est utilisé pour l'arrêt du système. Le niveau six est dédié au redémarrage de la machine.
+
+      Les niveaux un, deux, trois et quatre permettent de configurer différents modes de fonctionnement, notamment le mode multi-utilisateur. Le niveau cinq est généralement associé à un environnement graphique.
+
+      Le passage d'un niveau à un autre est géré par le processus init qui interprète les commandes et les scripts nécessaires pour modifier l'état du système.
+
+   C. La gestion des scripts de démarrage et d'arrêt.
+
+      Les scripts de démarrage et d'arrêt sont organisés de manière hiérarchique sous forme d'arborescences. Les scripts natifs se trouvent dans le répertoire /etc/init.d.
+
+      Le système utilise des liens symboliques situés dans le répertoire /etc/rc.d/rcX.d pour gérer les services. La lettre X représente la valeur du run-level, de zéro à six.
+
+      Le nom des fichiers de ces liens est préfixé par la lettre S pour signifier start ou par la lettre K pour signifier kill. Par exemple, un lien S55sshd pointe vers le script /etc/init.d/sshd pour démarrer le service.
+
+      Lors de l'arrêt du système, le processus utilise les scripts avec le préfixe K pour stopper les services. Un exemple est le lien K45sshd qui permet de tuer le processus sshd.
+
+      Pour garantir l'intégrité des données lors de l'arrêt, la commande sync est utilisée afin de vider le cache des buffers vers le disque. La commande shutdown permet ensuite de programmer l'arrêt ou le redémarrage.
+
+III. LA JOURNALISATION ET LA GESTION DES LOGS.
+
+   A. Le fonctionnement de syslog et klogd.
+
+      Le logiciel syslog est utilisé pour la journalisation du démarrage du système.
+
+      Il repose sur deux utilitaires systèmes principaux nommés syslogd et klogd.
+
+      L'utilitaire syslogd est chargé de collecter les messages et d'écrire les traces dans des fichiers.
+
+      L'utilitaire klogd effectue une écoute des messages du noyau pour les envoyer à syslogd.
+
+      La configuration de ce système se fait via le fichier /etc/syslog.conf.
+
+   B. Les niveaux de criticité des messages.
+
+      Le système utilise une notion de niveaux de criticité pour classer les messages.
+
+      Les niveaux définis sont debug, info, notice, warning, err, crit, alert et emerg.
+
+      Ces informations permettent de hiérarchiser l'importance des événements enregistrés.
+
+   C. La commande dmesg et la rotation des logs.
+
+      La commande dmesg est un outil utilisé pour la journalisation.
+
+      Les journaux sont stockés sous le répertoire /var/log dans les fichiers syslog, messages et secure.
+
+      La rotation des logs est gérée par les fichiers /etc/logrotate.d/syslog et /etc/logrotate.conf.
+
+IV. LA TRANSITION VERS LE SYSTÈME SYSTEMD.
+
+   A. Limites de l'ancien système init.
+
+      Le système init de type SystemV est considéré comme vieillissant et présente des failles de sécurité.
+
+      L'un des problèmes majeurs réside dans la lenteur du démarrage du système.
+
+      Le processus de démarrage est peu efficace car les services sont lancés de manière séquentielle.
+
+      Cette absence de parallélisme empêche une optimisation des temps de chargement des composants.
+
+   B. Le concept de parallélisme et d'unités.
+
+      Le successeur init nommé systemd permet le lancement parallèle des services pour gagner en rapidité.
+
+      Contrairement à l'ancien système qui raisonne en termes de services, systemd raisonne en termes d'unités.
+
+      Ces unités peuvent être de différents types comme des targets, des services, des sockets ou des mounts.
+
+      Le système fonctionne par un enchaînement d'unités qui appellent ou requièrent d'autres unités via des liens symboliques.
+
+      La première unité analysée et lancée par le noyau est le fichier situé dans /etc/systemd/system/default.target.
+
+   C. La structure des fichiers de configuration.
+
+      La configuration de systemd repose sur l'utilisation de fichiers de configuration au format XDG.
+
+      Le mode d'exécution du système est défini par le lien symbolique vers le fichier default.target.
+
+      Pour les services, on utilise des fichiers d'unité contenant des sections comme Unit, Service et Install.
+
+      Le paramètre wants permet de créer une dépendance si un répertoire portant le nom de l'unité avec l'extension .wants existe.
+
+      L'installation d'un service via la commande systemctl enable crée automatiquement un lien symbolique dans le répertoire de la cible concernée.
+
+V. LE FONCTIONNEMENT DÉTAILLÉ DE SYSTEMD.
+
+   A. Les cibles de démarrage targets.
+
+      Le système systemd remplace la notion de runlevel par celle de target. Ces unités définissent le mode d'exécution du système comme le fait l'action initdefault dans le fichier inittab.
+
+      La première unité analysée et lancée par le processus est le fichier situé à l'adresse /etc/systemd/system/default.target. Ce fichier est un lien symbolique qui détermine le niveau d'exécution par défaut.
+
+      Pour démarrer dans un mode équivalent au runlevel cinq, le fichier default.target doit pointer vers /lib/systemd/system/graphical.target. Le mode multi-user.target est également utilisé pour les runlevels deux, trois et quatre.
+
+      Les cibles spécifiques incluent runlevel0.target pour l'arrêt, rescue.target pour le mode secours et reboot.target pour le redémarrage. Le système peut aussi basculer vers un mode spécifique via la commande systemctl isolate.
+
+   B. La gestion des dépendances et des liens symboliques.
+
+      Contrairement à init qui lance les services de manière séquentielle, systemd permet un lancement parallèle des services. Cela est rendu possible grâce à un raisonnement basé sur les unités plutôt que sur les services.
+
+      Les unités utilisent un système de liens symboliques pour appeler ou requérir d'autres unités. La configuration repose ainsi massivement sur l'utilisation de ces liens pour structurer le démarrage.
+
+      Le paramètre wants dans la section Unit permet de créer des dépendances. Si un répertoire portant le nom de l'unité suivi de l'extension .wants existe, l'unité dépend de toutes les unités présentes dans ce répertoire.
+
+      Les relations entre unités sont définies par des directives comme Requires, After ou Conflicts. Ces instructions permettent de gérer précisément l'ordre et les conditions de lancement des composants du système.
+
+   C. La configuration des unités de service.
+
+      Une unité de service comme sshd.service est structurée en plusieurs sections dont Unit, Service et Install. Chaque section contient des directives spécifiques pour le comportement de l'unité.
+
+      La section Unit définit les dépendances avec des paramètres comme After pour l'ordre de lancement. Elle peut aussi inclure des contraintes comme Conflicts pour éviter la présence simultanée de certaines unités.
+
+      La section Service contient les commandes d'exécution telles que ExecStart ou ExecReload. Elle permet également de définir des fichiers d'environnement via la directive EnvironmentFile.
+
+      La section Install utilise la directive WantedBy pour gérer l'installation de l'unité. Lors de l'exécution de la commande systemctl enable, un lien symbolique est créé dans le répertoire correspondant à l'unité cible.
+
+VI. ADMINISTRATION ET COMMANDES SYSTÈME.
+
+   A. Commandes de gestion des services avec systemctl.
+
+      L'outil systemctl remplace la commande service pour gérer l'état immédiat des unités. On utilise systemctl stop, start, restart ou status pour manipuler un service.
+
+      Pour gérer l'activation automatique au démarrage, on utilise les équivalents de chkconfig. Les commandes systemctl enable, disable ou is-enable permettent de configurer une unité.
+
+      La commande systemctl daemon-reload est indispensable pour recharger la configuration après une modification. Elle permet à systemd de prendre en compte les nouveaux fichiers d'unité.
+
+      Pour lister les unités actives, on utilise la commande systemctl list --units --type target. Cela permet de visualiser les différents modes d'exécution du système.
+
+   B. Commandes d'arrêt et de redémarrage.
+
+      L'arrêt complet du système est effectué par la commande systemctl poweroff. Cette commande correspond à l'ancien niveau d'exécution init zéro.
+
+      Pour changer de mode d'exécution sans redémarrer, on utilise systemctl isolate. Par exemple, cette commande permet de passer au runlevel3.target.
+
+      La commande shutdown est utilisée pour programmer l'arrêt ou le redémarrage. Elle accepte des options comme -h pour l'arrêt ou -r pour le redémarrage avec un délai en secondes.
+
+      La commande reboot permet de redémarrer le système. Elle est liée à l'utilisation de la commande shutdown -r.
+
+   C. Comparaison des modes d'exécution SysV et systemd.
+
+      Le système SysV utilise la notion de runlevel pour définir le mode de fonctionnement. Le système systemd utilise des cibles appelées targets pour atteindre le même objectif.
+
+      Le runlevel zéro de SysV correspond au runlevel0.target ou poweroff.target sous systemd. Le runlevel six de SysV est équivalent au runlevel6.target ou reboot.target.
+
+      Les modes multi-utilisateurs sont gérés différemment entre les deux technologies. Les runlevels deux, trois et quatre de SysV correspondent tous au multi-user.target dans systemd.
+
+      Le mode graphique est représenté par le runlevel cinq dans SysV. Sous systemd, ce mode est géré par le graphical.target.
+
+      Le mode de secours est identifié par le runlevel un dans SysV. Il correspond au rescue.target dans l'architecture systemd.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le BIOS qui est le firmware de la carte mere avec le POST qui est la phase de test du matériel.
+
+      Une confusion fréquente réside entre le mode de fonctionnement de SysV qui est séquentiel et celui de systemd qui permet le lancement parallèle des services.
+
+      Il est important de distinguer les unités de systemd qui sont des fichiers de configuration XDG des anciens scripts de service de l'init.
+
+      La nuance entre les commandes de gestion est essentielle car systemctl remplace à la fois chkconfig et service pour l'administration.
+
+      Il faut bien noter que le fichier default.target de systemd joue le même rôle que l'étiquette initdefault dans le fichier inittab.
+
+EXEMPLES CITÉS.
+
+      Le premier niveau du chargeur de démarrage est appelé Stage un et possède une taille de quatre cent quarante-six octets.
+
+      Le système peut être arrêté avec la commande shutdown en utilisant les options -h ou -r avec un délai en secondes.
+
+      Pour passer en mode graphique avec systemd, le système doit pointer vers le fichier graphical.target.
+
+      Le tableau de comparaison montre que le runlevel cinq de SysV correspond au graphical.target dans le système systemd.
+
+      Un exemple de service est sshd.service qui utilise la commande ExecStart pour lancer le processus.

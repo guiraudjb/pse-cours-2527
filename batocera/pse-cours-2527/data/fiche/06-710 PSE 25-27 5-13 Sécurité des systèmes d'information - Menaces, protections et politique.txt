@@ -1,0 +1,241 @@
+SYNTHÈSE COMPLÈTE SUR LA SÉCURITÉ DES SYSTÈMES D'INFORMATION.
+
+LEXIQUE COMPLET.
+
+      L'ANSSI désigne l'Agence Nationale de la Sécurité des Systèmes d'Information, créée en deux mille neuf pour définir les orientations stratégiques et superviser la réponse aux cyberattaques.
+
+      La confidentialité désigne la protection des informations sensibles contre l'accès d'acteurs non autorisés.
+
+      L'intégrité désigne la garantie que les données ne sont pas altérées de manière malveillante ou accidentelle.
+
+      Le sigle DoS désigne une attaque par déni de service visant à rendre un système inaccessible en le surchargeant de requêtes.
+
+      Le chiffrement symétrique désigne une technique utilisant la même clé pour chiffrer et déchiffrer les données.
+
+      La cryptographie asymétrique désigne un système utilisant une clé publique et une clé privée mathématiquement liées.
+
+      Le sigle PKI désigne une infrastructure de gestion des certificats numériques et des clés cryptographiques.
+
+      Le sigle DMZ désigne une zone tampon située entre le réseau interne et le réseau externe pour isoler les serveurs exposés.
+
+      Le sigle VPN désigne un réseau privé virtuel qui crée un tunnel sécurisé pour chiffrer les communications à distance.
+
+      Le sigle IPsec désigne un protocole de niveau trois qui sécurise les communications IP via les mécanismes AH, ESP et IKE.
+
+      La PSSI désigne la Politique de Sécurité des Systèmes d'Information qui formalise les objectifs et les règles de sécurité d'une organisation.
+
+      Le sigle EBIOS désigne une méthode d'analyse des risques permettant d'identifier les menaces et les vulnérabilités des systèmes d'information.
+
+COURS DÉTAILLÉ.
+
+I. MENACES ET ENJEUX DE LA CYBERSÉCURITÉ.
+
+   A. Les cinq catégories de menaces (confidentialité, intégrité, authentification, non-répudiation, déni de service).
+
+      La confidentialité est menacée lorsque des acteurs non autorisés accèdent à des informations sensibles comme des données utilisateurs ou des secrets stratégiques. Les attaques par phishing, les fuites de bases de données ou l’espionnage industriel illustrent ces violations.
+
+      L’intégrité des données est remise en cause par des modifications malveillantes ou accidentelles qui peuvent fausser des décisions critiques comme des transactions financières. Les ransomwares et les attaques par injection SQL sont des exemples concrets de cette menace.
+
+      L’authentification est au cœur des usurpations d’identité où un attaquant se fait passer pour un utilisateur légitime. Les mots de passe volés, les attaques par force brute ou les failles des protocoles comme les attaques Man in the Middle permettent ces intrusions.
+
+      La non-répudiation garantit qu’un utilisateur ne peut nier avoir effectué une action telle qu’un envoi de message ou une transaction. Sans ce mécanisme, il est impossible de prouver l’auteur d’une opération, ce qui entraîne des fraudes ou des litiges.
+
+      Le déni de service, appelé DoS ou DDoS, vise à rendre un système inaccessible en le surchargeant de requêtes. Les attaques par inondation SYN ou l’usage de botnets peuvent paralyser des serveurs, des réseaux ou des services critiques.
+
+   B. Les causes de la fragilisation des systèmes.
+
+      L’ouverture croissante des réseaux vers l’extérieur, notamment via Internet, a considérablement fragilisé les systèmes d’information. Cette exposition accrue augmente la surface d'attaque pour les cybermenaces.
+
+      La multiplication des points d’accès liée à la mobilité, au télétravail et à l’IoT contribue également à cette vulnérabilité. Chaque nouveau point de connexion représente un risque supplémentaire pour la sécurité globale.
+
+      La décentralisation des données et des traitements via le cloud ou l’edge computing complique la protection des infrastructures. Ces nouvelles architectures modifient la manière dont les informations sont stockées et traitées.
+
+   C. Les conséquences des cyberattaques.
+
+      Une fuite de données peut entraîner des conséquences dramatiques telles qu'une perte de réputation ou des sanctions légales comme celles liées au RGPD. Ces incidents peuvent aussi offrir un avantage concurrentiel à des États hostiles.
+
+      L'altération de l'intégrité des données peut fausser des diagnostics médicaux ou des transactions financières essentielles. Sans mécanismes de vérification comme les fonctions de hachage, la modification des données reste indétectable.
+
+      Les attaques par déni de service provoquent des pertes financières importantes ou une atteinte grave à la réputation. Les plateformes bancaires, les sites e-commerce et les infrastructures gouvernementales sont particulièrement ciblées.
+
+      La paralysie complète des opérations est un risque majeur pour les organisations exposées. Sans une approche globale combinant chiffrement et dispositifs comme les pare-feu ou les VPN, les systèmes restent vulnérables.
+
+II. MÉCANISMES DE PROTECTION DES DONNÉES PAR LA CRYPTOGRAPHIE.
+
+   A. Principes du chiffrement et objectifs (confidentialité, intégrité, authentification).
+
+      Le chiffrement est un mécanisme central de protection des données qui utilise des clés pour transformer des informations en un format illisible appelé cryptogramme.
+
+      Le destinataire doit disposer de la clé de déchiffrement pour pouvoir retrouver les données originales et les rendre à nouveau compréhensibles.
+
+      L'objectif de confidentialité est assuré par des algorithmes de chiffrement symétriques ou asymétriques afin de rendre les informations inintelligibles pour les acteurs non autorisés.
+
+      L'intégrité est garantie par des algorithmes de hachage comme SHA-deux cent cinquante-six ou MD5 qui génèrent une empreinte numérique unique pour chaque ensemble de données.
+
+      L'authentification de l'émetteur est réalisée grâce à des signatures numériques qui prouvent que le message provient bien de la source déclarée.
+
+   B. La cryptographie symétrique et ses limites.
+
+      Les systèmes à clé symétrique utilisent une seule et même clé pour effectuer les opérations de chiffrement et de déchiffrement des données.
+
+      Ces méthodes sont reconnues pour leur rapidité et leur efficacité ainsi que pour leur faible consommation de ressources informatiques.
+
+      Une limite majeure de cette approche est l'impossibilité d'identifier l'interlocuteur distant car la clé doit être partagée au préalable entre les parties.
+
+      Le standard DES développé par IBM utilisait des blocs de soixante-quatre bits mais il est devenu vulnérable aux attaques par force brute avec l'augmentation de la puissance de calcul.
+
+      Le DES a été remplacé par le 3DES puis par l'AES pour maintenir un niveau de sécurité acceptable.
+
+      La cryptographie symétrique est souvent combinée avec des mécanismes asymétriques pour établir une clé de session sécurisée avant le transfert des données.
+
+   C. La cryptographie asymétrique et le protocole RSA.
+
+      La cryptographie asymétrique repose sur l'utilisation de deux clés mathématiquement liées nommées clé publique et clé privée.
+
+      La clé publique peut être partagée librement tandis que la clé privée doit rester secrète et n'est connue que par son propriétaire.
+
+      Ce système permet un échange sécurisé de clés car un message chiffré avec la clé publique ne peut être déchiffré qu'avec la clé privée correspondante.
+
+      L'authentification est possible lorsqu'un émetteur signe un message avec sa clé privée et que le destinataire vérifie la signature avec la clé publique.
+
+      Le protocole RSA est l'un des algorithmes asymétriques les plus répandus et il est basé sur la factorisation de grands nombres premiers.
+
+      Ce protocole RSA permet de réaliser simultanément le chiffrement des données et la signature numérique des messages.
+
+   D. L'infrastructure de gestion des clés et les PKI.
+
+      Une PKI est un ensemble de protocoles, de services et de politiques déployés pour gérer les certificats numériques et les clés cryptographiques.
+
+      Cette infrastructure permet de générer des paires de clés publiques et privées ainsi que d'archiver les certificats de manière sécurisée.
+
+      La PKI assure la délivrance de certificats après la vérification de l'identité du demandeur et gère les listes de révocation nommées CRL.
+
+      Les certificats numériques sont normalisés par la norme X.509 et contiennent des informations comme le numéro de série unique et la période de validité.
+
+      Ils incluent également le nom de l'émetteur, la clé publique de l'utilisateur, l'identifiant de l'autorité de certification et la signature numérique de cette dernière.
+
+      Les PKI sont utilisées pour sécuriser les communications comme le HTTPS ou le S/MIME en combinant la vitesse du symétrique et la sécurité de l'asymétrique.
+
+III. DISPOSITIFS DE PROTECTION DES INFRASTRUCTURES ET DES FLUX.
+
+   A. Le fonctionnement et les types de pare-feu.
+
+      Un pare-feu est un composant réseau matériel ou logiciel qui contrôle le trafic entre deux réseaux pour créer un périmètre de sécurité. Il limite les points d'accès et permet de disposer de traces en cas d'incident.
+
+      Le filtrage de paquets opère au niveau trois du modèle OSI en analysant l'adresse IP source et destination, le type de protocole et les ports. Ce mécanisme utilise des listes de contrôle d'accès appelées ACL pour appliquer des règles de filtrage.
+
+      Les pare-feux à mémoire ajoutent une couche de contexte en suivant l'état des connexions au niveau quatre du modèle OSI. Ils peuvent reconnaître les connexions TCP ou UDP établies et appliquer des règles dynamiques comme le NAT ou le PAT.
+
+      Les passerelles de niveau circuit agissent comme des intermédiaires au niveau du périmètre de sécurité en établissant deux connexions distinctes. Elles gèrent les trafics en tenant compte de l'état des sessions et du séquencement des paquets.
+
+      Les passerelles de niveau applicatif ou proxy opèrent au niveau sept du modèle OSI pour analyser le contenu des requêtes de protocoles spécifiques comme HTTP ou FTP. Elles permettent de bloquer des URLs ou d'authentifier les utilisateurs avant l'accès à Internet.
+
+   B. L'isolation des services via la DMZ.
+
+      La DMZ est une zone tampon située entre le réseau interne privé et le réseau externe public comme Internet. Elle héberge des serveurs accessibles depuis l'extérieur tels que les serveurs web, de messagerie ou FTP publics.
+
+      L'objectif principal de la DMZ est d'isoler ces serveurs du réseau interne pour limiter les risques en cas de compromission. Un attaquant doit franchir deux pare-feu pour accéder aux données sensibles dans une architecture sécurisée.
+
+      L'architecture à trois interfaces est la plus sécurisée car un premier pare-feu sépare Internet de la DMZ et un second sépare la DMZ du réseau interne. Aucune machine n'est alors à la fois exposée à Internet et connectée au réseau interne.
+
+      L'architecture à un interface est moins sécurisée mais plus simple car un seul pare-feu sépare les trois zones. Si ce pare-feu est compromis, le réseau interne devient directement accessible.
+
+      Le principe de la DMZ s'applique aussi au sein des grandes entreprises pour séparer les sous-réseaux internes selon leur sensibilité. On peut ainsi isoler les serveurs de production des serveurs de développement ou les données financières.
+
+   C. La sécurisation des communications par les VPN.
+
+      Un VPN crée un tunnel sécurisé entre deux points pour connecter un utilisateur distant ou relier deux sites distants. Il chiffre l'intégralité des données et utilise le principe du tunneling pour encapsuler les données chiffrées dans des paquets IP.
+
+      Le protocole PPTP est un protocole de niveau deux développé par Microsoft qui utilise MPPE pour le chiffrement et MS-CHAP pour l'authentification. Il est aujourd'hui déconseillé pour les usages sensibles à cause de ses failles de sécurité.
+
+      Le protocole L2TP est un protocole de niveau deux qui doit être couplé avec IPsec pour assurer la confidentialité et l'intégrité des données. La solution L2TP/IPsec est largement utilisée pour les VPN d'entreprise.
+
+      IPsec est un protocole de niveau trois qui sécurise les communications IP via les mécanismes AH, ESP et IKE. Il est compatible avec IPv4 et IPv6 et est souvent utilisé pour sécuriser les communications entre sites.
+
+      Le protocole SSL/TLS est un protocole de niveau quatre qui chiffre les communications entre un client et un serveur sans nécessiter de logiciel dédié. Un simple navigateur web suffit pour établir un tunnel sécurisé comme pour le HTTPS.
+
+IV. ORGANISATION ET PILOTAGE DE LA SÉCURITÉ.
+
+   A. Le rôle de l'ANSSI et l'organisation administrative française.
+
+      L'ANSSI est l'agence nationale de la sécurité des systèmes d'information créée en deux mille neuf et rattachée au Secrétaire général de la défense et de la sécurité nationale.
+
+      Elle définit les orientations stratégiques, publie des guides et supervise la réponse aux cyberattaques comme les rançongiciels ou les attaques DDoS.
+
+      Au niveau ministériel, la sécurité de l'information est la responsabilité de chaque ministre avec l'assistance d'un Haut Fonctionnaire de Défense et de Sécurité.
+
+      Ce dernier supervise un service spécialisé et désigne un Fonctionnaire de Sécurité des Systèmes d'Information pour animer et contrôler la politique de sécurité.
+
+   B. La Politique de Sécurité des Systèmes d'Information (PSSI).
+
+      La PSSI est un document stratégique officiel qui traduit la vision de la direction et formalise les objectifs et les règles de sécurité.
+
+      Elle décrit les enjeux, le référentiel utilisé, les besoins en confidentialité, intégrité et disponibilité, ainsi que les menaces identifiées.
+
+      Ce document devient opposable et sert d'outil de sensibilisation pour les utilisateurs internes, les prestataires et les sous-traitants.
+
+      La PSSI peut être déclinée en PSSI techniques, en procédures de gestion des incidents ou en chartes d'usage des outils numériques.
+
+      Elle doit être régulièrement révisée pour s'adapter aux nouvelles menaces ou aux changements réglementaires.
+
+   C. Les méthodes d'analyse des risques (EBIOS, MEHARI).
+
+      La méthode EBIOS permet d'identifier les menaces, les vulnérabilités et les impacts sur les systèmes d'information.
+
+      Elle est utilisée pour l'expression des besoins et l'identification des objectifs de sécurité.
+
+      La méthode MEHARI est une approche alternative axée sur l'évaluation des risques et la priorisation des mesures de sécurité.
+
+      Ces méthodes aident les organisations à identifier les actifs critiques et à évaluer les vulnérabilités potentielles.
+
+      Elles permettent de prioriser les mesures de protection en fonction des risques identifiés.
+
+V. NORMES ET BONNES PRATIQUES DE GESTION.
+
+   A. Le cadre normatif international ISO vingt-sept mille deux.
+
+      La norme internationale ISO vingt-sept mille deux définit un cadre complet pour la gestion de la sécurité de l'information.
+
+      Elle couvre quatorze domaines clés pour structurer la politique de sécurité des organisations.
+
+      Ce cadre permet d'assurer une gestion cohérente de la sécurité, de la politique de direction jusqu'à la conformité réglementaire.
+
+   B. La gestion des actifs et des ressources humaines.
+
+      La gestion des actifs repose sur la réalisation d'un inventaire précis et d'une classification des éléments du système d'information.
+
+      La sécurité des ressources humaines nécessite une sensibilisation et une formation adaptées de l'ensemble du personnel.
+
+      Ces mesures visent à intégrer la sécurité dès l'embauche et tout au long de la vie professionnelle des collaborateurs.
+
+   C. La continuité d'activité et la gestion des incidents.
+
+      La gestion des incidents de sécurité comprend les processus de détection, de réponse et de récupération après une attaque.
+
+      La gestion de la continuité d'activité s'appuie sur des plans de reprise d'activité pour maintenir les opérations.
+
+      Ces mécanismes sont essentiels pour limiter les impacts d'un événement majeur sur les services critiques de l'organisation.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'intégrité avec la confidentialité car la première concerne l'altération des données tandis que la seconde traite de l'accès non autorisé.
+
+      La cryptographie symétrique est rapide mais elle ne permet pas d'identifier l'interlocuteur car la clé doit être partagée au préalable.
+
+      Le protocole L2TP ne fournit pas de chiffrement natif et nécessite d'être couplé à IPsec pour assurer la protection des données.
+
+      Il est crucial de distinguer le filtrage de paquets qui est basique du pare-feu à mémoire qui suit l'état des connexions.
+
+      La DMZ à un interface est moins sécurisée qu'une architecture à trois interfaces car la compromission du pare-feu donne un accès direct au réseau interne.
+
+EXEMPLES CITÉS.
+
+      Les attaques par injection SQL et les ransomwares sont des exemples de menaces visant l'intégrité des données.
+
+      Le protocole RSA repose sur la factorisation de grands nombres premiers pour assurer le chiffrement et la signature.
+
+      L'ANSSI a été créée en deux mille neuf et elle est rattachée au Secrétaire général de la défense et de la sécurité nationale.
+
+      La norme X.509 définit les informations contenues dans un certificat numérique comme le numéro de série ou la signature de l'autorité de certification.
+
+      La méthode EBIOS est utilisée pour l'analyse des risques tandis que la norme ISO vingt-sept mille deux couvre quatorze domaines de gestion de la sécurité.

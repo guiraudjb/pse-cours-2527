@@ -1,0 +1,235 @@
+GUIDE COMPLET DE L'AUTHENTIFICATION DANS ACTIVE DIRECTORY DOMAIN SERVICES.
+
+LEXIQUE COMPLET.
+
+      AD DS désigne les services de domaine Active Directory qui servent de technologie par défaut pour stocker les informations d'identité et les clés cryptographiques.
+
+      Kerberos v5 désigne le protocole d'authentification par défaut dans les domaines Active Directory reposant sur un système de tickets et un centre de distribution de clés.
+
+      KDC désigne le centre de distribution de clés intégré au contrôleur de domaine qui utilise la base de données Active Directory pour gérer les comptes de sécurité.
+
+      NTLM désigne un ancien protocole d'authentification basé sur un mécanisme de défi-réponse qui est progressivement remplacé par Kerberos.
+
+      LDAP désigne le protocole Lightweight Directory Access Protocol utilisé pour interroger et modifier les données de l'annuaire.
+
+      PKINIT désigne une extension de Kerberos permettant l'authentification forte via des certificats X.509 comme les cartes à puce.
+
+      MFA désigne l'authentification multifacteur qui exige au moins deux preuves d'identité distinctes pour accéder à une ressource.
+
+      FGPP désigne les stratégies de mot de passe affinées qui permettent d'appliquer des règles de complexité spécifiques à des groupes d'utilisateurs dans un même domaine.
+
+      AD CS désigne le service Active Directory Certificate Services qui permet de déployer une infrastructure à clé publique pour gérer les certificats.
+
+      NPS désigne le serveur Network Policy Server qui agit comme un proxy RADIUS pour intégrer la MFA de Microsoft Entra ID.
+
+      SPN désigne le nom de principal de service qui doit être correctement enregistré pour permettre le bon fonctionnement de Kerberos.
+
+      SSPI désigne la Security Support Provider Interface qui fournit une interface unifiée aux applications pour les services de sécurité.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET PRINCIPES DE L'AUTHENTIFICATION AD.
+
+   A. Définition et rôle de l'AD DS.
+
+      L'authentification dans Active Directory est le processus de vérification de l'identité des utilisateurs, des ordinateurs et des services qui tentent d'accéder aux ressources du réseau.
+
+      Les services de domaine Active Directory, ou AD DS, constituent la technologie recommandée et par défaut pour stocker les informations d'identité.
+
+      Ces services incluent notamment les clés cryptographiques qui servent d'informations d'identification pour l'utilisateur.
+
+      L'objectif est de s'appuyer sur des protocoles normalisés pour garantir que seules les entités autorisées obtiennent l'accès.
+
+   B. Processus cryptographique de l'authentification Windows.
+
+      L'authentification Windows est un processus cryptographique qui compare des données signées à une clé cryptographique connue pour valider une tentative d'authentification.
+
+      Les techniques employées varient d'une simple connexion basée sur un mot de passe à des mécanismes plus puissants.
+
+      Ces mécanismes avancés peuvent utiliser des jetons, des certificats à clé publique ou la biométrie.
+
+   C. Composants de l'architecture et flux de connexion.
+
+      L'architecture repose sur le contrôleur de domaine qui héberge le service KDC et le magasin de comptes Active Directory.
+
+      Le client exécute le processus Winlogon pour capturer les informations d'identification et les transmettre aux packages d'authentification.
+
+      Le service de ressources est le serveur qui exige une authentification avant d'accorder l'accès.
+
+      L'interface unifiée pour les applications est fournie par la Security Support Provider Interface, ou SSPI.
+
+      Le flux commence quand l'utilisateur saisit ses informations ou présente un certificat pour contacter un DC.
+
+      Le client demande ensuite un ticket de service au KDC pour le présenter au serveur de ressources qui le valide.
+
+II. ÉTUDE DÉTAILLÉE DES PROTOCOLES D'AUTHENTIFICATION.
+
+   A. Le protocole Kerberos et le fonctionnement du KDC.
+
+      Kerberos est le protocole d'authentification par défaut dans les domaines Active Directory depuis Windows deux mille. Il repose sur un centre de distribution de clés nommé KDC qui est intégré au contrôleur de domaine.
+
+      Le processus commence lorsque le client s'authentifie auprès du KDC par un mot de passe ou un certificat pour obtenir un ticket granting ticket nommé TGT.
+
+      Pour accéder à un service spécifique, le client présente ce TGT au KDC afin de recevoir un ticket de service.
+
+      Le client présente ensuite ce ticket de service au serveur de ressources qui peut le valider sans avoir à contacter le KDC.
+
+      Ce protocole offre des avantages majeurs comme l'authentification mutuelle, la délégation limitée et l'interopérabilité avec des systèmes comme UNIX ou Linux.
+
+   B. Le protocole NTLM et ses enjeux de sécurité.
+
+      NTLM est un protocole ancien basé sur un mécanisme de défi-réponse qui reste utilisé pour la compatibilité descendante ou en cas de repli. Microsoft annonce une obsolescence progressive de NTLM au profit de Kerberos.
+
+      La version NTLMv1 présente une faible sécurité avec un chiffrement de cinquante-six bits et des vulnérabilités aux attaques par tables arc-en-ciel. La version NTLMv2 est améliorée avec un chiffrement de cent vingt-huit bits et une meilleure résistance.
+
+      Les mots de passe sont stockés sous forme de hachages dans la base de données SAM ou Active Directory. Le hachage NT est basé sur Unicode et peut aller jusqu'à cent vingt-huit caractères.
+
+      Ce protocole présente des vulnérabilités de type pass-the-hash ou des relais NTLM. Il est recommandé de désactiver NTLMv1 en configurant le niveau d'authentification LAN Manager sur envoyer uniquement la réponse NTLMv2.
+
+   C. Protocoles LDAP, SASL et authentification par certificats PKINIT.
+
+      Le protocole LDAP est utilisé pour interroger et modifier les données de l'annuaire via des liens nommés bind. Il peut utiliser le mécanisme simple bind qui envoie le mot de passe en clair, une pratique à éviter.
+
+      Le mécanisme SASL permet de sécuriser ces échanges en encapsulant Kerberos ou NTLM via SPNEGO ou GSSAPI. Le protocole LDAPS utilise le port six cent trente-six pour sécuriser les communications via SSL ou TLS.
+
+      PKINIT est une extension de Kerberos qui permet l'authentification à l'aide de certificats X.509. Elle est privilégiée dans les environnements exigeant une authentification forte comme l'usage de cartes à puce.
+
+      Pour fonctionner, le certificat doit contenir l'EKU d'authentification client et l'attribut SAN doit correspondre à l'objet ordinateur dans l'Active Directory. Le service AD CS permet de gérer cette infrastructure à clé publique.
+
+III. GESTION DES POLITIQUES DE SÉCURITÉ DES COMPTES.
+
+   A. Stratégies de mot de passe par défaut.
+
+      La stratégie de mot de passe par défaut est appliquée via la stratégie de groupe par défaut du domaine.
+
+      Elle définit des règles essentielles telles que la longueur minimale du mot de passe et sa complexité incluant les majuscules, les minuscules, les chiffres et les caractères spéciaux.
+
+      Cette politique gère également la durée de vie maximale du mot de passe ainsi que l'historique pour empêcher la réutilisation.
+
+      Les paramètres recommandés incluent une longueur de douze caractères et une durée de vie de quatre-vingt-dix jours.
+
+      L'historique doit permettre de conserver vingt-quatre mots de passe précédents.
+
+   B. Mise en œuvre des stratégies de mot de passe affinées (FGPP).
+
+      Les stratégies de mot de passe affinées permettent d'appliquer des règles différentes à des groupes d'utilisateurs spécifiques au sein d'un même domaine.
+
+      Elles sont particulièrement utiles pour imposer des règles plus strictes aux comptes privilégiés.
+
+      Cette fonctionnalité nécessite un niveau fonctionnel de domaine Windows Server deux mille douze ou supérieur.
+
+      La gestion de ces politiques s'effectue via le Centre d'administration Active Directory ou par PowerShell.
+
+      Pour les comptes privilégiés, il est recommandé d'utiliser une durée de vie plus courte située entre trente et quarante-cinq jours.
+
+      On peut également appliquer une longueur minimale de quatorze caractères pour ces comptes sensibles.
+
+   C. Mécanismes de verrouillage de compte.
+
+      Le verrouillage de compte est un paramètre de sécurité qui définit le seuil de tentatives infructueuses avant le blocage.
+
+      La valeur recommandée est de cinq échecs pour déclencher le verrouillage.
+
+      Une durée de verrouillage de trente minutes est préconisée pour permettre un déverrouillage automatique.
+
+      Certains comptes peuvent nécessiter un déverrouillage manuel si le seuil est atteint.
+
+      L'activation de l'audit des connexions permet de surveiller les échecs via les événements de sécurité.
+
+      L'ID d'événement quatre mille six cent vingt-cinq est spécifiquement utilisé pour identifier les échecs de connexion dans les journaux.
+
+IV. RENFORCEMENT DE LA SÉCURITÉ ET AUTHENTIFICATION MULTIFACTEUR.
+
+   A. Intégration de la MFA via NPS, AD FS et solutions tierces.
+
+      L'authentification multifacteur n'est pas un composant natif d'AD DS sur site mais elle renforce la sécurité en exigeant au moins deux preuves d'identité distinctes.
+
+      L'extension NPS pour Microsoft Entra MFA permet au serveur NPS d'agir comme un proxy RADIUS pour communiquer avec Microsoft Entra ID.
+
+      Cette méthode permet d'exiger une deuxième authentification via un code OTP ou une notification d'application.
+
+      AD FS permet de fédérer l'identité AD avec Microsoft Entra ID et peut être utilisé pour exiger une MFA conditionnelle.
+
+      Des solutions tierces comme Duo ou RSA SecurID s'intègrent également dans l'environnement via des agents ou des modules d'authentification.
+
+   B. Bonnes pratiques de sécurisation de l'environnement AD.
+
+      Il est recommandé de désactiver NTLMv1 en configurant le niveau d'authentification LAN Manager pour n'envoyer que la réponse NTLMv2.
+
+      Les stratégies de mot de passe doivent être fortes avec une longueur minimale de douze caractères et un historique de vingt-quatre mots de passe.
+
+      L'utilisation de stratégies de mot de passe affinées est conseillée pour les comptes privilégiés avec une durée de vie plus courte.
+
+      Il faut éviter les liaisons LDAP simples en clair en privilégiant LDAPS ou SASL pour sécuriser les échanges.
+
+      Le déploiement de la MFA est une pratique essentielle pour protéger les accès à privilèges et les connexions à distance.
+
+   C. Surveillance et audit des événements de sécurité.
+
+      L'activation de l'audit des connexions pour les succès et les échecs doit être effectuée via la stratégie de groupe.
+
+      L'événement avec l'ID quatre mille six cent vingt-quatre permet de surveiller les connexions réussies au sein du système.
+
+      L'ID d'événement quatre mille six cent vingt-cinq est utilisé pour identifier les échecs de connexion.
+
+      L'ID d'événement quatre mille sept cent soixante-seize sert à suivre la validation des informations d'identification par le DC.
+
+V. DÉPANNAGE ET DIAGNOSTIC DES ERREURS D'AUTHENTIFICATION.
+
+   A. Résolution des échecs Kerberos et problèmes de synchronisation.
+
+      Les échecs de connexion au domaine via Kerberos peuvent résulter d'une désynchronisation horaire entre le client et le contrôleur de domaine. Le protocole Kerberos tolère un décalage maximal de cinq minutes pour fonctionner correctement.
+
+      Pour résoudre ce problème, il est nécessaire de synchroniser l'heure avec le contrôleur de domaine en utilisant la commande w32tm /resync.
+
+      D'autres causes incluent des enregistrements SRV DNS manquants ou incorrects qui empêchent la localisation des services. Il est possible de forcer l'enregistrement de ces enregistrements en redémarrant le service Netlogon sur le contrôleur de domaine.
+
+      Enfin, un compte utilisateur peut être verrouillé ou son mot de passe peut avoir expiré. Dans ce cas, il faut utiliser la commande Unlock-ADAccount ou procéder à une réinitialisation du mot de passe.
+
+   B. Diagnostic des problèmes de service et de SPN.
+
+      Lorsqu'une authentification NTLM réussit mais que Kerberos échoue, le problème provient souvent d'un nom de principal de service, ou SPN, non enregistré pour le service concerné.
+
+      Une mauvaise configuration de la délégation contrainte peut également être à l'origine de cet échec d'authentification.
+
+      Pour diagnostiquer cette situation, il est impératif de vérifier les SPN existants à l'aide de la commande setspn -L suivie du nom du compte d'ordinateur.
+
+      Si des SPN sont manquants, ils doivent être ajoutés manuellement avec la commande setspn -A en précisant le service et le FQDN ainsi que le compte cible.
+
+      Un diagnostic plus avancé peut être réalisé avec la commande klist get suivie du SPN pour tenter d'obtenir un ticket spécifique et afficher les erreurs.
+
+   C. Outils et commandes PowerShell de vérification.
+
+      L'outil klist est essentiel pour afficher les tickets Kerberos actuellement présents en cache sur la machine.
+
+      Pour vérifier et réparer le canal sécurisé avec le contrôleur de domaine, la commande Test-ComputerSecureChannel avec l'option -Verbose est recommandée.
+
+      La gestion des politiques de mot de passe affinées, ou FGPP, peut également être effectuée via PowerShell pour appliquer des règles spécifiques aux groupes d'utilisateurs.
+
+      Pour la gestion des comptes verrouillés, la commande Unlock-ADAccount permet de restaurer l'accès rapidement.
+
+      Enfin, la surveillance des événements de sécurité est cruciale, notamment avec l'ID d'événement quatre mille six cent vingt-quatre pour les connexions réussies et l'ID quatre mille six cent vingt-cinq pour les échecs de connexion.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le simple bind LDAP qui envoie le mot de passe en clair avec le mécanisme SASL qui sécurise les échanges.
+
+      Une confusion courante réside dans l'utilisation de NTLM alors que Kerberos est le protocole par défaut et recommandé pour les domaines modernes.
+
+      La sécurité de Kerberos dépend impérativement d'une synchronisation horaire car un décalage de plus de cinq minutes peut bloquer l'authentification.
+
+      Il est crucial de distinguer les stratégies de mot de passe classiques appliquées par la Default Domain Policy des stratégies affinées FGPP.
+
+      L'authentification MFA n'est pas un composant natif d'AD DS sur site mais nécessite une intégration via NPS, AD FS ou des solutions tierces.
+
+EXEMPLES CITÉS.
+
+      Le protocole NTLMv1 présente des faiblesses avec un chiffrement de cinquante-six bits contrairement au NTLMv2 qui utilise cent vingt-huit bits.
+
+      Pour sécuriser les comptes privilégiés, il est recommandé d'utiliser une longueur de mot de passe de quatorze caractères ou plus.
+
+      Une stratégie de mot de passe robuste prévoit une durée de vie maximale de quatre-vingt-dix jours et un historique de vingt-quatre mots de passe.
+
+      Le seuil de verrouillage recommandé est de cinq échecs avec un déverrouillage automatique après trente minutes.
+
+      L'audit de sécurité doit surveiller des événements précis comme l'ID quatre mille six cent vingt-quatre pour les connexions réussies ou l'ID quatre mille six cent vingt-cinq pour les échecs.

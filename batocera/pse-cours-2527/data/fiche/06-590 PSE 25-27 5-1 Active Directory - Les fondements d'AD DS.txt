@@ -1,0 +1,269 @@
+GUIDE COMPLET DES FONDEMENTS ET DE L'ARCHITECTURE D'ACTIVE DIRECTORY DOMAIN SERVICES.
+
+LEXIQUE COMPLET.
+
+      AD DS désigne l'Active Directory Domain Services, qui est le service d'annuaire de Microsoft servant de cœur à l'infrastructure d'identité et de sécurité sous Windows Server.
+
+      LDAP désigne le protocole utilisé comme interface commune pour localiser l'information dans la base d'annuaire au format X500.
+
+      GPO désigne les stratégies de groupe permettant une administration basée sur des règles à grande échelle.
+
+      KCC désigne le Knowledge Consistency Checker, un processus automatique qui génère et ajuste la topologie de réplication sur chaque contrôleur de domaine.
+
+      DFSR désigne le Distributed File System Replication, une technologie de réplication différentielle utilisée pour le dossier SYSVOL depuis Windows Server deux mille huit.
+
+      FSMO désigne les Flexible Single Master Operations, qui sont des rôles opérationnels essentiels pour éviter les conflits lors d'opérations critiques.
+
+      NTDS.DIT désigne le fichier de base de données de l'annuaire géré par le moteur ESE.
+
+      ESE désigne l'Extensible Storage Engine, un moteur responsable de l'indexation des données et du maintien des lignes et des colonnes de la base de données.
+
+      KDC désigne le Key Distribution Center, un composant utilisé dans le fonctionnement du protocole Kerberos v5.
+
+      SAM désigne le Security Accounts Manager, une interface propriétaire utilisée pour connecter les clients Windows NT quatre.0 ou antérieurs au contrôleur de domaine.
+
+      DSA désigne l'Agent de Service d'Annuaire qui exécute Ntdsa.dll sur chaque contrôleur de domaine pour garantir la sémantique de l'annuaire.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET CONCEPTS FONDAMENTAUX.
+
+   A. Définition et rôle d'AD DS.
+
+      Active Directory Domain Services est le service d'annuaire propriétaire de Microsoft qui sert d'épine dorsale à la gestion des identités et des accès.
+
+      Il fonctionne comme un référentiel organisé et structuré de manière hiérarchique au format LDAP X500 pour administrer les objets du système d'informations.
+
+      Ce service permet de stocker des informations sur divers objets réseau tels que les utilisateurs, les ordinateurs, les imprimantes et les partages.
+
+      Les administrateurs et les utilisateurs autorisés peuvent utiliser cet annuaire pour trouver et utiliser ces ressources de manière efficace et centralisée.
+
+   B. Distinction entre architecture logique et physique.
+
+      L'architecture d'AD DS s'articule autour de deux structures distinctes mais interdépendantes qui permettent une gestion flexible et robuste.
+
+      La structure logique représente l'organisation conceptuelle des données et des ressources sans être contrainte par l'infrastructure matérielle.
+
+      La structure physique englobe l'infrastructure matérielle et les composants logiciels qui matérialisent concrètement le service d'annuaire.
+
+      Cette séparation offre une indépendance cruciale car la structure logique peut évoluer sans être liée aux changements de la topologie réseau.
+
+   C. Services fournis par l'annuaire.
+
+      AD DS fournit un magasin de données structuré de façon hiérarchique pour organiser l'ensemble des objets du réseau.
+
+      Le service assure une authentification unique pour les utilisateurs grâce à l'utilisation des protocoles Kerberos ou NTLM.
+
+      Il permet une administration basée sur les stratégies de groupe, appelées GPO, à une échelle importante.
+
+      Un catalogue global est également mis à disposition pour indexer tous les objets présents au sein de la forêt.
+
+II. STRUCTURES ET ORGANISATION DE L'ANNUAIRE.
+
+   A. Architecture logique : forêt, arbre, domaine et UO.
+
+      L'architecture logique représente l'organisation conceptuelle des données et des ressources de l'annuaire. Elle est indépendante des aspects physiques comme le nombre de contrôleurs de domaine ou la topologie réseau.
+
+      La forêt constitue le niveau le plus élevé et regroupe un ou plusieurs domaines partageant un schéma et un catalogue global identiques. Elle assure des relations d'approbation automatiques transitives et bidirectionnelles au sein de l'organisation.
+
+      L'arbre est un ensemble de domaines hiérarchiquement liés qui partagent un espace de noms DNS contigu. Par exemple, un arbre peut utiliser le suffixe pse.entreprise.local.
+
+      Le domaine est une partition administrative et de sécurité qui regroupe plusieurs unités d'organisation. Il assure l'authentification locale des objets qu'il contient.
+
+      L'unité d'organisation ou UO est un conteneur logique situé au sein d'un domaine. Elle permet de déléguer l'administration et d'appliquer des GPO de manière ciblée sur des sous-ensembles d'objets.
+
+   B. Architecture physique : sites, sous-réseaux et contrôleurs de domaine.
+
+      La structure physique englobe l'infrastructure matérielle et les composants logiciels qui matérialisent le service d'annuaire. Elle permet d'optimiser la réplication et l'authentification en fonction des liaisons réseau.
+
+      Un site est un ensemble de sous-réseaux bien connectés, généralement représentatif d'un emplacement géographique. La réplication intra-site y est rapide et non compressée.
+
+      Le sous-réseau correspond à une plage d'adresses IP associée à un site spécifique. Cette association permet aux clients de trouver automatiquement le contrôleur de domaine le plus proche.
+
+      Le contrôleur de domaine est un serveur qui héberge une copie de la partition de domaine, du schéma et de la configuration. Il peut s'agir d'une copie accessible en écriture ou d'un contrôleur de domaine en lecture seule.
+
+      Chaque contrôleur de domaine exécute le service KCC pour gérer la topologie de réplication. Ce processus garantit la cohérence des données à travers l'infrastructure.
+
+   C. Le schéma Active Directory.
+
+      Le schéma est la règle formelle qui définit toutes les classes d'objets et les attributs pouvant exister dans une forêt. Il est unique par forêt et se réplique sur l'ensemble des contrôleurs de domaine.
+
+      Ce composant contient des classes comme user ou computer ainsi que des attributs tels que givenName ou sAMAccountName. Toute modification de cette structure est strictement contrôlée.
+
+      Seul le maître du schéma, qui est un rôle FSMO, possède l'autorisation de modifier le schéma. Cela garantit l'intégrité de la définition des objets dans toute la forêt.
+
+      La version du schéma est incrémentée à chaque mise à jour du système. Par exemple, la version est de quatre-vingt-huit pour Windows Server deux mille vingt-deux.
+
+III. GESTION DES DONNÉES ET MÉCANISMES DE STOCKAGE.
+
+   A. Les partitions d'annuaire et naming contexts.
+
+      Pour gérer la réplication, AD DS découpe la base en plusieurs partitions aux périmètres distincts appelées naming contexts.
+
+      La partition Configuration contient la topologie des sites et le schéma de réplication pour l'ensemble de la forêt.
+
+      La partition Schéma définit les classes d'objets et les attributs et elle est répliquée sur toute la forêt.
+
+      La partition Domaine regroupe les utilisateurs, les groupes, les ordinateurs et les données DNS intégrées à l'annuaire.
+
+      La réplication de la partition Domaine est limitée aux contrôleurs du même domaine, tandis que la réplication de la partition Schéma est critique pour la cohérence de la forêt.
+
+   B. Le fichier NTDS.dit et le moteur ESE.
+
+      Le magasin de données stocke les informations du répertoire dans un fichier unique nommé NTDS.dit.
+
+      Ce fichier est géré par le moteur Extensible Storage Engine ou ESE qui assure l'indexation et le transfert des données.
+
+      L'ESE est responsable du maintien des lignes et des colonnes ainsi que de la mise en œuvre des processus transactionnels.
+
+      Le système utilise également des fichiers journaux de transaction pour consigner temporairement les opérations avant de les appliquer à la base.
+
+      Le fichier est stocké par défaut dans le répertoire %SystemRoot%\NTDS\ et sa taille varie selon le nombre d'objets.
+
+      La maintenance est assurée automatiquement par le garbage collector et la défragmentation en ligne.
+
+   C. Les interfaces d'accès et la couche de base de données.
+
+      Les clients ne communiquent pas directement avec la base d'annuaire mais utilisent différentes interfaces de communication.
+
+      Le protocole LDAP v3 est l'interface la plus commune pour localiser l'information via les ports trois cent quatre-vingt-neuf, six cent trente-six, trois mille deux cent soixante-huit et trois mille deux cent soixante-neuf.
+
+      L'interface de gestion REPL utilise les appels de procédure distantes RPC pour la réplication entre les contrôleurs de domaine.
+
+      L'interface MAPI permet aux clients de messagerie comme Outlook d'accéder à la liste d'adresse globale via RPC.
+
+      Le SAM est une interface propriétaire utilisée par les anciens clients Windows NT quatre.0 pour communiquer via RPC.
+
+      Le DSA exécute Ntdsa.dll sur chaque contrôleur de domaine pour garantir la sémantique de l'annuaire et le maintien du schéma.
+
+      La couche de base de données réside dans Ntdsa.dll et fournit une interface interne entre le DSA et le répertoire.
+
+IV. PROTOCOLES D'AUTHENTIFICATION ET DE RÉPLICATION.
+
+   A. Comparaison entre les protocoles Kerberos et NTLM.
+
+      AD DS prend en charge deux protocoles d'authentification majeurs qui présentent des différences de sécurité et de fonctionnement.
+
+      Le protocole Kerberos v5 est le standard par défaut depuis Windows deux mille et repose sur un système de tickets avec un chiffrement symétrique via le KDC.
+
+      Ce protocole offre une sécurité élevée grâce à l'authentification mutuelle entre le client et le serveur et ne transmet jamais le mot de passe.
+
+      L'utilisation de Kerberos nécessite une synchronisation horaire avec une tolérance de cinq minutes pour fonctionner correctement.
+
+      Le protocole NTLM v2 utilise un mécanisme de challenge et réponse basé sur un hachage NT mais il est considéré comme moins sécurisé.
+
+      NTLM est vulnérable à des attaques comme le pass-the-hash ou le relais et il est principalement utilisé pour les systèmes hérités ou les groupes de travail.
+
+   B. Fonctionnement de la réplication et rôle du KCC.
+
+      Le Knowledge Consistency Checker ou KCC est un processus automatique qui génère et ajuste la topologie de réplication sur chaque contrôleur de domaine.
+
+      La réplication intra-site utilise une topologie en anneau bidirectionnel avec des connexions directes pour réduire la latence.
+
+      Pour la réplication inter-sites, le système utilise une topologie en arbre couvrant où l'administrateur définit les liaisons de site avec un coût et une planification.
+
+      Les objets de connexion sont stockés sous l'objet NTDS Settings de chaque contrôleur de domaine et peuvent être créés manuellement.
+
+      L'état de la réplication de la forêt peut être résumé avec la commande repadmin /replsummary ou détaillé avec repadmin /showrepl.
+
+   C. Le dossier SYSVOL et l'évolution vers DFSR.
+
+      Le dossier SYSVOL est un dossier partagé présent sur chaque contrôleur de domaine qui contient les modèles de stratégie de groupe et les scripts de connexion.
+
+      L'ancienne technologie de réplication était le FRS qui était utilisé sous Windows deux mille et deux mille trois pour une réplication intégrale des fichiers.
+
+      Le FRS est jugé peu efficace car il réplique l'intégralité des fichiers à chaque modification.
+
+      La technologie actuelle est le DFSR qui est utilisé depuis Windows Server deux mille huit pour une réplication plus fiable.
+
+      Le DFSR utilise la réplication différentielle pour envoyer uniquement la partie modifiée des fichiers supérieurs à soixante-quatre Ko.
+
+V. ADMINISTRATION ET MAINTIEN DE L'INFRASTRUCTURE.
+
+   A. Les rôles opérationnels FSMO.
+
+      Le modèle multi-maître d'Active Directory utilise des rôles FSMO pour garantir que certaines opérations critiques ne soient effectuées que par un seul contrôleur de domaine afin d'éviter les conflits.
+
+      Au niveau de la forêt, le maître du schéma gère les modifications de classes et d'attributs, tandis que le maître d'attribution des noms de domaine contrôle l'ajout ou la suppression de domaines.
+
+      Au niveau du domaine, le maître RID alloue des pools d'identifiants pour la création d'objets, le maître d'infrastructure met à jour les références entre domaines et l'émulateur PDC gère la synchronisation horaire et les mots de passe.
+
+      L'indisponibilité du maître du schéma empêche l'installation d'applications comme Exchange, alors que l'épuisement des RIDs bloque la création de nouveaux objets ou de nouveaux contrôleurs de domaine.
+
+      Une défaillance de l'émulateur PDC peut entraîner une dégradation sévère de l'authentification et des problèmes de synchronisation horaire impactant Kerberos.
+
+   B. Bonnes pratiques de sécurité et de délégation.
+
+      La sécurité de l'infrastructure repose sur l'application du principe du moindre privilège en utilisant les unités d'organisation pour déléguer des droits de gestion de manière ciblée.
+
+      Il est fortement recommandé de restreindre l'usage du compte Administrateur en privilégiant des comptes délégués via la fonction Run as.
+
+      Pour garantir la robustesse du service, il convient d'isoler les rôles FSMO en les répartissant sur au moins deux contrôleurs de domaine afin d'éviter le point de défaillance unique.
+
+      L'administration doit être complétée par un audit rigoureux des connexions et des modifications critiques en surveillant les catégories d'événements quatre mille six cent vingt-quatre, quatre mille six cent soixante-dix et cinq mille cent trente-six.
+
+      Il est également conseillé de ne pas installer d'applications tierces sur un contrôleur de domaine et de vérifier les autorisations NTFS par défaut sur le dossier SYSVOL.
+
+   C. Outils de gestion et de diagnostic.
+
+      L'administration quotidienne s'appuie sur des outils graphiques comme le Centre d'administration AD pour les utilisateurs et les ordinateurs ou les Sites et services AD pour la topologie physique.
+
+      Pour des manipulations plus techniques comme la gestion du schéma, l'outil ADSI Edit est indispensable, tandis que ntdsutil et ESE permettent d'intervenir sur la base de données.
+
+      La gestion de la réplication et des rôles FSMO peut s'effectuer via PowerShell en utilisant des commandes telles que netdom query fsmo ou Get-ADForest.
+
+      Le diagnostic de l'état de réplication utilise l'outil repadmin avec les commandes repadmin /replsummary pour un résumé global ou repadmin /showrepl pour le détail des connexions.
+
+      Le comptage des objets du schéma peut être réalisé avec la commande Get-ADObject combinée à Measure-Object pour analyser la structure de l'annuaire.
+
+VI. SYNTHÈSE DES COMPOSANTS ET RESSOURCES.
+
+   A. Tableau récapitulatif des éléments clés.
+
+      L'architecture logique se compose de la forêt qui est l'ensemble unique d'un ou plusieurs domaines partageant un schéma et un catalogue global. L'arbre regroupe des domaines avec un espace de noms DNS contigu tandis que le domaine assure la partition administrative et l'unité d'organisation permet la délégation et l'application de GPO.
+
+      L'architecture physique repose sur les sites qui regroupent des sous-réseaux pour optimiser la réplication et l'authentification. Le contrôleur de domaine héberge la copie de la partition de domaine et exécute le service KCC pour gérer la topologie de réplication.
+
+      Le stockage des données est assuré par le fichier NTDS.DIT géré par le moteur ESE qui utilise des journaux de transaction pour garantir la cohérence. Les partitions d'annuaire comme la configuration et le schéma sont répliquées dans toute la forêt alors que la partition domaine est limitée aux contrôleurs du même domaine.
+
+      Les rôles FSMO sont répartis entre la forêt et le domaine pour éviter les conflits d'opérations critiques. Le maître du schéma et le maître d'attribution des noms de domaine concernent la forêt tandis que le maître RID, le maître d'infrastructure et l'émulateur PDC concernent le domaine.
+
+   B. Commandes PowerShell et outils d'administration.
+
+      L'outil PowerShell permet de mesurer le nombre d'objets du schéma avec la commande Get-ADObject en utilisant le filtre et la base de recherche appropriée. La commande netdom query fsmo permet d'identifier rapidement les détenteurs des rôles FSMO dans l'infrastructure.
+
+      Pour la gestion des domaines et de la forêt, les commandes Get-ADDomain et Get-ADForest sont utilisées pour extraire les informations sur les maîtres d'infrastructure, les maîtres RID et les émulateurs PDC. L'outil repadmin est essentiel pour vérifier l'état de réplication avec les commandes replsummary et showrepl.
+
+      L'administration visuelle s'effectue via le centre d'administration AD, les utilisateurs et ordinateurs, ainsi que la console sites et services AD. Pour des modifications de bas niveau comme le schéma, l'outil ADSI Edit est nécessaire tandis que ntdsutil et ESE servent à la gestion de la base de données.
+
+   C. Ressources documentaires complémentaires.
+
+      La documentation officielle de Microsoft propose des guides détaillés sur les meilleures pratiques pour sécuriser AD DS et sur la compréhension du modèle logique. Ces ressources permettent de planifier une infrastructure robuste et conforme aux standards de sécurité.
+
+      Des modules spécifiques sont disponibles pour approfondir les concepts de réplication et le fonctionnement des rôles FSMO. Ces lectures sont indispensables pour maîtriser la topologie intra-site et inter-sites ainsi que la gestion des connexions.
+
+      L'apprentissage de la gestion via PowerShell est également soutenu par des ressources de formation dédiées. La référence au schéma Active Directory complète l'ensemble des connaissances nécessaires pour manipuler les classes et les attributs d'objets.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'architecture logique qui organise les données et l'architecture physique qui gère la topologie réseau.
+
+      La structure logique peut évoluer sans être contrainte par l'infrastructure physique sous-jacente.
+
+      Une confusion courante réside dans la distinction entre le schéma qui définit les classes et les partitions qui segmentent la réplication.
+
+      Le rôle de Maître du schéma est unique à la forêt alors que les rôles RID et Infrastructure sont spécifiques au domaine.
+
+      Il est crucial de noter que Kerberos nécessite une synchronisation horaire avec une tolérance de cinq minutes contrairement à NTLM.
+
+EXEMPLES CITÉS.
+
+      Le moteur ESE utilise le fichier NTDS.DIT pour stocker les informations de l'annuaire dans le dossier %SystemRoot%\NTDS\.
+
+      La version du schéma est incrémentée à chaque mise à jour comme la version quatre-vingt-huit pour Windows Server deux mille vingt-deux.
+
+      Pour vérifier l'état de réplication de la forêt on utilise la commande PowerShell repadmin /replsummary.
+
+      Le protocole LDAP utilise les ports trois cent quatre-vingt-neuf pour le standard et six cent trente-six pour la version sécurisée par SSL.
+
+      Le passage de FRS vers DFSR permet une réplication différentielle pour les fichiers dépassant soixante-quatre Ko.
