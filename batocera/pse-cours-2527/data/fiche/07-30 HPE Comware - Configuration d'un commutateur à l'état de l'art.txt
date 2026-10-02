@@ -1,0 +1,745 @@
+CONFIGURATION D'UN COMMUTATEUR HPE SOUS COMWARE 7 À L'ÉTAT DE L'ART (AVEC LES DIFFÉRENCES DE COMWARE 5) : ACCÈS SÉCURISÉS ET AUTHENTIFICATION RADIUS PUIS LOCALE, HEURE ET NTP, VLAN ET PORTS ACCESS, TRUNK ET HYBRID, INTERFACES VLAN, SERVEUR ET RELAIS DHCP, AGRÉGATION, IRF, SPANNING TREE, SMART LINK, SÉCURITÉ DES PORTS, ACL, QOS, SNMP, SFLOW, CFD ET SAUVEGARDE.
+
+LEXIQUE COMPLET.
+
+      Comware est le système d'exploitation réseau des commutateurs et routeurs HPE issus de la gamme H3C, gammes HPE FlexNetwork et FlexFabric.
+
+      Comware 7 est la version actuelle, Comware 5 la version antérieure, encore présente sur d'anciens équipements, avec quelques commandes différentes.
+
+      La vue utilisateur est le mode de départ, signalé par une invite entre chevrons, par exemple <HPE>.
+
+      La vue système est le mode de configuration globale, signalé par une invite entre crochets, par exemple [HPE], obtenue par system-view.
+
+      Une vue d'interface est le mode de configuration d'un port ou d'une interface logique, obtenue par la commande interface.
+
+      La commande display affiche une information, comme show chez d'autres constructeurs.
+
+      La commande undo annule une configuration, comme no chez d'autres constructeurs.
+
+      La commande save enregistre la configuration courante dans le fichier de démarrage.
+
+      Le nommage des ports suit la forme type membre/sous-carte/port, par exemple GigabitEthernet1/0/1.
+
+      Un VLAN est un réseau local virtuel qui segmente le domaine de diffusion, numéroté de 1 à 4094.
+
+      Le port access appartient à un seul VLAN et transmet des trames non étiquetées.
+
+      Le port trunk transporte plusieurs VLAN étiquetés et un seul VLAN non étiqueté, le PVID.
+
+      Le port hybrid, propre à Comware, transmet plusieurs VLAN étiquetés et plusieurs VLAN non étiquetés.
+
+      Le PVID, port VLAN ID, est le VLAN attribué aux trames reçues sans étiquette.
+
+      L'étiquette 802.1Q est le champ de quatre octets inséré dans la trame Ethernet pour indiquer son VLAN.
+
+      L'interface Vlan-interface est l'interface de niveau 3 d'un VLAN, qui porte une adresse IP, équivalente à une SVI.
+
+      Le relais DHCP transmet en unicast au serveur DHCP les demandes diffusées par les postes d'un VLAN.
+
+      L'option 82 est l'information ajoutée par le relais pour identifier le commutateur et le port d'origine de la demande.
+
+      Bridge-Aggregation est l'interface d'agrégation de liens de niveau 2, équivalente à un port-channel.
+
+      L'agrégation statique regroupe des liens sans protocole de négociation, la cohérence étant assurée par la seule configuration.
+
+      L'agrégation dynamique utilise le LACP, link aggregation control protocol, défini par la norme IEEE 802.1AX.
+
+      Un port sélectionné, Selected, transmet le trafic de l'agrégat, un port non sélectionné, Unselected, reste en attente.
+
+      L'IRF, intelligent resilient framework, est la mise en pile qui fait de plusieurs commutateurs un seul équipement logique.
+
+      Le maître IRF, master, gère la pile, les autres membres sont subordonnés, standby.
+
+      La MAD, multi-active detection, détecte la scission d'une pile IRF pour éviter deux maîtres actifs.
+
+      La configuration groupée applique une même configuration à plusieurs ports, par interface range sous Comware 7 et port-group manual sous Comware 5.
+
+      Le rôle utilisateur fixe les droits sous Comware 7, network-admin pour l'administrateur, network-operator pour la lecture seule.
+
+      Les lignes vty sont les accès distants, configurés par line vty sous Comware 7 et user-interface vty sous Comware 5.
+
+      Le NTP, network time protocol, synchronise l'horloge des équipements sur un serveur de temps, par le port UDP 123.
+
+      Le fuseau horaire, timezone, est le décalage de l'heure locale par rapport à l'heure universelle UTC, plus une heure pour Paris en hiver.
+
+      L'heure d'été, summer-time, est le décalage supplémentaire d'une heure appliqué entre le dernier dimanche de mars et le dernier dimanche d'octobre en Europe.
+
+      L'AAA, authentication, authorization, accounting, regroupe l'authentification, l'autorisation et la traçabilité des accès.
+
+      Le RADIUS, remote authentication dial-in user service, est le protocole client-serveur d'AAA, sur les ports UDP 1812 pour l'authentification et 1813 pour la comptabilité.
+
+      Le schéma RADIUS, radius scheme, regroupe sous Comware les serveurs RADIUS, leurs ports et leur clé partagée.
+
+      Le domaine ISP, domain, associe des méthodes d'authentification, d'autorisation et de comptabilité à un type d'accès, comme login pour l'administration ou lan-access pour les postes.
+
+      La clé partagée, shared key, est le secret commun au commutateur et au serveur RADIUS.
+
+      Le 802.1X est l'authentification d'un poste avant l'accès au réseau, le commutateur jouant le rôle d'authentificateur entre le poste et le serveur RADIUS.
+
+      Le sFlow est une technologie d'échantillonnage du trafic : l'agent du commutateur envoie des échantillons de paquets et des compteurs à un collecteur d'analyse.
+
+      Le collecteur sFlow est le serveur qui reçoit les datagrammes sFlow, par défaut sur le port UDP 6343.
+
+      Le taux d'échantillonnage est la proportion de paquets copiés, par exemple un paquet sur 4096.
+
+      Le SNMP, simple network management protocol, permet la supervision : le gestionnaire interroge l'agent du commutateur sur le port UDP 161 et reçoit ses alertes, les traps, sur le port UDP 162.
+
+      La MIB, management information base, est l'arborescence des objets supervisés, une vue MIB, mib-view, en limitant la partie accessible.
+
+      La communauté SNMP est le mot de passe en clair des versions 1 et 2c, en lecture, read, ou en écriture, write.
+
+      Le SNMPv3 apporte des utilisateurs, l'authentification, par SHA, et le chiffrement, par AES, selon trois niveaux : sans authentification, authentification seule, authentification et chiffrement, appelé privacy.
+
+      Les informations système syscontact et syslocation indiquent le responsable et l'emplacement de l'équipement, lus par l'outil de supervision.
+
+      Le mode d'authentification d'une ligne est none sans contrôle, password avec un simple mot de passe, ou scheme avec identifiant et mot de passe selon le domaine AAA.
+
+      La ligne console, line aux 0 ou line console 0 selon les modèles, est l'accès physique par câble au port console de l'équipement.
+
+      Le LLDP découvre les voisins directement connectés, selon la norme IEEE 802.1AB.
+
+      Le STP évite les boucles de niveau 2, décliné en RSTP rapide et MSTP multi-instances, MSTP étant le mode par défaut de Comware.
+
+      Smart Link est une solution de redondance de liens montants : un lien principal transmet, un lien secondaire attend et prend le relais en moins d'une seconde, sans spanning tree.
+
+      Le message flush est envoyé lors d'une bascule Smart Link pour que les équipements en amont vident leurs tables MAC et ARP.
+
+      Monitor Link associe des ports descendants à un port montant : si le montant tombe, les descendants sont coupés pour déclencher la bascule en aval.
+
+      Le CFD, connectivity fault detection, est l'OAM Ethernet de bout en bout défini par la norme IEEE 802.1ag, qui détecte, vérifie et localise les pannes de connectivité.
+
+      Le domaine de maintenance, MD, est la zone surveillée, avec un niveau de 0 à 7.
+
+      L'association de maintenance, MA, est le service surveillé dans un MD, généralement un VLAN.
+
+      Le MEP, maintenance association end point, est le point d'extrémité qui émet et reçoit les messages CFD.
+
+      Le MIP, maintenance association intermediate point, est un point intermédiaire qui répond aux tests sans les initier.
+
+      Le message de continuité, CCM, est émis périodiquement par chaque MEP : son absence signale une coupure.
+
+      La QoS, qualité de service, priorise, limite ou marque le trafic pour garantir les flux sensibles comme la voix.
+
+      Le DSCP est le champ de priorité de l'en-tête IP, le 802.1p celui de l'étiquette VLAN.
+
+      Le modèle MQC, modular QoS configuration, associe une classe de trafic, un comportement et une politique.
+
+      Une ACL est basique de 2000 à 2999 sur l'adresse source, avancée de 3000 à 3999 sur adresses, protocoles et ports, de niveau 2 à partir de 4000 sur les adresses MAC.
+
+      Le masque générique, wildcard, indique par des 0 les bits à vérifier et par des 1 les bits ignorés.
+
+COURS DÉTAILLÉ.
+
+I. L'ENVIRONNEMENT COMWARE ET LA DÉMARCHE.
+
+   A. Les vues.
+
+      Après connexion, l'invite <HPE> indique la vue utilisateur.
+
+      La commande system-view ouvre la vue système, l'invite devient [HPE].
+
+      La commande interface GigabitEthernet1/0/1 ouvre la vue du port, l'invite devient [HPE-GigabitEthernet1/0/1].
+
+      La commande quit remonte d'un niveau, return ou Ctrl+Z revient à la vue utilisateur.
+
+      Le point d'interrogation affiche l'aide contextuelle, la touche Tab complète les mots-clés, les commandes peuvent être abrégées.
+
+   B. Les commandes de base.
+
+      La commande sysname SW-ACCES-01 nomme l'équipement.
+
+      Les commandes display current-configuration, display interface brief, display version et display this sont les plus utiles.
+
+      La commande save force enregistre sans confirmation, reset saved-configuration puis reboot rétablissent la configuration usine.
+
+   C. La correspondance avec la syntaxe Cisco.
+
+      show devient display, no devient undo, configure terminal devient system-view, end devient return, write devient save.
+
+      switchport mode access devient port link-type access, interface vlan devient interface Vlan-interface, port-channel devient Bridge-Aggregation.
+
+   D. La démarche de configuration.
+
+      Une configuration à l'état de l'art suit un ordre logique : accès d'administration sécurisés, heure exacte, VLAN et ports, niveau 3 et DHCP, agrégation et redondance, sécurité des ports et ACL, qualité de service, supervision, puis sauvegarde.
+
+      Chaque équipement reçoit un nom explicite, une adresse d'administration dans un VLAN dédié, un contact et un emplacement renseignés.
+
+      Les services non chiffrés, telnet, HTTP et FTP, sont désactivés au profit de SSH, HTTPS et SFTP.
+
+      Toute modification est vérifiée par la commande display adaptée, puis enregistrée par save et sauvegardée hors de l'équipement.
+
+II. LA SÉCURISATION DES ACCÈS D'ADMINISTRATION.
+
+   A. Le compte local et SSH.
+
+      La commande local-user admin class manage crée un compte local d'administration, gardé comme compte d'urgence.
+
+      Dans sa vue : password hash suivi du mot de passe, service-type ssh terminal, et authorization-attribute user-role network-admin, level 3 sous Comware 5.
+
+      La commande public-key local create rsa génère les clés de l'équipement, ssh server enable active SSH.
+
+      Les lignes distantes, line vty 0 63 sous Comware 7 et user-interface vty 0 15 sous Comware 5, reçoivent authentication-mode scheme et protocol inbound ssh.
+
+   B. Le schéma RADIUS.
+
+      La commande radius scheme RAD crée le schéma.
+
+      Dans sa vue : primary authentication 10.0.0.20 1812 et primary accounting 10.0.0.20 1813, puis secondary pour un serveur de secours.
+
+      Les clés : key authentication simple suivi du secret, et key accounting simple suivi du secret.
+
+      La commande user-name-format without-domain transmet l'identifiant sans le nom de domaine.
+
+      La commande nas-ip fixe l'adresse source des requêtes, celle déclarée sur le serveur RADIUS.
+
+   C. Le domaine.
+
+      La commande domain entreprise crée le domaine, puis authentication login radius-scheme RAD local, authorization login radius-scheme RAD local et accounting login radius-scheme RAD local.
+
+      Le mot-clé local en fin de ligne prévoit le repli sur les comptes locaux si le serveur RADIUS ne répond pas.
+
+      La commande domain default enable entreprise rend ce domaine utilisé par défaut.
+
+      Le rôle de l'administrateur peut être renvoyé par le serveur RADIUS, à défaut d'un rôle par défaut configuré.
+
+   D. Le mode scheme, RADIUS puis local.
+
+      Le mode scheme se déclare dans chaque ligne d'accès : authentication-mode scheme, dans line vty 0 63 et dans la ligne console.
+
+      Avec ce mode, l'identifiant et le mot de passe sont vérifiés selon le domaine AAA par défaut, ici entreprise.
+
+      La méthode authentication login radius-scheme RAD local interroge d'abord le serveur RADIUS, puis les comptes locaux.
+
+      Le repli local ne joue que si le serveur RADIUS ne répond pas : un refus du serveur, mot de passe faux ou compte inconnu, n'ouvre pas la porte aux comptes locaux.
+
+      Il faut donc toujours garder un compte local d'urgence, au mot de passe robuste et conservé en lieu sûr, pour le cas où le RADIUS serait injoignable.
+
+      L'autorisation, authorization login radius-scheme RAD local, fournit le rôle, et la comptabilité, accounting login, trace les sessions sur le serveur.
+
+      Le mode password, authentication-mode password puis set authentication password hash, ne vérifie qu'un mot de passe commun, sans traçabilité individuelle : à éviter.
+
+   E. La sécurisation de la console et des accès.
+
+      La ligne console, line aux 0 ou line console 0 selon les modèles, user-interface aux 0 sous Comware 5, reçoit aussi authentication-mode scheme.
+
+      La commande idle-timeout 5 0 ferme une session console ou distante inactive depuis cinq minutes.
+
+      La commande user-role network-operator, sur une ligne, limite le rôle par défaut, le rôle complet venant du RADIUS ou du compte local.
+
+      Sur les lignes vty : protocol inbound ssh, acl 2000 inbound pour n'autoriser que le réseau d'administration, et idle-timeout.
+
+      La politique de mots de passe : password-control enable, password-control length 10, password-control login-attempt 3 exceed lock-time 10 pour verrouiller après trois échecs.
+
+      Les services inutiles se désactivent : undo telnet server enable, undo ip http enable, undo ftp server enable.
+
+      Une bannière d'avertissement légal s'affiche par header motd ou header login.
+
+      Les ports physiques inutilisés se désactivent par shutdown, ou se placent dans un VLAN poubelle sans routage.
+
+      Le local technique fermé reste la première protection du port console.
+
+III. L'HEURE, LE NTP ET LE CHANGEMENT D'HEURE.
+
+   A. Le fuseau et l'heure d'été.
+
+      La commande clock timezone Paris add 01:00:00 déclare le fuseau UTC plus une heure.
+
+      La commande clock summer-time CEST 02:00:00 March last Sunday 03:00:00 October last Sunday 01:00:00 applique automatiquement l'heure d'été chaque année.
+
+      Les paramètres sont le nom, l'heure et la date de début, l'heure et la date de fin, puis le décalage ajouté.
+
+      Pour l'Europe, le passage à l'heure d'été a lieu le dernier dimanche de mars à 2 heures, le retour à l'heure d'hiver le dernier dimanche d'octobre à 3 heures.
+
+      La commande display clock affiche l'heure, le fuseau et la règle d'été.
+
+      Une heure exacte est indispensable pour dater les journaux, corréler les incidents et valider les certificats.
+
+   B. Le client NTP.
+
+      Sur Comware 7, la commande clock protocol ntp désigne le NTP comme source de l'heure système.
+
+      La commande ntp-service enable active le service.
+
+      La commande ntp-service unicast-server 10.0.0.10 déclare un serveur, deux serveurs étant recommandés.
+
+      L'authentification NTP s'active par ntp-service authentication enable, ntp-service authentication-keyid 1 authentication-mode md5 suivi de la clé, ntp-service reliable authentication-keyid 1, puis authentication-keyid 1 sur la déclaration du serveur.
+
+      Les commandes display ntp-service status et display ntp-service sessions vérifient la synchronisation.
+
+      Le NTP transporte toujours l'heure UTC : le fuseau et l'heure d'été restent un réglage local de chaque équipement.
+
+IV. LES VLAN ET LES TYPES DE PORTS.
+
+   A. La création.
+
+      La commande vlan 10 crée le VLAN 10 et ouvre sa vue.
+
+      Dans cette vue, name SERVEURS donne un nom court et description un libellé libre.
+
+      La commande vlan 20 to 30 crée une plage de VLAN en une fois.
+
+      La commande display vlan brief liste les VLAN et leurs ports.
+
+      Le VLAN 1 existe par défaut et ne peut pas être supprimé, la commande undo vlan 10 supprime un VLAN créé.
+
+   B. Le port access et ses cas d'usage.
+
+      Dans la vue du port : port link-type access, puis port access vlan 10.
+
+      Depuis la vue du VLAN : port GigabitEthernet1/0/1 to GigabitEthernet1/0/10 affecte plusieurs ports access en une fois.
+
+      Cas d'usage : tout équipement terminal qui n'étiquette pas ses trames et n'appartient qu'à un réseau, comme un poste de travail, une imprimante, une caméra, un serveur physique simple ou un contrôleur d'accès.
+
+      Intérêt de sécurité : l'équipement ne choisit pas son VLAN, toute trame étiquetée qu'il enverrait est rejetée, ce qui empêche le saut de VLAN.
+
+      C'est le type de port par défaut et le plus courant sur un commutateur d'accès.
+
+   C. Le port trunk, avec ou sans PVID.
+
+      Dans la vue du port : port link-type trunk, puis port trunk permit vlan 10 20 30, ou port trunk permit vlan all.
+
+      Le trunk transporte plusieurs VLAN étiquetés et au plus un VLAN non étiqueté, le PVID, qui vaut 1 par défaut.
+
+      Trunk sans PVID utilisé : liaison entre deux commutateurs, ou vers un cœur de réseau, où tous les VLAN circulent étiquetés.
+
+      Bonne pratique pour ce cas : retirer le VLAN 1 par undo port trunk permit vlan 1, ou placer le PVID sur un VLAN inutilisé, pour qu'aucune trame non étiquetée ne circule et pour éviter les attaques par double étiquette.
+
+      Trunk avec PVID utile : équipement qui envoie un réseau sans étiquette et les autres étiquetés, comme une borne Wi-Fi dont l'administration est non étiquetée dans le VLAN 99 et les SSID étiquetés dans les VLAN 10 et 20, ou un hyperviseur dont la gestion est non étiquetée.
+
+      Configuration de ce cas : port trunk permit vlan 10 20 99, puis port trunk pvid vlan 99.
+
+      Règle : le PVID doit être identique aux deux extrémités, sinon les trames non étiquetées passent d'un VLAN à l'autre, ce qui crée une fuite entre réseaux et peut perturber le spanning tree.
+
+   D. Le port hybrid et plusieurs VLAN non étiquetés.
+
+      Dans la vue du port : port link-type hybrid, port hybrid vlan 10 untagged, port hybrid vlan 20 tagged, puis port hybrid pvid vlan 10.
+
+      Le PVID décide du VLAN des trames reçues sans étiquette, la liste untagged décide des VLAN dont les trames ressortent sans étiquette.
+
+      Un port hybrid peut donc rendre plusieurs VLAN non étiquetés en sortie, ce qu'un port trunk ne permet pas.
+
+      Cas d'usage 1, téléphone et poste : téléphone IP étiqueté dans le VLAN voix 20 et poste non étiqueté dans le VLAN données 10 sur la même prise, par port hybrid vlan 20 tagged, port hybrid vlan 10 untagged et port hybrid pvid vlan 10.
+
+      Cas d'usage 2, ressource partagée entre VLAN isolés, sans routage : les utilisateurs des VLAN 10 et 20 ne doivent pas se voir, mais tous doivent joindre un serveur ou une imprimante placé dans le VLAN 30.
+
+      Port du serveur : port hybrid pvid vlan 30 et port hybrid vlan 10 20 30 untagged, pour qu'il reçoive sans étiquette les trames des trois VLAN et réponde dans le VLAN 30.
+
+      Ports des utilisateurs du VLAN 10 : port hybrid pvid vlan 10 et port hybrid vlan 10 30 untagged, ceux du VLAN 20 : port hybrid pvid vlan 20 et port hybrid vlan 20 30 untagged.
+
+      Résultat : chaque utilisateur reçoit les réponses du serveur, mais les VLAN 10 et 20 restent isolés l'un de l'autre, sur le principe des VLAN asymétriques.
+
+      Cas d'usage 3, VLAN attribué dynamiquement : avec l'authentification 802.1X ou MAC, le VLAN invité ou le VLAN donné par le serveur RADIUS s'applique non étiqueté sur un port hybrid.
+
+      Limite : plusieurs VLAN non étiquetés sur un même port supposent une conception rigoureuse, documentée, car l'isolation repose sur la cohérence de toutes les listes untagged.
+
+   E. Le changement de type de port.
+
+      Pour passer de trunk à hybrid, il faut d'abord revenir au type access, par port link-type access.
+
+      La commande display port trunk, ou display port hybrid, vérifie la configuration.
+
+   F. La configuration groupée.
+
+      Sous Comware 7, interface range GigabitEthernet1/0/1 to GigabitEthernet1/0/24 configure plusieurs ports d'un coup.
+
+      La commande interface range name POSTES interface GigabitEthernet1/0/1 to GigabitEthernet1/0/24 enregistre un groupe nommé réutilisable.
+
+      Sous Comware 5, port-group manual POSTES puis group-member joue le même rôle.
+
+      Comware ne propose pas de fonction appelée smart port comme les macros Smartports d'autres constructeurs : la configuration groupée en tient lieu.
+
+V. LE NIVEAU 3, LE SERVEUR ET LE RELAIS DHCP.
+
+   A. L'interface VLAN.
+
+      La commande interface Vlan-interface 10 crée l'interface de niveau 3 du VLAN 10, qui doit exister.
+
+      La commande ip address 192.168.10.254 24, ou 192.168.10.254 255.255.255.0, attribue l'adresse de passerelle.
+
+      Le mot-clé sub ajoute une adresse secondaire.
+
+      L'interface est active dès qu'au moins un port du VLAN est actif.
+
+      La commande ip route-static 0.0.0.0 0 192.168.0.1 crée la route par défaut, display ip routing-table vérifie la table.
+
+   B. Le serveur DHCP sur l'interface VLAN.
+
+      Cas d'usage : un site sans serveur DHCP, où le commutateur de niveau 3 distribue lui-même les adresses de chaque VLAN.
+
+      La commande dhcp enable active le service, puis dhcp server ip-pool VLAN10 crée la plage d'adresses.
+
+      Dans la vue de la plage : network 192.168.10.0 mask 255.255.255.0, gateway-list 192.168.10.254, dns-list 10.0.0.53, domain-name entreprise.local et expired day 1 pour un bail d'un jour.
+
+      Dans la Vlan-interface 10 : dhcp select server, et dhcp server apply ip-pool VLAN10 pour lier explicitement la plage, sinon la plage est choisie d'après le réseau de l'interface.
+
+      Les adresses fixées à la main, passerelle, imprimantes, serveurs, bornes, sont retirées de la distribution par dhcp server forbidden-ip 192.168.10.1 192.168.10.20, ou forbidden-ip dans la plage.
+
+      Une réservation attribue toujours la même adresse à un équipement : static-bind ip-address 192.168.10.50 mask 255.255.255.0 hardware-address 0011-2233-4455 dans la plage.
+
+      Choix entre adresse statique et réservation : l'adresse statique est configurée sur l'équipement et doit être exclue de la plage, la réservation reste gérée centralement par le DHCP.
+
+      Les commandes display dhcp server ip-in-use, display dhcp server free-ip et display dhcp server statistics suivent les baux.
+
+      Sur une même Vlan-interface, on choisit soit le serveur, soit le relais.
+
+   C. Le relais DHCP.
+
+      La commande dhcp enable active le service DHCP sur l'équipement.
+
+      Dans la Vlan-interface : dhcp select relay, puis dhcp relay server-address 10.0.0.5, plusieurs serveurs pouvant être déclarés.
+
+      La commande dhcp relay information enable ajoute l'option 82.
+
+      Sous Comware 5, les serveurs se déclarent par dhcp relay server-group 1 ip 10.0.0.5 puis dhcp relay server-select 1 dans l'interface.
+
+      La commande display dhcp relay statistics suit les échanges relayés.
+
+VI. L'AGRÉGATION DE LIENS.
+
+   A. L'agrégation statique.
+
+      La commande interface Bridge-Aggregation 1 crée l'agrégat, statique par défaut.
+
+      Dans chaque port membre : port link-aggregation group 1.
+
+      Aucun protocole ne vérifie l'autre extrémité : une erreur de câblage ou de configuration peut provoquer une boucle ou une perte de trafic.
+
+   B. L'agrégation dynamique LACP.
+
+      Dans la vue de l'agrégat : link-aggregation mode dynamic.
+
+      Le LACP échange des messages entre les deux extrémités, appelées acteur et partenaire, et ne sélectionne que les liens cohérents.
+
+      La commande lacp system-priority fixe la priorité du système qui décide, link-aggregation port-priority celle des ports.
+
+      La commande lacp period short accélère la détection de panne.
+
+      La commande link-aggregation selected-port maximum 4 limite le nombre de liens actifs, les autres restant en secours.
+
+   C. Les règles communes.
+
+      Les ports membres doivent avoir la même vitesse, le même duplex et le même type de lien.
+
+      La configuration de VLAN se fait sur l'interface Bridge-Aggregation, qui la propage aux ports membres.
+
+      La commande link-aggregation global load-sharing mode source-ip destination-ip règle la répartition de charge.
+
+      La commande display link-aggregation verbose montre les ports sélectionnés et l'état LACP.
+
+VII. LA REDONDANCE : IRF, SPANNING TREE ET SMART LINK.
+
+   A. IRF, le principe.
+
+      Plusieurs commutateurs reliés par des liens IRF forment un seul équipement logique, avec une adresse et une configuration uniques.
+
+      Le numéro de membre apparaît en premier dans le nom des ports, par exemple GigabitEthernet2/0/1 pour le membre 2.
+
+      Un agrégat peut réunir des ports de membres différents, ce qui supprime le point unique de panne sans spanning tree.
+
+   B. IRF, la mise en place.
+
+      Sur le futur membre 2 : irf member 1 renumber 2, puis sauvegarde et redémarrage.
+
+      La commande irf member 1 priority 32 donne la priorité la plus élevée au futur maître.
+
+      Les ports physiques à utiliser pour la pile sont désactivés par shutdown, puis associés : irf-port 1/1, puis port group interface Ten-GigabitEthernet1/0/49.
+
+      La commande irf-port-configuration active applique les ports IRF, puis on réactive les ports physiques et on sauvegarde.
+
+      Le port IRF 1 d'un membre se câble vers le port IRF 2 du membre voisin.
+
+   C. IRF, la sécurisation et le suivi.
+
+      La MAD par LACP s'active par mad enable sur un agrégat dynamique relié à un équipement intermédiaire, la MAD par BFD par mad bfd enable sur une Vlan-interface dédiée.
+
+      La commande irf mac-address persistent timer conserve l'adresse MAC de la pile quelques minutes après la perte du maître.
+
+      La commande irf auto-update enable met automatiquement à niveau le logiciel d'un membre qui rejoint la pile.
+
+      Les commandes display irf, display irf topology et display irf configuration vérifient la pile.
+
+   D. Le spanning tree.
+
+      Le spanning tree bloque les liens redondants de niveau 2 pour éviter les boucles, qui satureraient le réseau par des tempêtes de diffusion.
+
+      La commande stp global enable l'active sous Comware 7, stp enable sous Comware 5, et il est actif par défaut sur la plupart des modèles.
+
+      La commande stp mode rstp choisit le RSTP, IEEE 802.1w, qui converge en quelques secondes contre trente à cinquante secondes pour le STP d'origine.
+
+      Le mode par défaut est MSTP, IEEE 802.1s, utile pour répartir les VLAN sur plusieurs instances, le RSTP suffisant pour un réseau simple à une seule topologie.
+
+      Tous les commutateurs d'un même domaine doivent utiliser des modes compatibles, le RSTP et le MSTP restant compatibles avec le STP au prix d'une convergence plus lente.
+
+      La commande stp instance 0 priority 4096, ou stp root primary, fait du commutateur de cœur la racine, la valeur par défaut étant 32768.
+
+      Port de bordure : dans la vue d'un port relié à un poste, une imprimante ou un serveur, stp edged-port fait passer le port immédiatement à l'état de transmission, sans attendre la convergence.
+
+      Intérêt du port de bordure : le poste obtient tout de suite son adresse DHCP, et le changement d'état de ce port ne provoque pas de recalcul de topologie sur le réseau.
+
+      La commande stp bpdu-protection, en vue système, coupe tout port de bordure qui reçoit une BPDU, signe qu'un commutateur y a été branché.
+
+      Désactiver le spanning tree sur un port, undo stp enable, se justifie vers un équipement qui ne fait pas de commutation de niveau 2 et avec lequel aucune boucle n'est possible, comme un routeur, un pare-feu ou la liaison vers un opérateur.
+
+      Intérêt : le commutateur n'envoie plus de BPDU vers ce routeur, ce qui évite qu'un équipement tiers les interprète ou les rejette, et que l'opérateur coupe le port.
+
+      Risque : si ce port est en réalité relié à un autre commutateur ou forme une boucle, plus rien ne la bloque. On peut préférer stp edged-port, qui garde la protection, ou un filtrage des BPDU selon les modèles.
+
+      Les ports d'un groupe Smart Link sont aussi exclus du spanning tree par undo stp enable.
+
+      Les commandes display stp brief et display stp affichent le rôle des ports, racine, désigné, alterné, et leur état.
+
+   E. Smart Link.
+
+      Cas d'usage : un commutateur d'accès relié par deux liens montants à deux équipements différents, avec une bascule plus rapide que le spanning tree.
+
+      Les ports d'un groupe Smart Link ne doivent pas participer au spanning tree : undo stp enable dans leur vue.
+
+      La commande smart-link group 1 crée le groupe, protected-vlan reference-instance 0 désigne les VLAN protégés par l'instance MSTP associée.
+
+      Dans le groupe : port GigabitEthernet1/0/25 primary et port GigabitEthernet1/0/26 secondary.
+
+      La commande preemption mode role fait revenir le trafic sur le lien principal après réparation.
+
+      La commande flush enable control-vlan 10 envoie les messages flush, reçus en amont grâce à smart-link flush enable control-vlan 10 sur les ports concernés.
+
+      La commande display smart-link group 1 vérifie l'état des ports.
+
+   F. Monitor Link.
+
+      La commande monitor-link group 1 crée le groupe, port suivi du port montant et uplink, puis port suivi des ports descendants et downlink.
+
+      Si le lien montant tombe, les liens descendants sont coupés, ce qui déclenche la bascule Smart Link de l'équipement en aval.
+
+VIII. LA SÉCURITÉ DES PORTS ET LES ACL.
+
+   A. L'authentification des postes.
+
+      Pour le 802.1X : dot1x en vue système et dot1x dans la vue de chaque port d'accès, avec authentication lan-access radius-scheme RAD dans le domaine.
+
+      L'authentification MAC, mac-authentication, sert aux équipements qui ne gèrent pas le 802.1X, comme des imprimantes.
+
+      Le serveur RADIUS peut attribuer dynamiquement le VLAN du poste, appliqué au port hybrid.
+
+      La commande display radius scheme vérifie la configuration, test-aaa permet un essai selon les versions.
+
+      La sécurité de port, port-security enable, limite le nombre d'adresses MAC apprises sur un port d'accès.
+
+   B. Les ACL, la création.
+
+      Sous Comware 7 récent : acl basic 2000, acl advanced 3000, acl mac 4000, et acl number 3000 sur les versions antérieures.
+
+      Règle basique : rule 5 permit source 192.168.10.0 0.0.0.255.
+
+      Règle avancée : rule 10 permit tcp source 192.168.10.0 0.0.0.255 destination 10.0.0.5 0 destination-port eq 443, puis rule 100 deny ip.
+
+      Les règles sont numérotées et évaluées dans l'ordre, la première qui correspond s'applique.
+
+   C. Les ACL, l'application.
+
+      Filtrage sur un port : packet-filter 3000 inbound dans la vue de l'interface.
+
+      Restriction de l'administration : acl 2000 inbound dans la vue line vty.
+
+      Une ACL sert aussi de critère de classe en QoS ou de filtre pour le SNMP.
+
+      La commande display packet-filter interface vérifie l'application.
+
+IX. LA QUALITÉ DE SERVICE.
+
+   A. La confiance et les files.
+
+      La commande qos trust dscp, dans la vue du port, fait confiance au marquage DSCP des paquets, qos trust dot1p au champ 802.1p.
+
+      La commande qos sp ou qos wrr choisit l'ordonnancement des files, strict ou pondéré.
+
+      La commande qos lr outbound cir 10000 limite le débit sortant d'un port à 10 mégabits par seconde.
+
+   B. Le modèle MQC.
+
+      La classe : traffic classifier VOIX operator and, puis if-match dscp ef.
+
+      Le comportement : traffic behavior VOIX, puis queue ef bandwidth 2000, remark dscp ef ou car cir suivi du débit.
+
+      La politique : qos policy QOS, puis classifier VOIX behavior VOIX.
+
+      L'application : qos apply policy QOS inbound dans la vue du port.
+
+      Cas d'usage : garantir la voix sur IP, limiter un trafic de sauvegarde, marquer le trafic d'un serveur critique.
+
+      La commande display qos policy interface vérifie la politique appliquée.
+
+X. LA SUPERVISION ET LE DIAGNOSTIC.
+
+   A. Le SNMP.
+
+      Les informations système : snmp-agent sys-info contact Service-informatique-0102030405 et snmp-agent sys-info location Batiment-A-salle-serveurs-baie-3, entre guillemets si elles contiennent des espaces.
+
+      La commande snmp-agent active l'agent, snmp-agent sys-info version v3 n'autorise que la version 3, la plus sûre.
+
+      En version 2c, si l'outil de supervision l'exige : snmp-agent community read simple suivi du nom de communauté et de acl 2000, pour n'autoriser que le serveur de supervision.
+
+      Ne jamais laisser les communautés par défaut public et private, ni une communauté en écriture sans nécessité.
+
+      En version 3, la vue : snmp-agent mib-view included VUE-TOTALE iso.
+
+      Le groupe : snmp-agent group v3 SUPERVISION privacy read-view VUE-TOTALE, le mot-clé privacy imposant authentification et chiffrement.
+
+      L'utilisateur : snmp-agent usm-user v3 supervision SUPERVISION simple authentication-mode sha suivi du mot de passe, privacy-mode aes128 suivi de la clé de chiffrement, et acl 2000.
+
+      Les alertes : snmp-agent trap enable, puis snmp-agent target-host trap address udp-domain 10.0.0.40 params securityname supervision v3 privacy.
+
+      Les commandes display snmp-agent sys-info, display snmp-agent group et display snmp-agent usm-user vérifient la configuration.
+
+   B. Les journaux, le LLDP et le mirroring.
+
+      Syslog : info-center loghost 10.0.0.30 envoie les journaux au serveur, horodatés grâce au NTP.
+
+      LLDP : lldp global enable, puis display lldp neighbor-information.
+
+      Mirroring : mirroring-group 1 local, mirroring-group 1 mirroring-port suivi du port observé, mirroring-group 1 monitor-port suivi du port de la sonde.
+
+   C. Le sFlow.
+
+      La commande sflow agent ip 10.0.0.2 désigne l'adresse de l'agent, celle du commutateur.
+
+      La commande sflow collector 1 ip 10.0.0.50 port 6343 description ANALYSE déclare le collecteur.
+
+      Dans la vue d'un port : sflow sampling-rate 4096 et sflow flow collector 1 pour l'échantillonnage des paquets.
+
+      Dans la même vue : sflow counter interval 120 et sflow counter collector 1 pour l'envoi périodique des compteurs.
+
+      Cas d'usage : identifier les plus gros consommateurs de bande passante, détecter une attaque ou une anomalie, dimensionner les liens.
+
+      L'échantillonnage n'est pas une capture complète : pour analyser tout le trafic d'un port, on utilise le mirroring.
+
+   D. Le CFD, le principe.
+
+      Le CFD surveille la connectivité Ethernet de bout en bout, par exemple sur un VLAN de transport entre deux sites.
+
+      Chaque extrémité est un MEP, identifié par un numéro, qui émet des CCM et déclare une alarme s'il ne reçoit plus ceux du MEP distant.
+
+      Le niveau du domaine sépare les responsabilités : un opérateur surveille son domaine sans voir celui du client.
+
+   E. Le CFD, la configuration indicative.
+
+      La commande cfd enable active le CFD.
+
+      La commande cfd md MD1 level 5 crée le domaine, cfd ma MA1 md MD1 vlan 100 l'association sur le VLAN 100.
+
+      La commande cfd service-instance 1 ma-id string MA1 md MD1 crée l'instance de service.
+
+      La commande cfd meplist 1 2 service-instance 1 liste les MEP autorisés de part et d'autre.
+
+      Dans la vue du port : cfd mep 1 service-instance 1 inbound, puis cfd mep service-instance 1 mep 1 enable et cfd cc service-instance 1 mep 1 enable pour émettre les CCM.
+
+      La syntaxe exacte varie selon la version de Comware : vérifier dans le guide de configuration du modèle.
+
+   F. Le CFD, les tests.
+
+      Le loopback, cfd loopback service-instance 1 mep 1 target-mep 2, vérifie la joignabilité comme un ping Ethernet.
+
+      Le linktrace, cfd linktrace, localise la panne comme un traceroute Ethernet.
+
+      La commande display cfd remote-mep service-instance 1 affiche l'état des MEP distants.
+
+XI. LA SAUVEGARDE ET LA MAINTENANCE.
+
+   A. Les bonnes pratiques.
+
+      La commande save force enregistre la configuration de démarrage, display saved-configuration l'affiche.
+
+      La configuration se sauvegarde hors de l'équipement, par exemple backup startup-configuration to suivi de l'adresse d'un serveur TFTP et du nom du fichier, ou par SFTP.
+
+      L'archivage automatique, archive configuration, conserve des versions successives dans la mémoire flash.
+
+      La commande dir liste les fichiers de la flash, startup saved-configuration désigne le fichier de démarrage, boot-loader file l'image logicielle du prochain démarrage.
+
+      Les mises à jour logicielles suivent les bulletins de sécurité du constructeur, en commençant par un équipement témoin.
+
+      La commande display diagnostic-information prépare un diagnostic complet pour le support, display logbuffer affiche les journaux locaux.
+
+      La documentation tient à jour le plan d'adressage, la liste des VLAN, les liaisons et les mots de passe d'urgence, conservés en lieu sûr.
+
+POINTS D'ATTENTION.
+
+      Sans save, la configuration est perdue au redémarrage.
+
+      <HPE> pour la vue utilisateur, [HPE] pour la vue système.
+
+      Access pour un terminal, trunk entre équipements de réseau, hybrid pour mêler étiqueté et non étiqueté ou rendre plusieurs VLAN non étiquetés.
+
+      Le PVID doit être identique aux deux extrémités d'un trunk, et un trunk entre commutateurs ne devrait transporter aucune trame non étiquetée.
+
+      Repasser en access avant de changer un port de trunk à hybrid.
+
+      Une agrégation statique ne détecte pas les erreurs de l'autre extrémité : préférer le LACP.
+
+      Configurer les VLAN sur la Bridge-Aggregation et non sur les membres.
+
+      Exclure de la plage DHCP toutes les adresses fixées à la main, ou les gérer par réservation.
+
+      La renumérotation IRF ne prend effet qu'au redémarrage, et une pile sans MAD risque deux maîtres actifs.
+
+      Comware 7 : line vty, user-role, interface range. Comware 5 : user-interface vty, level 3, port-group manual.
+
+      Le NTP donne l'UTC : fuseau et heure d'été se règlent sur chaque équipement.
+
+      Heure d'été européenne : dernier dimanche de mars à 2 heures, retour le dernier dimanche d'octobre à 3 heures.
+
+      Toujours prévoir le repli local dans le domaine AAA, sous peine de perdre l'accès si le RADIUS tombe.
+
+      Le repli local ne joue que si le RADIUS est injoignable, pas s'il refuse l'utilisateur.
+
+      authentication-mode scheme sur la console comme sur les vty, idle-timeout, et jamais le mode none.
+
+      SNMP : sys-info contact et location renseignés, v3 avec privacy, jamais les communautés public et private.
+
+      La clé partagée et l'adresse NAS doivent correspondre sur le commutateur et le serveur RADIUS.
+
+      sFlow échantillonne, le mirroring copie tout.
+
+      stp edged-port pour les terminaux, undo stp enable seulement vers un routeur ou un pare-feu, jamais vers un commutateur.
+
+      RSTP converge en quelques secondes, MSTP est le mode par défaut de Comware.
+
+      Les ports Smart Link sont exclus du spanning tree.
+
+      CFD : un MEP par extrémité, des CCM périodiques, des tests loopback et linktrace.
+
+      En QoS, appliquer la politique dans le bon sens, inbound ou outbound.
+
+      Une ACL Comware se termine par une action par défaut qui dépend du contexte : ajouter une règle explicite.
+
+EXEMPLES CITES.
+
+      Le VLAN 10 des données, le VLAN 20 de la voix et le VLAN 99 natif.
+
+      Le port hybrid partagé entre un téléphone IP et un poste.
+
+      Le serveur du VLAN 30 joint par les VLAN isolés 10 et 20 grâce aux VLAN non étiquetés multiples.
+
+      La borne Wi-Fi en trunk avec PVID 99 pour son administration.
+
+      La passerelle 192.168.10.254 sur la Vlan-interface 10 et le relais vers le serveur DHCP 10.0.0.5.
+
+      La plage VLAN10 du serveur DHCP du commutateur, avec les adresses 1 à 20 exclues et l'imprimante réservée en 192.168.10.50.
+
+      L'agrégat LACP Bridge-Aggregation 1 réparti sur les deux membres d'une pile IRF.
+
+      La pile IRF de deux commutateurs reliés en Ten-GigabitEthernet avec MAD par LACP.
+
+      Le fuseau Paris UTC plus 1 et la règle CEST du dernier dimanche de mars au dernier dimanche d'octobre.
+
+      Le serveur RADIUS 10.0.0.20 sur les ports 1812 et 1813 avec repli local.
+
+      L'utilisateur SNMPv3 supervision du groupe SUPERVISION en SHA et AES, limité par l'ACL 2000, avec contact et emplacement renseignés.
+
+      La console en mode scheme avec déconnexion après cinq minutes d'inactivité.
+
+      Le collecteur sFlow 10.0.0.50 sur le port 6343 avec un échantillon sur 4096.
+
+      Le commutateur d'accès à deux liens montants en Smart Link avec VLAN de contrôle 10.
+
+      Le CFD de niveau 5 sur le VLAN 100 entre deux sites.
+
+      La politique QoS VOIX qui priorise le DSCP EF.
