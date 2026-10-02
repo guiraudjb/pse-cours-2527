@@ -1,0 +1,48 @@
+Quelle commande Comware ouvre la vue système ?;system-view;enable;config;configure terminal;2;L'invite passe de <HPE> à [HPE].
+Quelle invite signale la vue utilisateur ?;<HPE>;[HPE];HPE#;HPE(config)#;2;Les crochets signalent la vue système.
+Quelle commande Comware équivaut à show ?;list;display;print;view;3;Par exemple display current-configuration.
+Quelle commande Comware équivaut à no ?;undo;cancel;delete;remove;2;Par exemple undo telnet server enable.
+Quelle commande enregistre la configuration ?;commit;copy run start;write memory;save;5;save force évite la confirmation.
+Quelle commande revient directement à la vue utilisateur ?;quit;end;exit;return;5;quit remonte d'un seul niveau.
+Quelle commande donne un nom à l'équipement ?;name;hostname;sysname;device-name;4;Par exemple sysname SW-CORE-01.
+Quelle commande affiche l'état résumé des ports ?;show ip interface brief;display interface brief;show status;display port;3;Vue rapide de l'état des interfaces.
+Que fait display this ?;Efface la vue;Affiche la version;Affiche la configuration de la vue courante;Affiche les voisins;4;Très utile dans une vue d'interface.
+Comment efface-t-on la configuration de démarrage ?;erase startup-config;reset saved-configuration;delete config;undo save;3;Puis reboot.
+Quel est le nom Comware du port gigabit 1 du membre 1 ?;eth1;GigabitEthernet1/0/1;Gi0/1;Port1;3;Membre/sous-carte/port.
+Quelle commande crée le VLAN 10 ?;create vlan 10;vlan 10;vlan database 10;interface vlan 10;3;Elle ouvre aussi la vue du VLAN.
+Comment déclare-t-on un port en accès dans le VLAN 10 ?;vlan 10 access;port link-type access puis port access vlan 10;switchport access vlan 10;port vlan 10 untagged;3;Dans la vue du port.
+Comment autorise-t-on des VLAN sur un trunk ?;port trunk permit vlan 10 20;trunk vlan add 10 20;vlan trunk 10 20;switchport trunk allowed vlan 10,20;2;Après port link-type trunk.
+Quelle commande change le VLAN non étiqueté d'un trunk ?;port trunk pvid vlan;switchport native vlan;port trunk native;port untagged;2;Le PVID doit être identique aux deux extrémités.
+Quel type de port est propre à Comware ?;Access;Trunk;Routed;Hybrid;5;Plusieurs VLAN étiquetés et non étiquetés.
+Que permet un port hybrid ?;Seulement de l'agrégation;Transmettre plusieurs VLAN étiquetés et plusieurs non étiquetés;Seulement du routage;Seulement un VLAN;3;Par exemple un téléphone IP et un poste.
+Que signifie PVID ?;Un protocole de VLAN;Le VLAN attribué aux trames reçues sans étiquette;Une priorité de port;Un identifiant de pile;3;Port VLAN ID.
+Quelle interface porte l'adresse IP d'un VLAN ?;M-GigabitEthernet;Vlan-interface;Bridge-Aggregation;LoopBack;3;Équivalent d'une SVI.
+Quelle commande crée une route par défaut ?;route add default;ip route 0.0.0.0 0.0.0.0 192.168.0.1;ip route-static 0.0.0.0 0 192.168.0.1;default-route 192.168.0.1;4;ip route-static.
+Comment active-t-on le relais DHCP sur une Vlan-interface ?;ip helper-address;relay dhcp on;dhcp select relay puis dhcp relay server-address;dhcp forward;4;Après dhcp enable.
+Quelle interface correspond à un port-channel ?;Bridge-Aggregation;Route-Aggregation uniquement;Vlan-interface;Tunnel;2;Agrégat de niveau 2.
+Quelle commande active le LACP sur un agrégat ?;channel-group mode active;aggregation lacp;lacp enable;link-aggregation mode dynamic;5;Sans elle, l'agrégat est statique.
+Comment ajoute-t-on un port à l'agrégat 1 ?;bridge-aggregation 1 add;port link-aggregation group 1;aggregate 1;channel-group 1;3;Dans la vue du port membre.
+Où configure-t-on les VLAN d'un agrégat ?;Nulle part;Sur chaque port membre séparément;Dans la vue système uniquement;Sur l'interface Bridge-Aggregation;5;Elle propage aux membres.
+Quelle commande vérifie l'état d'un agrégat ?;show etherchannel;display lacp;display link-aggregation verbose;show aggregate;4;État des membres et négociation.
+Quelle commande active le spanning tree sous Comware 7 ?;stp global enable;stp on;stp start;spanning-tree enable;2;stp enable sous Comware 5.
+Quel est le mode STP par défaut sous Comware ?;PVST;RSTP;MSTP;STP;4;stp mode permet de le changer.
+Comment rendre un commutateur racine de l'instance 0 ?;stp instance 0 priority 4096;stp priority 65535;spanning-tree root;stp root 0;2;Ou stp instance 0 root primary.
+Quelle commande déclare un port de bordure sous Comware 7 ?;spanning-tree portfast;stp edge enable;port edge;stp edged-port;5;stp edged-port enable sous Comware 5.
+Que fait stp bpdu-protection ?;Supprime les VLAN;Bloque tout le trafic;Active le STP;Désactive un port de bordure qui reçoit une BPDU;5;Protection contre les boucles accidentelles.
+Que signifie IRF ?;Intelligent resilient framework;IP relay forwarding;Internal redundancy feature;Interface routing function;2;Empilement virtuel de commutateurs.
+Quel est l'intérêt d'une pile IRF ?;Accélérer le Wi-Fi;Plusieurs commutateurs gérés comme un seul équipement logique;Remplacer le routage;Chiffrer les VLAN;3;Une adresse et une configuration uniques.
+Quand la renumérotation IRF prend-elle effet ?;Après save seulement;Au redémarrage;Immédiatement;Jamais;3;irf member 1 renumber 2.
+Quel membre devient maître IRF ?;Celui qui a le plus petit numéro toujours;Le dernier allumé;Au hasard;Celui qui a la priorité la plus élevée;5;irf member 1 priority 32.
+À quoi sert la MAD ?;Détecter une scission de la pile IRF;Mesurer le débit;Gérer les VLAN;Compter les adresses MAC;2;Multi-active detection par LACP, BFD ou ARP.
+Comment crée-t-on un administrateur local sous Comware 7 ?;username admin privilege 15;create user admin;user add admin;local-user admin class manage;5;Puis password, service-type et user-role.
+Quel rôle donne tous les droits sous Comware 7 ?;guest;network-operator;level 1;network-admin;5;Level 3 sous Comware 5.
+Quelle commande génère les clés pour SSH ?;public-key local create rsa;rsa create;ssh keygen;crypto key generate rsa;2;Avant ssh server enable.
+Comment configure-t-on les lignes distantes sous Comware 7 ?;terminal vty;line vty 0 15;user-interface vty 0 15;line vty 0 63;5;user-interface vty sous Comware 5.
+Quelle commande limite les lignes vty au SSH ?;protocol inbound ssh;transport input ssh;allow ssh;ssh only;2;Avec authentication-mode scheme.
+Quel plage numérote une ACL avancée ?;1 à 99;2000 à 2999;3000 à 3999;100 à 199;4;L'ACL basique va de 2000 à 2999.
+Comment applique-t-on l'ACL 3000 au trafic entrant d'un port ?;ip access-group 3000 in;acl apply 3000;filter 3000 in;packet-filter 3000 inbound;5;Dans la vue du port.
+Quelle commande active la découverte des voisins LLDP ?;neighbor enable;cdp run;lldp run;lldp global enable;5;display lldp neighbor-information.
+Quelle commande active le client NTP ?;clock sync;ntp server;time-server on;ntp-service enable;5;Puis ntp-service unicast-server.
+Quelle commande envoie les journaux vers un serveur syslog ?;log remote;logging host;syslog server;info-center loghost;5;Suivie de l'adresse du serveur.
+Quelle commande affiche la table d'adresses MAC ?;show mac address-table;display mac-address;show cam;display arp;3;Table de commutation.
+Quelle commande désigne l'image logicielle de démarrage ?;boot system;load firmware;boot-loader file;startup image;4;startup saved-configuration pour la configuration.

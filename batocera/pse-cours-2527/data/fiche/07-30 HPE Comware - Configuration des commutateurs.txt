@@ -1,0 +1,317 @@
+CONFIGURATION DES COMMUTATEURS HPE SOUS COMWARE (COMWARE 7, AVEC LES DIFFÉRENCES DE COMWARE 5), VUES, VLAN, AGRÉGATION, SPANNING TREE, IRF, ADMINISTRATION SÉCURISÉE ET SUPERVISION.
+
+LEXIQUE COMPLET.
+
+      Comware est le système d'exploitation réseau des commutateurs et routeurs HPE issus de la gamme H3C, aujourd'hui gamme HPE FlexNetwork et FlexFabric.
+
+      Comware 7 est la version actuelle du système, Comware 5 la version antérieure encore présente sur d'anciens équipements, avec quelques commandes différentes.
+
+      La vue utilisateur est le mode de départ, signalé par une invite entre chevrons, par exemple <HPE>, qui permet de consulter et de sauvegarder.
+
+      La vue système est le mode de configuration globale, signalé par une invite entre crochets, par exemple [HPE], obtenue par la commande system-view.
+
+      Une vue d'interface est un mode de configuration d'un port ou d'une interface logique, obtenue par la commande interface suivie du nom de l'interface.
+
+      La commande display affiche une information, comme show chez d'autres constructeurs.
+
+      La commande undo annule ou supprime une configuration, comme no chez d'autres constructeurs.
+
+      La commande quit remonte d'une vue, la commande return revient directement à la vue utilisateur.
+
+      La commande save enregistre la configuration courante dans le fichier de démarrage.
+
+      La configuration courante, current-configuration, est celle qui s'applique en mémoire, la configuration sauvegardée, saved-configuration, est celle chargée au démarrage.
+
+      Le nommage des ports suit la forme type membre/sous-carte/port, par exemple GigabitEthernet1/0/1 ou Ten-GigabitEthernet1/0/49.
+
+      Un VLAN est un réseau local virtuel qui segmente le domaine de diffusion, identifié par un numéro de 1 à 4094.
+
+      Le port access appartient à un seul VLAN et transmet des trames non étiquetées.
+
+      Le port trunk transporte plusieurs VLAN étiquetés et un seul VLAN non étiqueté, le PVID.
+
+      Le port hybrid, propre à Comware, peut transmettre plusieurs VLAN étiquetés et plusieurs VLAN non étiquetés.
+
+      Le PVID, port VLAN ID, est le VLAN attribué aux trames reçues sans étiquette.
+
+      L'interface Vlan-interface est l'interface logique de niveau 3 d'un VLAN, qui porte une adresse IP, équivalente à une SVI.
+
+      Bridge-Aggregation est l'interface d'agrégation de liens de niveau 2, équivalente à un port-channel ou un etherchannel.
+
+      Le LACP, link aggregation control protocol, négocie dynamiquement l'agrégation selon la norme IEEE 802.1AX, anciennement 802.3ad.
+
+      Le STP, spanning tree protocol, évite les boucles de niveau 2, décliné en RSTP rapide et MSTP multi-instances.
+
+      Un port de bordure, edged port, est un port relié à un poste final qui passe immédiatement à l'état de transmission.
+
+      La protection BPDU désactive un port de bordure qui reçoit une BPDU.
+
+      L'IRF, intelligent resilient framework, est la virtualisation qui empile plusieurs commutateurs physiques en un seul équipement logique.
+
+      La MAD, multi-active detection, détecte la scission d'une pile IRF pour éviter deux maîtres actifs.
+
+      Un utilisateur local est un compte défini sur l'équipement, avec un mot de passe, des services autorisés et un rôle.
+
+      Le rôle utilisateur, user role, fixe les droits sous Comware 7, par exemple network-admin pour l'administrateur et network-operator pour la lecture seule.
+
+      Les lignes vty sont les accès distants en ligne de commande, configurés par line vty sous Comware 7 et user-interface vty sous Comware 5.
+
+      Le schéma d'authentification scheme impose une authentification par identifiant et mot de passe, via les utilisateurs locaux ou un serveur AAA.
+
+      Le LLDP, link layer discovery protocol, découvre les voisins directement connectés, selon la norme IEEE 802.1AB.
+
+      Une ACL, liste de contrôle d'accès, est basique de 2000 à 2999 sur l'adresse source, avancée de 3000 à 3999 sur les adresses, protocoles et ports.
+
+      Le port mirroring recopie le trafic d'un port vers un port d'analyse.
+
+      Le SNMP, simple network management protocol, permet la supervision, la version 3 apportant authentification et chiffrement.
+
+COURS DÉTAILLÉ.
+
+I. L'ENVIRONNEMENT COMWARE.
+
+   A. Les vues et la navigation.
+
+      Après connexion, l'invite <HPE> indique la vue utilisateur.
+
+      La commande system-view ouvre la vue système, l'invite devient [HPE].
+
+      La commande interface GigabitEthernet1/0/1 ouvre la vue de ce port, l'invite devient [HPE-GigabitEthernet1/0/1].
+
+      La commande quit remonte d'un niveau, la commande return ou la combinaison Ctrl+Z revient à la vue utilisateur.
+
+      Le point d'interrogation affiche l'aide contextuelle et la touche Tab complète les mots-clés.
+
+      Les commandes peuvent être abrégées, par exemple sys pour system-view ou dis cu pour display current-configuration.
+
+   B. Les commandes de base.
+
+      La commande sysname SW-CORE-01 donne un nom à l'équipement.
+
+      La commande display current-configuration affiche la configuration en cours, display interface brief l'état résumé des ports.
+
+      La commande display version affiche la version de Comware et le modèle.
+
+      La commande display this, dans une vue, affiche la configuration de cette seule vue.
+
+      La commande save force enregistre sans demander de confirmation.
+
+      La commande reset saved-configuration efface la configuration de démarrage, suivie de reboot pour repartir d'une configuration usine.
+
+   C. La correspondance avec la syntaxe Cisco.
+
+      show devient display, no devient undo, configure terminal devient system-view.
+
+      exit devient quit, end devient return, write memory devient save.
+
+      switchport mode access devient port link-type access, interface vlan devient interface Vlan-interface.
+
+      port-channel devient Bridge-Aggregation, ip route devient ip route-static.
+
+II. LES VLAN.
+
+   A. La création.
+
+      La commande vlan 10 crée le VLAN 10 et ouvre sa vue, la commande name SERVEURS lui donne un nom.
+
+      La commande vlan 10 20 30, ou vlan 10 to 20, crée plusieurs VLAN en une fois.
+
+      Le VLAN 1 existe par défaut et ne peut pas être supprimé.
+
+   B. Le port access.
+
+      Dans la vue du port : port link-type access, puis port access vlan 10.
+
+      Depuis la vue du VLAN, la commande port GigabitEthernet1/0/1 to GigabitEthernet1/0/10 affecte plusieurs ports access d'un coup.
+
+   C. Le port trunk.
+
+      Dans la vue du port : port link-type trunk, puis port trunk permit vlan 10 20 30, ou port trunk permit vlan all.
+
+      La commande port trunk pvid vlan 99 change le VLAN natif non étiqueté, qui doit être identique aux deux extrémités.
+
+      Pour changer le type d'un port, il faut d'abord revenir au type access, par undo port link-type ou port link-type access.
+
+   D. Le port hybrid.
+
+      Dans la vue du port : port link-type hybrid, puis port hybrid vlan 10 untagged et port hybrid vlan 20 tagged.
+
+      La commande port hybrid pvid vlan 10 fixe le VLAN des trames reçues sans étiquette.
+
+      Le mode hybrid sert par exemple à un téléphone IP étiqueté et à un poste non étiqueté sur le même port.
+
+   E. Le routage inter-VLAN.
+
+      La commande interface Vlan-interface 10 crée l'interface de niveau 3 du VLAN 10.
+
+      La commande ip address 192.168.10.254 255.255.255.0, ou ip address 192.168.10.254 24, lui attribue la passerelle des postes.
+
+      La commande ip route-static 0.0.0.0 0 192.168.0.1 définit la route par défaut.
+
+      Le relais DHCP s'active par dhcp enable, puis dans la Vlan-interface : dhcp select relay et dhcp relay server-address suivi de l'adresse du serveur.
+
+III. L'AGRÉGATION DE LIENS.
+
+   A. La création.
+
+      La commande interface Bridge-Aggregation 1 crée l'agrégat numéro 1.
+
+      La commande link-aggregation mode dynamic active le LACP, sans elle l'agrégat est statique.
+
+      Dans chaque port membre : port link-aggregation group 1.
+
+   B. Les règles.
+
+      Les ports membres doivent avoir la même vitesse, le même duplex et la même configuration de VLAN.
+
+      La configuration de VLAN se fait sur l'interface Bridge-Aggregation, qui la propage aux membres.
+
+      La commande display link-aggregation verbose vérifie l'état des membres et la négociation LACP.
+
+IV. LE SPANNING TREE.
+
+   A. L'activation.
+
+      La commande stp global enable active le spanning tree sous Comware 7, stp enable sous Comware 5.
+
+      La commande stp mode rstp ou stp mode mstp choisit le protocole, MSTP étant le mode par défaut.
+
+   B. La racine.
+
+      La commande stp instance 0 priority 4096 fixe une priorité faible pour que le commutateur de cœur devienne racine.
+
+      La commande stp instance 0 root primary produit le même effet de manière automatique.
+
+   C. La protection des ports d'accès.
+
+      Dans la vue d'un port relié à un poste : stp edged-port, et stp edged-port enable sous Comware 5.
+
+      La commande stp bpdu-protection, en vue système, désactive tout port de bordure qui reçoit une BPDU.
+
+      La commande display stp brief affiche le rôle et l'état de chaque port.
+
+V. L'EMPILEMENT IRF.
+
+   A. Le principe.
+
+      Deux à plusieurs commutateurs reliés par des liens IRF forment un seul équipement logique, administré par une seule adresse et une seule configuration.
+
+      Chaque membre porte un numéro, qui apparaît en premier dans le nom des ports, par exemple GigabitEthernet2/0/1 pour le membre 2.
+
+   B. La mise en place.
+
+      La commande irf member 1 renumber 2 change le numéro d'un membre, effectif au redémarrage.
+
+      La commande irf member 1 priority 32 donne la priorité la plus élevée au futur maître.
+
+      Les ports physiques sont liés à un port IRF logique : irf-port 1/1, puis port group interface Ten-GigabitEthernet1/0/49.
+
+      La commande irf-port-configuration active applique la configuration des ports IRF, après avoir désactivé les ports physiques concernés.
+
+   C. La sécurisation.
+
+      La détection MAD, par LACP, BFD ou ARP, évite que deux parties d'une pile scindée restent actives avec la même configuration.
+
+      La commande display irf affiche les membres, leur rôle et leur priorité, display irf topology la topologie.
+
+VI. L'ADMINISTRATION SÉCURISÉE.
+
+   A. Les comptes locaux.
+
+      La commande local-user admin class manage crée un utilisateur d'administration.
+
+      Dans sa vue : password hash ou password simple suivi du mot de passe, service-type ssh, et authorization-attribute user-role network-admin.
+
+      Sous Comware 5, le niveau de droits s'exprime par authorization-attribute level 3.
+
+   B. L'accès SSH.
+
+      La commande public-key local create rsa génère la paire de clés de l'équipement.
+
+      La commande ssh server enable active le serveur SSH.
+
+      La commande line vty 0 63 ouvre les lignes distantes sous Comware 7, user-interface vty 0 15 sous Comware 5.
+
+      Dans cette vue : authentication-mode scheme et protocol inbound ssh pour interdire telnet.
+
+      La commande undo telnet server enable désactive explicitement telnet.
+
+   C. L'adressage d'administration.
+
+      Une Vlan-interface dédiée à un VLAN d'administration porte l'adresse de gestion.
+
+      Une ACL basique peut restreindre les adresses autorisées sur les lignes vty.
+
+VII. LA SUPERVISION ET LA SÉCURITÉ DES PORTS.
+
+   A. La supervision.
+
+      La commande snmp-agent sys-info version v3 limite le SNMP à la version 3, configurée avec snmp-agent usm-user et snmp-agent group.
+
+      La commande ntp-service enable puis ntp-service unicast-server suivi de l'adresse synchronise l'horloge.
+
+      La commande info-center loghost suivie de l'adresse envoie les journaux vers un serveur syslog.
+
+      La commande lldp global enable active la découverte des voisins, consultée par display lldp neighbor-information.
+
+   B. Les ACL.
+
+      La commande acl basic 2000 crée une ACL basique, puis rule permit source 192.168.10.0 0.0.0.255 ajoute une règle.
+
+      La commande acl advanced 3000 crée une ACL avancée, avec des règles sur protocole, sources, destinations et ports.
+
+      Dans la vue d'un port, packet-filter 3000 inbound applique l'ACL au trafic entrant.
+
+      Comme chez Cisco, le masque des règles est un masque inverse, appelé wildcard.
+
+   C. La sécurité des ports et l'analyse.
+
+      La commande port-security enable et les modes de port-security limitent les adresses MAC autorisées sur un port.
+
+      Le mirroring local se configure par mirroring-group 1 local, puis mirroring-group 1 mirroring-port et mirroring-group 1 monitor-port.
+
+      La commande display mac-address affiche la table d'adresses MAC.
+
+VIII. LA MAINTENANCE.
+
+      La commande dir affiche les fichiers de la mémoire flash, dont le logiciel et la configuration.
+
+      La commande startup saved-configuration désigne le fichier de configuration de démarrage.
+
+      La commande boot-loader file désigne l'image logicielle à charger au prochain démarrage.
+
+      Le transfert de fichiers se fait par tftp ou ftp depuis la vue utilisateur.
+
+      La commande display logbuffer consulte les journaux locaux, display diagnostic-information prépare un diagnostic complet.
+
+POINTS D'ATTENTION.
+
+      Sans save, toute la configuration est perdue au redémarrage.
+
+      Invite <HPE> pour la vue utilisateur, [HPE] pour la vue système.
+
+      display remplace show et undo remplace no.
+
+      Le mode hybrid n'existe pas chez Cisco : c'est une spécificité Comware.
+
+      Le VLAN non étiqueté, le PVID, doit être identique aux deux bouts d'un trunk.
+
+      Configurer les VLAN sur la Bridge-Aggregation et non sur les ports membres.
+
+      Comware 7 utilise line vty, user-role et stp global enable, Comware 5 user-interface vty, level 3 et stp enable.
+
+      Désactiver telnet et préférer SSH avec un schéma d'authentification.
+
+      La renumérotation IRF ne prend effet qu'au redémarrage.
+
+EXEMPLES CITES.
+
+      Le commutateur de cœur SW-CORE-01 racine du spanning tree avec la priorité 4096.
+
+      Le VLAN 10 des serveurs et sa passerelle 192.168.10.254.
+
+      L'agrégat LACP Bridge-Aggregation 1 vers un commutateur d'accès.
+
+      La pile IRF de deux commutateurs reliés en Ten-GigabitEthernet.
+
+      Le port hybrid partagé entre un téléphone IP et un poste de travail.
