@@ -1,48 +1,62 @@
 Quelle commande Comware ouvre la vue système ?;system-view;enable;config;configure terminal;2;L'invite passe de <HPE> à [HPE].
 Quelle invite signale la vue utilisateur ?;<HPE>;[HPE];HPE#;HPE(config)#;2;Les crochets signalent la vue système.
 Quelle commande Comware équivaut à show ?;list;display;print;view;3;Par exemple display current-configuration.
-Quelle commande Comware équivaut à no ?;undo;cancel;delete;remove;2;Par exemple undo telnet server enable.
+Quelle commande Comware équivaut à no ?;undo;cancel;delete;remove;2;Par exemple undo vlan 10.
 Quelle commande enregistre la configuration ?;commit;copy run start;write memory;save;5;save force évite la confirmation.
 Quelle commande revient directement à la vue utilisateur ?;quit;end;exit;return;5;quit remonte d'un seul niveau.
-Quelle commande donne un nom à l'équipement ?;name;hostname;sysname;device-name;4;Par exemple sysname SW-CORE-01.
-Quelle commande affiche l'état résumé des ports ?;show ip interface brief;display interface brief;show status;display port;3;Vue rapide de l'état des interfaces.
-Que fait display this ?;Efface la vue;Affiche la version;Affiche la configuration de la vue courante;Affiche les voisins;4;Très utile dans une vue d'interface.
-Comment efface-t-on la configuration de démarrage ?;erase startup-config;reset saved-configuration;delete config;undo save;3;Puis reboot.
-Quel est le nom Comware du port gigabit 1 du membre 1 ?;eth1;GigabitEthernet1/0/1;Gi0/1;Port1;3;Membre/sous-carte/port.
-Quelle commande crée le VLAN 10 ?;create vlan 10;vlan 10;vlan database 10;interface vlan 10;3;Elle ouvre aussi la vue du VLAN.
+Quel est le nom Comware du port gigabit 1 du membre 1 ?;eth1;Gi0/1;GigabitEthernet1/0/1;Port1;4;Membre/sous-carte/port.
+Quelle commande crée une plage de VLAN de 20 à 30 ?;vlan 20-30 create;vlan 20 to 30;create vlan 20..30;vlan range 20 30;3;vlan 10 crée un seul VLAN.
+Quelle commande liste les VLAN et leurs ports ?;list vlan;show vlan;display vlan brief;display vlan all-ports;4;Vérification rapide.
+Peut-on supprimer le VLAN 1 ?;Oui, par undo vlan 1;Non, il existe par défaut;Seulement en Comware 5;Oui, après save;3;Les autres VLAN se suppriment par undo vlan.
 Comment déclare-t-on un port en accès dans le VLAN 10 ?;vlan 10 access;port link-type access puis port access vlan 10;switchport access vlan 10;port vlan 10 untagged;3;Dans la vue du port.
+Pour quel équipement utilise-t-on un port access ?;Un hyperviseur avec plusieurs réseaux;Un terminal qui n'étiquette pas ses trames, comme un poste ou une imprimante;Une liaison entre deux commutateurs;Un routeur de cœur;3;Un seul VLAN, trames non étiquetées.
+Quel est l'intérêt de sécurité du port access ?;Il bloque le DHCP;Le terminal ne peut pas choisir son VLAN;Il chiffre le trafic;Il accélère le débit;3;Les trames étiquetées reçues sont rejetées.
 Comment autorise-t-on des VLAN sur un trunk ?;port trunk permit vlan 10 20;trunk vlan add 10 20;vlan trunk 10 20;switchport trunk allowed vlan 10,20;2;Après port link-type trunk.
-Quelle commande change le VLAN non étiqueté d'un trunk ?;port trunk pvid vlan;switchport native vlan;port trunk native;port untagged;2;Le PVID doit être identique aux deux extrémités.
-Quel type de port est propre à Comware ?;Access;Trunk;Routed;Hybrid;5;Plusieurs VLAN étiquetés et non étiquetés.
-Que permet un port hybrid ?;Seulement de l'agrégation;Transmettre plusieurs VLAN étiquetés et plusieurs non étiquetés;Seulement du routage;Seulement un VLAN;3;Par exemple un téléphone IP et un poste.
-Que signifie PVID ?;Un protocole de VLAN;Le VLAN attribué aux trames reçues sans étiquette;Une priorité de port;Un identifiant de pile;3;Port VLAN ID.
-Quelle interface porte l'adresse IP d'un VLAN ?;M-GigabitEthernet;Vlan-interface;Bridge-Aggregation;LoopBack;3;Équivalent d'une SVI.
-Quelle commande crée une route par défaut ?;route add default;ip route 0.0.0.0 0.0.0.0 192.168.0.1;ip route-static 0.0.0.0 0 192.168.0.1;default-route 192.168.0.1;4;ip route-static.
-Comment active-t-on le relais DHCP sur une Vlan-interface ?;ip helper-address;relay dhcp on;dhcp select relay puis dhcp relay server-address;dhcp forward;4;Après dhcp enable.
-Quelle interface correspond à un port-channel ?;Bridge-Aggregation;Route-Aggregation uniquement;Vlan-interface;Tunnel;2;Agrégat de niveau 2.
-Quelle commande active le LACP sur un agrégat ?;channel-group mode active;aggregation lacp;lacp enable;link-aggregation mode dynamic;5;Sans elle, l'agrégat est statique.
-Comment ajoute-t-on un port à l'agrégat 1 ?;bridge-aggregation 1 add;port link-aggregation group 1;aggregate 1;channel-group 1;3;Dans la vue du port membre.
-Où configure-t-on les VLAN d'un agrégat ?;Nulle part;Sur chaque port membre séparément;Dans la vue système uniquement;Sur l'interface Bridge-Aggregation;5;Elle propage aux membres.
-Quelle commande vérifie l'état d'un agrégat ?;show etherchannel;display lacp;display link-aggregation verbose;show aggregate;4;État des membres et négociation.
-Quelle commande active le spanning tree sous Comware 7 ?;stp global enable;stp on;stp start;spanning-tree enable;2;stp enable sous Comware 5.
-Quel est le mode STP par défaut sous Comware ?;PVST;RSTP;MSTP;STP;4;stp mode permet de le changer.
-Comment rendre un commutateur racine de l'instance 0 ?;stp instance 0 priority 4096;stp priority 65535;spanning-tree root;stp root 0;2;Ou stp instance 0 root primary.
-Quelle commande déclare un port de bordure sous Comware 7 ?;spanning-tree portfast;stp edge enable;port edge;stp edged-port;5;stp edged-port enable sous Comware 5.
-Que fait stp bpdu-protection ?;Supprime les VLAN;Bloque tout le trafic;Active le STP;Désactive un port de bordure qui reçoit une BPDU;5;Protection contre les boucles accidentelles.
-Que signifie IRF ?;Intelligent resilient framework;IP relay forwarding;Internal redundancy feature;Interface routing function;2;Empilement virtuel de commutateurs.
-Quel est l'intérêt d'une pile IRF ?;Accélérer le Wi-Fi;Plusieurs commutateurs gérés comme un seul équipement logique;Remplacer le routage;Chiffrer les VLAN;3;Une adresse et une configuration uniques.
-Quand la renumérotation IRF prend-elle effet ?;Après save seulement;Au redémarrage;Immédiatement;Jamais;3;irf member 1 renumber 2.
-Quel membre devient maître IRF ?;Celui qui a le plus petit numéro toujours;Le dernier allumé;Au hasard;Celui qui a la priorité la plus élevée;5;irf member 1 priority 32.
-À quoi sert la MAD ?;Détecter une scission de la pile IRF;Mesurer le débit;Gérer les VLAN;Compter les adresses MAC;2;Multi-active detection par LACP, BFD ou ARP.
-Comment crée-t-on un administrateur local sous Comware 7 ?;username admin privilege 15;create user admin;user add admin;local-user admin class manage;5;Puis password, service-type et user-role.
-Quel rôle donne tous les droits sous Comware 7 ?;guest;network-operator;level 1;network-admin;5;Level 3 sous Comware 5.
-Quelle commande génère les clés pour SSH ?;public-key local create rsa;rsa create;ssh keygen;crypto key generate rsa;2;Avant ssh server enable.
-Comment configure-t-on les lignes distantes sous Comware 7 ?;terminal vty;line vty 0 15;user-interface vty 0 15;line vty 0 63;5;user-interface vty sous Comware 5.
-Quelle commande limite les lignes vty au SSH ?;protocol inbound ssh;transport input ssh;allow ssh;ssh only;2;Avec authentication-mode scheme.
-Quel plage numérote une ACL avancée ?;1 à 99;2000 à 2999;3000 à 3999;100 à 199;4;L'ACL basique va de 2000 à 2999.
-Comment applique-t-on l'ACL 3000 au trafic entrant d'un port ?;ip access-group 3000 in;acl apply 3000;filter 3000 in;packet-filter 3000 inbound;5;Dans la vue du port.
-Quelle commande active la découverte des voisins LLDP ?;neighbor enable;cdp run;lldp run;lldp global enable;5;display lldp neighbor-information.
-Quelle commande active le client NTP ?;clock sync;ntp server;time-server on;ntp-service enable;5;Puis ntp-service unicast-server.
-Quelle commande envoie les journaux vers un serveur syslog ?;log remote;logging host;syslog server;info-center loghost;5;Suivie de l'adresse du serveur.
-Quelle commande affiche la table d'adresses MAC ?;show mac address-table;display mac-address;show cam;display arp;3;Table de commutation.
-Quelle commande désigne l'image logicielle de démarrage ?;boot system;load firmware;boot-loader file;startup image;4;startup saved-configuration pour la configuration.
+Quel est le PVID par défaut d'un trunk ?;Le VLAN 1;Le VLAN 4094;Aucun;Le VLAN 99;2;Il porte les trames non étiquetées.
+Dans quel cas utilise-t-on un trunk sans trafic non étiqueté ?;Un poste de travail;Une imprimante;Un téléphone seul;Une liaison entre commutateurs où tous les VLAN sont étiquetés;5;Retirer le VLAN 1 ou placer le PVID sur un VLAN inutilisé.
+Quelle bonne pratique limite les attaques par double étiquette sur un trunk ?;Désactiver le spanning tree;Retirer le VLAN 1 ou mettre le PVID sur un VLAN inutilisé;Mettre le PVID sur le VLAN des serveurs;Autoriser tous les VLAN;3;Aucune trame non étiquetée ne circule.
+Dans quel cas un trunk avec PVID est-il utile ?;Une liaison entre deux cœurs;Une borne Wi-Fi dont l'administration est non étiquetée et les SSID étiquetés;Une imprimante;Un poste de travail;3;port trunk pvid vlan 99.
+Que se passe-t-il si le PVID diffère aux deux extrémités d'un trunk ?;Le VLAN 1 est supprimé;Les trames non étiquetées passent d'un VLAN à l'autre;Rien;Le trunk devient access;3;Fuite entre réseaux, risque pour le spanning tree.
+Quel type de port est propre à Comware ?;Trunk;Access;Hybrid;Routed;4;Plusieurs VLAN étiquetés et non étiquetés.
+Que décide la liste untagged d'un port hybrid ?;Les VLAN interdits;La vitesse du port;Les VLAN dont les trames ressortent sans étiquette;Le VLAN des trames reçues sans étiquette;4;Le PVID décide du VLAN en réception.
+Que permet un port hybrid qu'un trunk ne permet pas ?;Rendre plusieurs VLAN non étiquetés en sortie;Être agrégé;Transporter des VLAN étiquetés;Avoir un PVID;2;Plusieurs VLAN untagged.
+Comment configurer un téléphone IP en VLAN 20 et un poste en VLAN 10 sur la même prise ?;Port trunk sans PVID;Deux ports access;Port access vlan 20;Port hybrid : vlan 20 tagged, vlan 10 untagged, pvid vlan 10;5;Le téléphone étiquette, le poste non.
+Comment des VLAN isolés 10 et 20 peuvent-ils joindre un serveur du VLAN 30 sans routage ?;En supprimant les VLAN;Ports hybrid avec plusieurs VLAN non étiquetés (VLAN asymétriques);Un port access sur le VLAN 10;Un trunk vers le serveur;3;Serveur : pvid 30, untagged 10 20 30.
+Dans l'exemple des VLAN asymétriques, quelle configuration pour un utilisateur du VLAN 10 ?;port hybrid vlan 20 untagged;port access vlan 30;port trunk permit vlan all;port hybrid pvid vlan 10 et port hybrid vlan 10 30 untagged;5;Il voit le serveur mais pas le VLAN 20.
+Pourquoi un port hybrid avec 802.1X ?;Pour chiffrer le port;Pour désactiver RADIUS;Le VLAN attribué par RADIUS ou le VLAN invité s'applique non étiqueté;Pour agréger les liens;4;VLAN dynamique.
+Que faut-il faire avant de passer un port de trunk à hybrid ?;Revenir au type access;Supprimer les VLAN;Sauvegarder;Redémarrer;2;port link-type access.
+Comment configurer 24 ports d'un coup sous Comware 7 ?;interface all;macro apply;interface range GigabitEthernet1/0/1 to GigabitEthernet1/0/24;port-group manual;4;port-group manual sous Comware 5.
+Comware propose-t-il une fonction smart port comme les macros d'autres constructeurs ?;Non, la configuration groupée en tient lieu;Oui, par IRF;Oui, en Comware 5 seulement;Oui, smart-port enable;2;interface range nommé réutilisable.
+Quelle interface porte l'adresse IP d'un VLAN ?;Bridge-Aggregation;LoopBack;Tunnel;Vlan-interface;5;Équivalent d'une SVI.
+Que fait le mot-clé sub après ip address ?;Active le routage;Crée un sous-réseau DHCP;Supprime l'adresse;Ajoute une adresse secondaire;5;Plusieurs adresses sur une Vlan-interface.
+Quelle commande crée une route par défaut ?;ip route-static 0.0.0.0 0 192.168.0.1;default-route 192.168.0.1;route add default;ip route 0.0.0.0 0.0.0.0 192.168.0.1;2;display ip routing-table pour vérifier.
+Quelle commande active le service DHCP avant le relais ?;service dhcp;dhcp enable;dhcp start;ip dhcp on;3;Puis dhcp select relay dans l'interface.
+Comment déclare-t-on le serveur d'un relais DHCP sous Comware 7 ?;dhcp server 10.0.0.5;dhcp relay server-address 10.0.0.5;ip helper-address 10.0.0.5;relay 10.0.0.5;3;Dans la Vlan-interface, après dhcp select relay.
+Quelle commande ajoute l'option 82 ?;dhcp option 82;ip dhcp snooping;relay option on;dhcp relay information enable;5;Identifie commutateur et port d'origine.
+Comment déclare-t-on les serveurs du relais sous Comware 5 ?;dhcp relay server-group puis dhcp relay server-select;ip helper-address;dhcp pool;dhcp relay server-address;2;Syntaxe antérieure.
+Quelle interface correspond à un port-channel ?;Vlan-interface;LoopBack;Tunnel;Bridge-Aggregation;5;Agrégat de niveau 2.
+Quel est le mode d'une Bridge-Aggregation créée sans autre commande ?;Désactivé;Dynamique;LACP actif;Statique;5;link-aggregation mode dynamic pour le LACP.
+Quel est le risque d'une agrégation statique ?;Aucune vérification de l'autre extrémité;Elle exige RADIUS;Elle est limitée à deux liens;Elle ne fonctionne qu'en IRF;2;Erreur de câblage = boucle ou perte de trafic.
+Quelle commande active le LACP ?;aggregation lacp;lacp enable;channel-group mode active;link-aggregation mode dynamic;5;Dans la vue de l'agrégat.
+Comment ajoute-t-on un port à l'agrégat 1 ?;port link-aggregation group 1;channel-group 1;bridge-aggregation 1 add;aggregate 1;2;Dans la vue du port membre.
+Que signifie un port Unselected dans un agrégat ?;Il est hors VLAN;Il est en panne définitive;Il ne transmet pas le trafic de l'agrégat;Il est le port principal;4;Selected = actif.
+Quelle commande limite le nombre de liens actifs d'un agrégat ?;lacp max-bundle;port-channel limit;aggregation max;link-aggregation selected-port maximum;5;Les autres restent en secours.
+Quelle commande accélère la détection de panne LACP ?;link fast;lacp fast;lacp timer 1;lacp period short;5;Messages plus fréquents.
+Où configure-t-on les VLAN d'un agrégat ?;Dans la vue système;Sur chaque membre;Nulle part;Sur l'interface Bridge-Aggregation;5;Elle propage aux membres.
+Que signifie IRF ?;IP relay forwarding;Interface routing function;Internal redundancy feature;Intelligent resilient framework;5;Mise en pile virtuelle.
+Quel avantage apporte un agrégat réparti sur deux membres IRF ?;Plus de VLAN;Pas de point unique de panne sans spanning tree;Moins de câbles;Un routage plus rapide;3;Redondance active-active.
+Quand la renumérotation IRF prend-elle effet ?;Immédiatement;Jamais;Au redémarrage;Après save seulement;4;irf member 1 renumber 2.
+Quel membre devient maître IRF ?;Celui qui a la priorité la plus élevée;Au hasard;Le plus petit numéro toujours;Le dernier allumé;2;irf member 1 priority 32.
+Que faut-il faire aux ports physiques avant de les lier à un port IRF ?;Les agréger;Les supprimer;Les mettre en trunk;Les désactiver par shutdown;5;Puis irf-port-configuration active.
+À quoi sert la MAD ?;Gérer les VLAN;Détecter une scission de la pile IRF;Mesurer le débit;Compter les adresses MAC;3;Par LACP, BFD ou ARP.
+Que fait irf auto-update enable ?;Sauvegarde la configuration;Active la MAD;Renomme la pile;Met à niveau le logiciel d'un membre qui rejoint la pile;5;Logiciel homogène dans la pile.
+Quel rôle donne tous les droits sous Comware 7 ?;network-operator;guest;level 1;network-admin;5;Level 3 sous Comware 5.
+Comment configure-t-on les lignes distantes sous Comware 7 ?;line vty 0 63;user-interface vty 0 15;terminal vty;line vty 0 15;2;user-interface vty sous Comware 5.
+Dans quel cas le commutateur sert-il lui-même de serveur DHCP ?;Seulement en IRF;Jamais sous Comware;Un site sans serveur DHCP, le commutateur de niveau 3 distribuant les adresses;Toujours;4;dhcp server ip-pool.
+Quelle commande crée une plage d'adresses DHCP ?;dhcp server ip-pool VLAN10;dhcp pool create;ip dhcp pool VLAN10;dhcp range VLAN10;2;Après dhcp enable.
+Quelle commande de la plage définit la passerelle des postes ?;gateway-ip;gateway-list;router-list;default-router;3;gateway-list 192.168.10.254.
+Comment retire-t-on de la distribution les adresses fixées à la main ?;dhcp exclude;undo network;dhcp server forbidden-ip;ip dhcp excluded-address;4;Passerelle, imprimantes, serveurs.
+Comment réserver toujours la même adresse à une imprimante ?;dhcp relay;gateway-list;static-bind ip-address ... hardware-address ...;forbidden-ip;4;Réservation dans la plage.
+Quelle différence entre adresse statique et réservation DHCP ?;La réservation est configurée sur l'équipement;La statique est configurée sur l'équipement et doit être exclue, la réservation reste gérée par le DHCP;Aucune;La statique est attribuée par le DHCP;3;Choix de gestion.
+Quelle commande affiche les baux attribués ?;show ip dhcp binding;display dhcp server ip-in-use;display arp;display dhcp lease;3;free-ip pour les adresses libres.
+Sur une Vlan-interface, peut-on être à la fois serveur et relais DHCP ?;Oui avec l'option 82;Non, on choisit l'un ou l'autre;Oui en IRF;Oui toujours;3;dhcp select server ou dhcp select relay.
