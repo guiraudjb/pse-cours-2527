@@ -1,6 +1,6 @@
 # Inventaire des modules et des médias — pse-cours-2527
 
-Généré le 02/10/2026 à 07:07 par `scripts/inventaire_medias.py` (88 modules). ✅ présent, ❌ absent ; pour QCM, flashcards et TP, nombre d'éléments (0 = absent).
+Généré le 02/10/2026 à 14:20 par `scripts/inventaire_medias.py` (88 modules). ✅ présent, ❌ absent ; pour QCM, flashcards et TP, nombre d'éléments (0 = absent).
 
 ## Synthèse
 
@@ -16,7 +16,7 @@ Généré le 02/10/2026 à 07:07 par `scripts/inventaire_medias.py` (88 modules)
 | Paroles | 88 | 0 | 100 % |
 | Chanson | 88 | 0 | 100 % |
 | Podcast local | 27 | 61 | 30 % |
-| Podcast NotebookLM | 61 | 27 | 69 % |
+| Podcast NotebookLM | 62 | 26 | 70 % |
 | Micro-chronique | 1 | 87 | 1 % |
 | Narration fiche | 88 | 0 | 100 % |
 | Audio QCM/flash | 88 | 0 | 100 % |
@@ -25,7 +25,7 @@ Généré le 02/10/2026 à 07:07 par `scripts/inventaire_medias.py` (88 modules)
 
 | Série | Modules | Fiche | QCM | Flash | TP | Icône | Infographie locale | Infographie NotebookLM | Paroles | Chanson | Podcast local | Podcast NotebookLM | Micro-chronique | Narration fiche | Audio QCM/flash |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 00 À la une | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 1 | 1 | 0 | 1 | 1 | 1 |
+| 00 À la une | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 | 06 Cours PSE 25-27 | 84 | 84 | 84 | 84 | 36 | 84 | 26 | 58 | 84 | 84 | 26 | 58 | 0 | 84 | 84 |
 | 07 Compléments Linux et réseau | 3 | 3 | 3 | 3 | 1 | 3 | 0 | 3 | 3 | 3 | 0 | 3 | 0 | 3 | 3 |
 
@@ -33,7 +33,7 @@ Généré le 02/10/2026 à 07:07 par `scripts/inventaire_medias.py` (88 modules)
 
 | Module | Fiche | QCM | Flash | TP | Icône | Infographie locale | Infographie NotebookLM | Paroles | Chanson | Podcast local | Podcast NotebookLM | Micro-chronique | Narration fiche | Audio QCM/flash |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| 00-10 ANSSI - Rapport d'incident sur les cyberattaques ayant touché la DGFiP (2026) | ✅ | 28 | 22 | 9 | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| 00-10 ANSSI - Rapport d'incident sur les cyberattaques ayant touché la DGFiP (2026) | ✅ | 28 | 22 | 9 | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 06-10 PSE 25-27 1-0 Stratégie et Enjeux de la Sobriété Numérique de l’État | ✅ | 15 | 30 | 21 | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ |
 | 06-20 PSE 25-27 1-1 Guide d'Administration du Système de Gestion de Fichiers Linux | ✅ | 25 | 61 | 25 | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ |
 | 06-30 PSE 25-27 1-2 Mécanismes Internes du Système de Gestion de Fichiers Linux | ✅ | 20 | 63 | 17 | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ |
