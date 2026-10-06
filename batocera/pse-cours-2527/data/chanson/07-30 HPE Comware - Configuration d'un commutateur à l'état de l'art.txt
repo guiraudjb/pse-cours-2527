@@ -1,0 +1,53 @@
+TITRE : Comware Reggae Riddim
+
+[Intro]
+Écoute le rythme de la configuration,
+Comware sept pour la nouvelle génération.
+
+[Couplet 1]
+De la vue utilisateur à la vue système,
+System-view nous guide dans ce grand dilemme.
+Le port access est simple pour un terminal,
+Le trunk transporte les VLAN de façon magistrale.
+Mais le port hybrid est le roi du réseau,
+Plusieurs untagged pour un service de haut niveau.
+Le PVID décide pour les trames sans étiquette,
+Pour que dans chaque VLAN, la donnée soit parfaite.
+
+[Refrain]
+Configure avec sagesse, sauvegarde avec save,
+Pour que ton réseau reste fort et brave.
+De l'accès sécurisé à la supervision,
+Comware est la clé de ta connexion.
+
+[Couplet 2]
+Le RADIUS authentifie avec le schéma,
+Le domaine entreprise évite les drames.
+Si le serveur tombe, le local est le secours,
+Mais garde un compte admin pour tous les jours.
+Le NTP synchronise l'heure sur le port cent vingt-trois,
+Le fuseau Paris ajoute une heure pour faire la loi.
+Le dernier dimanche de mars, l'heure d'été commence,
+Le dernier dimanche d'octobre, l'hiver reprend sa danse.
+
+[Refrain]
+Configure avec sagesse, sauvegarde avec save,
+Pour que ton réseau reste fort et brave.
+De l'accès sécurisé à la supervision,
+Comware est la clé de ta connexion.
+
+[Pont]
+L'IRF fait une pile de plusieurs équipements,
+Le Smart Link bascule sans les spanning tree mouvements.
+Le CFD surveille les pannes de bout en bout,
+Avec les messages CCM, on ne reste pas dans le doute.
+
+[Refrain final]
+Configure avec sagesse, sauvegarde avec save,
+Pour que ton réseau reste fort et brave.
+De l'accès sécurisé à la supervision,
+Comware est la clé de ta connexion.
+
+[Outro]
+Display current-configuration pour vérifier,
+Et n'oublie pas le save pour ne rien perdre, mon ami.
