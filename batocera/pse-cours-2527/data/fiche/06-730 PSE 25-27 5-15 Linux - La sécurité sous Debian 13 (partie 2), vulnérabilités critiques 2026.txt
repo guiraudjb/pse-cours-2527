@@ -126,7 +126,7 @@ III. VULNÉRABILITÉS APPLICATIVES ET RAPPELS DE SÉCURITÉ.
 
       Le protocole Telnet demeure une menace critique pour la sécurité des systèmes, comme l'illustre la découverte de la vulnérabilité CVE-deux mille vingt-six-trente-deux mille sept cent quarante-six.
 
-      Cette faille présente un score de criticité CVSS de neuf,8, ce qui en fait un point de vulnérabilité majeur pour les infrastructures.
+      Cette faille présente un score de criticité CVSS de neuf virgule huit, ce qui en fait un point de vulnérabilité majeur pour les infrastructures.
 
       L'implémentation de Telnet au sein de GNU InetUtils, via le composant telnetd, a été frappée par cette nouvelle vulnérabilité quelques mois après une première faille critique nommée CVE-deux mille vingt-six-vingt-quatre mille soixante et un.
 
