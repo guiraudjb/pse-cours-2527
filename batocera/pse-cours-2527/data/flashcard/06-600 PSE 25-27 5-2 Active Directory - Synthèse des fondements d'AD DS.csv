@@ -22,4 +22,4 @@
 "Avantage de DFSR sur FRS ?","Réplication différentielle (RDC) plus efficace."
 "Rôle FSMO modifiant le schéma ?","Maître du schéma (portée Forêt)."
 "Rôle FSMO gérant les changements de mots de passe ?","Émulateur PDC (portée Domaine)."
-"Commande PowerShell pour voir les détenteurs FSMO ?","netdom query fsmo"
+"Commande pour voir les détenteurs FSMO ?","netdom query fsmo"

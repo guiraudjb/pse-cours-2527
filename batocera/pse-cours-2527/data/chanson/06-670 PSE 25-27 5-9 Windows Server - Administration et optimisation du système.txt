@@ -1,4 +1,4 @@
-TITRE : Windows Server Riddim Riddim
+TITRE : Windows Server Riddim
 
 [Intro]
 Écoute le rythme de l'administration,

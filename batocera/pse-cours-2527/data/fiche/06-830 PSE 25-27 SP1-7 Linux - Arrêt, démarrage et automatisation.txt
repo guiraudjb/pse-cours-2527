@@ -16,7 +16,7 @@ LEXIQUE COMPLET.
 
       Le run-level désigne un niveau d'exécution du système, comme le mode mono ou multi utilisateurs.
 
-      Le syslog désigne un logiciel de journalisation qui collecte les messages via syslogd et klogd pour les écrire dans des fichiers traces.
+      Le syslog désigne un système de journalisation qui collecte les messages, historiquement via syslogd et klogd, aujourd'hui via rsyslog ou systemd-journald, pour les écrire dans des fichiers traces.
 
       Le systemd désigne le successeur d'init qui permet le lancement parallèle des services en utilisant des unités.
 
@@ -36,9 +36,9 @@ I. LE PROCESSUS DE DÉMARRAGE MATÉRIEL ET DU NOYAU.
 
       Ce logiciel est également appelé firmware ou microcode.
 
-      Le firmware est constitué d'un ensemble d'appliances qui sont de petits programmes élémentaires de reconnaissance du matériel.
+      Le firmware est constitué d'un ensemble de petits programmes élémentaires de reconnaissance du matériel.
 
-      Ces appliances permettent d'identifier le CPU, la RAM, les contrôleurs de bus et les ports.
+      Ces programmes permettent d'identifier le CPU, la RAM, les contrôleurs de bus et les ports.
 
       Chaque appliance est spécifique au constructeur et au modèle de la machine.
 
@@ -54,7 +54,7 @@ I. LE PROCESSUS DE DÉMARRAGE MATÉRIEL ET DU NOYAU.
 
       La séquence se poursuit par l'initialisation des entrées et sorties comme le clavier et la carte graphique.
 
-      Enfin, le POST gère la séquence de boot et le chargement du MBR situé au secteur un tête de cylindre zéro virgule zéro.
+      Enfin, le POST gère la séquence de boot et le chargement du MBR situé au cylindre zéro, tête zéro, secteur un ; ce schéma ne vaut que pour un disque MBR, pas pour l'UEFI avec une table GPT.
 
    C. Le chargement du noyau et du système de fichiers minimaliste.
 
@@ -64,11 +64,11 @@ I. LE PROCESSUS DE DÉMARRAGE MATÉRIEL ET DU NOYAU.
 
       Le stage deux exécute le second niveau du loader comme Grub, Lilo, Loadlin, Isolinux, PXElinux ou Ntldr.
 
-      La configuration de ces chargeurs se trouve dans des fichiers tels que /etc/grub.conf ou /etc/lilo.conf.
+      La configuration de ces chargeurs se trouvait dans des fichiers tels que /etc/grub.conf ou /etc/lilo.conf ; avec GRUB 2, aujourd'hui standard, elle passe par /etc/default/grub et le fichier généré /boot/grub/grub.cfg.
 
       Le loader assure ensuite la décompression et le lancement du noyau Linux via vmlinuz et initrd.
 
-      Le fichier vmlinuz correspond au kernel tandis que l'initrd est un système de fichier minimaliste qui permet la création du premier processus swapper ou sceduler.
+      Le fichier vmlinuz correspond au kernel tandis que l'initrd, ou initramfs, est un système de fichiers minimaliste qui fournit un espace utilisateur provisoire pour charger les pilotes et monter la vraie racine ; le premier processus, swapper ou scheduler, est créé par le noyau lui-même.
 
 II. LE SYSTÈME D'INITIALISATION CLASSIQUE AVEC INIT (SYSTEMV).
 
@@ -120,7 +120,7 @@ III. LA JOURNALISATION ET LA GESTION DES LOGS.
 
       L'utilitaire klogd effectue une écoute des messages du noyau pour les envoyer à syslogd.
 
-      La configuration de ce système se fait via le fichier /etc/syslog.conf.
+      La configuration de ce système se faisait via le fichier /etc/syslog.conf ; aujourd'hui rsyslog utilise /etc/rsyslog.conf, et Debian n'installe plus rsyslog par défaut depuis Debian douze, journald suffisant.
 
    B. Les niveaux de criticité des messages.
 
@@ -160,7 +160,7 @@ IV. LA TRANSITION VERS LE SYSTÈME SYSTEMD.
 
       Le système fonctionne par un enchaînement d'unités qui appellent ou requièrent d'autres unités via des liens symboliques.
 
-      La première unité analysée et lancée par le noyau est le fichier situé dans /etc/systemd/system/default.target.
+      Le noyau lance systemd, /usr/lib/systemd/systemd, de PID un ; la première unité que systemd analyse est default.target, situé dans /etc/systemd/system.
 
    C. La structure des fichiers de configuration.
 
@@ -180,7 +180,7 @@ V. LE FONCTIONNEMENT DÉTAILLÉ DE SYSTEMD.
 
       Le système systemd remplace la notion de runlevel par celle de target. Ces unités définissent le mode d'exécution du système comme le fait l'action initdefault dans le fichier inittab.
 
-      La première unité analysée et lancée par le processus est le fichier situé à l'adresse /etc/systemd/system/default.target. Ce fichier est un lien symbolique qui détermine le niveau d'exécution par défaut.
+      La première unité analysée par systemd est le fichier /etc/systemd/system/default.target. Ce fichier est un lien symbolique qui détermine le niveau d'exécution par défaut.
 
       Pour démarrer dans un mode équivalent au runlevel cinq, le fichier default.target doit pointer vers /lib/systemd/system/graphical.target. Le mode multi-user.target est également utilisé pour les runlevels deux, trois et quatre.
 
@@ -212,11 +212,11 @@ VI. ADMINISTRATION ET COMMANDES SYSTÈME.
 
       L'outil systemctl remplace la commande service pour gérer l'état immédiat des unités. On utilise systemctl stop, start, restart ou status pour manipuler un service.
 
-      Pour gérer l'activation automatique au démarrage, on utilise les équivalents de chkconfig. Les commandes systemctl enable, disable ou is-enable permettent de configurer une unité.
+      Pour gérer l'activation automatique au démarrage, on utilise les équivalents de chkconfig. Les commandes systemctl enable, disable ou is-enabled permettent de configurer une unité.
 
       La commande systemctl daemon-reload est indispensable pour recharger la configuration après une modification. Elle permet à systemd de prendre en compte les nouveaux fichiers d'unité.
 
-      Pour lister les unités actives, on utilise la commande systemctl list --units --type target. Cela permet de visualiser les différents modes d'exécution du système.
+      Pour lister les unités actives, on utilise la commande systemctl list-units --type=target. Cela permet de visualiser les différents modes d'exécution du système.
 
    B. Commandes d'arrêt et de redémarrage.
 
@@ -224,7 +224,7 @@ VI. ADMINISTRATION ET COMMANDES SYSTÈME.
 
       Pour changer de mode d'exécution sans redémarrer, on utilise systemctl isolate. Par exemple, cette commande permet de passer au runlevel3.target.
 
-      La commande shutdown est utilisée pour programmer l'arrêt ou le redémarrage. Elle accepte des options comme -h pour l'arrêt ou -r pour le redémarrage avec un délai en secondes.
+      La commande shutdown est utilisée pour programmer l'arrêt ou le redémarrage. Elle accepte des options comme -h pour l'arrêt ou -r pour le redémarrage, avec un délai exprimé en minutes, par exemple +5, ou une heure au format hh:mm, ou now.
 
       La commande reboot permet de redémarrer le système. Elle est liée à l'utilisation de la commande shutdown -r.
 
@@ -256,7 +256,7 @@ EXEMPLES CITÉS.
 
       Le premier niveau du chargeur de démarrage est appelé Stage un et possède une taille de quatre cent quarante-six octets.
 
-      Le système peut être arrêté avec la commande shutdown en utilisant les options -h ou -r avec un délai en secondes.
+      Le système peut être arrêté avec la commande shutdown en utilisant les options -h ou -r avec un délai en minutes, +m, ou une heure hh:mm.
 
       Pour passer en mode graphique avec systemd, le système doit pointer vers le fichier graphical.target.
 

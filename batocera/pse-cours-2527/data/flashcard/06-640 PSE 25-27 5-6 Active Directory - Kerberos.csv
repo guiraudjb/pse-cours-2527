@@ -21,5 +21,5 @@
 "Attaque ciblant un service spécifique ?","Silver Ticket"
 "Attaque par extraction de hachages de tickets ?","Kerberoasting"
 "Commande pour afficher les tickets en cache ?","klist"
-"Cause possible de l'erreur KRB_AP_ERR_MODIFIED ?","SPN incorrect ou horloge désynchronisée"
+"Cause possible de l'erreur KRB_AP_ERR_MODIFIED ?","SPN incorrect ou dupliqué, ou clé qui ne correspond pas (horloge décalée : KRB_AP_ERR_SKEW)"
 "Commande pour resynchroniser l'heure ?","w32tm /resync"

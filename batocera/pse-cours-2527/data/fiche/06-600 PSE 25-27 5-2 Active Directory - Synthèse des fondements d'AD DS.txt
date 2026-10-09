@@ -206,7 +206,7 @@ V. GESTION OPÉRATIONNELLE ET RÔLES CRITIQUES.
 
       L'administration des rôles et de la réplication s'appuie sur des outils spécifiques comme la console Sites et services Active Directory. Pour la gestion du schéma, l'outil ADSI Edit est la référence.
 
-      L'outil en ligne de commande netdom permet de requêter les détenteurs des rôles FSMO. La commande PowerShell netdom query fsmo est particulièrement utile pour identifier rapidement les serveurs responsables.
+      L'outil en ligne de commande netdom permet de requêter les détenteurs des rôles FSMO. La commande netdom query fsmo est particulièrement utile pour identifier rapidement les serveurs responsables.
 
       Pour une gestion plus fine par domaine ou par forêt, PowerShell propose des commandes dédiées. On utilise Get-ADDomain pour les rôles de domaine et Get-ADForest pour les rôles de forêt.
 
@@ -236,7 +236,7 @@ VI. SÉCURITÉ ET SYNTHÈSE.
 
       Le site représente l'aspect physique dédié à la réplication et à l'authentification.
 
-      Le schéma définit la structure logique des objets et est stocké dans la partition configuration.
+      Le schéma définit la structure logique des objets et est stocké dans sa propre partition, la partition de schéma, répliquée sur tous les contrôleurs de la forêt.
 
       La base de données NTDS.DIT est le fichier système de stockage géré par l'ESE.
 

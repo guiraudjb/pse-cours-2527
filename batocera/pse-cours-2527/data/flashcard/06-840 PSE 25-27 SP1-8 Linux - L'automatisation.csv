@@ -5,7 +5,7 @@
 "Où créer un fichier de lancement rigoureux ?","/etc/init.d"
 "Préfixe pour un script de démarrage (Start) ?","S"
 "Préfixe pour un script d'arrêt (Kill) ?","K"
-"Répertoires de lancement/arrêt (ex: niveau 3) ?","/etc/rc.d/rc3.d ou /sbin/rc.d/rc3.d"
+"Répertoires de lancement/arrêt (ex: niveau 3) ?","/etc/rc.d/rc3.d (Red Hat) ou /etc/rc3.d (Debian)"
 "Où créer une unité de service systemd ?","/etc/systemd/system/monservice.service"
 "Section systemd pour la description et dépendances ?","[Unit]"
 "Section systemd pour le type et l'exécution ?","[Service]"

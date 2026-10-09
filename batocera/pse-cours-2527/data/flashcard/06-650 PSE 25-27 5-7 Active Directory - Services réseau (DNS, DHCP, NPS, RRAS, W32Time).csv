@@ -6,7 +6,7 @@
 "Outil Linux pour enregistrement DNS AD ?","SSSD (System Security Services Daemon)."
 "Commande PowerShell enregistrement DNS ?","Register-DnsClient"
 "Utilité de DNSSEC ?","Signature cryptographique pour éviter l'empoisonnement de cache."
-"Calcul délai suppression Scavenging ?","NoRefresh + Refresh * 2."
+"Enregistrement supprimable par le scavenging ?","Après NoRefresh + Refresh sans mise à jour, puis au passage suivant du nettoyage."
 "Condition pour nettoyage Scavenging ?","Enregistrements DDNS avec timestamp (les statiques sont exclus)."
 "Action pour autoriser DHCP dans l'AD ?","Clic droit sur DHCP -> Autoriser ou PowerShell Add-DhcpServerInDC."
 "Privilège pour autoriser DHCP dans l'AD ?","Enterprise Admins."

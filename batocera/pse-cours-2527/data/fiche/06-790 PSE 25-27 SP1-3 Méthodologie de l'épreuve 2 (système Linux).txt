@@ -12,7 +12,7 @@ LEXIQUE COMPLET.
 
       L'OS désigne le système d'exploitation qui doit être situé dans son environnement global lors de la rédaction de la copie.
 
-      Le SAU désigne le service qui peut signaler des anomalies via un serveur de supervision comme Nagios.
+      Le SAU désigne le service d'assistance aux utilisateurs, qui peut signaler des anomalies via un serveur de supervision comme Nagios.
 
       Le SSH désigne un mode de connexion en console utilisé pour accéder aux serveurs Linux.
 

@@ -38,7 +38,7 @@ Dans l'environnement AD, il joue son plus grand rôle.
 
 [Pont]
 Vérifie tes SPN avec la commande setspn,
-Si l'horloge est décalée, le KRB_AP_ERR_MODIFIED vient.
+Si l'horloge est décalée, c'est le KRB_AP_ERR_SKEW qui vient.
 Utilise AES deux cent cinquante-six pour plus de force,
 Et réinitialise le krbtgt pour éviter l'écorce.
 

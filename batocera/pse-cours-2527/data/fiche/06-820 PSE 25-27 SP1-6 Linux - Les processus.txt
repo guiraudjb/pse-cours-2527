@@ -22,7 +22,7 @@ LEXIQUE COMPLET.
 
       Le répertoire /proc désigne un pseudo système de fichiers situé à la racine qui sert d'interface entre le noyau et l'utilisateur pour obtenir des informations sur les processus.
 
-      Le quantum de temps désigne la durée égale de temps processeur allouée à un processus avant que l'ordonnanceur ne procède à une préemption.
+      Le quantum de temps désigne, dans l'UNIX classique, la durée égale de temps processeur allouée à un processus avant que l'ordonnanceur ne procède à une préemption ; sous Linux, les ordonnanceurs CFS puis EEVDF, depuis le noyau 6.6, répartissent le temps de façon proportionnelle sans quantum fixe.
 
       L'exclusion mutuelle désigne le principe consistant à affecter une ressource à un unique processus à la fois pour assurer un ordonnancement réussi.
 
@@ -46,7 +46,7 @@ I. DÉFINITIONS ET PRINCIPES FONDAMENTAUX.
 
       Un processus UNIX se décompose en un espace d'adressage visible par l'utilisateur et en ce bloc de contrôle.
 
-      Le PCB comprend une entrée dans la table des processus du noyau appelée struct proc définie dans <sys/proc.h>.
+      Le PCB comprend une entrée dans la table des processus du noyau appelée struct proc définie dans <sys/proc.h>, selon le modèle UNIX classique du support ; sous Linux, le descripteur de processus est la structure task_struct.
 
       Il inclut également une structure struct user appelée zone u située dans <sys/user.h>.
 
@@ -94,7 +94,7 @@ II. CYCLE DE VIE ET GESTION DES PROCESSUS.
 
       Le processus zéro utilise l'appel fork pour créer le processus init qui possède le PID=un.
 
-      Le processus init est l'ancêtre de tous les autres processus car le processus zéro ne réalise plus de fork après cela.
+      Le processus init est l'ancêtre de tous les autres processus ; sous Linux, le processus zéro crée aussi kthreadd, de PID deux, parent des threads du noyau.
 
       Le processus de PID=un accueille les processus orphelins de père afin de collecter les informations à la mort de chaque processus.
 
@@ -142,7 +142,7 @@ III. COMMUTATION DE CONTEXTE ET INTERRUPTIONS.
 
       Dans le cas où le niveau de l'interruption est inférieur à celui du processus en cours d'exécution, l'interruption est simplement mise en attente. Le processus continue alors son exécution sans être dérangé.
 
-      Il est important de noter qu'un processus s'exécutant en mode noyau ne peut pas être préempté. Cependant, il peut tout de même subir une interruption selon les règles de priorité mentionnées.
+      Dans le modèle UNIX classique du support, un processus s'exécutant en mode noyau ne peut pas être préempté ; le noyau Linux, lui, est préemptible depuis la version 2.6, et la préemption temps réel PREEMPT_RT est intégrée depuis la version 6.12. Cependant, il peut tout de même subir une interruption selon les règles de priorité mentionnées.
 
    C. Influence manuelle sur la priorité avec nice et renice.
 
@@ -168,7 +168,7 @@ IV. STRUCTURE DE LA MÉMOIRE DES PROCESSUS.
 
    B. Organisation de la table des processus.
 
-      La table des processus contient une entrée pour chaque processus présent sur le système à un instant T. Sa taille est fixe et déterminée par les paramètres du noyau selon le nombre maximum de processus autorisés.
+      La table des processus contient une entrée pour chaque processus présent sur le système à un instant T. Dans l'UNIX classique, sa taille est fixe ; sous Linux, les tâches sont allouées dynamiquement, dans la limite des paramètres pid_max et threads-max.
 
       Chaque entrée renseigne le système sur l'état courant du processus. Elle inclut des éléments comme le PID, le PPID, ainsi que les champs RUID, EUID, RGID et EGID.
 
@@ -222,7 +222,7 @@ V. ORDONNANCEMENT ET GESTION DU PROCESSEUR.
 
       Plus la valeur numérique de la priorité est faible, plus la priorité du processus est élevée, la priorité la plus haute étant égale à zéro.
 
-      La priorité d'un processus diminue s'il a disposé du processeur pendant longtemps, alors qu'un processus demandeur en E/S devient plus prioritaire.
+      Dans les ordonnanceurs classiques, la priorité d'un processus diminuait s'il avait disposé du processeur pendant longtemps, alors qu'un processus demandeur en E/S devenait plus prioritaire ; sous Linux moderne, CFS puis EEVDF équilibrent le temps processeur consommé, pondéré par la valeur nice.
 
       La priorité de départ dépend du type de processus, avec des valeurs entre zéro et quatre-vingt-dix-neuf pour le noyau ou le temps réel, et entre cent et cent trente-neuf pour l'utilisateur.
 
@@ -236,7 +236,7 @@ V. ORDONNANCEMENT ET GESTION DU PROCESSEUR.
 
       La préemption d'un processus peut avoir lieu soit à la fin de son quantum de temps, soit au retour du mode noyau.
 
-      Un processus s'exécutant en mode noyau ne peut pas être préempté, mais il peut néanmoins être interrompu.
+      Dans le modèle classique, un processus s'exécutant en mode noyau ne peut pas être préempté, mais il peut être interrompu ; sous Linux, le noyau est préemptible.
 
       Si une interruption survient et que son niveau est supérieur à celui du processus en cours, le processus est interrompu le temps que l'interruption soit servie.
 
@@ -248,9 +248,9 @@ POINTS D'ATTENTION.
 
       La distinction entre le processus zéro et le processus un est cruciale puisque le premier est créé manuellement au démarrage et le second est l'ancêtre de tous les autres.
 
-      Il existe une nuance importante entre la préemption et l'interruption car un processus en mode noyau peut être interrompu mais il ne peut pas être préempté.
+      Il existe une nuance importante entre la préemption et l'interruption car, dans le modèle UNIX classique, un processus en mode noyau peut être interrompu mais pas préempté, ce qui n'est plus vrai du noyau Linux préemptible.
 
-      La priorité d'un processus est inversement proportionnelle à sa valeur numérique puisque la priorité la plus haute correspond au chiffre zéro.
+      La priorité d'un processus varie en sens inverse de sa valeur numérique puisque la priorité la plus haute correspond au chiffre zéro.
 
       Il faut éviter la confusion entre le mode utilisateur et le mode noyau car un processus utilisateur peut effectuer des appels système pour passer en mode noyau.
 

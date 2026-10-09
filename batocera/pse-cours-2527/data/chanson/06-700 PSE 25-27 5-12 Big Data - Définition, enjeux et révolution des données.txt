@@ -12,7 +12,7 @@ La Variété des formats nous donne de la vigueur.
 La Vélocité demande un flux en temps réel,
 Pour que l'analyse soit un outil essentiel.
 Les bases SQL ne suffisent plus désormais,
-Face aux données massives, elles doivent s'effacer.
+Face aux données massives, il faut les compléter.
 
 [Refrain]
 Volume, Variété et Vélocité,
@@ -26,7 +26,7 @@ Le SCM produit des masses très organisées.
 Mais l'IoT et le mobile apportent la complexité,
 Avec cent cinquante interactions par journée.
 Le NoSQL offre une flexibilité sans égale,
-Clé-valeur, colonne, document ou graphe spatial.
+Clé-valeur, colonne, document ou graphe, c'est vital.
 Hadoop utilise le HDFS pour le stockage,
 Et MapReduce pour un traitement sans fatigue ni mensonge.
 

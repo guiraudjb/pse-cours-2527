@@ -106,7 +106,7 @@ III. GESTION DES POLITIQUES DE SÉCURITÉ DES COMPTES.
 
       Cette politique gère également la durée de vie maximale du mot de passe ainsi que l'historique pour empêcher la réutilisation.
 
-      Les paramètres recommandés incluent une longueur de douze caractères et une durée de vie de quatre-vingt-dix jours.
+      Les paramètres recommandés incluent une longueur de douze caractères et, selon le support, une durée de vie de quatre-vingt-dix jours ; l'ANSSI et le NIST déconseillent toutefois le renouvellement périodique sans indice de compromission.
 
       L'historique doit permettre de conserver vingt-quatre mots de passe précédents.
 
@@ -116,7 +116,7 @@ III. GESTION DES POLITIQUES DE SÉCURITÉ DES COMPTES.
 
       Elles sont particulièrement utiles pour imposer des règles plus strictes aux comptes privilégiés.
 
-      Cette fonctionnalité nécessite un niveau fonctionnel de domaine Windows Server deux mille douze ou supérieur.
+      Cette fonctionnalité existe depuis le niveau fonctionnel de domaine Windows Server deux mille huit ; sa gestion graphique dans le Centre d'administration Active Directory date de deux mille douze.
 
       La gestion de ces politiques s'effectue via le Centre d'administration Active Directory ou par PowerShell.
 

@@ -152,7 +152,7 @@ IV. MISE EN ŒUVRE CONCRÈTE ET OUTILS NATIFS.
 
       La première étape consiste à définir une politique de sauvegarde qui trace la fréquence des opérations, les types de sauvegarde utilisés et la durée de conservation des données nommée rétention.
 
-      Les politiques de rétention permettent de définir des pools de volumes classés par durée comme un jour, un semaine, un mois, un année ou dix ans.
+      Les politiques de rétention permettent de définir des pools de volumes classés par durée comme un jour, une semaine, un mois, un an ou dix ans.
 
       Il est important de ne pas mélanger les rétentions au sein d'un même pool afin d'optimiser le volume des données et le nombre de bandes.
 
@@ -192,7 +192,7 @@ IV. MISE EN ŒUVRE CONCRÈTE ET OUTILS NATIFS.
 
       L'automatisation des tâches sous Linux est généralement assurée par cron pour garantir la régularité des sauvegardes et réduire la charge de travail.
 
-      Une tâche cron peut être configurée pour exécuter une sauvegarde chaque nuit à 2h00 avec la ligne zéro deux * * * /usr/local/bin/sauvegarde.sh.
+      Une tâche cron peut être configurée pour exécuter une sauvegarde chaque nuit à 2h00 avec la ligne 0 2 * * * /usr/local/bin/sauvegarde.sh.
 
       Le protocole S3 est devenu un standard pour le stockage objet permettant d'externaliser les sauvegardes vers des infrastructures cloud hautement disponibles.
 
@@ -268,7 +268,7 @@ VI. PANORAMA DES LOGICIELS DE SAUVEGARDE PROFESSIONNELS.
 
       Time Navigator, également appelé TINA, est une solution de sauvegarde orientée vers les grandes infrastructures. Le logiciel propose des fonctions avancées de planification, de gestion des catalogues et de restauration.
 
-      Cette solution permet de gérer différents supports de stockage et d'optimiser les performances des sauvegardes. Elle est très largement utilisée au sein du Ministère.
+      Cette solution permet de gérer différents supports de stockage et d'optimiser les performances des sauvegardes. Elle est très largement utilisée au sein du Ministère, aux côtés de NetBackup et de Networker, également cités par le support.
 
 POINTS D'ATTENTION.
 
@@ -284,12 +284,12 @@ POINTS D'ATTENTION.
 
 EXEMPLES CITÉS.
 
-      Une politique de rétention peut organiser des volumes de sauvegarde en pools classés par durées comme un jour, un semaine, un mois, un année ou dix ans.
+      Une politique de rétention peut organiser des volumes de sauvegarde en pools classés par durées comme un jour, une semaine, un mois, un an ou dix ans.
 
       L'outil tar permet de créer une archive du répertoire /home avec la commande tar czvf sauvegarde_home.tar.gz /home.
 
       La commande dd peut être utilisée pour sauvegarder un disque complet avec l'exemple dd if=/dev/sda of=/backup/disque_sda.img bs=64K.
 
-      Pour l'automatisation, une tâche cron peut être configurée pour exécuter une sauvegarde chaque nuit à 2h00 avec la ligne zéro deux * * * /usr/local/bin/sauvegarde.sh.
+      Pour l'automatisation, une tâche cron peut être configurée pour exécuter une sauvegarde chaque nuit à 2h00 avec la ligne 0 2 * * * /usr/local/bin/sauvegarde.sh.
 
       Le protocole S3 est utilisé pour le stockage objet avec des outils comme rclone pour synchroniser un répertoire vers un bucket S3.

@@ -6,7 +6,7 @@ LEXIQUE COMPLET.
 
       Le terme page cache désigne une zone mémoire gérée par le noyau qui conserve une copie du contenu d'un fichier pour améliorer les performances.
 
-      Le sigle SUID désigne un mécanisme permettant à un binaire de s'exécuter avec les droits de l'utilisateur root.
+      Le sigle SUID désigne un mécanisme permettant à un binaire de s'exécuter avec les droits de son propriétaire, souvent root.
 
       Le sigle KVM désigne l'hyperviseur intégré au noyau Linux qui permet de gérer des machines virtuelles.
 
@@ -72,7 +72,7 @@ II. ANALYSE DES FAMILLES DE FAILLES CRITIQUES.
 
    A. La faille Copy Fail et son exploitation.
 
-      La faille Copy Fail identifiée sous le code CVE-deux mille vingt-six-trente et un mille quatre cent trente et un a été divulguée le vingt-neuf avril deux mille vingt-six par la société Theori. Elle concerne le module algif_aead de l'interface crypto AF_ALG du noyau Linux.
+      La faille Copy Fail identifiée sous le code CVE-2026-31431 a été divulguée le vingt-neuf avril deux mille vingt-six par la société Theori. Elle concerne le module algif_aead de l'interface crypto AF_ALG du noyau Linux.
 
       Ce bug provient d'une optimisation in-place défectueuse introduite dès deux mille dix-sept. Il possède un score CVSS de sept virgule huit et est inscrit au catalogue KEV de la CISA avec une exploitation active confirmée.
 
@@ -86,13 +86,13 @@ II. ANALYSE DES FAMILLES DE FAILLES CRITIQUES.
 
    B. La famille Dirty Frag et ses variantes.
 
-      La famille Dirty Frag regroupe des vulnérabilités comme CVE-deux mille vingt-six-quarante-trois mille deux cent quatre-vingt-quatre et CVE-deux mille vingt-six-quarante-trois mille cinq cents découvertes le sept mai deux mille vingt-six par Hyunwoo Kim. Elle utilise le même schéma d'attaque que Copy Fail mais via d'autres sous-systèmes.
+      La famille Dirty Frag regroupe des vulnérabilités comme CVE-2026-43284 et CVE-2026-43500 découvertes le sept mai deux mille vingt-six par Hyunwoo Kim. Elle utilise le même schéma d'attaque que Copy Fail mais via d'autres sous-systèmes.
 
       Le point d'entrée se situe dans le déchiffrement du protocole IPsec via le module ESP ou dans le protocole RxRPC. Ces modules réutilisent des pages du cache comme zone de sortie sans vérifier les références des processus non privilégiés.
 
       Cette erreur de conception consiste à traiter une page de cache partagée comme une zone d'écriture privée du noyau. La mitigation de Copy Fail ne protège donc pas contre cette famille de failles.
 
-      Plusieurs variantes ont été identifiées en quelques semaines par les chercheurs. On compte notamment Fragnesia sous le code CVE-deux mille vingt-six-quarante-six mille trois cents, DirtyClone sous le code CVE-deux mille vingt-six-quarante-trois mille cinq cent trois et PinTheft divulguée le dix-neuf mai deux mille vingt-six.
+      Plusieurs variantes ont été identifiées en quelques semaines par les chercheurs. On compte notamment Fragnesia sous le code CVE-2026-46300, DirtyClone sous le code CVE-2026-43503 et PinTheft divulguée le dix-neuf mai deux mille vingt-six.
 
       L'existence de ces multiples instances confirme qu'il s'agit d'une classe de bug architecturale. Le risque demeure élevé tant que d'autres surfaces de déchiffrement en place ne sont pas auditées.
 
@@ -100,23 +100,23 @@ II. ANALYSE DES FAMILLES DE FAILLES CRITIQUES.
 
       Les failles Januscape et ITScape représentent un mécanisme différent basé sur l'évasion de machine virtuelle. Elles ciblent l'hyperviseur KVM intégré au noyau Linux.
 
-      La faille ITScape, référencée CVE-deux mille vingt-six-quarante-six mille trois cent seize, a été divulguée en juin deux mille vingt-six. Elle concerne l'architecture arm64 et constitue la première évasion invité-hôte publiquement démontrée sur ce système.
+      La faille ITScape, référencée CVE-2026-46316, a été divulguée en juin deux mille vingt-six. Elle concerne l'architecture arm64 et constitue la première évasion invité-hôte publiquement démontrée sur ce système.
 
-      La faille Januscape regroupe les CVE-deux mille vingt-six-cinquante-trois mille trois cent cinquante-neuf et CVE-deux mille vingt-six-quarante-six mille cent treize. Divulguée le six juillet deux mille vingt-six, elle touche l'architecture x86 sur Intel et AMD.
+      La faille Januscape regroupe les CVE-2026-53359 et CVE-2026-46113. Divulguée le six juillet deux mille vingt-six, elle touche l'architecture x86 sur Intel et AMD.
 
       Le bug exploite le mécanisme de shadow paging utilisé par KVM pour contrôler l'accès à la mémoire physique. Une page de suivi est réutilisée de façon incorrecte pour permettre à une VM malveillante d'agir sur la mémoire de l'hôte.
 
-      Le correctif pour Januscape est en attente de déploiement sur Debian treize. Pour ITScape, le suivi est actuellement en cours.
+      Au dix juillet deux mille vingt-six, date de la source, le correctif pour Januscape était en attente de déploiement sur Debian treize et le suivi d'ITScape était en cours ; ces statuts évoluent vite et doivent être vérifiés sur le suivi de sécurité Debian.
 
    D. Les vulnérabilités de concurrence GhostLock et Bad Epoll.
 
       Les failles GhostLock et Bad Epoll s'apparentent à la vulnérabilité Dirty Cow de deux mille seize. Leur exploitation nécessite de gagner une fenêtre de concurrence étroite entre deux opérations du noyau.
 
-      GhostLock est identifiée par le code CVE-deux mille vingt-six-quarante-trois mille quatre cent quatre-vingt-dix-neuf et a été divulguée au début du mois de juillet deux mille vingt-six. Elle touche les mécanismes de futex utilisés par les threads pour la gestion des verrous.
+      GhostLock est identifiée par le code CVE-2026-43499 et a été divulguée au début du mois de juillet deux mille vingt-six. Elle touche les mécanismes de futex utilisés par les threads pour la gestion des verrous.
 
       Une erreur de comptabilité mémoire vieille de quinze ans dans l'héritage de priorité permet d'obtenir les droits root. Cette faille permet également de s'évader d'un conteneur.
 
-      Bad Epoll est référencée sous le code CVE-deux mille vingt-six-quarante-six mille deux cent quarante-deux et a été divulguée vers le trois juillet deux mille vingt-six. Elle cible le mécanisme epoll utilisé par les serveurs réseau comme nginx.
+      Bad Epoll est référencée sous le code CVE-2026-46242 et a été divulguée vers le trois juillet deux mille vingt-six. Elle cible le mécanisme epoll utilisé par les serveurs réseau comme nginx.
 
       Le bug est de type use-after-free provoqué par une tentative simultanée de libération d'un même objet interne. Cette vulnérabilité impacte aussi bien les serveurs Linux qu'Android.
 
@@ -124,13 +124,13 @@ III. VULNÉRABILITÉS APPLICATIVES ET RAPPELS DE SÉCURITÉ.
 
    A. Le cas du protocole Telnet.
 
-      Le protocole Telnet demeure une menace critique pour la sécurité des systèmes, comme l'illustre la découverte de la vulnérabilité CVE-deux mille vingt-six-trente-deux mille sept cent quarante-six.
+      Le protocole Telnet demeure une menace critique pour la sécurité des systèmes, comme l'illustre la découverte de la vulnérabilité CVE-2026-32746.
 
       Cette faille présente un score de criticité CVSS de neuf virgule huit, ce qui en fait un point de vulnérabilité majeur pour les infrastructures.
 
-      L'implémentation de Telnet au sein de GNU InetUtils, via le composant telnetd, a été frappée par cette nouvelle vulnérabilité quelques mois après une première faille critique nommée CVE-deux mille vingt-six-vingt-quatre mille soixante et un.
+      L'implémentation de Telnet au sein de GNU InetUtils, via le composant telnetd, a été frappée par cette nouvelle vulnérabilité quelques mois après une première faille critique nommée CVE-2026-24061.
 
-      La précédente vulnérabilité CVE-deux mille vingt-six-vingt-quatre mille soixante et un permettait un accès root en une seule commande et faisait l'objet d'une exploitation active selon la CISA.
+      La précédente vulnérabilité CVE-2026-24061 permettait un accès root en une seule commande et faisait l'objet d'une exploitation active selon la CISA.
 
       Bien que cette découverte ne représente pas une avancée technique majeure, elle souligne que les services obsolètes constituent des cibles réelles pour les attaquants.
 
@@ -262,6 +262,6 @@ EXEMPLES CITÉS.
 
       La vulnérabilité Januscape a été divulguée le six juillet deux mille vingt-six et concerne l'évasion de machine virtuelle sur l'architecture KVM/x86.
 
-      Le protocole Telnet est cité comme un exemple de service obsolète qui reste une cible réelle avec la faille CVE-deux mille vingt-six-trente-deux mille sept cent quarante-six présentant un score CVSS de neuf virgule huit.
+      Le protocole Telnet est cité comme un exemple de service obsolète qui reste une cible réelle avec la faille CVE-2026-32746 présentant un score CVSS de neuf virgule huit.
 
       Le noyau Linux a enregistré plus de mille neuf cents CVE recensées durant les six premiers mois de l'année deux mille vingt-six.

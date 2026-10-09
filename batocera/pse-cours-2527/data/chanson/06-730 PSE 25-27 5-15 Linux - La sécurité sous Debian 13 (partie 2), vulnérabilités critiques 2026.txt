@@ -12,7 +12,7 @@ Copy Fail par Theori est apparu en avril, c'est troublant.
 Le vingt-neuf avril deux mille vingt-six le score est de sept virgule huit,
 Le cache de pages est détourné pour faire un saut de nuit.
 L'algorithme authencesn écrit quatre octets en trop,
-Le binaire SUID perd ses droits, c'est le chaos.
+Par le binaire SUID, l'attaquant devient root, c'est le chaos.
 
 [Refrain]
 Défense en profondeur pour la sécurité,

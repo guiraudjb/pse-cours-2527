@@ -40,7 +40,7 @@ Pour la gestion des identités tout est orchestré
 Les rôles FSMO évitent les conflits majeurs
 Le maître RID distribue les identifiants avec rigueur
 L'émulateur PDC gère le temps et les mots de passe
-Si le maître du schéma tombe la structure s'efface
+Si le maître du schéma tombe, le domaine tient en place
 
 [Refrain final]
 AD DS c'est le cœur de ton système

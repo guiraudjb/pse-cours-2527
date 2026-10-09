@@ -190,7 +190,7 @@ V. SÉCURITÉ, MENACES ET BONNES PRATIQUES.
 
    B. Mesures de protection et durcissement.
 
-      Il est nécessaire de protéger le compte krbtgt en réinitialisant régulièrement sa clé avec la commande Reset-KrbtgtKey.
+      Il est nécessaire de protéger le compte krbtgt en réinitialisant régulièrement son mot de passe, deux fois de suite en respectant le délai de réplication, par exemple avec le script Microsoft New-KrbtgtKeys.ps1 ; aucune cmdlet native ne porte le nom Reset-KrbtgtKey.
 
       L'utilisation de mots de passe forts pour les comptes de service est une mesure de protection essentielle.
 
@@ -218,7 +218,7 @@ VI. DIAGNOSTIC ET OUTILS DE DÉPANNAGE.
 
    B. Résolution des erreurs courantes.
 
-      Une erreur fréquemment rencontrée lors des processus d'authentification est l'erreur KRB_AP_ERR_MODIFIED. Ce message indique généralement un problème de configuration ou de synchronisation.
+      Une erreur fréquemment rencontrée lors des processus d'authentification est l'erreur KRB_AP_ERR_MODIFIED. Ce message indique que le ticket n'a pas pu être déchiffré, en général à cause d'un SPN dupliqué ou attribué au mauvais compte. Un décalage d'horloge produit une autre erreur, KRB_AP_ERR_SKEW.
 
       L'une des causes principales de cette erreur est un SPN incorrect associé au service. Il convient alors de vérifier l'exactitude des identifiants avec la commande setspn.
 
@@ -242,7 +242,7 @@ POINTS D'ATTENTION.
 
       Il est important de noter que Kerberos remplace NTLM car ce dernier utilise des hachages moins robustes comme MD4 ou MD5.
 
-      Une erreur de type KRB_AP_ERR_MODIFIED peut provenir soit d'un SPN incorrect soit d'une horloge désynchronisée.
+      Il ne faut pas confondre KRB_AP_ERR_MODIFIED, qui provient d'un SPN incorrect ou dupliqué ou d'une clé qui ne correspond pas, et KRB_AP_ERR_SKEW, qui signale une horloge désynchronisée.
 
 EXEMPLES CITÉS.
 

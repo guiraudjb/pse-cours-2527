@@ -27,7 +27,7 @@ L'asymétrique utilise deux clés liées,
 La clé publique et la privée pour communiquer.
 Le protocole RSA utilise les nombres premiers,
 Le RSA chiffre et signe pour le bien commun.
-La PKI gère les certificats X.cinq cent quatre-vingt-dix,
+La PKI gère les certificats X cinq cent neuf,
 Pour que la confiance dans le réseau se fixe.
 
 [Refrain]

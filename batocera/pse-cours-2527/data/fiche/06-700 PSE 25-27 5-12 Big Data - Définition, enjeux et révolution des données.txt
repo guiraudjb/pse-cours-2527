@@ -132,7 +132,7 @@ III. TECHNOLOGIES ET INFRASTRUCTURES DE STOCKAGE.
 
       En tant que coordinateur, le NameNode reçoit les requêtes de consultation des clients et dirige les opérations de renommage ou d'ouverture de fichiers. Il est le cerveau qui orchestre la gestion de l'espace de stockage.
 
-      Les DataNodes constituent les nœuds de stockage qui exécutent les opérations de lecture et d'écriture. Ils stockent les données sous forme de blocs dont la taille par défaut est de soixante-quatre Mo.
+      Les DataNodes constituent les nœuds de stockage qui exécutent les opérations de lecture et d'écriture. Ils stockent les données sous forme de blocs dont la taille par défaut est de cent vingt-huit Mo depuis Hadoop 2, contre soixante-quatre Mo sous Hadoop 1.
 
       Pour garantir la tolérance aux pannes, chaque bloc est répliqué généralement trois fois sur différents DataNodes. Cette stratégie permet d'éviter la perte de données même en cas de défaillance d'un serveur.
 
@@ -176,7 +176,7 @@ V. OPPORTUNITÉS STRATÉGIQUES ET IMPACTS SECTORIELS.
 
    A. Exploitation des données pour l'optimisation et l'innovation.
 
-      Le principal défi actuel réside dans le faible taux d'exploitation des données disponibles, puisque les entreprises n'en analysent qu'environ douze pour cent.
+      Le principal défi actuel réside dans le faible taux d'exploitation des données disponibles, puisque, selon une estimation citée par le support, les entreprises n'en analysent qu'environ douze pour cent.
 
       Une fois agrégées, filtrées et analysées, ces données deviennent un outil puissant pour mieux connaître les utilisateurs en analysant leurs comportements et préférences.
 
@@ -198,7 +198,7 @@ V. OPPORTUNITÉS STRATÉGIQUES ET IMPACTS SECTORIELS.
 
       Ces informations permettent aussi de créer des tableaux de bord interactifs pour visualiser l'activité publique et d'aider les collectivités dans leur planification urbaine.
 
-      La Commission Européenne estime que la réutilisation des données publiques pourrait générer un chiffre d'affaires de vingt-sept milliards d'euros par an dans l'Union européenne.
+      La Commission européenne estimait en deux mille onze que la réutilisation des données publiques pourrait générer un chiffre d'affaires de vingt-sept milliards d'euros par an dans l'Union européenne.
 
       Des pays comme la France ont déjà mis en place des portails comme data.gouv.fr pour centraliser et rendre ces données accessibles.
 
@@ -212,7 +212,7 @@ V. OPPORTUNITÉS STRATÉGIQUES ET IMPACTS SECTORIELS.
 
       Le marketing utilise aussi ces capacités pour la personnalisation des offres auprès des consommateurs.
 
-      Avec un volume mondial de données qui double tous les deux ans, les opportunités de ces secteurs ne feront que croître.
+      Avec un volume mondial de données qui, selon le support, double tous les deux ans, les opportunités de ces secteurs ne feront que croître.
 
       L'enjeu pour les organisations est de savoir exploiter ces flux de manière efficace, éthique et responsable.
 
@@ -232,9 +232,9 @@ EXEMPLES CITÉS.
 
       Le concept repose sur les 3V qui sont le volume, la variété et la vélocité des données.
 
-      Les entreprises n'analysent actuellement qu'environ douze pour cent de leurs données disponibles.
+      Selon le support, les entreprises n'analysent qu'environ douze pour cent de leurs données disponibles.
 
-      La réutilisation des données publiques pourrait générer un chiffre d'affaires de vingt-sept milliards d'euros par an dans l'Union européenne.
+      Selon l'estimation de la Commission européenne de deux mille onze, la réutilisation des données publiques pourrait générer un chiffre d'affaires de vingt-sept milliards d'euros par an dans l'Union européenne.
 
       Un utilisateur mobile standard réalise plus de cent cinquante interactions quotidiennes avec son appareil.
 

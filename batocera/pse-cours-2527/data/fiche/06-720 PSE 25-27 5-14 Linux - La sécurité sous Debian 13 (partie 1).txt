@@ -88,7 +88,7 @@ II. SECTEURS DE LA SÉCURITÉ ET ACTEURS.
 
       La sécurité des données concerne la protection de l'information par le chiffrement au repos et en transit ainsi que par les sauvegardes. L'administrateur ou le RSSI doit garantir la disponibilité et l'intégrité des données stockées.
 
-      Pour les sauvegardes, la règle trois-deux-un préconise de conserver trois copies des données sur deux supports différents dont un copie externalisée. Une version plus récente est la règle trois-deux-un-un-zéro qui ajoute une copie immuable et hors ligne.
+      Pour les sauvegardes, la règle trois-deux-un préconise de conserver trois copies des données sur deux supports différents dont une copie externalisée. Une version plus récente est la règle trois-deux-un-un-zéro qui ajoute une copie immuable et hors ligne.
 
       Le cloisonnement applicatif peut être renforcé par l'usage de chroot pour restreindre l'arborescence visible par un processus. Cependant, ce mécanisme ne garantit pas une isolation complète des processus ou du réseau.
 
@@ -110,7 +110,7 @@ III. MESURES DE PROTECTION DU SYSTÈME ET DES DONNÉES.
 
       Il existe trois types de sauvegardes : la complète qui copie l'intégralité des données, l'incrémentale qui ne copie que les modifications depuis la dernière sauvegarde, et la différentielle qui copie les modifications depuis la dernière complète.
 
-      La règle trois-deux-un préconise de conserver trois copies des données sur deux supports différents, dont un copie externalisée hors site.
+      La règle trois-deux-un préconise de conserver trois copies des données sur deux supports différents, dont une copie externalisée hors site.
 
       Une version plus récente nommée règle trois-deux-un-un-zéro ajoute une copie hors ligne immuable et exige zéro erreur de restauration constatée lors des tests.
 
@@ -148,7 +148,7 @@ IV. CONTRÔLE DES ACCÈS ET AUTHENTIFICATION.
 
       Chaque configuration utilise des types de gestion comme auth, account, password ou session. Les contrôles associés peuvent être de type required, requisite, sufficient ou optional pour définir la manière dont la pile est évaluée.
 
-      Le module pam_faillock.so permet de verrouiller un compte après un certain nombre d'échecs répétés. Sous Debian treize, on peut configurer un verrouillage avec deny=cinq et un unlock_time=neuf cents.
+      Le module pam_faillock.so permet de verrouiller un compte après un certain nombre d'échecs répétés. Sous Debian treize, on peut configurer un verrouillage avec deny=5 et unlock_time=900.
 
       L'outil sudo s'appuie sur PAM pour appliquer le principe de moindre privilège lors des tâches d'administration. Il permet d'accorder des droits élevés de façon ciblée et journalisée à des comptes nominatifs.
 
@@ -156,7 +156,7 @@ IV. CONTRÔLE DES ACCÈS ET AUTHENTIFICATION.
 
    B. Politique des mots de passe et clés SSH.
 
-      Les empreintes des mots de passe sont stockées dans le fichier /etc/shadow avec l'algorithme de hachage SHA-cinq cent douze. Ce mécanisme utilise un sel aléatoire pour empêcher la comparaison directe d'empreintes identiques.
+      Les empreintes des mots de passe sont stockées dans le fichier /etc/shadow avec l'algorithme de hachage yescrypt, préfixe $y$, par défaut depuis Debian onze. Ce mécanisme utilise un sel aléatoire pour empêcher la comparaison directe d'empreintes identiques.
 
       Le paquet libpam-pwquality permet d'imposer des règles de robustesse comme une longueur minimale de douze caractères. On peut également définir des contraintes sur les classes de caractères et la durée de vie des comptes.
 
@@ -288,12 +288,12 @@ POINTS D'ATTENTION.
 
 EXEMPLES CITÉS.
 
-      La règle trois-deux-un impose de conserver trois copies des données sur deux supports différents dont un copie externalisée hors site.
+      La règle trois-deux-un impose de conserver trois copies des données sur deux supports différents dont une copie externalisée hors site.
 
-      L'algorithme de hachage par défaut sur Debian pour les mots de passe est le SHA-cinq cent douze ce qui est identifiable par le préfixe $six$ dans le fichier /etc/shadow.
+      L'algorithme de hachage par défaut sur Debian pour les mots de passe est yescrypt, identifiable par le préfixe $y$ dans le fichier /etc/shadow ; c'est l'algorithme par défaut depuis Debian onze, à la place de SHA-512 et de son préfixe $6$.
 
       Pour la protection du réseau, l'administrateur peut utiliser nftables pour le filtrage et fail2ban pour bannir dynamiquement les adresses IP après des tentatives d'authentification échouées.
 
-      Le cadre juridique français sur la cryptologie est régi par le Code de la défense notamment les articles L. deux mille trois cent vingt et un-un et suivants.
+      Le cadre juridique français sur la cryptologie relève de la loi pour la confiance dans l'économie numérique, articles vingt-neuf à quarante, et du décret de deux mille sept sur les moyens de cryptologie ; les articles L. deux mille trois cent vingt et un-un et suivants du Code de la défense, cités par le support, portent sur l'ANSSI et la défense des systèmes d'information.
 
       L'Orange Book définit plusieurs classes de sécurité allant de la classe D pour une protection minimale jusqu'à la classe A1 pour une conception vérifiée.

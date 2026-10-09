@@ -24,7 +24,7 @@ LEXIQUE COMPLET.
 
       La sauvegarde différentielle désigne une copie des changements effectués depuis la dernière sauvegarde complète.
 
-      La stratégie trois-deux-un désigne un principe de prudence consistant à avoir trois copies, sur deux types de supports, dont un copie hors site ou isolée.
+      La stratégie trois-deux-un désigne un principe de prudence consistant à avoir trois copies, sur deux types de supports, dont une copie hors site ou isolée.
 
 COURS DÉTAILLÉ.
 
@@ -184,7 +184,7 @@ V. GESTION DES INCIDENTS ET PROTECTION DES DONNÉES.
 
       La stratégie trois-deux-un constitue un principe de prudence opérationnelle efficace.
 
-      Cette règle préconise de posséder trois copies, d'utiliser deux types de supports différents et de conserver un copie hors site ou isolée.
+      Cette règle préconise de posséder trois copies, d'utiliser deux types de supports différents et de conserver une copie hors site ou isolée.
 
 POINTS D'ATTENTION.
 
@@ -206,6 +206,6 @@ EXEMPLES CITÉS.
 
       Un RTO de deux heures impose une restauration rapide avec une procédure préparée et des sauvegardes accessibles.
 
-      La stratégie trois-deux-un recommande d'avoir trois copies, deux types de supports et un copie hors site ou isolée.
+      La stratégie trois-deux-un recommande d'avoir trois copies, deux types de supports et une copie hors site ou isolée.
 
       En cas de ransomware, la procédure consiste en une restauration depuis une copie isolée après un assainissement complet du système.

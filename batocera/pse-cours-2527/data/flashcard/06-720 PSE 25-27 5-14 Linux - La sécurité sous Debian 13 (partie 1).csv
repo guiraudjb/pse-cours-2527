@@ -14,7 +14,7 @@
 "Outil pour vérifier la syntaxe sudo ?","visudo."
 "Dépôt de sécurité Debian 13 ?","trixie-security."
 "Outil de comparaison des paquets aux CVE ?","debsecan."
-"Algorithme de hachage par défaut dans /etc/shadow ?","SHA-512 (préfixe $6$)."
+"Algorithme de hachage par défaut dans /etc/shadow ?","yescrypt (préfixe $y$) depuis Debian 11 ; auparavant SHA-512 ($6$)."
 "Paquet pour la robustesse des mots de passe ?","libpam-pwquality."
 "Algorithme SSH recommandé par l'ANSSI ?","ed25519."
 "Framework de filtrage par défaut sur Debian 10+ ?","nftables."

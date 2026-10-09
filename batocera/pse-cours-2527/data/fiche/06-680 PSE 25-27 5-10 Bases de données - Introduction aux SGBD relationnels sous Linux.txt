@@ -92,7 +92,7 @@ II. LE MODÈLE RELATIONNEL ET LA MANIPULATION DES DONNÉES.
 
       Toute relation doit disposer au minimum d'une clé candidate pour garantir l'unicité de la donnée.
 
-      La clé primaire est une clé candidate choisie pour servir de clé étrangère dans d'autres relations.
+      La clé primaire est la clé candidate retenue pour identifier chaque tuple de la relation ; les clés étrangères d'autres relations la référencent. Les associations entre relations ont des cardinalités un à un, un à plusieurs ou plusieurs à plusieurs.
 
       La clé étrangère est un attribut dont la valeur sert de référence à la clé primaire d'une autre relation.
 
@@ -170,7 +170,7 @@ IV. ORGANISATION PHYSIQUE ET LOGIQUE DES DONNÉES.
 
       La metabase assure la conservation de la liste exhaustive des tables, des champs et des relations pour garantir l'unicité du nommage et éviter les incohérences.
 
-      Les bases de données utilisent une gestion optimisée du cache mémoire car la mémoire vive est un million de fois plus rapide que la mémoire de stockage.
+      Les bases de données utilisent une gestion optimisée du cache mémoire car la mémoire vive est bien plus rapide que le stockage : environ cent mille fois plus qu'un disque dur et cent à mille fois plus qu'un SSD.
 
       Le système conserve en cache les blocs manipulés le plus récemment, les requêtes récentes ainsi que leur plan d'exécution pour réduire les accès au disque dur.
 

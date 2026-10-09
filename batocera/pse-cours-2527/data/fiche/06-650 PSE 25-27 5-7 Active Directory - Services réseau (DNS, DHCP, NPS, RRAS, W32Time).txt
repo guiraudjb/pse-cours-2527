@@ -106,7 +106,7 @@ II. LE SERVICE DNS ET LA RÉSOLUTION DE NOMS.
 
       La configuration de la zone repose sur les paramètres No-Refresh interval et Refresh interval.
 
-      La formule de calcul du délai avant suppression d'un enregistrement est généralement NoRefresh plus Refresh multiplié par deux.
+      Un enregistrement devient supprimable une fois écoulés l'intervalle NoRefresh puis l'intervalle Refresh sans mise à jour ; il est effectivement supprimé au passage suivant du nettoyage, selon sa période.
 
 III. GESTION DE L'ADRESSAGE AVEC LE SERVICE DHCP.
 
@@ -162,7 +162,7 @@ IV. AUTHENTIFICATION RADIUS ET ACCÈS DISTANTS.
 
       La comptabilité permet la journalisation des débuts et des fins de session RADIUS pour assurer le suivi des accès.
 
-      Il est utilisé pour sécuriser le Wi-Fi huit cent deux.1X, les VPN d'entreprise et les commutateurs réseau avec authentification par port.
+      Il est utilisé pour sécuriser le Wi-Fi 802.1X, les VPN d'entreprise et les commutateurs réseau avec authentification par port.
 
    B. Méthodes d'authentification et niveaux de sécurité.
 
@@ -196,7 +196,7 @@ V. SYNCHRONISATION TEMPORELLE ET SÉCURITÉ RÉSEAU.
 
       Dans une infrastructure Active Directory, les membres du domaine comme les clients et les serveurs non DC se synchronisent sur un contrôleur de domaine de leur site.
 
-      Les contrôleurs de domaine se synchronisent entre eux en suivant la topologie de réplication établie dans le réseau.
+      Les contrôleurs de domaine se synchronisent selon la hiérarchie du domaine : chaque contrôleur suit l'émulateur PDC, qui suit à son tour le domaine parent.
 
       Au sommet de cette hiérarchie, l'émulateur PDC du domaine racine de la forêt sert de source de temps interne de référence.
 
@@ -214,11 +214,11 @@ V. SYNCHRONISATION TEMPORELLE ET SÉCURITÉ RÉSEAU.
 
       La configuration de serveurs NTP manuels s'effectue avec w32tm /config /manualpeerlist et la commande w32tm /config /syncfromflags:domhier permet de revenir à la synchronisation via la hiérarchie AD.
 
-      En cas de besoin de maintenance profonde, les commandes net stop w32time et net start w32time permettent de redémarrer le service, tandis que ununregister et register servent à réenregistrer le service.
+      En cas de besoin de maintenance profonde, les commandes net stop w32time et net start w32time permettent de redémarrer le service, tandis que w32tm /unregister et w32tm /register servent à réenregistrer le service.
 
    C. Sécurisation contre les attaques LLMNR et NetBIOS.
 
-      Lorsque la résolution DNS échoue, les clients Windows utilisent des protocoles de secours non authentifiés comme LLMNR sur le port UDP cinq mille trois cent cinquante-cinq et NetBIOS-NS sur les ports UDP cent trente-sept-cent trente-huit.
+      Lorsque la résolution DNS échoue, les clients Windows utilisent des protocoles de secours non authentifiés comme LLMNR sur le port UDP cinq mille trois cent cinquante-cinq et NetBIOS-NS sur les ports UDP 137 et 138.
 
       Un attaquant peut exploiter ces protocoles avec un outil comme Responder pour répondre à la place du serveur légitime et capturer le hash NTLM de l'utilisateur.
 
@@ -226,7 +226,7 @@ V. SYNCHRONISATION TEMPORELLE ET SÉCURITÉ RÉSEAU.
 
       Le protocole mDNS peut également être configuré via la même GPO en utilisant le paramètre Configurer le répondeur mDNS avec l'option Désactivé.
 
-      La désactivation de NetBIOS s'effectue dans les Préférences du panneau de configuration sous les Options réseau et l'onglet WINS en choisissant Désactiver NetBIOS sur TCP/IP.
+      Sur un poste, la désactivation de NetBIOS se fait dans les propriétés IPv4 de la carte réseau, onglet WINS, en choisissant Désactiver NetBIOS sur TCP/IP. À grande échelle, aucune préférence de stratégie de groupe native ne le permet : on passe par l'option DHCP du fournisseur Microsoft, le registre ou un script.
 
       Il est recommandé de tester ces désactivations sur un groupe pilote avant un déploiement général car certaines applications anciennes peuvent dépendre de NetBIOS.
 
@@ -244,10 +244,10 @@ POINTS D'ATTENTION.
 
 EXEMPLES CITÉS.
 
-      Le calcul du délai de suppression d'un enregistrement via le scavenging suit la formule NoRefresh plus Refresh fois deux.
+      Avec le scavenging, un enregistrement devient supprimable après NoRefresh plus Refresh, puis disparaît au passage suivant du nettoyage.
 
       Pour la synchronisation horaire, Kerberos tolère un décalage maximum de cinq minutes entre un client et un contrôleur de domaine.
 
       Dans Windows Server deux mille vingt-cinq, les protocoles VPN PPTP et L2TP sont désactivés par défaut pour des raisons de sécurité.
 
-      Le serveur NPS assure les fonctions d'authentification, d'autorisation et de comptabilité pour les accès comme le Wi-Fi huit cent deux.1X.
+      Le serveur NPS assure les fonctions d'authentification, d'autorisation et de comptabilité pour les accès comme le Wi-Fi 802.1X.

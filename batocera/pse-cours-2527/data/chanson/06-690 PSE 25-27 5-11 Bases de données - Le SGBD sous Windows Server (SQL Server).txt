@@ -6,7 +6,7 @@ Pour gérer tes données, faut de la rigueur
 
 [Couplet 1]
 Le SGBD crée et stocke avec précision
-Une instance peut vivre sur une seule machine en action
+Plusieurs instances peuvent vivre sur une même machine en action
 Le moteur traite les requêtes et la sécurité
 Dans le modèle client serveur, la donnée est libérée
 Le niveau logique organise tables et index

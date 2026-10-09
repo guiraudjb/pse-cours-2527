@@ -22,7 +22,7 @@ Sécurise ton système, reste toujours fier.
 
 [Couplet 2]
 Dans le fichier slash etc slash shadow,
-Le SHA-cinq cent douze cache le mot.
+Le yescrypt aujourd'hui cache le mot.
 Le préfixe dollar six identifie le hachage,
 Avec un sel aléatoire pour éviter le naufrage.
 Le protocole RADIUS utilise le modèle AAA,

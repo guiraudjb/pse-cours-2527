@@ -1,4 +1,4 @@
-TITRE : La Data Riddim Riddim
+TITRE : La Data Riddim
 
 [Intro]
 Écoute le rythme de la donnée,

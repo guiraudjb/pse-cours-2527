@@ -6,7 +6,7 @@
 "But du chiffrement ?","Rendre les données inintelligibles via un cryptogramme."
 "Fonction du hachage ?","Garantir l'intégrité via une empreinte numérique unique."
 "Caractéristique du chiffrement symétrique ?","Même clé pour chiffrer et déchiffrer."
-"Limite du DES ?","Vulnérable aux attaques par force brute (blocs de 64 bits)."
+"Limite du DES ?","Clé de 56 bits trop courte : vulnérable à la force brute."
 "Successeur du DES ?","3DES puis AES."
 "Principe de la cryptographie asymétrique ?","Utilisation d'une clé publique et d'une clé privée liées."
 "Usage de la clé privée en asymétrique ?","Déchiffrement ou signature numérique."

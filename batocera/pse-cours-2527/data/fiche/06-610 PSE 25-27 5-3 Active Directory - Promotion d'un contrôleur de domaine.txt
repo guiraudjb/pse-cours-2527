@@ -46,13 +46,13 @@ II. PRÉREQUIS ET CONFIGURATION INITIALE.
 
       Le serveur doit impérativement posséder une adresse IP statique au lieu d'une attribution par DHCP.
 
-      Un exemple de configuration valide pour ce déploiement est l'adresse dix.2.25.35.
+      Un exemple de configuration valide pour ce déploiement est l'adresse 10.2.25.35.
 
       Pour configurer cette adresse via PowerShell, on utilise la commande New-NetIPAddress avec l'interface Ethernet et le préfixe vingt-quatre.
 
-      La passerelle par défaut doit être définie sur dix.2.25.1 pour assurer la sortie du réseau.
+      La passerelle par défaut doit être définie sur 10.2.25.1 pour assurer la sortie du réseau.
 
-      Le serveur DNS doit également être configuré manuellement avec l'adresse dix.2.25.10.
+      Le serveur DNS doit également être configuré manuellement avec l'adresse 10.2.25.10 dans l'exemple du support ; une fois promu, le contrôleur de domaine doit plutôt pointer vers lui-même, 10.2.25.35 ou 127.0.0.1.
 
    B. Nommage du serveur et connectivité.
 
@@ -222,7 +222,7 @@ POINTS D'ATTENTION.
 
 EXEMPLES CITÉS.
 
-      Le serveur doit posséder une IP statique comme dix.2.25.35 avec une passerelle dix.2.25.1.
+      Le serveur doit posséder une IP statique comme 10.2.25.35 avec une passerelle 10.2.25.1.
 
       La commande PowerShell Install-WindowsFeature permet d'installer le rôle AD DS de manière automatisée.
 

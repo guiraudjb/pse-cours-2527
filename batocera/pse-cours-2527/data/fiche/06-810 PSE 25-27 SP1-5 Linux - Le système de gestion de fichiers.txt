@@ -114,11 +114,11 @@ II. GESTION DES DROITS D'ACCÈS ET SÉCURITÉ.
 
       Les commandes getfacl et setfacl servent respectivement à la visualisation et à la modification de ces listes de contrôle.
 
-      Le calcul des droits d'accès se fait par rapport à la valeur de l'umask qui est de vingt-deux par défaut.
+      Le calcul des droits d'accès se fait par rapport à la valeur de l'umask qui est de zéro-deux-deux par défaut.
 
       Les fichiers sont créés avec un droit initial de six cent soixante-six et les répertoires avec un droit de sept cent soixante-dix-sept.
 
-      Avec une umask de vingt-deux, les fichiers finissent avec les droits six cent quarante-quatre et les répertoires avec les droits sept cent cinquante-cinq.
+      Avec une umask de zéro-deux-deux, les fichiers finissent avec les droits six-quatre-quatre et les répertoires avec les droits sept-cinq-cinq.
 
 III. STRUCTURE ET ORGANISATION DE L'ARBORESCENCE.
 
@@ -186,13 +186,13 @@ IV. SYSTÈMES DE FICHIERS ET FONCTIONNEMENT INTERNE.
 
       L'inode agit comme un descripteur de fichier stockant le type, l'uid, le gid, la taille et le nombre de liens.
 
-      Il contient également les dates d'accès, de modification et de chargement de l'inode ainsi que les adresses des blocs.
+      Il contient également les dates de dernier accès, atime, de modification du contenu, mtime, et de changement de l'inode, ctime, ainsi que les adresses des blocs.
 
       Le système utilise des tables comme la table des inodes ou la table des fichiers ouverts pour gérer ces éléments.
 
    C. Mécanismes d'indirection et gestion des données.
 
-      L'inode utilise douze numéros de blocs logiques pour pointer directement vers les données dans le cas de ext4.
+      Dans ext2 et ext3, l'inode utilise douze numéros de blocs pour pointer directement vers les données ; ext4 utilise par défaut des extents, quatre dans l'inode puis un arbre.
 
       Pour les fichiers plus volumineux, des mécanismes de simple, double ou triple indirection sont utilisés pour pointer vers des blocs de données.
 
@@ -212,7 +212,7 @@ V. GESTION DU STOCKAGE ET ÉLÉMENTS CONNEXES.
 
       Le gestionnaire de volumes logiques ou LVM permet de décorréler l'organisation physique des disques de l'organisation logique qui répond aux besoins.
 
-      Cette technologie offre une gestion dynamique et à chaud pour certaines opérations grâce à des fonctionnalités comme le miroir, le snapshot ou le stripping.
+      Cette technologie offre une gestion dynamique et à chaud pour certaines opérations grâce à des fonctionnalités comme le miroir, le snapshot ou le striping.
 
       L'utilisation du LVM implique la création de volumes physiques avec pvcreate, de groupes de volumes avec vgcreate et de volumes logiques avec lvcreate.
 
@@ -238,7 +238,7 @@ V. GESTION DU STOCKAGE ET ÉLÉMENTS CONNEXES.
 
       Le cache est une mémoire rapide souvent volatile qui évite les accès disques mais présente un risque de perte de données en cas d'arrêt brutal.
 
-      Le ramdisk est un système similaire à une partition disque stocké en mémoire RAM mais il n'est plus utilisé depuis le noyau Linux deux.6.
+      Le ramdisk est un système similaire à une partition disque stocké en mémoire RAM mais il n'est plus utilisé depuis le noyau Linux 2.6.
 
       Le ramfs est un système de fichiers en mémoire qui utilise les mécanismes de cache existants du noyau Linux mais il est aujourd'hui obsolète.
 
@@ -256,7 +256,7 @@ POINTS D'ATTENTION.
 
       Il est crucial de distinguer les fichiers spéciaux de type caractère qui lisent les données par caractère des fichiers de type bloc qui lisent par blocs.
 
-      Les droits d'accès sont calculés par rapport à la valeur de l'umask qui est de vingt-deux par défaut.
+      Les droits d'accès sont calculés par rapport à la valeur de l'umask qui est de zéro-deux-deux par défaut.
 
 EXEMPLES CITÉS.
 
@@ -264,7 +264,7 @@ EXEMPLES CITÉS.
 
       Le répertoire /tmp est un exemple de répertoire utilisant le sticky bit avec les droits drwxrwxrwt.
 
-      Pour un fichier créé avec une umask de vingt-deux, les droits finaux sont de six cent quarante-quatre pour un fichier et de sept cent cinquante-cinq pour un répertoire.
+      Avec une umask de zéro-deux-deux, les droits finaux sont six-quatre-quatre pour un fichier et sept-cinq-cinq pour un répertoire.
 
       Dans un système d'indirection d'inodes, une simple indirection avec des blocs de huit Ko permet d'atteindre seize Mo.
 

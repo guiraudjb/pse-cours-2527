@@ -40,7 +40,7 @@ I. OUTILS D'ADMINISTRATION ET DE GESTION DU SYSTÈME.
 
       Les consoles MMC avec leurs snap-ins spécialisés servent à gérer l'AD DS, le DNS, le DHCP, les GPO ou encore l'Event Viewer.
 
-      Le Gestionnaire de serveur permet de gérer les services, les utilisateurs locaux, les disques et les dossiers partagés sur un serveur autonome ou membre.
+      La console Gestion de l'ordinateur, compmgmt.msc, permet de gérer les services, les utilisateurs locaux, les disques et les dossiers partagés sur un serveur autonome ou membre ; elle ne doit pas être confondue avec le Gestionnaire de serveur.
 
       D'autres outils comme le Gestionnaire de performances facilitent le diagnostic via des compteurs et des alertes, tandis que le FSRM gère les quotas et le filtrage de fichiers.
 
@@ -62,7 +62,7 @@ I. OUTILS D'ADMINISTRATION ET DE GESTION DU SYSTÈME.
 
       La gestion des stratégies de groupe repose sur les commandes gpupdate /force et gpresult /r pour appliquer ou vérifier les résultats.
 
-      L'analyse des journaux d'événements peut être réalisée avec Get-EventLog pour consulter les vingt derniers messages du journal System.
+      L'analyse des journaux d'événements peut être réalisée avec Get-EventLog, ou Get-WinEvent seule disponible dans PowerShell 7, pour consulter les vingt derniers messages du journal System.
 
       Les commandes net comme net start ou net stop permettent de démarrer, lister ou arrêter des services de manière rapide.
 
@@ -94,7 +94,7 @@ II. STRATÉGIES DE SAUVEGARDE ET DE PROTECTION DES DONNÉES.
 
       La commande wbadmin start systemstatebackup avec l'option -backupTarget:E: est utilisée pour l'état du système.
 
-      Les commandes wbadmin start systemstaterecovery, wbadmin start sysrecovery et wbadmin start systemstaterecovery servent à la restauration.
+      Les commandes wbadmin start recovery, wbadmin start sysrecovery et wbadmin start systemstaterecovery servent à la restauration.
 
    C. Fonctionnement du Volume Shadow Copy Service (VSS).
 
@@ -148,7 +148,7 @@ III. GESTION DE L'IDENTITÉ ET SÉCURISATION DU CONTRÔLEUR DE DOMAINE.
 
       La commande repadmin /replsummary est utilisée pour vérifier l'état de la réplication.
 
-      Pour analyser les événements récents, on peut utiliser la commande Get-EventLog avec le paramètre LogName Directory Service.
+      Pour analyser les événements récents, on peut utiliser Get-WinEvent, ou l'ancienne Get-EventLog, avec le journal Directory Service.
 
       Les commandes Get-ADDomain et Get-ADForest permettent d'interroger la structure de l'annuaire.
 
@@ -236,7 +236,7 @@ V. MÉTROLOGIE, PERFORMANCE ET OPTIMISATION DES RESSOURCES.
 
       La commande Get-CimInstance permet d'interroger Win32_OperatingSystem, Win32_LogicalDisk ou Win32_Service.
 
-      La commande netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable=yes permet d'activer le service.
+      La commande netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable=yes active les règles du pare-feu qui autorisent WMI.
 
 VI. SERVICES D'INFRASTRUCTURE RÉSEAU DHCP ET DNS.
 
@@ -286,6 +286,6 @@ EXEMPLES CITÉS.
 
       L'exemple de commande pour formater un volume nommé DATA en NTFS sur le disque numéro deux est Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel 'DATA'.
 
-      Dans une configuration DHCP, une étendue nommée LAN-Paris peut être configurée avec une plage d'adresses allant de cent quatre-vingt-douze.168.10.50 à cent quatre-vingt-douze.168.10.200.
+      Dans une configuration DHCP, une étendue nommée LAN-Paris peut être configurée avec une plage d'adresses allant de 192.168.10.50 à 192.168.10.200.
 
       Pour tester la résolution d'un nom de serveur, on peut utiliser la commande nslookup srv01.domaine.local ou la commande Resolve-DnsName.

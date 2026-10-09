@@ -1,4 +1,4 @@
-GUIDE MÉTHODOLOGIQUE POUR LA PRÉPARATION DE L'ÉPREUVE un DE L'EXAMEN PROFESSIONNEL PSE-TRAD.
+GUIDE MÉTHODOLOGIQUE POUR LA PRÉPARATION DE L'ÉPREUVE 1 DE L'EXAMEN PROFESSIONNEL PSE-TRAD.
 
 LEXIQUE COMPLET.
 
@@ -40,7 +40,7 @@ I. PRÉSENTATION DE L'EXAMEN PSE-TRAD.
 
       L'admission consiste en une interrogation portant sur le programme déterminé par l'arrêté du dix juin mille neuf cent quatre-vingt-deux.
 
-      Cette épreuve d'admission nécessite une préparation de trente mn pour une durée totale de trente mn.
+      Cette épreuve d'admission comprend une préparation de trente minutes, suivie d'une épreuve de trente minutes.
 
    B. Attentes du jury sur le fond et la forme.
 
@@ -158,7 +158,7 @@ IV. PRÉPARATION CONTINUE ET VEILLE TECHNOLOGIQUE.
 
       Pour assurer une veille efficace, il est conseillé de consulter les sites interministériels ou de référence comme numerique.gouv.fr ou data.gouv.fr.
 
-      Les plateformes etalab.gouv.fr, api.gouv.fr et franceconnect.gouv.fr constituent également des ressources essentielles pour l'examen.
+      Les plateformes numerique.gouv.fr, qui accueille désormais Etalab intégrée à la DINUM, api.gouv.fr et franceconnect.gouv.fr constituent également des ressources essentielles pour l'examen.
 
       Le site de l'ANSSI, accessible via ssi.gouv.fr, est une source de référence pour les questions de sécurité.
 
@@ -170,7 +170,7 @@ IV. PRÉPARATION CONTINUE ET VEILLE TECHNOLOGIQUE.
 
       D'autres sources d'information pertinentes incluent lejournaldunet.com, silicon.fr ou encore infodsi.com.
 
-      Le suivi de l'actualité peut aussi se faire via lejournalduhacker.net ou lemondeinformatique.fr.
+      Le suivi de l'actualité peut aussi se faire via journalduhacker.net ou lemondeinformatique.fr.
 
 V. APPLICATION PRATIQUE ET ÉTUDE DE CAS.
 

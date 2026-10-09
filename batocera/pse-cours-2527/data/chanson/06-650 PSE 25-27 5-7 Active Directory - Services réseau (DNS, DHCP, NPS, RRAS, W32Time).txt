@@ -23,9 +23,9 @@ Dans l'annuaire AD, tout est orchestré.
 [Couplet 2]
 Les zones intégrées dans l'annuaire NTDS.dit sont répliquées,
 Le scavenging nettoie les vieux enregistrements obsolètes.
-NoRefresh plus Refresh multiplié par deux pour le délai,
+NoRefresh plus Refresh, et le nettoyage fait le relais,
 Le DHCP doit être autorisé pour ne pas être rejeté.
-Le PEAP-MSCHAPv2 offre une sécurité très élevée,
+Le PEAP-MSCHAPv2 offre une sécurité élevée,
 L'EAP-TLS utilise des certificats pour être bien protégé.
 Désactive LLMNR et NetBIOS pour stopper les attaquants,
 Évite que Responder ne capture les hashs des clients.

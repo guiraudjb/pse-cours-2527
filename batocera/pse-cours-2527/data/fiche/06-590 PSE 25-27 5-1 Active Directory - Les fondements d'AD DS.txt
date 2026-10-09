@@ -20,7 +20,7 @@ LEXIQUE COMPLET.
 
       KDC désigne le Key Distribution Center, un composant utilisé dans le fonctionnement du protocole Kerberos v5.
 
-      SAM désigne le Security Accounts Manager, une interface propriétaire utilisée pour connecter les clients Windows NT quatre.0 ou antérieurs au contrôleur de domaine.
+      SAM désigne le Security Accounts Manager, une interface propriétaire utilisée pour connecter les clients Windows NT 4.0 ou antérieurs au contrôleur de domaine.
 
       DSA désigne l'Agent de Service d'Annuaire qui exécute Ntdsa.dll sur chaque contrôleur de domaine pour garantir la sémantique de l'annuaire.
 
@@ -132,7 +132,7 @@ III. GESTION DES DONNÉES ET MÉCANISMES DE STOCKAGE.
 
       L'interface MAPI permet aux clients de messagerie comme Outlook d'accéder à la liste d'adresse globale via RPC.
 
-      Le SAM est une interface propriétaire utilisée par les anciens clients Windows NT quatre.0 pour communiquer via RPC.
+      Le SAM est une interface propriétaire utilisée par les anciens clients Windows NT 4.0 pour communiquer via RPC.
 
       Le DSA exécute Ntdsa.dll sur chaque contrôleur de domaine pour garantir la sémantique de l'annuaire et le maintien du schéma.
 
@@ -210,7 +210,7 @@ V. ADMINISTRATION ET MAINTIEN DE L'INFRASTRUCTURE.
 
       Pour des manipulations plus techniques comme la gestion du schéma, l'outil ADSI Edit est indispensable, tandis que ntdsutil et ESE permettent d'intervenir sur la base de données.
 
-      La gestion de la réplication et des rôles FSMO peut s'effectuer via PowerShell en utilisant des commandes telles que netdom query fsmo ou Get-ADForest.
+      La gestion de la réplication et des rôles FSMO peut s'effectuer avec l'outil en ligne de commande netdom query fsmo ou avec la cmdlet PowerShell Get-ADForest.
 
       Le diagnostic de l'état de réplication utilise l'outil repadmin avec les commandes repadmin /replsummary pour un résumé global ou repadmin /showrepl pour le détail des connexions.
 
@@ -228,7 +228,7 @@ VI. SYNTHÈSE DES COMPOSANTS ET RESSOURCES.
 
       Les rôles FSMO sont répartis entre la forêt et le domaine pour éviter les conflits d'opérations critiques. Le maître du schéma et le maître d'attribution des noms de domaine concernent la forêt tandis que le maître RID, le maître d'infrastructure et l'émulateur PDC concernent le domaine.
 
-   B. Commandes PowerShell et outils d'administration.
+   B. Commandes PowerShell et outils en ligne de commande.
 
       L'outil PowerShell permet de mesurer le nombre d'objets du schéma avec la commande Get-ADObject en utilisant le filtre et la base de recherche appropriée. La commande netdom query fsmo permet d'identifier rapidement les détenteurs des rôles FSMO dans l'infrastructure.
 
@@ -262,7 +262,7 @@ EXEMPLES CITÉS.
 
       La version du schéma est incrémentée à chaque mise à jour comme la version quatre-vingt-huit pour Windows Server deux mille vingt-deux.
 
-      Pour vérifier l'état de réplication de la forêt on utilise la commande PowerShell repadmin /replsummary.
+      Pour vérifier l'état de réplication de la forêt on utilise l'outil en ligne de commande repadmin /replsummary.
 
       Le protocole LDAP utilise les ports trois cent quatre-vingt-neuf pour le standard et six cent trente-six pour la version sécurisée par SSL.
 

@@ -56,7 +56,7 @@ I. FONDAMENTAUX ET ENJEUX DE LA RÉPLICATION.
 
       La partition Schéma et la partition Configuration sont répliquées dans toute la forêt Active Directory.
 
-      La partition des objets du domaine est répliquée sur tous les serveurs DNS de la forêt.
+      La partition des objets du domaine est répliquée sur tous les contrôleurs de ce domaine. Les partitions d'application DNS, ForestDnsZones et DomainDnsZones, sont répliquées respectivement sur tous les serveurs DNS de la forêt et sur ceux du domaine.
 
       La partition Global Catalog contient un sous-ensemble des attributs de tous les objets.
 
@@ -138,7 +138,7 @@ IV. CONFIGURATION ET OPTIMISATION DES FLUX.
 
       Le processus KCC vérifie et ajuste la topologie de réplication intrasite toutes les quinze minutes.
 
-      L'administrateur peut modifier ces délais via ADSIEdit en utilisant les attributs msDSReplication-Notify-First-DSA-Delay et msDS-Replication-Notify-Subsequent-DSADelay.
+      L'administrateur peut modifier ces délais via ADSIEdit en utilisant les attributs msDS-Replication-Notify-First-DSA-Delay et msDS-Replication-Notify-Subsequent-DSA-Delay.
 
    B. Gestion des liaisons de site et du coût.
 

@@ -70,7 +70,7 @@ II. MÉCANISMES DE PROTECTION DES DONNÉES PAR LA CRYPTOGRAPHIE.
 
       L'objectif de confidentialité est assuré par des algorithmes de chiffrement symétriques ou asymétriques afin de rendre les informations inintelligibles pour les acteurs non autorisés.
 
-      L'intégrité est garantie par des algorithmes de hachage comme SHA-deux cent cinquante-six ou MD5 qui génèrent une empreinte numérique unique pour chaque ensemble de données.
+      L'intégrité est garantie par des algorithmes de hachage comme SHA-256, qui génère une empreinte numérique propre à chaque ensemble de données ; MD5, encore cité, est obsolète car vulnérable aux collisions.
 
       L'authentification de l'émetteur est réalisée grâce à des signatures numériques qui prouvent que le message provient bien de la source déclarée.
 
@@ -82,7 +82,7 @@ II. MÉCANISMES DE PROTECTION DES DONNÉES PAR LA CRYPTOGRAPHIE.
 
       Une limite majeure de cette approche est l'impossibilité d'identifier l'interlocuteur distant car la clé doit être partagée au préalable entre les parties.
 
-      Le standard DES développé par IBM utilisait des blocs de soixante-quatre bits mais il est devenu vulnérable aux attaques par force brute avec l'augmentation de la puissance de calcul.
+      Le standard DES, développé par IBM, chiffre par blocs de soixante-quatre bits avec une clé de cinquante-six bits seulement : c'est cette clé trop courte qui le rend vulnérable aux attaques par force brute.
 
       Le DES a été remplacé par le 3DES puis par l'AES pour maintenir un niveau de sécurité acceptable.
 
@@ -98,7 +98,7 @@ II. MÉCANISMES DE PROTECTION DES DONNÉES PAR LA CRYPTOGRAPHIE.
 
       L'authentification est possible lorsqu'un émetteur signe un message avec sa clé privée et que le destinataire vérifie la signature avec la clé publique.
 
-      Le protocole RSA est l'un des algorithmes asymétriques les plus répandus et il est basé sur la factorisation de grands nombres premiers.
+      Le protocole RSA est l'un des algorithmes asymétriques les plus répandus et il repose sur la difficulté de factoriser le produit de deux grands nombres premiers.
 
       Ce protocole RSA permet de réaliser simultanément le chiffrement des données et la signature numérique des messages.
 
@@ -136,9 +136,9 @@ III. DISPOSITIFS DE PROTECTION DES INFRASTRUCTURES ET DES FLUX.
 
       L'objectif principal de la DMZ est d'isoler ces serveurs du réseau interne pour limiter les risques en cas de compromission. Un attaquant doit franchir deux pare-feu pour accéder aux données sensibles dans une architecture sécurisée.
 
-      L'architecture à trois interfaces est la plus sécurisée car un premier pare-feu sépare Internet de la DMZ et un second sépare la DMZ du réseau interne. Aucune machine n'est alors à la fois exposée à Internet et connectée au réseau interne.
+      L'architecture que le support appelle à trois interfaces, avec deux pare-feu en série dits back-to-back, est la plus sécurisée : un premier pare-feu sépare Internet de la DMZ et un second sépare la DMZ du réseau interne. Aucune machine n'est alors à la fois exposée à Internet et connectée au réseau interne.
 
-      L'architecture à un interface est moins sécurisée mais plus simple car un seul pare-feu sépare les trois zones. Si ce pare-feu est compromis, le réseau interne devient directement accessible.
+      L'architecture que le support appelle à une interface est moins sécurisée mais plus simple, car un seul pare-feu sépare les trois zones ; attention, dans le vocabulaire courant, c'est justement ce pare-feu unique à trois pattes qu'on appelle pare-feu à trois interfaces. Si ce pare-feu est compromis, le réseau interne devient directement accessible.
 
       Le principe de la DMZ s'applique aussi au sein des grandes entreprises pour séparer les sous-réseaux internes selon leur sensibilité. On peut ainsi isoler les serveurs de production des serveurs de développement ou les données financières.
 
@@ -182,7 +182,7 @@ IV. ORGANISATION ET PILOTAGE DE LA SÉCURITÉ.
 
       La méthode EBIOS permet d'identifier les menaces, les vulnérabilités et les impacts sur les systèmes d'information.
 
-      Elle est utilisée pour l'expression des besoins et l'identification des objectifs de sécurité.
+      Dans sa version de deux mille dix, elle sert à l'expression des besoins et à l'identification des objectifs de sécurité ; la méthode actuelle est EBIOS Risk Manager, publiée par l'ANSSI en deux mille dix-huit.
 
       La méthode MEHARI est une approche alternative axée sur l'évaluation des risques et la priorisation des mesures de sécurité.
 
@@ -196,7 +196,7 @@ V. NORMES ET BONNES PRATIQUES DE GESTION.
 
       La norme internationale ISO vingt-sept mille deux définit un cadre complet pour la gestion de la sécurité de l'information.
 
-      Elle couvre quatorze domaines clés pour structurer la politique de sécurité des organisations.
+      Dans sa version de deux mille treize, elle couvrait quatorze domaines ; la version de deux mille vingt-deux regroupe quatre-vingt-treize mesures en quatre thèmes : organisationnel, humain, physique et technologique.
 
       Ce cadre permet d'assurer une gestion cohérente de la sécurité, de la politique de direction jusqu'à la conformité réglementaire.
 
@@ -232,10 +232,10 @@ EXEMPLES CITÉS.
 
       Les attaques par injection SQL et les ransomwares sont des exemples de menaces visant l'intégrité des données.
 
-      Le protocole RSA repose sur la factorisation de grands nombres premiers pour assurer le chiffrement et la signature.
+      Le protocole RSA repose sur la difficulté de factoriser le produit de deux grands nombres premiers pour assurer le chiffrement et la signature.
 
       L'ANSSI a été créée en deux mille neuf et elle est rattachée au Secrétaire général de la défense et de la sécurité nationale.
 
       La norme X.509 définit les informations contenues dans un certificat numérique comme le numéro de série ou la signature de l'autorité de certification.
 
-      La méthode EBIOS est utilisée pour l'analyse des risques tandis que la norme ISO vingt-sept mille deux couvre quatorze domaines de gestion de la sécurité.
+      La méthode EBIOS est utilisée pour l'analyse des risques tandis que la norme ISO 27002 regroupe, depuis deux mille vingt-deux, quatre-vingt-treize mesures en quatre thèmes, contre quatorze domaines dans la version de deux mille treize.

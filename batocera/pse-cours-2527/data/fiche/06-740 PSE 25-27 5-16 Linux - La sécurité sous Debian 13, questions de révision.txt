@@ -4,9 +4,9 @@ LEXIQUE COMPLET.
 
       Le sigle DICP désigne la Disponibilité, l'Intégrité, la Confidentialité et la Preuve ou Traçabilité.
 
-      La règle de sauvegarde trois-deux-un consiste à conserver trois copies des données sur deux supports différents dont un copie externalisée hors site.
+      La règle de sauvegarde trois-deux-un consiste à conserver trois copies des données sur deux supports différents dont une copie externalisée hors site.
 
-      Le fichier /etc/shadow stocke les empreintes hachées des mots de passe avec l'algorithme SHA-cinq cent douze par défaut.
+      Le fichier /etc/shadow stocke les empreintes hachées des mots de passe avec l'algorithme yescrypt par défaut depuis Debian onze.
 
       Le paquet ClamAV fournit une solution antivirus avec les commandes freshclam pour les signatures et clamscan pour l'analyse.
 
@@ -42,7 +42,7 @@ I. FONDAMENTAUX DE LA SÉCURITÉ DE L'INFORMATION.
 
       Ces données doivent être réparties sur deux supports différents afin de limiter les risques de défaillance matérielle unique.
 
-      Enfin, il est impératif de posséder un copie externalisée hors site pour parer aux sinistres locaux.
+      Enfin, il est impératif de posséder une copie externalisée hors site pour parer aux sinistres locaux.
 
    C. Méthodologie d'analyse de risque EBIOS Risk Manager.
 
@@ -56,13 +56,13 @@ I. FONDAMENTAUX DE LA SÉCURITÉ DE L'INFORMATION.
 
 II. GESTION DES ACCÈS ET AUTHENTIFICATION.
 
-   A. Sécurité des mots de passe et hachage SHA-cinq cent douze.
+   A. Sécurité des mots de passe et hachage yescrypt.
 
       Sur Debian treize, les empreintes hachées des mots de passe sont stockées dans le fichier /etc/shadow.
 
       Ce fichier est distinct de /etc/passwd pour garantir une meilleure sécurité du système.
 
-      L'algorithme utilisé par défaut pour le hachage est le SHA-cinq cent douze, identifiable par le préfixe $six$.
+      L'algorithme utilisé par défaut pour le hachage est yescrypt, identifiable par le préfixe $y$ dans le fichier /etc/shadow ; c'est l'algorithme par défaut depuis Debian onze, à la place de SHA-512 et de son préfixe $6$.
 
       Chaque compte bénéficie d'un sel aléatoire propre pour renforcer la protection des données.
 
@@ -174,7 +174,7 @@ IV. SÉCURITÉ RÉSEAU ET SURVEILLANCE.
 
       Il est possible de consulter les journaux d'un service précis en utilisant la commande journalctl.
 
-      L'option --since today permet de limiter l'affichage des événements depuis le dernier démarrage du système.
+      L'option --since today limite l'affichage aux événements survenus depuis minuit ; c'est l'option -b qui limite l'affichage au dernier démarrage du système.
 
       L'utilisation de l'argument -u permet de cibler spécifiquement un service pour faciliter l'analyse de sécurité.
 
@@ -240,11 +240,11 @@ POINTS D'ATTENTION.
 
 EXEMPLES CITÉS.
 
-      La règle de sauvegarde trois-deux-un impose de conserver trois copies des données sur deux supports différents dont un copie externalisée.
+      La règle de sauvegarde trois-deux-un impose de conserver trois copies des données sur deux supports différents dont une copie externalisée.
 
       Pour la protection antivirus sur Debian treize, l'utilisation de ClamAV nécessite les commandes freshclam pour les signatures et clamscan pour l'analyse.
 
-      L'algorithme de hachage par défaut pour les mots de passe sur Debian treize est le SHA-cinq cent douze qui est identifiable par le préfixe $six$.
+      L'algorithme de hachage par défaut pour les mots de passe sur Debian treize est yescrypt, identifiable par le préfixe $y$ dans le fichier /etc/shadow ; c'est l'algorithme par défaut depuis Debian onze, à la place de SHA-512 et de son préfixe $6$.
 
       Le protocole RADIUS utilise le modèle AAA pour l'authentification, l'autorisation et la comptabilité, comme dans le cas du Wi-Fi d'entreprise en huit cent deux.1X.
 

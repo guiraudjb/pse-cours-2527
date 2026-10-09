@@ -24,7 +24,7 @@ LEXIQUE COMPLET.
 
       Le Transact-SQL désigne le langage utilisé pour les instructions de traitement et la gestion des niveaux d'isolation.
 
-      Le CLR désigne une technologie permettant l'exécution de procédures stockées côté serveur.
+      Le CLR désigne l'environnement d'exécution .NET intégré à SQL Server, qui permet d'écrire des procédures stockées et des fonctions en langage .NET.
 
 COURS DÉTAILLÉ.
 
@@ -124,7 +124,7 @@ III. LES OBJETS LOGIQUES DE LA BASE RELATIONNELLE.
 
    D. Syntaxe minimale de création des objets.
 
-      La création d'une table peut s'effectuer avec la commande CREATE TABLE suivie du nom et des colonnes. Par exemple, la commande CREATE TABLE Client (IdClient int PRIMARY KEY, Nom nvarchar(cent) NOT NULL) définit une structure de base.
+      La création d'une table peut s'effectuer avec la commande CREATE TABLE suivie du nom et des colonnes. Par exemple, la commande CREATE TABLE Client (IdClient int PRIMARY KEY, Nom nvarchar(100) NOT NULL) définit une structure de base.
 
       Pour accélérer la recherche sur une colonne, on utilise la commande CREATE INDEX. L'exemple CREATE INDEX IX_Client_Nom ON Client(Nom) permet d'indexer le champ Nom.
 
