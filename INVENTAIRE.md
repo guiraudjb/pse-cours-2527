@@ -1,6 +1,6 @@
 # Inventaire des modules et des médias — pse-cours-2527
 
-Généré le 07/10/2026 à 22:19 par `scripts/inventaire_medias.py` (89 modules). ✅ présent, ❌ absent ; pour QCM, flashcards et TP, nombre d'éléments (0 = absent).
+Généré le 19/10/2026 à 07:27 par `scripts/inventaire_medias.py` (89 modules). ✅ présent, ❌ absent ; pour QCM, flashcards et TP, nombre d'éléments (0 = absent).
 
 ## Synthèse
 
@@ -12,11 +12,11 @@ Généré le 07/10/2026 à 22:19 par `scripts/inventaire_medias.py` (89 modules)
 | TP | 38 | 51 | 42 % |
 | Icône | 89 | 0 | 100 % |
 | Infographie locale | 89 | 0 | 100 % |
-| Infographie NotebookLM | 62 | 27 | 69 % |
+| Infographie NotebookLM | 89 | 0 | 100 % |
 | Paroles | 89 | 0 | 100 % |
 | Chanson | 89 | 0 | 100 % |
 | Podcast local | 89 | 0 | 100 % |
-| Podcast NotebookLM | 62 | 27 | 69 % |
+| Podcast NotebookLM | 89 | 0 | 100 % |
 | Micro-chronique | 1 | 88 | 1 % |
 | Narration fiche | 89 | 0 | 100 % |
 | Audio QCM/flash | 89 | 0 | 100 % |
@@ -26,8 +26,8 @@ Généré le 07/10/2026 à 22:19 par `scripts/inventaire_medias.py` (89 modules)
 | Série | Modules | Fiche | QCM | Flash | TP | Icône | Infographie locale | Infographie NotebookLM | Paroles | Chanson | Podcast local | Podcast NotebookLM | Micro-chronique | Narration fiche | Audio QCM/flash |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 00 À la une | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
-| 06 Cours PSE 25-27 | 84 | 84 | 84 | 84 | 36 | 84 | 84 | 58 | 84 | 84 | 84 | 58 | 0 | 84 | 84 |
-| 07 Compléments Linux et réseau | 4 | 4 | 4 | 4 | 1 | 4 | 4 | 3 | 4 | 4 | 4 | 3 | 0 | 4 | 4 |
+| 06 Cours PSE 25-27 | 84 | 84 | 84 | 84 | 36 | 84 | 84 | 84 | 84 | 84 | 84 | 84 | 0 | 84 | 84 |
+| 07 Compléments Linux et réseau | 4 | 4 | 4 | 4 | 1 | 4 | 4 | 4 | 4 | 4 | 4 | 4 | 0 | 4 | 4 |
 
 ## Détail par module
 
@@ -92,33 +92,33 @@ Généré le 07/10/2026 à 22:19 par `scripts/inventaire_medias.py` (89 modules)
 | 06-560 PSE 25-27 4-21 Linux - Serveur web Apache | ✅ | 25 | 54 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
 | 06-570 PSE 25-27 4-22 Linux - Partage de fichiers Samba | ✅ | 25 | 60 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
 | 06-580 PSE 25-27 4-23 La Sécurité sous Linux - Homologation, Durcissement et Maintien en Conditions de Sécurité | ✅ | 65 | 75 | 19 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
-| 06-590 PSE 25-27 5-1 Active Directory - Les fondements d'AD DS | ✅ | 27 | 29 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-600 PSE 25-27 5-2 Active Directory - Synthèse des fondements d'AD DS | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-610 PSE 25-27 5-3 Active Directory - Promotion d'un contrôleur de domaine | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-620 PSE 25-27 5-4 Active Directory - Réplication intrasite et intersites | ✅ | 28 | 24 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-630 PSE 25-27 5-5 Active Directory - Authentification (Kerberos, NTLM, LDAP, MFA) | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-640 PSE 25-27 5-6 Active Directory - Kerberos | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-650 PSE 25-27 5-7 Active Directory - Services réseau (DNS, DHCP, NPS, RRAS, W32Time) | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-660 PSE 25-27 5-8 Windows Server - Mécanismes de sécurité | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-670 PSE 25-27 5-9 Windows Server - Administration et optimisation du système | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-680 PSE 25-27 5-10 Bases de données - Introduction aux SGBD relationnels sous Linux | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-690 PSE 25-27 5-11 Bases de données - Le SGBD sous Windows Server (SQL Server) | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-700 PSE 25-27 5-12 Big Data - Définition, enjeux et révolution des données | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-710 PSE 25-27 5-13 Sécurité des systèmes d'information - Menaces, protections et politique | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-720 PSE 25-27 5-14 Linux - La sécurité sous Debian 13 (partie 1) | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-730 PSE 25-27 5-15 Linux - La sécurité sous Debian 13 (partie 2), vulnérabilités critiques 2026 | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-740 PSE 25-27 5-16 Linux - La sécurité sous Debian 13, questions de révision | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-750 PSE 25-27 5-17 Linux - Sauvegarde et restauration | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-760 PSE 25-27 5-18 Stockage, archivage et sauvegarde | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-770 PSE 25-27 SP1-1 Méthodologie de l'épreuve 1 de l'examen PSE-TRAD | ✅ | 25 | 24 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-780 PSE 25-27 SP1-2 Présentation de la préparation et de l'épreuve 2 | ✅ | 27 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-790 PSE 25-27 SP1-3 Méthodologie de l'épreuve 2 (système Linux) | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-800 PSE 25-27 SP1-4 Architecture technique | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-810 PSE 25-27 SP1-5 Linux - Le système de gestion de fichiers | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-820 PSE 25-27 SP1-6 Linux - Les processus | ✅ | 25 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-830 PSE 25-27 SP1-7 Linux - Arrêt, démarrage et automatisation | ✅ | 27 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 06-840 PSE 25-27 SP1-8 Linux - L'automatisation | ✅ | 27 | 25 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| 06-590 PSE 25-27 5-1 Active Directory - Les fondements d'AD DS | ✅ | 27 | 29 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-600 PSE 25-27 5-2 Active Directory - Synthèse des fondements d'AD DS | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-610 PSE 25-27 5-3 Active Directory - Promotion d'un contrôleur de domaine | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-620 PSE 25-27 5-4 Active Directory - Réplication intrasite et intersites | ✅ | 28 | 24 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-630 PSE 25-27 5-5 Active Directory - Authentification (Kerberos, NTLM, LDAP, MFA) | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-640 PSE 25-27 5-6 Active Directory - Kerberos | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-650 PSE 25-27 5-7 Active Directory - Services réseau (DNS, DHCP, NPS, RRAS, W32Time) | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-660 PSE 25-27 5-8 Windows Server - Mécanismes de sécurité | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-670 PSE 25-27 5-9 Windows Server - Administration et optimisation du système | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-680 PSE 25-27 5-10 Bases de données - Introduction aux SGBD relationnels sous Linux | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-690 PSE 25-27 5-11 Bases de données - Le SGBD sous Windows Server (SQL Server) | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-700 PSE 25-27 5-12 Big Data - Définition, enjeux et révolution des données | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-710 PSE 25-27 5-13 Sécurité des systèmes d'information - Menaces, protections et politique | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-720 PSE 25-27 5-14 Linux - La sécurité sous Debian 13 (partie 1) | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-730 PSE 25-27 5-15 Linux - La sécurité sous Debian 13 (partie 2), vulnérabilités critiques 2026 | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-740 PSE 25-27 5-16 Linux - La sécurité sous Debian 13, questions de révision | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-750 PSE 25-27 5-17 Linux - Sauvegarde et restauration | ✅ | 29 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-760 PSE 25-27 5-18 Stockage, archivage et sauvegarde | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-770 PSE 25-27 SP1-1 Méthodologie de l'épreuve 1 de l'examen PSE-TRAD | ✅ | 25 | 24 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-780 PSE 25-27 SP1-2 Présentation de la préparation et de l'épreuve 2 | ✅ | 27 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-790 PSE 25-27 SP1-3 Méthodologie de l'épreuve 2 (système Linux) | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-800 PSE 25-27 SP1-4 Architecture technique | ✅ | 28 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-810 PSE 25-27 SP1-5 Linux - Le système de gestion de fichiers | ✅ | 30 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-820 PSE 25-27 SP1-6 Linux - Les processus | ✅ | 25 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-830 PSE 25-27 SP1-7 Linux - Arrêt, démarrage et automatisation | ✅ | 27 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 06-840 PSE 25-27 SP1-8 Linux - L'automatisation | ✅ | 27 | 25 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
 | 07-10 L'Essentiel des Commandes Linux | ✅ | 35 | 73 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
 | 07-20 L'Architecte Réseau - Guide des Protocoles et de l'Infrastructure Moderne | ✅ | 25 | 80 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
 | 07-21 Maîtrise d'OSPF - Théorie, Mécanique et Bonnes Pratiques | ✅ | 28 | 55 | 17 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
-| 07-30 HPE Comware - Configuration d'un commutateur à l'état de l'art | ✅ | 140 | 57 | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| 07-30 HPE Comware - Configuration d'un commutateur à l'état de l'art | ✅ | 140 | 57 | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
