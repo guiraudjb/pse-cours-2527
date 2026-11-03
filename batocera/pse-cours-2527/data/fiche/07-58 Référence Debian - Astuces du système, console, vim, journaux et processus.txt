@@ -1,0 +1,319 @@
+GUIDE DES ASTUCES SYSTÈME POUR LA CONFIGURATION ET LA GESTION DE DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle SAK désigne les Secure attention keys qui permettent de reprendre le contrôle du système via la combinaison de touches Alt-SysRq.
+
+      Le terme DVCS désigne les systèmes de gestion de versions distribués utilisés pour enregistrer les modifications des fichiers de configuration.
+
+      Le sigle ANSI désigne un standard d'émulation de terminal utilisé par le multiplexeur screen.
+
+      La notion de PID désigne l'identifiant de processus utilisé pour identifier un programme en cours d'exécution.
+
+      Le terme PPID désigne l'identifiant du processus parent permettant d'identifier les processus enfants zombies.
+
+      Le sigle MIME désigne un type de format utilisé pour associer une extension de nom de fichier à un type de contenu spécifique.
+
+      Le sigle GUI désigne l'interface utilisateur graphique conforme aux normes freedesktop.org.
+
+      Le sigle CLI désigne l'interface en ligne de commande utilisée pour exécuter des programmes via le PATH.
+
+      Le terme XDG désigne les normes de répertoires de base et de gestion de menu utilisées par les environnements de bureau modernes.
+
+      Le sigle ISO désigne une norme internationale pour les formats de date et d'heure comme l'ISO huit mille six cent un.
+
+      Le sigle TCP désigne un protocole utilisé pour les connexions réseau comme celles du port SMTP.
+
+      Le terme Btrfs désigne un système de fichiers Linux permettant de réaliser des instantanés système.
+
+COURS DÉTAILLÉ.
+
+I. CONSEILS POUR L'UTILISATION DE LA CONSOLE.
+
+   A. Programmes utilitaires et prise en charge de la console.
+
+      Plusieurs programmes utilitaires permettent d'aider l'utilisateur dans ses activités de console. Le paquet mc permet notamment de consulter Midnight Commander.
+
+      Le paquet bsdutils propose le script(1) pour enregistrer une session de terminal. Pour la gestion de fenêtres multiples, on peut utiliser le multiplexeur de terminal screen ou son alternative tmux.
+
+      La recherche de chaînes de caractères peut être réalisée avec ripgrep pour une recherche récursive rapide dans l'arborescence de code source. Les outils fzf et fzy offrent quant à eux des capacités de recherche approximative de texte.
+
+      Enfin, les enveloppes de ligne de commande de la fonctionnalité readline sont disponibles via les paquets rlwrap, ledit et rlfe.
+
+   B. Enregistrement de l'activité de la console.
+
+      L'utilisation de script(1) pour enregistrer l'activité de l'interpréteur de commandes produit un fichier contenant des caractères de contrôle. Il est possible d'éviter cela en utilisant col(1) pour nettoyer le fichier résultant.
+
+      Une autre méthode consiste à utiliser tee pour enregistrer l'activité pendant le processus de démarrage dans l'initramfs. L'utilisation de gnome-terminal avec une mémoire tampon de lignes étendue est également possible.
+
+      Le programme screen permet de réaliser l'enregistrement de la console avec la commande ^A H. Les utilisateurs de vim peuvent aussi utiliser la commande :terminal pour entrer en mode terminal et écrire le tampon dans un fichier.
+
+      L'éditeur emacs propose également des options comme M-x shell, M-x eshell ou M-x term pour accéder à une console d'enregistrement.
+
+   C. Utilisation du multiplexeur screen.
+
+      Le programme screen(1) permet de faire tourner plusieurs processus dans une fenêtre de terminal et de faire survivre un processus distant malgré une interruption de connexion. On peut créer une nouvelle fenêtre avec ^A c et passer de l'une à l'autre avec ^A n.
+
+      Il est possible de détacher la session screen par plusieurs méthodes comme l'entrée de ^A d ou de ^A DD pour se déconnecter. Pour retrouver le travail, il suffit de se reconnecter et de lancer screen -r pour réattacher les fenêtres.
+
+      Toutes les commandes screen sont introduites par la séquence de touche ^A suivie d'une touche. Par exemple, ^A ? affiche l'aide et ^A w permet d'afficher la liste des fenêtres.
+
+      Certaines commandes permettent de gérer les fenêtres comme ^A p pour aller à la fenêtre précédente ou ^A 0 pour accéder à la fenêtre 0. La commande ^A h permet d'écrire une copie de la fenêtre actuelle dans un fichier.
+
+   D. Navigation dans les répertoires et recherche de texte.
+
+      La navigation rapide dans les répertoires peut être facilitée par l'utilisation de $CDPATH ou du programme mc. L'intégration de fzf dans le fichier ~/.bashrc permet d'utiliser des fonctionnalités de recherche avancées.
+
+      Avec fzf, l'utilisateur peut accéder à un sous-répertoire très imbriqué en tapant cd  suivi de la touche Tab. La saisie de chaînes partielles permet ensuite de réduire les chemins potentiels avec les curseurs.
+
+      La recherche dans l'historique des commandes est également simplifiée par la combinaison de Ctrl-R et de fzf. Cela permet de sélectionner une commande de manière efficace en saisissant des chaînes partielles comme vim d.
+
+   E. Enveloppes pour la fonctionnalité readline.
+
+      Certaines commandes comme /usr/bin/dash ne possèdent pas la capacité d'édition de l'historique de lignes de commande. Elles peuvent toutefois bénéficier de cette fonctionnalité de manière transparente.
+
+      L'utilisation de rlwrap ou de ses équivalents permet d'ajouter cette capacité d'édition. Par exemple, la commande $ rlwrap dash -i offre un environnement convivial de type bash.
+
+      Cette méthode constitue une plateforme pratique pour tester des points subtils de dash. Elle permet de bénéficier des fonctionnalités de la bibliothèque readline même sur des interpréteurs limités.
+
+II. PERSONNALISATION ET GESTION DE L'ÉDITEUR VIM.
+
+   A. Configuration via les fonctionnalités internes et le fichier vimrc.
+
+      Le comportement de vim peut être modifié de manière significative en activant ses fonctionnalités internes par des commandes en mode Ex comme set. Ces commandes peuvent être incluses dans le fichier traditionnel vimrc de l'utilisateur situé dans ~/.vimrc ou ~/.vim/vimrc.
+
+      Une configuration de base peut définir des options telles que nocompatible, syntax on ou filetype plugin indent on. L'encodage peut être réglé sur utf-8 et le backspace peut être configuré avec les paramètres indent, eol et start.
+
+      Il est possible de personnaliser l'affichage avec des paramètres comme statusline ou listchars pour visualiser les caractères de fin de ligne et les tabulations. Le colorscheme permet de choisir parmi plusieurs thèmes comme industry, desert ou morning.
+
+      Le plan de codage clavier peut être modifié avec des commandes nnoremap ou inoremap pour créer des raccourcis personnalisés. Il est conseillé de ne pas modifier les combinaisons de touches par défaut sans de très bonnes raisons.
+
+      Certaines configurations avancées permettent d'utiliser ripgrep pour la commande grep ou de conserver la dernière position du curseur via un groupe automatique. On peut aussi forcer l'utilisation du soulignement pour les résultats de la vérification orthographique.
+
+   B. Utilisation des paquets d'extensions externes.
+
+      Des paquets d'extensions externes intéressantes sont disponibles pour enrichir l'éditeur. On peut citer VimAwsome qui propose une liste d'extensions ou le paquet Debian vim-scripts qui contient une collection de scripts.
+
+      Le nouveau système de paquets natif de Vim fonctionne de manière efficace avec git et git submodule. Cette méthode permet de placer les derniers paquets externes dans le répertoire ~/.vim/pack/*/opt/nom.
+
+      Pour activer ces paquets, il faut ajouter la ligne packadd! nom dans le fichier vimrc de l'utilisateur. Cela permet de placer les paquets dans le runtimepath et de les charger lors de l'initialisation de vim.
+
+      Une fois l'initialisation terminée, les étiquettes des documents installés sont mises à jour avec la commande helptags ALL. Pour vérifier la séquence d'exécution et le temps passé à chaque étape, on peut démarrer vim avec l'option --startuptime.
+
+   C. Mécanismes d'initialisation et de runtimepath.
+
+      Il existe plusieurs commandes pour obtenir des informations sur l'initialisation de vim. La commande :help package explique le mécanisme des paquets tandis que :help runtimepath détaille le mécanisme de recherche des fichiers.
+
+      L'état interne et les fonctionnalités disponibles pour le fichier vimrc peuvent être consultés avec la commande :version. La variable d'environnement $VIM est également utilisée pour localiser le fichier vimrc.
+
+      La commande :set runtimepath? permet de lister tous les répertoires dans lesquels vim recherche les fichiers de prise en charge de l'environnement d'exécution. La variable d'environnement $VIMRUNTIME localise les fichiers fournis par le système.
+
+      La gestion des paquets peut parfois paraître déroutante car il existe de nombreuses façons de les charger. La meilleure solution consiste à vérifier les informations originelles pour comprendre le fonctionnement exact.
+
+III. GESTION ET PRÉSENTATION DES DONNÉES.
+
+   A. Administration des journaux et analyseurs de logs.
+
+      De nombreux programmes traditionnels enregistrent leurs activités dans des fichiers texte situés dans le répertoire /var/log/.
+
+      Le paquet logrotate(8) permet de simplifier l'administration de ces fichiers journaux pour les systèmes qui en génèrent une grande quantité.
+
+      Les programmes récents utilisent le service Journal de systemd-journald(8) pour enregistrer des données au format binaire dans le répertoire /var/log/journal.
+
+      Il est possible de consigner des données dans le Journal systemd-journald(8) via un script en utilisant la commande systemd-cat(1).
+
+      Le paquet fail2ban est un analyseur qui permet de bannir les IP provoquant des erreurs d'authentification multiples.
+
+      D'autres outils comme logwatch, awstats, analog, sarg, pflogsumm, fwlogwatch, squidview ou swatch servent à analyser différents types de journaux.
+
+   B. Affichage personnalisé du texte et de la date.
+
+      Les éditeurs généralistes sont plus souples et paramétrables que les outils de visualisation de texte comme more(1) ou less(1).
+
+      Pour vim(1) et son alias view(1), la commande :set hls permet d'activer la recherche avec mise en évidence.
+
+      Le format de la date et de l'heure pour la commande ls -l dépend des paramètres régionaux et des variables $LANG, $LC_TIME ou $LC_ALL.
+
+      On peut personnaliser cet affichage avec le paramètre --time-style ou la variable $TIME_STYLE.
+
+      L'utilisation d'un alias permet d'éviter de saisir une option longue, par exemple alias ls='ls --time-style=+%d.%m.%y %H:%M'.
+
+   C. Colorisation de l'interpréteur et des commandes.
+
+      L'écho de l'interpréteur de commandes peut être colorisé sur la plupart des terminaux en utilisant le code ANSI d'échappement.
+
+      L'utilisation d'alias pour les commandes comme ls, grep ou egrep permet de réserver les effets de couleurs à l'utilisation interactive.
+
+      L'utilisation de l'option --color=auto est préférable si l'on souhaite supprimer la couleur lors du tubage vers d'autres programmes.
+
+      On peut désactiver ces alias dans l'environnement interactif en appelant l'interpréteur de commandes par TERM=dumb bash.
+
+   D. Enregistrement de l'activité de l'éditeur et des images graphiques.
+
+      Pour Vim, l'enregistrement commence avec qa pour le registre a et se termine avec q.
+
+      L'exécution du contenu du registre a se fait avec la commande @a.
+
+      Pour Emacs, la définition d'une macro clavier commence avec :C-x ( et se termine avec C-x ).
+
+      L'exécution d'une macro clavier dans Emacs s'effectue avec la commande C-x e.
+
+      Plusieurs outils permettent d'enregistrer l'image graphique d'une application X, comme gnome-screenshot pour Wayland ou scrot pour X.
+
+      Les paquets gimp, x11-apps avec la commande xwd(1) et imagemagick avec la commande import(1) sont également utilisables.
+
+   E. Sauvegarde des fichiers de configuration.
+
+      Le paquet etckeeper permet d'enregistrer les fichiers de configuration et leurs métadonnées avec Git, Mercurial ou GNU Bazaar.
+
+      L'utilitaire timeshift est utilisé pour la restauration du système en utilisant rsync ou des instantanés BTRFS.
+
+      Le paquet snapper est un outil dédié à la gestion d'instantané de systèmes de fichiers Linux.
+
+      Une autre approche consiste à utiliser un script local selon les méthodes de sauvegarde classiques.
+
+IV. SURVEILLANCE ET CONTRÔLE DES PROGRAMMES.
+
+   A. Outils de mesure des performances et de surveillance.
+
+      Le paquet procps fournit des fonctions de base pour la surveillance, le contrôle et le lancement des activités des programmes. Il inclut des utilitaires essentiels comme ps(1), top(1), kill(1) et watch(1).
+
+      Pour mesurer les performances du système Linux, le paquet sysstat propose des outils tels que sar(1), iostat(1) et mpstat(1). Il existe aussi isag qui est un générateur interactif de graphes de l'activité système pour sysstat.
+
+      L'outil powertop(1) permet d'obtenir des informations concernant la puissance électrique utilisée par le système. Le paquet psmisc complète ces capacités avec des utilitaires comme killall(1), fuser(1), peekfd(1) et pstree(1).
+
+      La gestion temporelle peut être assurée par cron pour les processus en arrière-plan selon un calendrier ou par anacron pour les systèmes qui ne tournent pas vingt-quatre heures sur vingt-quatre. Systemd peut également planifier l'exécution de programmes via des timers.
+
+   B. Analyse du temps, de la priorité et des processus.
+
+      La commande time(1) permet de lancer un programme en indiquant l'utilisation des ressources du système en fonction du temps. Elle affiche le temps réel passé sur l'horloge murale, le temps en mode utilisateur et le temps en mode noyau.
+
+      La priorité d'ordonnancement d'un processus peut être modifiée avec la valeur de politesse nice. Une valeur de dix-neuf correspond à la plus basse priorité, tandis qu'une valeur de -20 pour root représente une très haute priorité non polie.
+
+      La commande ps(1) aide à identifier l'activité des processus de manière statique avec des styles BSD comme ps aux ou System V comme ps -efH. Elle permet notamment d'identifier le PPID pour cibler les processus enfants zombies.
+
+      Le programme top(1) est un outil interactif en mode plein écran qui aide à identifier dynamiquement les processus ayant une activité curieuse. L'utilisateur peut afficher l'aide avec la touche h et quitter avec la touche q.
+
+   C. Traçage de l'activité et identification des fichiers ouverts.
+
+      Il est possible de tracer l'activité d'un programme en utilisant strace(1) pour les appels système ou ltrace(1) pour les appels de bibliothèque. L'outil xtrace(1) est utilisé pour tracer la communication entre un client X11 et le serveur.
+
+      La commande lsof(8) permet d'afficher la liste des fichiers ouverts par un processus en cours d'utilisation grâce à l'option -p suivie de son identifiant. Par exemple, lsof -p 1 permet de voir les fichiers ouverts par le programme init.
+
+      L'outil fuser(1) sert à identifier les processus qui utilisent des fichiers spécifiques ou des sockets. Il peut être utilisé pour vérifier quel processus utilise un fichier comme /var/log/mail.log ou un socket comme smtp/tcp.
+
+   D. Répétition de commandes et boucles de fichiers.
+
+      La commande watch(1) permet d'exécuter un programme de manière répétitive avec un intervalle constant tout en affichant sa sortie en plein écran. Elle est utile pour surveiller des changements comme l'affichage de la commande w toutes les deux secondes.
+
+      Pour traiter des fichiers selon un motif comme *.ext, on peut utiliser une boucle for de l'interpréteur de commandes. Cette méthode nécessite de vérifier si le fichier existe avec la condition if [ -f "$x"].
+
+      La combinaison de find(1) et xargs(1) avec l'option -print0 et -0 offre une alternative efficace pour boucler sur des fichiers. On peut aussi utiliser l'option -exec de find(1) pour exécuter directement une commande ou un court script.
+
+      Ces différentes méthodes de répétition sont conçues pour assurer une prise en compte correcte des noms de fichiers étranges, notamment ceux qui comportent des espaces. L'utilisation de find(1) avec l'option -exec permet une grande flexibilité dans le traitement.
+
+V. LANCEMENT ET PLANIFICATION DES TÂCHES.
+
+   A. Exécution via l'interface graphique et fichiers desktop.
+
+      Pour l'interface en ligne de commande, le premier programme trouvé dans les répertoires spécifiés par la variable d'environnement $PATH est exécuté.
+
+      Les fichiers *.desktop situés dans le dossier /usr/share/applications/ fournissent les attributs nécessaires pour l'affichage du menu graphique selon les normes freedesktop.org.
+
+      Chaque paquet conforme au système de menu xdg de Freedesktop.org installe ses données de menu sous /usr/share/applications/.
+
+      Les environnements de bureau modernes utilisent le paquet xdg-utils pour générer leur menu à l'aide de ces données.
+
+      Un utilisateur peut créer une entrée de menu graphique personnalisée en ajoutant un fichier *.desktop dans le dossier $HOME/.local/share/applications/.
+
+      La ligne Exec= dans un fichier desktop n'est pas analysée par l'interpréteur et nécessite l'utilisation de la commande env si des variables d'environnement doivent être définies.
+
+   B. Personnalisation des programmes par défaut.
+
+      La personnalisation peut se faire via les menus de configuration des applications comme Settings dans GNOME ou System Settings dans KDE.
+
+      Les variables d'environnement telles que $BROWSER, $EDITOR, $VISUAL et $PAGER permettent également de définir les programmes à utiliser.
+
+      Le système update-alternatives(1) gère les programmes par défaut comme editor, view, x-www-browser, gnome-www-browser et www-browser.
+
+      Les fichiers ~/.mailcap et /etc/mailcap associent un type MIME avec un programme grâce au système mailcap.
+
+      Le paquet debianutils fournit des scripts comme sensible-browser(1), sensible-editor(1) et sensible-pager(1) qui prennent des décisions raisonnables concernant l'appel des programmes.
+
+      Il est possible de faire tourner une application de console comme mutt sous environnement graphique en créant un script personnalisé dans /usr/local/bin/mutt-term.
+
+   C. Planification de tâches uniques et régulières.
+
+      La commande at(1) permet de planifier un travail qui s'exécute une seule fois, par exemple avec la commande echo 'command -args'| at 3:40 monday.
+
+      L'utilisation de cron(8) est recommandée pour planifier des tâches qui s'exécutent régulièrement via des fichiers crontab(5).
+
+      Un utilisateur normal peut planifier des processus en créant un fichier crontab(5) dans /var/spool/cron/crontabs/toto avec la commande crontab -e.
+
+      Pour les systèmes qui ne tournent pas en permanence, le paquet anacron permet de planifier des tâches périodiques dès que le temps de fonctionnement de la machine le permet.
+
+      Les scripts de maintenance du système peuvent être placés dans les répertoires /etc/cron.hourly/, /etc/cron.daily/, /etc/cron.weekly/ ou /etc/cron.monthly/.
+
+      Systemd possède une capacité de bas niveau pour planifier l'exécution de programmes sans démon cron, comme l'illustrent les fichiers apt-daily.timer et apt-daily.service.
+
+   D. Planification basée sur des événements.
+
+      Systemd peut planifier des programmes en fonction d'évènements de montage.
+
+      La planification peut également être déclenchée par des évènements d'horloge.
+
+      Ces méthodes de planification par évènements sont détaillées dans les sections relatives aux sauvegardes déclenchées par des évènements d'horloge ou de montage.
+
+VI. GESTION DES PROCESSUS ET COMMANDES DE SECOURS.
+
+   A. Méthodes pour tuer un processus et signaux courants.
+
+      Pour mettre fin à un processus, on utilise la commande kill(1) en lui transmettant l'identifiant de processus spécifique.
+
+      Il est également possible d'utiliser killall(1) ou pkill(1) pour agir sur un processus en utilisant son nom de commande ou d'autres attributs.
+
+      Le signal deux, nommé SIGINT, permet de terminer un processus par une interruption provenant du clavier via la combinaison CTRL-C.
+
+      Le signal neuf, appelé SIGKILL, est un signal de terminaison qui ne peut pas être bloqué par le processus cible.
+
+      Le signal quinze, désigné par SIGTERM, permet de terminer un processus mais il reste un signal qui peut être bloqué.
+
+      Le signal trois, appelé SIGQUIT, termine le processus tout en effectuant un dump core après une pression sur CTRL-\.
+
+   B. Utilisation des touches de commande de secours Alt-SysRq.
+
+      L'utilisation de la combinaison de touches Alt-SysRq suivie d'une touche spécifique permet de reprendre le contrôle du système.
+
+      La touche k permet de tuer tous les processus présents sur la console virtuelle actuelle via la commande SAK.
+
+      La touche s sert à synchroniser tous les systèmes de fichiers montés afin de prévenir toute corruption des données.
+
+      La touche u permet de remonter l'ensemble des systèmes de fichiers montés en mode lecture seule.
+
+      La touche r est utilisée pour restaurer le clavier depuis le mode raw après un plantage de l'interface X.
+
+      Depuis un terminal SSH, ces commandes peuvent être exécutées en écrivant vers le fichier /proc/sysrq-trigger.
+
+POINTS D'ATTENTION.
+
+      L'utilisation de la commande script pour enregistrer une session produit des fichiers contenant des caractères de contrôle qu'il faut nettoyer avec col pour obtenir un résultat propre.
+
+      Il ne faut pas confondre le détachement d'une session screen par la commande Ctrl-A d avec le détachement qui déconnecte l'utilisateur via Ctrl-A DD.
+
+      La couleur des commandes peut être gérée soit par des alias dans le fichier .bashrc, soit par l'option --color=auto pour éviter les problèmes lors du tubage vers d'autres programmes.
+
+      Lors de la modification de la priorité d'ordonnancement, une valeur de politesse extrême peut parfois nuire au fonctionnement global du système.
+
+      La personnalisation de l'affichage de la date et de l'heure via la variable $TIME_STYLE ou l'option --time-style permet de dépasser les limites imposées par les paramètres régionaux.
+
+EXEMPLES CITÉS.
+
+      Pour enregistrer proprement une activité, on peut utiliser la séquence de commandes script puis col -bx < typescript > cleanedfile.
+
+      Dans une session screen, la séquence de touches Ctrl-A suivi de c permet de créer une nouvelle fenêtre tandis que Ctrl-A suivi de n permet de passer à la suivante.
+
+      Le programme time peut afficher trois valeurs distinctes pour un processus, à savoir real, user et sys.
+
+      La commande fuser peut identifier l'utilisateur et le processus utilisant un fichier spécifique comme /var/log/mail.log ou un socket comme smtp/tcp.
+
+      Un fichier crontab peut être configuré pour exécuter une tâche à 00:05 tous les jours ou à 14:15 le premier de chaque mois.

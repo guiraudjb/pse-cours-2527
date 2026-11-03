@@ -1,0 +1,241 @@
+GUIDE DES APPLICATIONS ET SERVICES RÉSEAU SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle HTTP désigne le protocole de transfert hypertexte utilisé par les navigateurs web pour accéder à des contenus distants.
+
+      Le sigle MIME désigne l'extension Multipurpose Internet Mail Extensions qui permet de passer du texte ASCII brut à d'autres codages et pièces jointes.
+
+      Le sigle SMTP désigne le protocole utilisé pour la délivrance du courrier électronique et la soumission de messages sur le port cinq cent quatre-vingt-sept.
+
+      Le sigle IMAP4 désigne le protocole utilisé pour recevoir des messages stockés sur un serveur via le port neuf cent quatre-vingt-treize.
+
+      Le sigle OAuth deux virgule zéro désigne une méthode moderne d'authentification utilisée par les clients de messagerie auprès des serveurs.
+
+      Le sigle MTA désigne l'agent de transport de courrier électronique qui assure la transmission des messages.
+
+      Le sigle MUA désigne l'agent de courrier électronique de l'utilisateur, comme Thunderbird ou Evolution.
+
+      Le sigle DNS désigne le système de résolution de noms d'hôte permettant de trouver l'adresse IP d'une machine.
+
+      Le sigle SSH désigne le Secure SHell qui est une manière sûre de se connecter à travers Internet.
+
+      Le sigle CUPS désigne le Common UNIX Printing System qui est la norme de facto pour l'impression dans un système Debian moderne.
+
+      Le sigle IPP désigne l'Internet Printing Protocol utilisé par le système CUPS pour l'impression à distance.
+
+      Le sigle SSL désigne le Secure Socket Layer utilisé pour sécuriser les connexions et les outils de chiffrement.
+
+COURS DÉTAILLÉ.
+
+I. NAVIGATION WEB ET PROTOCOLES.
+
+   A. Types de navigateurs et paquets disponibles.
+
+      Il existe de nombreux paquets de navigateurs web permettant d'accéder aux contenus distants via le protocole HTTP.
+
+      Le paquet chromium est un navigateur libre de Google fonctionnant sous l'environnement X.
+
+      Firefox est un navigateur libre de Mozilla disponible uniquement dans Debian Unstable, tandis que firefox-esr est la version avec support à long terme.
+
+      Les environnements graphiques proposent des options spécifiques comme epiphany-browser pour GNOME ou konqueror pour KDE.
+
+      Pour les besoins de légèreté ou de texte, on peut utiliser dillo, w3m, lynx, elinks ou encore links.
+
+      Le paquet links2 permet une utilisation graphique en mode console sans l'environnement X.
+
+   B. Usurpation de la chaîne User-Agent.
+
+      L'accès à certains sites web excessivement restrictifs peut nécessiter l'usurpation de la chaîne User-Agent renvoyée par le programme de navigation.
+
+      Cette manipulation est nécessaire pour contourner les restrictions imposées par certains serveurs distants.
+
+      Des ressources documentaires comme la documentation web de MDN ou les guides des développeurs de Chrome permettent de comprendre ce processus.
+
+      Il est possible de modifier l'agent utilisateur dans Chrome, Firefox, Safari ou encore dans Gnome Web.
+
+      Certaines méthodes permettent même de changer l'agent utilisateur de votre navigateur sans installer d'extensions.
+
+   C. Gestion des extensions web.
+
+      Tous les navigateurs graphiques modernes possèdent la capacité de gérer le code source basé sur les extensions de navigateur.
+
+      Cette fonctionnalité de gestion des extensions est devenue normalisée sous l'appellation d'extensions web.
+
+II. SYSTÈME DE COURRIER ÉLECTRONIQUE.
+
+   A. Structure d'un message et protocoles MIME.
+
+      Un courrier électronique est composé de trois parties distinctes qui sont l'enveloppe, l'en-tête et le corps du message.
+
+      Les renseignements To et From de l'enveloppe sont utilisés par le SMTP pour délivrer le courrier électronique.
+
+      Le format de courriel pour les données d'en-tête et de corps est étendu par le protocole MIME.
+
+      Le protocole MIME permet de passer du texte ASCII brut à d'autres codages de caractères ainsi qu'aux pièces jointes.
+
+      Cette extension MIME prend en charge les pièces jointes de type audio, vidéo, images et programmes d'application.
+
+   B. Agents de messagerie utilisateur (MUA).
+
+      Les clients de messagerie basés sur une interface graphique complète offrent des fonctions de création et d'interprétation des données via MIME.
+
+      Ces programmes s'authentifient auprès des serveurs SMTP et IMAP du FAI en utilisant l'authentification basic ou le protocole moderne OAuth deux virgule zéro.
+
+      L'envoi de messages s'effectue vers le serveur SMTP du FAI via le port de soumission de message cinq cent quatre-vingt-sept.
+
+      La réception des messages stockés sur le serveur du FAI se fait à partir du port TLS/IMAP4 neuf cent quatre-vingt-treize.
+
+      Des agents comme evolution, thunderbird ou kmail permettent également de gérer des contacts, un agenda, des tâches et des mémos.
+
+      Les utilisateurs peuvent aussi utiliser des programmes de terminal comme mutt ou mew.
+
+   C. Limites des services modernes et sécurité anti-pourriel.
+
+      Il n'est pas réaliste de mettre en œuvre un serveur SMTP sur un réseau grand public pour envoyer un courriel directement vers une machine distante.
+
+      Les connexions au port SMTP vingt-cinq des hôtes desservis par le réseau grand public vers Internet sont bloquées.
+
+      Les messages sortants vers Internet ne peuvent être envoyés qu'à travers le port de soumission de message cinq cent quatre-vingt-sept.
+
+      Les techniques anti-pourriels couramment utilisées pour le filtrage sont le DKIM, le SPF et le DMARC.
+
+      Le relais de courriel peut réécrire l'adresse du courriel source dans l'en-tête pour empêcher l'usurpation d'adresse.
+
+   D. Agents de transport de courrier (MTA) et configuration.
+
+      Les stations de travail mobiles Debian peuvent être configurées uniquement avec des clients graphiques sans programme MTA après Debian douze Bookworm.
+
+      Le choix typique de MTA pour les postes mobiles est exim4-daemon-light ou postfix avec l'option de relais smarthost.
+
+      Pour une configuration flexible avec plusieurs sources d'adresses, il est recommandé d'utiliser msmtp.
+
+      La configuration d'exim4 pour un smarthost se fait via la commande dpkg-reconfigure exim4-config.
+
+      Pour postfix, l'utilisation de crochets dans la configuration permet de ne pas vérifier l'enregistrement MX et d'utiliser directement le nom de la machine.
+
+      L'utilisation de SMTP avec STARTTLS sur le port cinq cent quatre-vingt-sept ou SMTPS sur le port quatre cent soixante-cinq est préconisée par rapport au port vingt-cinq.
+
+III. ACCÈS À DISTANCE AVEC SSH.
+
+   A. Principes de base et outils OpenSSH.
+
+      Le protocole SSH, ou Secure SHell, est la méthode sécurisée pour se connecter à travers Internet. La version libre disponible sur Debian est OpenSSH, qui se compose des paquets openssh-client et openssh-server.
+
+      Le démon OpenSSH ne prend en charge que le protocole SSH deux. Pour que le serveur OpenSSH fonctionne, le fichier /etc/ssh/sshd_not_to_be_run ne doit pas être présent sur le système.
+
+      L'outil ssh(1) agit comme un telnet(1) plus intelligent et sécurisé. Contrairement à telnet, la commande ssh ne s'arrête pas avec le caractère d'échappement par défaut Ctrl-].
+
+      Plusieurs paquets complètent l'usage de SSH comme openssh-client pour l'interpréteur de commandes ou openssh-server pour le service sshd(8). Le paquet ssh-askpass permet de demander une phrase de passe pour ssh-add dans l'environnement X.
+
+      La configuration du client se fait via /etc/ssh/ssh_config tandis que le serveur utilise /etc/ssh/sshd_config. Les clés publiques autorisées pour un compte sont stockées dans le fichier ~/.ssh/authorized_keys.
+
+   B. Authentification par clés publiques et ssh-agent.
+
+      Il est possible d'éviter la saisie de mots de passe en utilisant le protocole SSH-2 avec la fonction PubkeyAuthentication. Sur le serveur distant, il faut définir l'entrée PubkeyAuthentication yes dans le fichier /etc/ssh/sshd_config.
+
+      Pour mettre en place cette méthode, l'utilisateur génère localement des clés d'identification avec la commande ssh-keygen -t rsa. La clé publique doit ensuite être installée sur le système distant dans le fichier ~/.ssh/authorized_keys.
+
+      Le programme ssh-agent permet de protéger les clés secrètes avec une phrase de passe pour plus de sécurité. Une fois l'agent lancé et la clé ajoutée avec ssh-add, l'utilisateur peut effectuer des commandes comme scp sans nouveau mot de passe.
+
+      Si l'utilisateur possède le même nom sur l'hôte local et l'hôte distant, il peut omettre la partie nomutilisateur@ lors de la connexion. Pour des noms différents, le fichier ~/.ssh/config permet de définir des correspondances comme pour le service Salsa de Debian.
+
+   C. Redirection de ports et gestion des sessions.
+
+      La redirection de port permet de créer un tunnel pour accéder à des services distants de manière sécurisée. Par exemple, on peut relier le port quatre mille vingt-cinq de localhost au port vingt-cinq du serveur distant et le port quatre mille cent dix de localhost au port cent dix du serveur distant.
+
+      Pour que cette fonctionnalité de tunnel fonctionne, l'entrée AllowTcpForwarding doit être réglée sur yes dans le fichier /etc/ssh/sshd_config du serveur. Cette technique offre une connexion sécurisée vers des serveurs SMTP ou POP3 via Internet.
+
+      Pour qu'un processus de l'interpréteur de commandes survive à une interruption de connexion, il est recommandé d'utiliser le programme screen(1). Cela permet de maintenir l'activité même si la session SSH est coupée.
+
+      Si l'on souhaite arrêter un système distant via SSH, il faut protéger la commande shutdown -h now de l'arrêt de la session. Pour cela, on peut utiliser la commande at(1) ou lancer l'arrêt dans une session screen(1).
+
+      En cas de problèmes de connexion soudains, cela peut être dû à un changement de host_key lors d'une maintenance. Il est alors possible de se reconnecter en supprimant l'entrée correspondante dans le fichier ~/.ssh/known_hosts.
+
+IV. SERVICES D'IMPRESSION ET SERVEURS D'APPLICATIONS.
+
+   A. Système d'impression CUPS et protocoles.
+
+      Le système d'impression CUPS est la norme de facto dans un système Debian moderne. Il remplace l'ancien système lpd de BSD qui utilisait le format PostScript.
+
+      Le format d'impression standard des logiciels libres modernes est le PDF. CUPS utilise le protocole IPP qui est le standard de facto pour l'impression à distance avec une capacité de communication bidirectionnelle.
+
+      L'utilisateur peut configurer le système CUPS en pointant son navigateur web sur l'adresse http://localhost:631/. Le paquet cups-bsd permet d'activer les commandes d'impression BSD comme lpr, lpq ou lprm.
+
+      Le système possède divers paquets comme cups-client pour les commandes System V ou printer-driver-gutenprint pour les pilotes. La commande lpr peut créer la sortie imprimable souhaitée grâce à l'autoconversion de CUPS.
+
+   B. Serveurs de fichiers et de partage (NFS, Samba, etc.).
+
+      Le partage de fichiers UNIX est assuré par le protocole NFS via le paquet nfs-kernel-server. Le client correspondant est le paquet nfs-common.
+
+      Le partage de fichiers et d'imprimantes Windows utilise le protocole SMB ou CIFS. Pour cela, le système propose le paquet samba pour le serveur et smbclient pour le client.
+
+      Le paquet netatalk permet le partage de fichiers et d'imprimantes pour les systèmes Apple ou Mac via le protocole ATP. Le téléchargement généraliste de fichiers peut être effectué avec le serveur FTP proftpd-basic.
+
+      Pour l'accès à distance, le serveur telnetd utilise le protocole TELNET. Le paquet shellinabox propose une alternative via un serveur web pour un émulateur de terminal VT100.
+
+   C. Serveurs web, DNS et services d'infrastructure.
+
+      Le serveur web généraliste est fourni par le paquet apache2 qui utilise le protocole HTTP. Pour économiser la bande passante, l'utilisation d'un serveur mandataire comme squid est plus efficace qu'un miroir local.
+
+      La résolution de nom d'hôte est normalement assurée par un serveur DNS comme bind9. Le paquet kea est utilisé pour l'affectation dynamique d'adresse IP par le protocole DHCP.
+
+      Le paquet openssl fournit le binaire Secure Socket Layer et des outils de chiffrement associés. Le paquet stunnel4 agit comme un enrobeur SSL universel pour sécuriser les connexions.
+
+      Pour la gestion des adresses IP, le serveur DHCP utilise le paquet kea. La résolution de nom d'hôte peut être liée au DNS dynamique via bind9 et kea comme décrit sur la page DDNS du wiki Debian.
+
+V. CLIENTS RÉSEAU ET OUTILS DE DIAGNOSTIC.
+
+   A. Clients de protocoles divers (FTP, HTTP, BitTorrent).
+
+      Le protocole HTTP et le protocole FTP peuvent être utilisés avec le programme wget pour effectuer des téléchargements sur le web.
+
+      Pour les transferts de données via HTTP et FTP, l'outil curl est également disponible comme client réseau.
+
+      Le téléchargement de fichiers via le protocole BitTorrent peut être réalisé avec les clients transmission-gtk ou transmission-qt.
+
+      Les utilisateurs de l'environnement Qt peuvent également utiliser le client ktorrent ou le client qbittorrent pour le protocole BitTorrent.
+
+   B. Outils de diagnostic et de test des démons.
+
+      Le programme telnet permet d'effectuer des connexions manuelles aux démons du système pour réaliser des diagnostics.
+
+      Pour tester un service POP3 brut, il est possible d'utiliser la commande telnet suivie du nom de l'hôte et du service pop3.
+
+      Si le service POP3 utilise TLS/SSL, l'utilisation d'un client telnet avec TLS/SSL activé ou le paquet openssl est nécessaire.
+
+      La commande openssl s_client peut être utilisée pour tester une connexion vers pop.gmail.com sur le port neuf cent quatre-vingt-quinze.
+
+   C. Références des standards RFC et gestion des ports.
+
+      Les connaissances nécessaires pour chaque démon sont proposées par plusieurs RFC comme la rfc1939 et la rfc2449 pour le service POP3.
+
+      Le format de fichier de courrier électronique est défini par la rfc2821 ou la rfc2822, tandis que la rfc2045 concerne les extensions MIME.
+
+      La rfc2616 est la référence pour le service HTTP et la rfc819 traite du service DNS.
+
+      L'utilisation des ports est décrite dans le fichier /etc/services.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre les renseignements To et From de l'enveloppe avec ceux de l'en-tête du message. Les premiers sont utilisés par le SMTP pour la livraison tandis que les seconds sont affichés par le client de messagerie.
+
+      Une confusion courante concerne l'utilisation des ports SMTP car les connexions vers le port vingt-cinq sont bloquées sur les réseaux grand public. Il faut privilégier le port de soumission de message cinq cent quatre-vingt-sept pour l'envoi de courriels.
+
+      L'utilisation de crochets dans la configuration de Postfix ou d'Exim4 est une nuance cruciale pour éviter la vérification de l'enregistrement MX. Cela permet d'utiliser directement le nom exact de la machine indiquée.
+
+      Il est important de distinguer le rôle du MTA de celui du client de messagerie. Un poste de travail mobile peut fonctionner sans MTA s'il utilise uniquement des clients graphiques complets.
+
+      Pour l'accès distant via SSH, il faut veiller à ce que le fichier sshd_not_to_be_run ne soit pas présent pour permettre le fonctionnement du serveur. L'authentification basée sur rhost doit également être désactivée.
+
+EXEMPLES CITÉS.
+
+      Pour configurer un tunnel sécurisé vers un serveur distant, on peut utiliser la commande ssh -q -L 4025:remote-server:25 4110:remote-server:110. Cela permet de rediriger le port vingt-cinq vers le port quatre mille vingt-cinq de la machine locale.
+
+      Le document mentionne que la version pour Debian treize Trixie a été consultée le trois novembre deux mille vingt-six. Il cite également le chapitre six pour les applications réseau.
+
+      Un utilisateur souhaitant envoyer un courriel depuis un hôte distant via SSH peut utiliser la commande ssh username@example.org /usr/sbin/sendmail -bm -ti -f "username@example.org" < mail_data.txt.
+
+      Le tableau six virgule un liste des navigateurs comme chromium qui est un navigateur libre de Google ou firefox-esr qui est une version à support à long terme.
+
+      Pour tester un service POP3 avec TLS/SSL sur Gmail, la commande openssl s_client -connect pop.gmail.com:995 est recommandée.

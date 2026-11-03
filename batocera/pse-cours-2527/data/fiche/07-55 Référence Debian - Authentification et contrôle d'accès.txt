@@ -1,0 +1,261 @@
+GUIDE DE L'AUTHENTIFICATION ET DU CONTRÔLE D'ACCÈS SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      PAM désigne les Modules attachables d'authentification qui offrent un mécanisme d'authentification souple pour les logiciels applicatifs.
+
+      NSS désigne le Name Service Switch qui fournit un mécanisme souple de service de noms utilisé par la bibliothèque standard C.
+
+      LDAP désigne le Lightweight Directory Access Protocol qui permet la mise en œuvre d'une gestion centralisée du système sur un réseau.
+
+      TLS désigne la Sécurité de la couche de transport qui permet de sécuriser par chiffrement la communication dans son ensemble.
+
+      SSL désigne le Secure Sockets Layer qui est le prédécesseur de TLS utilisé pour sécuriser les communications.
+
+      SSH désigne le Shell sûr qui permet une communication chiffrée et sûre entre deux machines via le client OpenSSH et le démon sshd.
+
+      ACL désigne les Listes de contrôle d'accès qui constituent un sur-ensemble des permissions normales du système de fichiers.
+
+      LSM désigne le Linux Security Module qui fournit un mécanisme permettant d'imbriquer divers contrôles de sécurité dans des extensions du noyau.
+
+      sudo désigne un programme conçu pour permettre à un administrateur système de donner des privilèges d'administration limités aux utilisateurs.
+
+      PolicyKit désigne un composant du système d'exploitation permettant de contrôler les droits globaux sur les systèmes de type UNIX.
+
+      cgroups désigne une hiérarchie utilisée pour isoler les processus et permettre le contrôle des ressources, notamment depuis Debian onze Bullseye (deux mille vingt et un).
+
+COURS DÉTAILLÉ.
+
+I. AUTHENTIFICATION UNIX ET GESTION DES COMPTES.
+
+   A. Fichiers de configuration essentiels passwd, shadow et group.
+
+      Le fichier /etc/passwd contient les informations des comptes utilisateurs de manière aseptisée. Il possède des droits de lecture pour tous les utilisateurs avec les permissions -rw-r--r-- et appartient à l'utilisateur root et au groupe root.
+
+      Le fichier /etc/shadow stocke les informations sécurisées des comptes utilisateurs. Ses droits sont restreints à -rw-r----- pour l'utilisateur root et le groupe shadow afin de protéger les données sensibles.
+
+      Le fichier /etc/group répertorie les informations relatives aux groupes du système. Il est accessible en lecture par tous avec les permissions -rw-r--r-- et appartient à l'utilisateur root et au groupe root.
+
+      Le fichier /etc/gshadow fournit des fonctions similaires à /etc/shadow mais pour les groupes, bien qu'il ne soit pas réellement utilisé en pratique.
+
+   B. Structure et signification des entrées des fichiers système.
+
+      Les entrées du fichier /etc/passwd sont séparées par des deux-points et incluent le nom de l'utilisateur, la spécification du mot de passe, l'identifiant numérique de l'utilisateur, l'identifiant du groupe, le champ commentaire, le répertoire personnel et l'interpréteur de commandes. La seconde entrée est marquée par un x pour indiquer que le mot de passe chiffré se trouve dans /etc/shadow.
+
+      Le fichier /etc/shadow contient le nom de l'utilisateur, le mot de passe chiffré, la date du dernier changement de mot de passe, le délai avant un nouveau changement, le délai avant l'obligation de changer le mot de passe, la période d'avertissement, la période de grâce après expiration et la date d'expiration du compte. Toutes ces dates sont exprimées en nombre de jours passés depuis le premier janvier mille neuf cent soixante-dix.
+
+      Le fichier /etc/group présente le nom du groupe, un mot de passe chiffré non utilisé, l'identifiant numérique du groupe et la liste des noms d'utilisateurs séparés par des virgules.
+
+      Dans le fichier /etc/shadow, le préfixe $1$ au début du mot de passe chiffré indique l'utilisation d'un chiffrement MD5. Un signe * indique que le compte ne peut pas se connecter.
+
+   C. Commandes de gestion des comptes et des mots de passe.
+
+      La commande getent passwd permet de consulter les informations du compte d'un utilisateur spécifique. On utilise getent shadow pour les informations cachées et getent group pour les informations d'un groupe.
+
+      La commande passwd est utilisée pour gérer le mot de passe d'un compte. L'option passwd -e permet de définir un mot de passe à usage unique pour l'activation du compte.
+
+      La commande chage sert à gérer les informations relatives à la durée de validité du mot de passe.
+
+      Pour générer des mots de passe chiffrés à partir d'une semence, on peut utiliser la commande mkpasswd du paquet whois ou la commande openssl passwd du paquet openssl.
+
+II. MÉCANISMES PAM ET NSS.
+
+   A. Rôles et fonctionnement de PAM et NSS.
+
+      PAM offre un mécanisme d'authentification souple utilisé par les logiciels applicatifs lorsqu'ils doivent échanger des mots de passe.
+
+      NSS fournit un mécanisme de service de noms utilisé par la bibliothèque standard C pour obtenir le nom de groupe de programmes comme ls(1) et id(1).
+
+      Ces deux systèmes PAM et NSS doivent être configurés de manière cohérente pour assurer le bon fonctionnement du système.
+
+      PAM permet également d'initialiser des variables d'environnement pour tous les programmes avec des valeurs par défaut valables pour l'ensemble du système.
+
+      Sous systemd, le paquet libpam-systemd est utilisé pour enregistrer les sessions utilisateur dans la hiérarchie de groupes de contrôle pour logind.
+
+   B. Paquets et fichiers de configuration associés.
+
+      Le répertoire /etc/pam.d/ contient les fichiers qui définissent la configuration de PAM pour chaque nom de programme.
+
+      Le fichier /etc/nsswitch.conf définit la configuration de NSS avec une entrée pour chaque service.
+
+      Plusieurs paquets sont essentiels comme libpam-modules pour le service de base ou libc6 qui fournit aussi le service NSS.
+
+      Le paquet libpam-doc contient la documentation indispensable pour l'apprentissage de la configuration de PAM.
+
+      D'autres fichiers comme /etc/security/access.conf ou /etc/security/group.conf permettent de limiter les accès via les modules pam_access(8) et pam_group(8).
+
+      Le fichier /etc/environment ou le module pam_env(8) servent à définir des variables d'environnement supplémentaires.
+
+   C. Mise en œuvre de la gestion centralisée via LDAP et Windows.
+
+      La gestion centralisée peut utiliser le protocole LDAP pour administrer de nombreux systèmes sur le réseau avec le logiciel OpenLDAP.
+
+      Sur Debian, l'activation de LDAP nécessite l'utilisation des paquets libpam-ldapd et libnss-ldapd pour fournir les informations de compte.
+
+      Il est recommandé de configurer une connexion SSL ou TLS pour sécuriser le mot de passe et assurer l'intégrité des données.
+
+      Pour réduire le trafic réseau, le programme nscd(8) peut être utilisé localement pour mettre en cache les résultats de recherche LDAP.
+
+      L'intégration avec le système Windows est possible grâce aux paquets winbind et libpam_winbind pour accéder aux services de domaine Microsoft.
+
+      D'autres méthodes de remplacement existent comme l'accès à NIS ou NIS+ avec le paquet nis.
+
+III. SÉCURITÉ DES MOTS DE PASSE ET DES COMMUNICATIONS.
+
+   A. Critères de qualité et outils de génération de mots de passe.
+
+      Un bon mot de passe doit comporter au moins six à huit caractères et inclure au moins un élément parmi les minuscules, les chiffres de zéro à neuf ou les marques de ponctuation.
+
+      Il est fortement déconseillé d'utiliser des mots du dictionnaire, des suites simples comme douze mille trois cent quarante-cinq ou qwerty, ainsi que des informations personnelles comme les dates d'anniversaire ou les noms de famille.
+
+      Pour générer des mots de passe chiffrés à partir d'une semence, il est possible d'utiliser l'outil mkpasswd du paquet whois ou la commande openssl passwd du paquet openssl.
+
+      L'installation du paquet libpam-cracklib permet d'imposer des règles de sélection de mots de passe plus sévères sur le système.
+
+   B. Sécurisation des services réseau via TLS et SSL.
+
+      La transmission de mots de passe en texte clair sur Internet est une pratique dangereuse car les messages peuvent être interceptés.
+
+      Il est recommandé d'utiliser des couches de transport sécurisées comme TLS ou son prédécesseur SSL pour chiffrer l'ensemble de la communication.
+
+      Certains services proposent des ports spécifiques pour une utilisation sécurisée, comme le port quatre cent quarante-trois pour https ou le port neuf cent quatre-vingt-treize pour imaps.
+
+      À défaut d'un chiffrement complet, des protocoles comme APOP pour POP ou CRAM-MD5 pour SMTP et IMAP permettent de sécuriser uniquement le mot de passe.
+
+      Pour l'envoi de courriers électroniques, l'utilisation du port cinq cent quatre-vingt-sept est devenue habituelle pour remplacer le port SMTP vingt-cinq afin d'éviter les blocages des fournisseurs d'accès.
+
+   C. Utilisation du protocole SSH et protection contre les attaques.
+
+      Le programme SSH permet une communication chiffrée et sûre entre deux machines via le client OpenSSH et le démon sshd.
+
+      L'authentification par clé publique est une méthode efficace qui permet d'établir une connexion à distance sans avoir à saisir de mot de passe.
+
+      SSH peut également servir à créer des tunnels sécurisés pour protéger des protocoles non sûrs comme POP ou X lors de leur passage sur Internet.
+
+      Pour se protéger des attaques par force brute, il est possible d'utiliser des outils comme fail2ban qui bannit les adresses IP générant de multiples erreurs d'authentification.
+
+      Le paquet knockd offre une protection supplémentaire en utilisant un mécanisme de tocage à la porte pour sécuriser l'accès.
+
+IV. PROTECTION DE L'ACCÈS ADMINISTRATEUR ET DU SYSTÈME.
+
+   A. Mesures de sécurité physique et protection du démarrage.
+
+      Pour protéger efficacement le système, il est impératif d'empêcher tout accès physique au dispositif de stockage tel que le HDD ou le SSD.
+
+      L'administrateur doit verrouiller l'UEFI ou le BIOS afin d'interdire le démarrage du système à partir d'un support amovible.
+
+      La sécurisation du processus de démarrage nécessite également de définir un mot de passe pour la session interactive de GRUB et de verrouiller l'édition de son menu.
+
+      Une solution logicielle pour protéger l'intégralité des données consiste à utiliser une partition racine ou une partition /etc chiffrée par logiciel avec dm-crypt et initramfs.
+
+   B. Prévention de l'accès non autorisé au compte root.
+
+      L'accès au compte root peut être restreint en utilisant la commande su avec l'activation de la ligne pam_wheel.so dans le fichier /etc/pam.d/su.
+
+      Il est recommandé d'utiliser sudo pour accorder des privilèges d'administration limités et enregistrer les actions dans un journal plutôt que d'utiliser le compte root en permanence.
+
+      L'utilisation de PolicyKit permet de contrôler les droits globaux et limite les opérations d'administration aux comptes appartenant au groupe sudo sur Debian.
+
+      Si un attaquant accède à l'interpréteur de commandes de l'administrateur, il peut réinitialiser tous les mots de passe ou utiliser des outils comme john et crack pour compromettre le système.
+
+      Une méthode de contournement consiste à modifier les paramètres du noyau au démarrage pour monter la partition racine en lecture et écriture et vider la seconde entrée de /etc/passwd.
+
+   C. Outils de défense contre les attaques par force brute.
+
+      Pour améliorer la sécurité face aux tentatives de deviner les mots de passe sur Internet, l'utilisation d'une politique de pare-feu est essentielle.
+
+      Le paquet fail2ban permet de bannir automatiquement les adresses IP qui provoquent des erreurs d'authentification multiples.
+
+      Le module libpam-shield est un outil disponible pour verrouiller les attaquants distants qui cherchent à deviner un mot de passe.
+
+      Le paquet knockd propose un mécanisme de tocage à la porte pour renforcer la protection du système.
+
+V. CONTRÔLES D'ACCÈS AVANCÉS ET PRIVILÈGES.
+
+   A. Listes de contrôle d'accès ACL et commande sudo.
+
+      Les ACL sont un sur-ensemble des permissions normales du système de fichiers. Elles permettent de définir des droits spécifiques pour des utilisateurs qui ne sont pas les propriétaires ou les membres du groupe principal.
+
+      L'utilisation d'une ACL est signalée par un signe plus dans la onzième colonne lors d'un affichage avec la commande ls -la. On peut consulter le détail de ces droits avec la commande getfacl.
+
+      La commande sudo est un programme qui permet à un administrateur de donner des privilèges d'administration limités à des utilisateurs. Elle permet également d'enregistrer dans un journal les actions effectuées par l'administrateur.
+
+      L'utilisation de sudo est considérée comme une meilleure alternative que l'utilisation permanente du système depuis le compte de l'administrateur. Les options de configuration se définissent dans le fichier /etc/sudoers.
+
+   B. Fonctionnement de PolicyKit pour les applications graphiques.
+
+      PolicyKit est un composant du système d'exploitation qui permet de contrôler les droits globaux sur les systèmes de type UNIX. Il joue un rôle crucial dans la gestion des privilèges modernes.
+
+      Les applications graphiques les plus récentes ne sont pas conçues pour fonctionner comme des processus privilégiés. Elles utilisent PolicyKit pour échanger avec des processus privilégiés afin de réaliser des opérations d'administration.
+
+      Ce mécanisme limite les opérations d'administration aux comptes d'utilisateurs appartenant au groupe sudo sur le système Debian. Pour plus de détails, il convient de consulter la documentation de polkit(8).
+
+   C. Restriction de l'accès aux services et serveurs.
+
+      Il est préférable de désactiver autant de programmes de serveurs que possible pour assurer la sécurité du système. Les services réseau inutilisés représentent un risque de sécurité critique.
+
+      De nombreux programmes comme sshd(8) utilisent un contrôle d'accès basé sur PAM. Il existe plusieurs méthodes pour restreindre l'accès à certains serveurs de services.
+
+      On peut utiliser des fichiers de configuration comme /etc/default/nom_programme ou l'unité de service systemd pour un démon. Les fichiers /etc/hosts.deny et /etc/hosts.allow servent également à cette fin via l'enrobeur TCP.
+
+      D'autres outils de restriction incluent la configuration de /etc/at.allow ou /etc/cron.allow. Enfin, l'infrastructure netfilter peut être utilisée via un pare-feu réseau pour protéger les services.
+
+VI. FONCTIONNALITÉS DE SÉCURITÉ AVANCÉES DU NOYAU LINUX.
+
+   A. Cadriciel Linux Security Module et capacités.
+
+      Le noyau Linux propose le cadriciel Linux Security Module ou LSM pour permettre l'imbrication de divers contrôles de sécurité dans des extensions du noyau.
+
+      Ce mécanisme permet l'utilisation de solutions comme AppArmor, Security-Enhanced Linux ou encore Smack et Tomoyo Linux.
+
+      Ces extensions peuvent restreindre davantage le modèle de privilège par rapport aux politiques ordinaires de type Unix, pouvant même limiter le pouvoir du superutilisateur.
+
+      Par ailleurs, Linux divise les privilèges traditionnels du superutilisateur en unités distinctes nommées capacités.
+
+      Ces capacités sont des attributs par fil d'exécution disponibles depuis la version deux virgule deux du noyau et peuvent être activées ou désactivées indépendamment.
+
+   B. Espaces de noms et isolation des ressources.
+
+      Les espaces de noms enveloppent une ressource système globale dans une abstraction pour donner aux processus l'impression d'une instance isolée.
+
+      Les modifications apportées à la ressource globale restent visibles pour les autres processus membres de l'espace de noms mais demeurent invisibles pour les autres.
+
+      Depuis la version cinq virgule six du noyau, il existe huit types d'espaces de noms différents.
+
+      Ces fonctionnalités permettent d'isoler les processus et de contrôler les ressources de manière plus fine que l'authentification normale d'UNIX.
+
+   C. Utilisation des cgroups et des conteneurs.
+
+      Depuis Debian onze Bullseye (deux mille vingt et un), le système utilise une hiérarchie de cgroups unifiée appelée cgroups-v2.
+
+      Les espaces de noms combinés aux cgroups permettent d'isoler les processus et de réaliser un contrôle efficace des ressources.
+
+      Cette technologie est utilisée par Systemd pour l'initialisation du système.
+
+      Elle sert également à la création d'environnements de bac sable pour sécuriser l'exécution.
+
+      Enfin, les conteneurs Linux tels que Docker ou LXC s'appuient sur ces mécanismes pour fonctionner.
+
+POINTS D'ATTENTION.
+
+      Une erreur de configuration de PAM peut bloquer l'accès au système, ce qui nécessite de préparer un CD de secours ou une partition de démarrage de remplacement.
+
+      Il ne faut pas confondre le rôle de PAM qui gère l'authentification logicielle avec celui de NSS qui fournit le service de noms pour des programmes comme ls ou id.
+
+      L'utilisation de la commande su ne gère pas nativement le groupe wheel, mais cela peut être corrigé en activant le module pam_wheel.so dans le fichier /etc/pam.d/su.
+
+      Le mot de passe chiffré ne se trouve plus dans le fichier /etc/passwd mais est désormais stocké de manière sécurisée dans le fichier /etc/shadow.
+
+      Les services réseau utilisant des protocoles en texte clair comme le port quatre-vingts pour le www ou le port vingt et un pour le ftp présentent des risques d'interception.
+
+EXEMPLES CITÉS.
+
+      Un mot de passe de qualité doit comporter au moins six à huit caractères et inclure des minuscules, des chiffres de zéro à neuf ou de la ponctuation.
+
+      Le fichier /etc/passwd contient des entrées séparées par des deux points, comme l'exemple user1:x:1000:1000:User1 Name,,,:/home/user1:/bin/bash.
+
+      Pour sécuriser les communications, on peut utiliser le port quatre cent quarante-trois pour le https au lieu du port quatre-vingts utilisé par le www.
+
+      L'outil fail2ban permet de bannir les adresses IP qui provoquent des erreurs d'authentification multiples pour renforcer la sécurité.
+
+      Dans un environnement avec des ACL, la présence d'un signe plus dans la onzième colonne de la commande ls -la indique que les listes de contrôle d'accès sont actives.

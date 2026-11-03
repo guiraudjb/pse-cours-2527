@@ -1,0 +1,249 @@
+GUIDE DE PROGRAMMATION ET DE DÉVELOPPEMENT SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle POSIX désigne un standard qui définit les interpréteurs de commandes compatibles pour assurer la portabilité des scripts.
+
+      Le terme bashisme désigne une syntaxe spécifique à l'interpréteur bash qu'il faut éviter pour garantir la portabilité entre les interpréteurs POSIX.
+
+      Le sigle PID désigne l'identifiant d'un processus utilisé pour désigner le script ou la tâche de fond.
+
+      Le sigle DFSG désigne les règles de la Debian Free Software Guidelines concernant la conformité de certaines documentations.
+
+      Le sigle GFDL désigne un type de licence de documentation qui peut ne pas être considéré comme conforme aux règles de Debian.
+
+      Le terme REPL désigne un environnement de type READ + EVAL + PRINT + LOOP utilisé pour tester des langages comme Perl ou Python.
+
+      Le sigle GTK désigne une bibliothèque permettant de créer des boîtes de dialogue graphiques via l'outil zenity.
+
+      Le sigle LALR désigne un type d'analyseur syntaxique compatible avec Yacc utilisé par des générateurs comme Bison.
+
+      Le sigle C/C++ désigne les langages de programmation compilés utilisés pour des tâches nécessitant une grande vitesse d'exécution.
+
+      Le sigle CGI désigne une interface permettant à des programmes sur un serveur web de générer des pages dynamiques interactives.
+
+      Le sigle HTML désigne le langage utilisé pour présenter des formulaires et des requêtes dans un navigateur web.
+
+      Le sigle GNU désigne une collection d'outils et de bibliothèques comme gcc ou sed qui sont essentiels au système Debian.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET ENVIRONNEMENT DE PROGRAMMATION.
+
+   A. Documentation et outils de référence.
+
+      Pour accéder aux références en ligne après l'installation des paquets manpages et manpages-dev, il suffit d'entrer la commande man suivie du nom de la page.
+
+      Les références concernant les outils GNU sont disponibles via la commande info suivie du nom du programme, à condition d'avoir installé les paquets de documentation correspondants.
+
+      Il est possible que l'inclusion des archives contrib et non-free soit nécessaire en plus de l'archive main, car certaines documentations GFDL ne sont pas considérées comme conformes aux DFSG.
+
+      Pour les développeurs souhaitant créer des paquets, des ressources comme le paquet debmake-doc ou le paquet developers-reference constituent des guides essentiels.
+
+   B. Bonnes pratiques d'installation et de gestion de versions.
+
+      L'utilisation d'outils de système de gestion de versions est fortement envisagée, notamment en consultant la Section 10.5 dédiée à Git.
+
+      Il est impératif de ne jamais utiliser le nom test pour un fichier exécutable car ce terme fait partie de l'interpréteur de commandes.
+
+      Les programmes compilés directement à partir des sources doivent être installés dans les répertoires /usr/local ou /opt afin d'éviter toute collision avec les programmes du système.
+
+      Lors de l'installation de programmes via autoconf et automake, il est recommandé d'utiliser l'option --prefix=/usr/local pour ne pas écraser les fichiers du système Debian.
+
+      Pour une désinstallation propre lorsque l'on ne dispose pas des options de configuration d'origine, l'utilisation du paquet checkinstall est conseillée.
+
+   C. Utilisation des langages interprétés.
+
+      Le choix d'un langage pour automatiser une tâche sur Debian doit suivre une logique précise selon la complexité du projet.
+
+      Le langage dash est préconisé pour les tâches simples qui combinent des programmes en ligne de commande avec un interpréteur.
+
+      Pour les tâches complexes développées intégralement de zéro, l'utilisation de python3 est la solution recommandée.
+
+      Les langages tels que perl, tcl ou ruby doivent être privilégiés lorsqu'il est nécessaire de retoucher un code existant déjà présent sur Debian.
+
+      Si la vitesse d'exécution d'un code interprété s'avère insuffisante, il est possible de réécrire uniquement la partie critique dans un langage compilé.
+
+II. PROGRAMMATION EN SCRIPTS DE L'INTERPRÉTEUR DE COMMANDES.
+
+   A. Compatibilité POSIX et portabilité.
+
+      De nombreux scripts système peuvent être interprétés par l'un des interpréteurs de commandes POSIX. L'interpréteur POSIX par défaut non interactif est /usr/bin/sh, qui est un lien symbolique pointant vers /usr/bin/dash.
+
+      L'interpréteur POSIX interactif par défaut est /usr/bin/bash. Il est conseillé d'éviter d'écrire des scripts avec des bashismes ou des zshismes pour garantir la portabilité entre tous les interpréteurs POSIX.
+
+      L'outil checkbashisms(1) permet de vérifier la présence de ces particularités. Pour la commande echo, il faut éviter d'utiliser toutes les options sauf -n et éviter les séquences d'échappement car leur prise en compte varie.
+
+      La commande printf est recommandée à la place de echo si vous devez intégrer des séquences d'échappement dans la chaîne de sortie. L'option -n est généralement acceptée bien qu'elle ne soit pas strictement de la syntaxe POSIX.
+
+   B. Paramètres et expansions de variables.
+
+      Les paramètres spéciaux sont fréquemment utilisés dans les scripts, comme $0 pour le nom du script ou $1 pour le premier paramètre. Le paramètre $# indique le nombre de paramètres positionnels tandis que $? donne la valeur de retour de la commande la plus récente.
+
+      Les expansions de paramètre permettent de gérer les variables selon leur état. Par exemple, ${var:-string} renvoie la valeur de var si elle est positionnée, sinon elle renvoie la chaîne spécifiée.
+
+      L'opérateur ${var:=string} renvoie la valeur de var si elle est positionnée, sinon il renvoie la chaîne et lance la commande var=chaîne. L'expression ${var:?string} affiche la chaîne vers stderr et quitte avec une erreur si la variable n'est pas positionnée.
+
+      Les substitutions de paramètres permettent de manipuler les chaînes. ${var%suffix} supprime le motif le plus petit de la partie finale, alors que ${var%%suffix} supprime le motif le plus grand de la partie finale.
+
+      Pour la partie initiale, ${var#prefix} supprime le motif le plus petit et ${var##prefix} supprime le motif le plus grand. Les deux points dans ces opérateurs sont optionnels pour tester uniquement l'existence ou l'existence et la non-nullité.
+
+   C. Opérateurs conditionnels et boucles.
+
+      Chaque commande retourne un état de sortie où zéro signifie succès ou vrai, tandis qu'une valeur différente de zéro signifie erreur ou faux. Cette logique est l'inverse de celle utilisée dans le langage C.
+
+      La commande [ est l'équivalent de la commande test pour évaluer des expressions conditionnelles. Les opérateurs de comparaison incluent -e pour l'existence d'un fichier, -d pour un répertoire et -f pour un fichier normal.
+
+      Pour les chaînes de caractères, on utilise -z pour une longueur nulle ou -n pour une longueur non nulle. Les comparaisons d'égalité ou de différence s'effectuent avec les symboles = ou !=.
+
+      Les boucles permettent de répéter des actions avec des structures comme for x in toto1 toto2 pour assigner des éléments à une variable. La boucle while répète une commande tant que la condition est vraie.
+
+      La boucle until répète une commande tant que la condition n'est pas vraie. On peut utiliser la commande break pour quitter une boucle ou continue pour passer à l'itération suivante.
+
+   D. Séquence de traitement et utilitaires.
+
+      L'interpréteur de commandes traite un script en lisant une ligne, en regroupant les éléments sous forme de tokens et en découpant la ligne via les espaces ou les métacaractères. Il étend ensuite les alias, les tildes et les paramètres.
+
+      Les motifs génériques comme l'astérisque pour n'importe quel caractère ou le point d'interrogation pour un seul caractère sont étendus si ils ne sont pas entre guillemets. La substitution de commande s'effectue via $( commande ) ou ` commande `.
+
+      Pour garantir la portabilité sur Debian, il est conseillé de limiter les utilitaires aux paquets essentiels. Les paquets comme dash, coreutils, grep, sed, mawk et debianutils sont des ressources fondamentales.
+
+      Le paquet moreutils propose des outils intéressants comme sponge(8) pour écraser un fichier d'origine. Pour la vérification syntaxique, l'option -n de dash est utile pour tester un script sans l'exécuter.
+
+III. DÉVELOPPEMENT AVEC LES LANGAGES COMPILÉS ET OUTILS DE CONSTRUCTION.
+
+   A. Le langage C et ses bibliothèques.
+
+      Pour compiler des programmes en langage C, il est conseillé d'installer les paquets glibc-doc, manpages-dev, libc6-dev, gcc et build-essential.
+
+      Le paquet libc6-dev fournit la bibliothèque GNU C qui contient les fichiers d'en-tête et les routines nécessaires au langage.
+
+      L'utilisation de la bibliothèque libm est indispensable pour des fonctions comme sqrt(3) et nécessite l'option -lm lors de la compilation avec gcc.
+
+      Il est recommandé d'utiliser les fonctions snprintf(3) et strncpy(3) pour éviter les débordements de tampons et les exploits de sécurité.
+
+   B. Générateurs d'analyse lexicale et syntaxique.
+
+      Flex est un générateur d'analyse lexicale rapide qui assure une compatibilité avec Lex.
+
+      Bison est un générateur d'analyseur GNU LALR qui est compatible avec Yacc.
+
+      Le processus de création d'un programme de calcul nécessite l'utilisation conjointe de bison et de flex.
+
+      La fonction main() doit appeler yyparse() qui elle-même appelle yylex() pour le fonctionnement de l'analyseur.
+
+   C. Systèmes de construction et automatisation.
+
+      Make est un utilitaire de maintenance qui utilise un fichier de règles nommé Makefile pour mettre à jour des cibles.
+
+      La suite Autotools permet de rendre les paquets de code source portables grâce à Autoconf, Automake et Libtool.
+
+      Le système de construction a évolué de l'utilisation d'Autotools vers des solutions plus rapides comme CMake, Ninja et Meson.
+
+      Meson est un système de construction de haut niveau qui utilise Ninja comme dorsal pour sa grande productivité.
+
+      Lors de la compilation depuis les sources, il est préférable d'installer les programmes dans /usr/local pour ne pas interférer avec le système Debian.
+
+IV. ANALYSE DE CODE ET DÉBOGAGE.
+
+   A. Outils d'analyse statique et de formatage.
+
+      L'analyse du code peut être facilitée par des outils de type lint qui permettent une vérification automatique du code statique. Des programmes comme shellcheck sont dédiés à l'analyse syntaxique des scripts de l'interpréteur de commandes.
+
+      Pour les langages spécifiques, pyflakes3 et pylint servent de vérificateurs pour les programmes en Python trois. En Ruby, l'analyseur de code statique disponible est rubocop.
+
+      Le formatage et la révision humaine du code sont aidés par des outils comme indent pour le langage C. Des solutions comme black pour Python ou perltidy pour Perl permettent de maintenir une cohérence dans les sources.
+
+      Des outils comme exuberant-ctags ou universal-ctags aident à la navigation en générant des index de fichiers de balises. L'utilisation d'extensions de moteur de vérification syntaxique asynchrone dans des éditeurs comme emacs ou vim améliore l'écriture du code.
+
+   B. Utilisation du débogueur GDB.
+
+      Le débogueur primaire sous Debian est gdb(1), qui permet d'inspecter un programme pendant son exécution. Pour obtenir des informations de débogage, un programme doit être compilé avec l'option -g.
+
+      L'utilisation de gdb(1) permet de poser des points d'arrêt avec la commande b, de lancer le programme avec run et de progresser avec next ou step. La commande p permet d'afficher ou de modifier la valeur d'un paramètre.
+
+      Pour les programmes multi-processus, la commande thread apply all bt permet d'obtenir une trace de tous les processus. La commande bt full est utile pour obtenir les paramètres situés sur la pile d'appel des fonctions.
+
+      Lorsqu'on débogue un paquet Debian, il est souvent nécessaire d'installer les paquets *-dbgsym qui contiennent les symboles de débogage. Ces paquets sont placés séparément dans l'archive debian-debug.
+
+   C. Détection des fuites de mémoire et traçage.
+
+      Plusieurs outils sont disponibles sous Debian pour la détection des fuites de mémoire. Valgrind est un débogueur mémoire et un optimiseur très utilisé pour cette tâche.
+
+      D'autres solutions incluent electric-fence, le débogueur malloc(3), ou encore la bibliothèque duma pour détecter les dépassements de tampon. Leaktracer est également proposé pour le traçage des fuites de mémoire dans les programmes C++.
+
+      Pour obtenir une trace d'appel lors d'un plantage, on peut utiliser la commande bt dans gdb. Il est aussi possible de charger un fichier core dump dans gdb après avoir configuré les limites du système.
+
+      Si les traces de plantage sont peu utiles car elles se situent dans malloc(), il est recommandé de définir la variable d'environnement MALLOC_CHECK_ à la valeur deux. Pour vérifier les dépendances d'un programme avec ses bibliothèques, l'outil ldd(1) est utilisé.
+
+V. DÉVELOPPEMENT WEB ET CONVERSION DE CODE.
+
+   A. Fonctionnement des interfaces CGI.
+
+      Les pages web dynamiques et interactives simples utilisent des formulaires HTML pour présenter les requêtes au navigateur de l'utilisateur.
+
+      Le remplissage et le clic sur les entrées de formulaires envoient des chaînes d'URL contenant des paramètres codés depuis le navigateur vers le serveur web.
+
+      Le programme CGI s'exécute sur le serveur web avec la variable d'environnement QUERY_STRING qui contient les paramètres de la requête.
+
+      La sortie standard du programme CGI est envoyée directement au navigateur web pour être présentée sous la forme d'une page web dynamique interactive.
+
+      Pour des raisons de sécurité, il est préférable d'utiliser des modules bien établis en Perl ou Python pour analyser les paramètres CGI plutôt que de créer ses propres solutions.
+
+   B. Outils de conversion de langages.
+
+      Il existe des programmes spécifiques permettant de convertir des codes sources d'un langage vers un autre.
+
+      Le paquet perl permet de convertir le code source de AWK vers PERL en utilisant l'outil a2p(1).
+
+      L'outil f2c permet de convertir le code source de FORTRAN soixante-dix-sept vers C ou C++ via la commande f2c(1).
+
+      Le programme intel2gas assure la conversion depuis le format NASM vers l'Assembleur GNU en utilisant la commande intel2gas(1).
+
+VI. CRÉATION ET GESTION DE PAQUETS DEBIAN.
+
+   A. Processus de création de paquets.
+
+      La création de paquets Debian nécessite la compréhension des bases du système de paquets décrite au chapitre deux. Il est conseillé de consulter le Guide pour les responsables Debian via le paquet debmake-doc ainsi que la Référence du développeur Debian.
+
+      Pour faciliter la réalisation des paquets, des outils spécifiques comme debmake, dh-make ou encore dh-make-perl peuvent être utilisés. Le respect de la Charte Debian, disponible dans le paquet debian-policy, est essentiel pour tout développeur.
+
+      Le processus de portage repose sur les bases expliquées dans la section 2.7.13 pour porter un paquet vers le système stable. L'utilisation de techniques d'environnement isolé comme le système protégé chroot mentionné à la section 9.11.4 est également recommandée.
+
+      Les outils debuild(1) et sbuild(1) sont des éléments clés pour mener à bien la construction des paquets. Ces utilitaires permettent de gérer les étapes de compilation et de packaging de manière structurée.
+
+   B. Débogage et compilation de paquets spécifiques.
+
+      Pour déboguer les paquets Debian avec gdb(1), il est nécessaire d'installer les paquets *-dbgsym. Ces paquets de débogage sont placés séparément dans l'archive debian-debug et sont générés automatiquement avec les paquets binaires normaux.
+
+      Si un paquet ne fournit pas de paquet *-dbgsym, il faut le reconstruire manuellement après avoir installé fakeroot, devscripts et build-essential. La procédure inclut l'utilisation de apt-get source pour récupérer les sources du paquet.
+
+      Lors de la compilation d'une version de paquet existante, il est conseillé de modifier la version pour éviter les collisions, par exemple en ajoutant +debug1. Pour une version non encore diffusée, on peut utiliser l'extension ~pre1 avec la commande dch -i.
+
+      La compilation et l'installation des paquets avec les symboles de débogage se font en exportant la variable DEB_BUILD_OPTIONS="nostrip noopt" avant de lancer debuild. Il faut également vérifier que les options CFLAGS=-g -Wall sont bien positionnées dans les scripts de construction.
+
+POINTS D'ATTENTION.
+
+      Il ne faut jamais utiliser le nom test pour un fichier exécutable car ce terme appartient à l'interpréteur de commandes.
+
+      La confusion entre le langage C et le shell est fréquente car le chiffre zéro signifie Vrai en shell alors qu'il signifie Faux en C.
+
+      Pour garantir la portabilité des scripts, il est conseillé d'éviter les bashismes ou les zshismes en utilisant l'outil checkbashisms.
+
+      L'utilisation de la commande echo peut varier selon l'implémentation, il est donc préférable d'utiliser printf pour les séquences d'échappement.
+
+      Les programmes compilés manuellement doivent être installés dans les répertoires /usr/local ou /opt pour éviter les collisions avec le système.
+
+      L'utilisation de fonctions comme sprintf ou strcpy est devenue obsolète pour prévenir les débordements de tampons au profit de snprintf ou strncpy.
+
+EXEMPLES CITÉS.
+
+      Un script utilisant zenity peut sélectionner le fichier /etc/motd pour en afficher le contenu dans une fenêtre graphique.
+
+      Le programme de calcul réalisé avec bison et flex montre que l'expression un + deux * ( trois + un ) donne un résultat de neuf.
+
+      L'exemple de code en C compile avec l'option -lm pour lier la bibliothèque mathématique nécessaire à la fonction sqrt.
+
+      Pour le débogage d'un programme qui plante, la variable d'environnement MALLOC_CHECK_ peut être définie sur la valeur deux.
+
+      Le système de construction a évolué de l'infrastructure Autotools des années mille neuf cent quatre-vingt-dix vers des outils plus rapides comme Meson lancé en deux mille treize.

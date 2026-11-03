@@ -1,0 +1,385 @@
+GUIDE COMPLET DU FONCTIONNEMENT ET DE L'UTILISATION DE L'INSTALLATEUR DEBIAN treize TRIXIE.
+
+LEXIQUE COMPLET.
+
+      LVM désigne le Logical Volume Manager qui permet de combiner des partitions pour former un disque virtuel divisé en volumes logiques.
+
+      RAID désigne un périphérique multidisque qui permet d'améliorer les performances ou la fiabilité des données en utilisant plusieurs disques.
+
+      L'algorithme AES a été choisi en deux mille par l'American National Institute of Standards and Technology pour la protection des données sensibles au vingt et unième siècle.
+
+      Le DHCP désigne le Dynamic Host Configuration Protocol utilisé pour la configuration automatique de l'adresse IPv4.
+
+      Le protocole NTP désigne le système utilisé par l'installateur pour tenter de se connecter à un serveur de temps sur internet.
+
+      Le sigle NAT désigne le système de traduction d'adresses réseau qui peut provoquer la fermeture de la connexion SSH.
+
+      Le programme grub désigne le programme d'amorçage utilisé pour l'architecture amd64.
+
+      Le sigle SSH désigne le protocole permettant de réaliser une installation à distance via le composant network-console.
+
+      L'IPv6 désigne le protocole de configuration réseau qui est géré par l'installateur Debian au même titre que l'IPv4.
+
+      Le système systemd désigne le système d'initialisation par défaut de Debian.
+
+      L'organisation DSA désigne l'équipe d'administrateurs système de Debian qui maintient le service de miroir deb.debian.org.
+
+      Le terme ESP désigne la EFI System Partition qui est une partition FAT32 amorçable créée lors d'un partitionnement assisté en mode EFI.
+
+COURS DÉTAILLÉ.
+
+I. PRINCIPES DE FONCTIONNEMENT ET INTERFACES.
+
+   A. Modes graphique et texte.
+
+      L'installateur Debian propose deux interfaces utilisateur distinctes, l'une en mode graphique et l'autre en mode texte.
+
+      L'interface en mode graphique est utilisée par défaut lors du démarrage du système.
+
+      L'option Install dans le premier menu d'amorçage permet de choisir l'interface en mode texte.
+
+      Le mode texte ne permet pas l'utilisation de la souris pour naviguer dans les menus.
+
+   B. Gestion des priorités et des composants.
+
+      L'installateur est composé de plusieurs éléments qui possèdent chacun une tâche précise à accomplir.
+
+      Chaque composant pose des questions à l'utilisateur dont la priorité est déclarée au démarrage de l'installateur.
+
+      Pour une installation standard, seules les questions de priorité high sont posées afin d'automatiser le processus.
+
+      Les messages concernant des erreurs sérieuses possèdent une priorité critical pour garantir que l'utilisateur les reçoive toujours.
+
+      L'utilisateur peut utiliser le mode manuel en ajoutant le paramètre de démarrage priority=medium.
+
+      Le mode expert est accessible via la commande expert ou le paramètre priority=low pour un contrôle complet.
+
+   C. Navigation et commandes clavier.
+
+      Dans le mode texte, la touche Tab ou la flèche droite permettent d'avancer dans les sélections.
+
+      La flèche gauche ou la touche Shift+Tab servent à reculer dans l'interface.
+
+      Les flèches haut et bas permettent de sélectionner des éléments dans une liste déroulante.
+
+      La touche Espace est utilisée pour sélectionner les éléments de type case à cocher.
+
+      Pour l'installateur graphique, la touche Entrée modifie une sélection sans activer le bouton Continue.
+
+      L'aide disponible peut être consultée en utilisant la touche F1 ou en cliquant sur le bouton Help.
+
+   D. Consultation des journaux et consoles.
+
+      Le journal de l'installation et les messages d'erreur sont redirigés vers la quatrième console.
+
+      On accède à cette console en pressant Left Alt+F4 et on revient à l'installation avec Left Alt+F1.
+
+      Les messages d'erreur se retrouvent également dans le fichier /var/log/syslog du système.
+
+      Après l'installation, ce journal est copié dans le répertoire /var/log/installer/syslog sur le nouveau système.
+
+      Pour l'installateur graphique, le passage sur la console VT2 se fait avec Ctrl+Left Alt+F2.
+
+II. CONFIGURATION INITIALE ET MATÉRIEL.
+
+   A. Gestion de la mémoire et mode lowmem.
+
+      L'une des premières tâches de l'installateur est la vérification de la mémoire disponible. Si la mémoire est insuffisante, le processus est modifié pour permettre l'installation de Debian GNU/Linux.
+
+      La première mesure pour réduire la consommation est la suppression des traductions, ce qui impose une installation en anglais. Une fois l'installation terminée, les paramètres régionaux pourront être définis.
+
+      Si cela ne suffit pas, l'installateur ne charge que les composants nécessaires pour une installation élémentaire. Chaque composant supplémentaire choisi consomme de la mémoire et peut provoquer l'échec de l'installation.
+
+      En mode peu de mémoire, il est recommandé de créer une partition d'échange de un à deux Go pour servir de mémoire virtuelle. Cette utilisation augmente la disponibilité de la mémoire mais réduit les performances et provoque une activité du disque.
+
+      Le manque de mémoire peut entraîner des gels du système ou des messages Out of memory sur la console VT4. Dans ce mode, la création d'un gros système de fichiers ext3 peut échouer si la partition d'échange est trop petite.
+
+   B. Paramètres régionaux et locales.
+
+      Les premières questions concernent la langue, le pays et les locales pour l'installation et le système. Le pays choisi sert à configurer le fuseau horaire et le miroir Debian correspondant à la zone géographique.
+
+      L'installation utilise la langue choisie si la traduction des dialogues existe, sinon l'installateur utilise l'anglais. Les noms des langues sont affichés en anglais à gauche et dans la langue choisie à droite.
+
+      Si une langue est la langue officielle de plusieurs pays, l'utilisateur doit choisir parmi la liste ou sélectionner l'option autre pour voir les continents. Le choix du pays est crucial car il détermine le fuseau horaire.
+
+      La locale par défaut est définie selon le pays et la langue, avec un codage UTF-8. Si aucune locale ne correspond à la combinaison choisie, l'installateur permet de choisir une locale par défaut.
+
+      Avec une priorité low, il est possible d'ajouter d'autres locales comme les Legacy locales qui n'utilisent pas l'UTF-8. Le système peut aussi être installé avec la locale C pour un usage uniquement en anglais.
+
+   C. Configuration du clavier.
+
+      Les claviers sont construits selon les caractères utilisés dans une langue. Il faut choisir une carte clavier qui répond à la langue du pays ou une carte approchante.
+
+      Pour sélectionner le clavier, l'utilisateur doit mettre en surbrillance l'élément voulu et appuyer sur la touche Entrée. Les flèches de direction servent à la navigation car elles sont indépendantes de la configuration du clavier.
+
+      Une fois l'installation terminée, il est possible de changer la carte clavier via la commande dpkg-reconfigure keyboard-configuration en tant que superutilisateur. Cette commande présente un choix plus large de cartes.
+
+   D. Détection du matériel et des microprogrammes.
+
+      L'installateur effectue plusieurs détections de matériel, la première ciblant les composants nécessaires à l'installation comme le lecteur de CD ou la carte réseau. Les pilotes ne sont pas tous disponibles dès le départ.
+
+      L'installateur vérifie si les pilotes de périphériques exigent des microprogrammes pour fonctionner. Si un microprogramme est demandé mais indisponible, l'utilisateur peut le charger depuis un support amovible.
+
+      Depuis Debian GNU/Linux douze virgule zéro, les images officielles peuvent inclure des paquets de microprogrammes non libres. Cependant, certains microprogrammes peuvent encore manquer, notamment pour les fichiers de démarrage par le réseau.
+
+      Si un microprogramme est chargé pendant l'installation, il est automatiquement copié sur le système installé. S'il est fourni sous forme de paquet, l'installateur ajoute la section non-free-firmware dans le fichier sources.list.
+
+      Si l'étape de chargement est sautée, le périphérique ne fonctionnera pas correctement après le redémarrage. Il faudra alors installer le microprogramme manuellement sur le nouveau système.
+
+III. CONFIGURATION RÉSEAU ET ACCÈS AUX FICHIERS.
+
+   A. Recherche d'images ISO via iso-scan.
+
+      Le programme iso-scan recherche et monte les fichiers ISO de Debian pour obtenir les fichiers d'installation nécessaires.
+
+      Dans un premier temps, il monte automatiquement les périphériques bloc possédant un système de fichiers connu et cherche les fichiers se terminant par .iso ou .ISO.
+
+      Cette recherche initiale se limite au répertoire racine et au premier niveau des sous-répertoires, ce qui signifie que les fichiers situés dans des sous-répertoires profonds ne sont pas trouvés.
+
+      Si aucune image n'est détectée, le programme propose une recherche plus approfondie qui s'étend alors à l'intégralité du système de fichiers.
+
+      L'utilisateur peut également choisir de copier l'image ISO en mémoire RAM si le système dispose de suffisamment de mémoire, ce qui est contrôlé par le paramètre debconf iso-scan/copy_iso_to_ram.
+
+   B. Configuration automatique et manuelle du réseau.
+
+      L'installateur tente d'abord de configurer la connexion réseau de manière automatique pour permettre la communication sur Internet.
+
+      En cas d'échec, comme un câble mal branché ou un serveur absent, l'utilisateur peut consulter les messages d'erreur sur la quatrième console.
+
+      Si la configuration automatique échoue de façon répétée, l'utilisateur a la possibilité de choisir de configurer le réseau manuellement.
+
+      La configuration manuelle nécessite de renseigner l'adresse IP, le masque réseau, l'adresse de la passerelle, les serveurs de noms et le nom de la machine.
+
+      Pour une interface sans fil, l'utilisateur doit également fournir le nom ESSID du réseau ainsi que la clé WEP ou la phrase secrète WPA/WPA2.
+
+   C. Gestion de l'IPv4 et de l'IPv6.
+
+      Depuis la version sept virgule zéro nommée Wheezy, l'installateur Debian gère l'IPv6 avec la même efficacité que le protocole IPv4 classique.
+
+      Toutes les combinaisons possibles entre l'IPv4 et l'IPv6 sont acceptées par le système durant le processus d'installation.
+
+      La configuration automatique pour l'IPv4 repose sur le protocole DHCP.
+
+      Pour l'IPv6, l'installateur utilise le protocole NDP avec RDNSS ou DHCPv6, ou encore une combinaison des deux méthodes.
+
+   D. Utilisation des miroirs réseau.
+
+      L'utilisation d'un miroir réseau est fortement conseillée si l'installation ne s'effectue pas à partir d'une image de DVD.
+
+      Le miroir permet d'accéder aux mises à jour publiées depuis la création des images de DVD, ce qui prolonge la durée de vie de ces supports.
+
+      Le miroir par défaut est deb.debian.org, qui redirige vers un serveur rapide et à jour prenant en charge le protocole TLS et l'IPv6.
+
+      Si l'utilisateur possède une connexion internet de faible qualité, il est préférable de ne pas choisir la tâche desktop lors de l'installation.
+
+      En cas de besoin d'un miroir spécifique, l'utilisateur peut saisir lui-même une URL, en utilisant des crochets pour les adresses IPv6 comme [2001:db8::1].
+
+IV. GESTION DES UTILISATEURS ET DE L'HORLOGE.
+
+   A. Création du compte superutilisateur root.
+
+      Le compte root est désigné comme le superutilisateur du système. Il possède des privilèges qui lui permettent d'outrepasser toutes les protections de sécurité.
+
+      Il est recommandé d'utiliser ce compte uniquement pour l'administration du système et de limiter sa durée d'utilisation.
+
+      Pour garantir la sécurité, un mot de passe devrait contenir au moins six caractères. Il est conseillé d'inclure des minuscules, des majuscules et des caractères de ponctuation.
+
+      Il faut éviter d'utiliser des mots du dictionnaire ou des informations personnelles pour ce mot de passe.
+
+      Si aucun mot de passe n'est saisi pour le superutilisateur, ce compte sera désactivé. Dans ce cas, le paquet sudo est installé pour permettre au premier utilisateur ordinaire d'effectuer des tâches d'administration.
+
+   B. Création d'un utilisateur ordinaire.
+
+      L'installateur propose de créer un compte utilisateur ordinaire qui doit servir de compte personnel principal.
+
+      Il est déconseillé d'utiliser le compte superutilisateur pour un usage quotidien ou personnel. Cette précaution évite de causer des dommages irréparables ou de compromettre la sécurité via un programme de type Cheval de Troie.
+
+      Le processus demande d'indiquer le nom et le prénom de l'utilisateur. L'utilisateur doit ensuite choisir un mot pour nommer le compte.
+
+      Enfin, un mot de passe doit être défini pour ce compte utilisateur.
+
+      Si l'on souhaite créer un nouveau compte après la fin de l'installation, il faut utiliser la commande adduser.
+
+   C. Réglage de l'horloge et du fuseau horaire.
+
+      L'installateur tente d'abord de se connecter à un serveur de temps sur internet via le protocole NTP. En cas d'échec, il utilise l'heure et la date fournies par l'horloge de la machine au moment de l'amorçage.
+
+      Le choix du fuseau horaire se fait à partir d'une liste basée sur le pays sélectionné précédemment. Lors d'une installation standard avec un seul fuseau horaire correspondant au pays, le système effectue le choix automatiquement.
+
+      Les utilisateurs en mode expert ou avec une priorité medium peuvent choisir le fuseau horaire Coordinated Universal Time, soit UTC.
+
+      Il est possible de définir un fuseau horaire différent de celui du pays choisi dès le début de l'installation en utilisant le paramètre time/zone=valeur. Par exemple, on peut utiliser Europe/London ou UTC.
+
+      Si le changement doit être fait après l'installation, il faut utiliser la commande dpkg-reconfigure tzdata.
+
+V. PARTITIONNEMENT ET GESTION DES VOLUMES.
+
+   A. Méthodes de partitionnement assisté et manuel.
+
+      L'installateur propose le partitionnement assisté qui permet de choisir entre la méthode classique, l'utilisation du LVM ou le LVM avec chiffrement.
+
+      Le partitionnement assisté nécessite au moins trois Go d'espace libre pour fonctionner correctement.
+
+      Le mode manuel permet de créer une table de partitions sur un disque vierge ou de gérer l'espace libre existant.
+
+      L'utilisateur peut définir précisément la taille, le type de partition et le point de montage pour chaque élément.
+
+      Il est indispensable de créer au moins une partition d'échange swap et une partition pour le système de fichiers de la racine montée sur /.
+
+      Si le système a démarré en mode EFI, l'installateur détecte l'absence de partition ESP et demande d'en créer une avec un système de fichiers FAT32.
+
+   B. Gestion du RAID logiciel.
+
+      Le composant partman-md permet de créer des périphériques multidisques en réunissant des partitions de différents disques.
+
+      Le RAID0 privilégie la performance en distribuant les données en bandes, mais la perte d'un seul disque entraîne la perte de toutes les données.
+
+      Le RAID1 assure la fiabilité en dupliquant les données sur deux partitions ou plus, ce qui permet de supporter la défaillance d'un disque.
+
+      Le RAID5 offre un compromis entre vitesse et fiabilité en utilisant une information de parité distribuée sur au moins trois partitions actives.
+
+      Le RAID6 est similaire au RAID5 mais utilise deux disques de parité pour supporter jusqu'à deux défaillances de disque.
+
+      Le RAID10 combine la répartition en bandes du RAID0 et la duplication du RAID1 en créant n copies des données.
+
+   C. Configuration du Logical Volume Manager LVM.
+
+      Le LVM permet de combiner plusieurs volumes physiques pour former un groupe de volumes qui peut être divisé en volumes logiques.
+
+      Cette méthode offre l'avantage de pouvoir redimensionner facilement les partitions en ajoutant de nouveaux disques physiques au groupe.
+
+      Pour utiliser cette fonctionnalité, l'utilisateur doit d'abord marquer les partitions comme volumes physiques pour LVM dans le menu de configuration.
+
+      La configuration de LVM dans l'installateur permet de créer, supprimer, étendre ou réduire des groupes et des volumes logiques.
+
+      L'utilisation de LVM ou de LVM avec chiffrement modifie la table des partitions et détruit les données présentes sur le disque.
+
+   D. Chiffrement des partitions avec dm-crypt.
+
+      Le chiffrement protège les données sensibles en utilisant la méthode dm-crypt pour transformer les fichiers en une suite inintelligible.
+
+      L'installateur propose l'algorithme AES qui est une norme de protection des données sensibles.
+
+      L'utilisateur peut choisir une taille de clé de deux cent cinquante-six bits pour augmenter la force du chiffrement.
+
+      L'algorithme IV xts-plain64 est l'option par défaut car elle est la moins vulnérable aux attaques connues.
+
+      La clé de chiffrement peut être une phrase secrète saisie par l'utilisateur ou une clé aléatoire qui est supprimée à chaque arrêt.
+
+      Il est recommandé de remplir la partition de données aléatoires avant le début du chiffrement pour améliorer la sécurité.
+
+VI. INSTALLATION DU SYSTÈME ET DES LOGICIELS.
+
+   A. Installation du système de base.
+
+      L'installation du système de base est une étape qui consomme une grande partie du temps car elle inclut le téléchargement, la vérification et l'installation de tous les paquets.
+
+      Pendant ce processus, les messages concernant la décompression et la configuration des paquets sont redirigés vers la console VT4.
+
+      L'utilisateur peut accéder à ce terminal en utilisant la combinaison de touches Left Alt+F4 et revenir au processus principal avec Left Alt+F1.
+
+      Les messages d'installation sont également enregistrés dans le fichier /var/log/syslog.
+
+      L'installateur choisit par défaut le noyau Linux qui correspond le mieux au matériel de l'ordinateur.
+
+      Les paquets recommandés sont installés par défaut, mais les paquets recommandés par les paquets eux-mêmes ne le sont pas durant cette phase technique.
+
+   B. Sélection des tâches et des paquets.
+
+      L'utilisateur peut choisir des collections de logiciels prédéfinies appelées tâches plutôt que de sélectionner les cent deux mille six cent quatre-vingt-sept paquets individuellement.
+
+      Ces tâches correspondent à des usages comme la bureautique, le service web ou le serveur SSH.
+
+      La tâche Environnement graphique de bureau installe un environnement de bureau, avec Gnome comme choix par défaut.
+
+      La tâche Standard system utilities installe tous les paquets dont la priorité est standard.
+
+      Pour la version Debian Trixie, il est possible d'installer directement des Debian Pure Blends via l'entrée Choose a Debian Blend for installation.
+
+      L'installation des paquets peut être longue si l'on utilise un CD netinst avec un miroir réseau pour les environnements de bureau.
+
+   C. Configuration de l'outil apt.
+
+      Le programme apt est l'outil principal pour installer des paquets, tandis que des frontaux comme aptitude ou synaptic sont recommandés pour les débutants.
+
+      La configuration de apt permet de savoir où récupérer les paquets et les informations sont enregistrées dans le fichier /etc/apt/sources.list.
+
+      Avec la priorité par défaut, l'installateur configure automatiquement un miroir pour les mises à jour de sécurité et pour le service stable-updates.
+
+      En mode expert avec une priorité plus basse, l'utilisateur peut décider d'ajouter des paquets des sections contrib, non-free ou non-free-firmware.
+
+   D. Installation via plusieurs supports DVD.
+
+      Si l'installation utilise une image de DVD, l'installateur propose d'analyser d'autres supports si l'utilisateur en possède plusieurs.
+
+      L'installateur peut utiliser les paquets présents sur les différents supports pour compléter l'installation.
+
+      Il est recommandé de ne faire analyser que des disques appartenant à un même ensemble pour limiter les risques d'erreur.
+
+      L'ordre d'analyse des disques n'a pas d'importance, bien qu'un ordre ascendant soit préférable pour la sécurité.
+
+      L'achat d'un ensemble complet de DVD est souvent inutile car les paquets sont classés par popularité et les derniers disques sont rarement utilisés.
+
+VII. FINALISATION ET OUTILS DE DÉPANNAGE.
+
+   A. Installation du programme d'amorçage Grub.
+
+      Le programme d'amorçage utilisé pour l'architecture amd64 est grub. Il est décrit comme un outil à la fois souple et stable, convenant aux débutants comme aux experts.
+
+      Par défaut, il s'installe sur la partition UEFI ou sur le secteur d'amorçage pour contrôler totalement le processus de démarrage. Il est toutefois possible de l'installer ailleurs.
+
+      Si l'utilisateur ne souhaite pas installer Grub, il peut utiliser le bouton Go Back pour retourner au menu principal et sélectionner un autre programme d'amorçage.
+
+   B. Installation à distance via network-console.
+
+      Le composant network-console permet de réaliser une installation via le réseau en utilisant le protocole SSH. Cette option n'est pas chargée automatiquement et nécessite une demande explicite.
+
+      Pour l'activer, il faut charger le composant depuis un support d'installation ou utiliser le menu principal. L'utilisateur doit ensuite définir un mot de passe pour la connexion distante.
+
+      L'empreinte numérique du système est affichée lors de la connexion et doit être transmise de façon sécurisée à la personne qui effectue l'installation à distance.
+
+      La connexion SSH peut être interrompue par des systèmes de type NAT. Pour éviter cela, il est possible d'utiliser l'option ServerAliveInterval lors du lancement de la commande.
+
+      Il est crucial de ne pas revenir sur la console locale une fois l'installation à distance commencée. Une telle action risque de corrompre la base de données de configuration et de faire échouer l'installation.
+
+   C. Utilisation de l'interpréteur de commandes.
+
+      L'interpréteur de commandes peut être accédé de plusieurs manières, notamment en basculant sur la deuxième console virtuelle avec les touches Left Alt+F2.
+
+      Depuis le menu principal, il est également possible de choisir l'entrée Exécuter un shell pour lancer un interpréteur. L'interpréteur disponible dans cet environnement est ash.
+
+      L'utilisation de l'interpréteur doit être réservée aux cas de problèmes techniques. Une utilisation inappropriée peut interférer avec le processus et provoquer une installation incomplète.
+
+      Pour lire ou modifier des fichiers, l'utilisateur peut utiliser l'éditeur nano. Les journaux de l'installation sont accessibles dans le répertoire /var/log.
+
+   D. Personnalisation et systèmes d'initialisation.
+
+      L'installation peut être personnalisée de manière très précise pour répondre à des besoins particuliers. Cela se fait en utilisant l'interpréteur de commandes pendant le processus.
+
+      Le système d'initialisation par défaut de Debian est systemd. Cependant, il est possible d'utiliser des systèmes alternatifs comme sysvinit ou OpenRC.
+
+      Pour installer un système d'initialisation différent, il faut effectuer un basculement pendant le processus d'installation. Des instructions détaillées sont disponibles sur le wiki Debian.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas confondre l'installateur graphique avec l'installateur texte, car la souris ne fonctionne pas en mode texte.
+
+      L'utilisateur doit distinguer la priorité high qui automatise l'installation de la priorité medium qui permet un contrôle manuel via un menu.
+
+      Une confusion fréquente concerne le compte root, dont l'absence de mot de passe désactive le compte mais installe le paquet sudo pour l'utilisateur ordinaire.
+
+      Il faut noter que le chiffrement des partitions peut réduire les performances de la machine selon la vitesse du processeur et l'algorithme choisi.
+
+      L'utilisation de l'interpréteur de commandes pendant l'installation est déconseillée car elle peut provoquer des erreurs ou une installation incomplète.
+
+EXEMPLES CITÉS.
+
+      Pour une installation sur un système avec peu de mémoire, il est recommandé de créer une partition d'échange de un à deux Go.
+
+      Le schéma de partitionnement assisté nécessite au moins trois Go d'espace libre pour pouvoir fonctionner correctement.
+
+      Un utilisateur peut choisir le mode RAID1 pour la fiabilité ou le RAID0 pour la performance, comme dans le cas d'un travail vidéo.
+
+      L'installateur Debian utilise par défaut l'algorithme AES avec une taille de clé de deux cent cinquante-six bits pour le chiffrement des données.
+
+      Le programme iso-scan recherche les fichiers se terminant par .iso au premier niveau des sous-répertoires, par exemple /data/fichier.iso.

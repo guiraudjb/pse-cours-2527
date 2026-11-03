@@ -1,0 +1,329 @@
+GUIDE COMPLET DE L'INSTALLATION ET DU DÉMARRAGE DE DEBIAN treize TRIXIE.
+
+LEXIQUE COMPLET.
+
+      Le sigle ISO désigne un format d'image de disque utilisé pour créer des supports d'installation comme des CD ou des DVD.
+
+      Le sigle USB désigne une technologie de connexion permettant de brancher des périphériques amovibles comme des clés USB sur un ordinateur.
+
+      Le sigle UEFI désigne un type de micrologiciel moderne qui permet à une machine de s'amorcer directement depuis une partition sans nécessiter de programme d'amorçage.
+
+      Le sigle GRUB désigne un programme d'amorçage qui permet de charger le noyau Linux et une image de disque en mémoire.
+
+      Le sigle TFTP désigne un protocole de transfert de fichiers trivial utilisé pour transmettre l'image d'amorçage à un client sur un réseau local.
+
+      Le sigle DHCP désigne un protocole de configuration dynamique des hôtes qui permet d'attribuer automatiquement des adresses IP aux machines connectées.
+
+      Le sigle BOOTP désigne un protocole IP qui indique à un ordinateur son adresse IP et l'emplacement de son image d'amorçage.
+
+      Le sigle PXE désigne un environnement d'exécution avant le démarrage qui permet d'amorcer une machine via le réseau grâce au matériel.
+
+      Le sigle MAC désigne l'adresse matérielle d'un client nécessaire pour la configuration des serveurs BOOTP ou DHCP.
+
+      Le sigle SHA256SUMS désigne un fichier contenant des sommes de contrôle permettant de vérifier l'authenticité des fichiers d'installation téléchargés.
+
+      Le sigle BIOS désigne un programme de base qui gère l'amorçage du système et permet de configurer les périphériques de démarrage.
+
+      Le sigle Debian désigne le projet et le système d'exploitation GNU/Linux dont le manuel d'installation est la source de ce document.
+
+COURS DÉTAILLÉ.
+
+I. OBTENTION ET PRÉPARATION DES SUPPORTS D'INSTALLATION.
+
+   A. Méthodes officielles et images ISO.
+
+      La méthode la plus simple pour installer Debian GNU/Linux consiste à utiliser les images officielles. Il est possible d'acheter ces supports auprès de vendeurs de CD ou de télécharger les images ISO sur un miroir Debian.
+
+      Les utilisateurs disposant d'une connexion rapide et d'un graveur peuvent fabriquer leurs propres CD ou DVD. Une clé USB amorçable peut également être créée à partir de ces images.
+
+      Les images du premier DVD contiennent les fichiers les plus couramment demandés. Elles permettent même de réaliser une installation élémentaire d'un bureau graphique.
+
+      Si le support utilisé ne contient pas certains paquets, il est possible de les installer ultérieurement depuis le nouveau système Debian. Le site cdimage-search.debian.org permet de savoir sur quelle image se trouve un paquet spécifique.
+
+      Pour les machines ne pouvant pas amorcer sur un disque optique, d'autres stratégies existent. On peut utiliser un disque dur, une clé USB, un démarrage par le réseau ou le chargement du noyau.
+
+   B. Téléchargement via les miroirs Debian.
+
+      Il est conseillé de consulter la liste des miroirs Debian pour trouver le miroir le plus proche et le plus rapide. Cela permet d'optimiser le temps de téléchargement des fichiers nécessaires.
+
+      Sur tous les miroirs Debian, les fichiers d'installation se trouvent dans un répertoire spécifique. Le chemin est debian/dists/trixie/main/installer-amd64/current/images/.
+
+      Le fichier MANIFEST présent dans ce répertoire liste l'ensemble des images disponibles. Cela permet de s'y retrouver parmi les différentes options proposées.
+
+   C. Préparation d'une clé USB amorçable.
+
+      La préparation d'une clé USB est recommandée sur un système GNU/Linux fonctionnel qui gère les périphériques USB. Sur les systèmes récents, la clé est généralement reconnue automatiquement.
+
+      En cas de non-reconnaissance, il faut vérifier que le module du noyau usb-storage est bien chargé. La clé sera associée à un périphérique nommé /dev/sdX, où X est une lettre minuscule de a à z.
+
+      L'utilisation des commandes lsblk ou dmesg avec les privilèges du superutilisateur permet d'identifier le périphérique associé. Il est impératif de retirer la protection contre l'écriture pour pouvoir écrire sur la clé.
+
+      Les images d'installation pour cette architecture utilisent isohybrid, ce qui permet un transfert direct sur une clé USB. Il faut choisir une image adaptée à la taille de la clé, comme les images netinst ou DVD un.
+
+      Sous GNU/Linux, après avoir vérifié que la clé n'est pas montée, on peut copier l'image avec la commande cp debian.iso /dev/sdX suivie de la commande sync.
+
+      L'image doit être copiée sur le disque complet, par exemple /dev/sdb, et non sur une partition comme /dev/sdb1. Il ne faut pas utiliser d'outils qui modifient l'image comme unetbootin.
+
+   D. Vérification de l'authenticité des fichiers.
+
+      L'authenticité des fichiers d'installation peut être vérifiée grâce aux sommes de contrôle. Celles-ci sont inscrites dans les fichiers SHA256SUMS ou SHA512SUMS des miroirs Debian.
+
+      Ces fichiers de sommes de contrôle se trouvent dans les mêmes répertoires que les images d'installation. Ils sont disponibles pour les images de CD, de DVD et de disques Blu-ray.
+
+      Pour vérifier un fichier téléchargé, il faut utiliser la commande sha256sum fichier.iso ou sha512sum fichier.iso. La sortie obtenue doit être comparée à la valeur du fichier SHA256SUMS ou SHA512SUMS.
+
+      La FAQ Debian CD propose des informations supplémentaires sur ce sujet. Elle mentionne notamment le script check_debian_iso qui automatise une partie de cette procédure de vérification.
+
+II. STRATÉGIES D'AMORÇAGE DU SYSTÈME.
+
+   A. Amorçage depuis un disque dur avec GRUB.
+
+      L'installateur peut être amorcé avec des fichiers de démarrage placés sur une partition existante du disque dur. Cette méthode est possible sur les systèmes récents avec UEFI où le noyau peut être chargé directement depuis la partition UEFI.
+
+      Pour utiliser GRUB, il faut copier les fichiers vmlinuz et initrd.gz de l'archive Debian dans un répertoire comme /boot/newinstall/.
+
+      Si l'objectif est d'utiliser uniquement le disque pour l'amorçage puis le réseau pour les paquets, il faut récupérer les fichiers netboot/debian-installer/amd64/initrd.gz et le noyau netboot/debian-installer/amd64/linux.
+
+      Pour préserver une partition, il est conseillé de télécharger hd-media/initrd.gz et le noyau hd-media/vmlinuz en plus d'une image d'installation se terminant par .iso.
+
+      La configuration de GRUB2 nécessite de charger le initrd.gz et d'utiliser un disque virtuel comme partition racine par vmlinuz.
+
+   B. Amorçage par le réseau via TFTP et DHCP.
+
+      L'amorçage par le réseau nécessite une connexion locale et un serveur TFTP ainsi qu'un serveur DHCP, RARP ou BOOTP. Le protocole TFTP est utilisé pour transférer l'image d'amorçage au client.
+
+      Le protocole DHCP est une extension plus flexible de BOOTP qui permet de configurer les machines. Pour un démarrage PXE, le fichier pxelinux.0 sert de programme d'amorçage et non d'image de noyau.
+
+      Pour les machines utilisant l'UEFI, il est nécessaire de spécifier un gestionnaire d'amorçage adapté comme debian-installer/amd64/bootnetx64.efi.
+
+      Le serveur DHCP doit être configuré pour indiquer au client le nom du fichier à récupérer via TFTP.
+
+   C. Configuration des serveurs BOOTP et TFTP.
+
+      Pour le serveur TFTP, le paquet tftpd-hpa est recommandé pour un serveur Debian. Les images doivent être placées dans le répertoire des images d'amorçage, généralement /srv/tftp pour tftpd-hpa.
+
+      Le serveur BOOTP peut être géré par bootpd CMU ou par le serveur DHCP ISC. Pour utiliser bootpd CMU, il faut activer la ligne adéquate dans /etc/inetd.conf via la commande update-inetd --enable bootps.
+
+      La configuration de bootpd CMU nécessite la création d'un fichier /etc/bootptab avec l'adresse matérielle MAC du client.
+
+      La configuration de BOOTP avec dhcpd ISC est simplifiée en ajoutant la directive allow bootp dans le fichier /etc/dhcp/dhcpd.conf.
+
+   D. Installation automatisée et préconfiguration.
+
+      L'installation peut être totalement automatisée en utilisant les paquets fai-quickstart ou l'installateur Debian lui-même. Le projet FAI propose aussi un service web pour créer des images ISO personnalisées.
+
+      L'installateur Debian utilise des fichiers de préconfiguration pour répondre automatiquement aux questions durant le processus. Ces fichiers peuvent être situés sur le réseau ou sur un support amovible.
+
+      On peut indiquer l'emplacement d'un fichier de préconfiguration via le paramètre de démarrage preseed/file ou via une URL avec preseed/url.
+
+      Le paramètre preseed/interactive permet d'afficher les questions même si elles ont été préconfigurées pour tester le fichier.
+
+      Le paramètre auto-install/enable permet de retarder certaines questions avant l'installation du réseau pour rendre la préconfiguration possible.
+
+III. PROCÉDURE DE DÉMARRAGE DE L'INSTALLATEUR.
+
+   A. Méthodes d'amorçage sur PC soixante-quatre bits.
+
+      L'amorçage peut se faire via une clé USB si la machine est compatible. Il faut brancher la clé et redémarrer la machine pour voir apparaître le menu d'amorçage.
+
+      Le démarrage depuis un disque optique comme un CD ou un DVD est possible si le système est configuré pour cela. Si le lecteur n'est pas reconnu au début, il est possible de le faire pointer manuellement plus tard.
+
+      L'amorçage depuis un disque dur est réalisable via GRUB en chargeant le noyau vmlinuz et le disque virtuel initrd.gz. Cette méthode permet notamment une installation complète via le réseau.
+
+      Le démarrage par le réseau utilise le protocole TFTP et nécessite souvent un serveur DHCP ou BOOTP. Les machines peuvent utiliser la technologie PXE pour amorcer directement depuis l'interface réseau.
+
+   B. Interface et menu d'amorçage.
+
+      L'écran d'amorçage affiche le logo Debian et propose plusieurs options comme Graphical install ou Install. L'option Install est sélectionnée par défaut.
+
+      Les utilisateurs peuvent accéder aux options avancées via le menu Advanced options. Il est possible d'éditer la ligne d'amorçage pour ajouter des paramètres spécifiques au noyau ou à l'installateur.
+
+      Le clavier est configuré en mode QWERTY lors de l'édition des paramètres d'amorçage. Il est conseillé d'utiliser un schéma de carte clavier US pour éviter les erreurs de saisie.
+
+      En cas de problème d'affichage graphique, l'option Help permet d'accéder à des commandes d'aide. On peut aussi utiliser la touche Esc pour obtenir une invite d'amorçage en mode texte.
+
+   C. Utilisation de l'installateur graphique.
+
+      L'installateur graphique est disponible sur certaines architectures comme le PC soixante-quatre bits. Il offre l'avantage de reconnaître plus de langues et de permettre l'usage de la souris.
+
+      Cette interface nécessite une quantité de mémoire importante, soit au minimum huit cent dix Mo. Si la mémoire est inférieure à sept cent quatre-vingts Mo, l'installateur peut basculer sur l'interface textuelle.
+
+      Le thème à fort contraste est disponible pour les utilisateurs ayant une vue basse. Il s'active via l'entrée Accessible high contrast ou avec le paramètre theme=dark.
+
+      Une fonction de zoom basique est intégrée pour faciliter la lecture. Les raccourcis Control++ et Control+- permettent respectivement d'augmenter ou de réduire la taille de la police.
+
+   D. Modes expert, secours et automatisé.
+
+      Les modes expert, rescue et automated sont accessibles via le sous-menu Advanced options. L'accès peut nécessiter une manipulation différente selon que le système utilise le BIOS ou l'UEFI.
+
+      Le mode expert permet un contrôle total sur les composants chargés. Le mode rescue est destiné à la récupération du système.
+
+      L'installation automatisée peut être réalisée grâce à des fichiers de préconfiguration. Ces fichiers répondent automatiquement aux questions posées durant le processus d'installation.
+
+      Le projet FAI propose également un service web pour créer des images ISO personnalisées. Cela permet une installation automatique sans aucune interaction de l'utilisateur.
+
+IV. ACCESSIBILITÉ ET OPTIONS D'INTERFACE.
+
+   A. Gestion des plages Braille USB et série.
+
+      Les plages Braille USB sont détectées de manière automatique par le système. Une version de l'installateur en mode texte est alors sélectionnée et la table Braille est installée sur le système cible.
+
+      Une fois le programme brltty lancé, l'utilisateur peut choisir une table Braille en accédant au menu des préférences. Le site web de brltty propose une documentation concernant l'affectation des touches.
+
+      Les plages Braille série ne bénéficient pas d'une détection automatique car cela pourrait les endommager. Il est nécessaire d'ajouter le paramètre d'amorçage brltty=pilote,port pour indiquer les informations requises.
+
+      Le terme pilote doit être remplacé par le code à deux lettres du terminal et port par le nom du port série. Le port ttyS0 est le port par défaut tandis que ttyUSB0 peut être utilisé pour un convertisseur série vers USB.
+
+      Un troisième paramètre peut être fourni pour désigner le nom de la table Braille à utiliser. Par défaut, la table anglaise est choisie mais elle peut être modifiée via le menu des préférences.
+
+   B. Synthèse vocale logicielle et matérielle.
+
+      La synthèse vocale logicielle est disponible sur les images contenant l'installateur graphique comme les DVD, netinst et la variante netbook gtk. Elle s'active en sélectionnant l'entrée s dans le menu d'amorçage.
+
+      Le système choisit automatiquement la version texte de l'installateur et installe la synthèse vocale sur la cible. En cas de présence de plusieurs cartes son, l'utilisateur doit sélectionner la bonne en appuyant sur Entrée.
+
+      La première question concernant la langue est posée en anglais et la suite se déroule dans la langue choisie si elle est disponible dans espeak. La vitesse de la voix est initialement très faible.
+
+      Les raccourcis CapsLock+5 et CapsLock+6 permettent respectivement de ralentir ou d'accélérer la voix. Le volume se règle avec les touches CapsLock+1 pour le baisser et CapsLock+2 pour l'augmenter.
+
+      La synthèse vocale matérielle nécessite de choisir l'entrée Graphical install dans le menu d'amorçage. Les périphériques ne sont pas détectés automatiquement et demandent l'ajout du paramètre speakup.synth=driver.
+
+   C. Thèmes à fort contraste et fonctions de zoom.
+
+      L'installateur propose un thème avec des couleurs très contrastées pour aider les utilisateurs ayant une vue basse. Ce thème est appelé Accessible high contrast dans le menu d'amorçage.
+
+      On peut activer ce mode en utilisant le raccourci d ou en ajoutant le paramètre theme=dark. Ce thème est proposé pour les interfaces newt et gtk.
+
+      L'installateur graphique dispose d'une fonction de zoom basique pour les utilisateurs ayant une mauvaise vue. Les utilisateurs peuvent augmenter la taille de la police avec le raccourci Control++.
+
+      La réduction de la taille de la police s'effectue avec la combinaison de touches Control+-.
+
+   D. Gestion des frontaux de l'installateur.
+
+      L'installateur utilise différents frontaux pour poser les questions, notamment le frontal text qui utilise le texte brut. Le frontal newt utilise quant à lui des boîtes de dialogues basées sur du texte.
+
+      Le choix du frontal peut être effectué directement à l'invite de démarrage via la variable DEBIAN_FRONTEND. Le mode text est particulièrement recommandé pour les installations utilisant une console série.
+
+      Avec le frontal newt, la navigation se fait avec les flèches du clavier et la validation avec la touche Entrée. Les touches Tab ou Shift+Tab permettent de naviguer entre les éléments et d'accéder au bouton Revenir en arrière.
+
+      La touche Espace permet de cocher ou décocher des cases. Avec le frontal text, l'utilisateur saisit le numéro de son choix suivi de Entrée pour répondre.
+
+      Pour revenir à la question précédente avec le frontal text, il faut taper le symbole < suivi de Entrée. Pour ne sélectionner aucun choix dans une liste, on utilise le symbole ! suivi de Entrée.
+
+V. PARAMÉTRAGE AVANCÉ ET NOYAU.
+
+   A. Paramètres d'amorçage de l'installateur.
+
+      Les paramètres d'amorçage sont des options transmises au noyau Linux pour aider à la détection des périphériques. Dans la plupart des cas, le noyau détecte tout automatiquement, mais une aide manuelle peut être nécessaire.
+
+      Le paramètre debconf/priority permet de définir le niveau de priorité des messages affichés. Par défaut, il est réglé sur high, mais il peut être modifié en medium ou low pour obtenir un contrôle plus fin.
+
+      Le paramètre DEBIAN_FRONTEND contrôle le type d'interface utilisé par l'installateur. Les valeurs possibles incluent noninteractive, text, newt ou gtk.
+
+      Certains paramètres permettent d'automatiser l'installation, comme preseed/url pour télécharger un fichier de préconfiguration ou preseed/file pour utiliser un fichier local.
+
+      Le paramètre debian-installer/theme permet de changer l'apparence de l'interface, notamment avec le thème dark destiné aux déficients visuels.
+
+      D'autres options comme lowmem permettent de forcer un niveau de mémoire spécifique, tandis que noshell interdit l'usage d'interpréteurs de commande sur les consoles tty2 et tty3.
+
+   B. Configuration de la console série.
+
+      Si le démarrage s'effectue avec une console série, le noyau est capable de la détecter automatiquement. Il peut toutefois être nécessaire de passer l'option console=device au noyau pour désigner l'interface série de la cible.
+
+      L'interface peut être précisée avec des détails comme la vitesse ou la parité, par exemple avec la syntaxe console=ttyS0,9600n8. Les vitesses cinquante-sept mille six cents ou cent quinze mille deux cents sont également possibles.
+
+      Il est conseillé d'ajouter le paramètre TERM=type pour que l'installateur corresponde au type de terminal utilisé. Les types reconnus sont linux, bterm, ansi, vt102 et dumb.
+
+      Pour une console série, le type de terminal utilisé est vt102. Si vous utilisez des outils de virtualisation comme QEMU/KVM, il est recommandé de lancer la session dans un écran screen.
+
+   C. Passage de paramètres aux modules du noyau.
+
+      Il est possible de passer des paramètres aux pilotes de périphériques compilés directement dans le noyau. L'installateur s'assure que ces paramètres seront correctement propagés dans la configuration du système installé.
+
+      La syntaxe spécifique à utiliser pour ces paramètres est module.paramètre=valeur. Si plusieurs paramètres sont nécessaires, il suffit de répéter cette formule.
+
+      Par exemple, pour configurer une ancienne carte 3com avec un connecteur BNC et un IRQ dix, on utilisera 3c509.xcvr=3 3c509.irq=10.
+
+      Il est aujourd'hui très rare d'avoir à effectuer cette manipulation car le noyau teste généralement bien le matériel et fournit des paramètres par défaut.
+
+   D. Gestion de la liste noire des modules.
+
+      Il arrive qu'il soit nécessaire d'empêcher le chargement automatique d'un module pour éviter des conflits matériels. Cela est utile si deux pilotes différents tentent de gérer le même périphérique.
+
+      Pour créer une liste noire, on utilise la syntaxe module_name.blacklist=yes. Cette instruction sera inscrite dans le fichier /etc/modprobe.d/blacklist.local.
+
+      Cette configuration interdit le chargement du module à la fois pendant la phase d'installation et sur le système final.
+
+      Une alternative consiste à utiliser le mode expert de l'installateur pour désélectionner manuellement le module lors de la phase de détection du matériel.
+
+VI. RÉSOLUTION DES PROBLÈMES ET DÉPANNAGE.
+
+   A. Fiabilité et erreurs des disques optiques.
+
+      Si le disque optique ne parvient pas à amorcer l'installateur, il convient de vérifier qu'il est propre et correctement inséré dans le lecteur.
+
+      L'utilisateur peut tenter de lancer une deuxième fois l'option Détecter et monter un support d'installation pour résoudre certains problèmes de DMA avec les lecteurs très anciens.
+
+      Il est nécessaire de vérifier que la somme MD5 de l'image ISO téléchargée correspond bien à celle indiquée dans le fichier MD5SUMS présent sur le miroir.
+
+      En cas de non reconnaissance du disque après un amorçage réussi, il est conseillé d'essayer un autre lecteur ou de consulter les journaux via la console VT4.
+
+      Le contrôle de l'intégrité du support peut être effectué en utilisant l'option spécifique située à la fin du menu principal de l'installateur.
+
+   B. Dysfonctionnements matériels et vidéo.
+
+      Si l'écran affiche des couleurs bizarres ou un écran noir lors du démarrage du noyau, il faut passer le paramètre vga=normal nomodeset pour désactiver le mode framebuffer.
+
+      L'utilisation de ce paramètre limite toutefois le nombre de langues disponibles en raison des caractéristiques restreintes de la console.
+
+      Pour les ordinateurs portables Dell qui bloquent lors de la détection des services PCMCIA, l'utilisation du paramètre hw-detect/start_pcmcia=false permet d'éviter le problème.
+
+      Il est également possible de démarrer en mode expert pour exclure manuellement certaines adresses de ressources matérielles.
+
+      En cas de dysfonctionnement de la synthèse vocale logicielle, le problème provient souvent de la carte son ou de canaux de mixage qui sont muets par défaut.
+
+   C. Interprétation des messages du noyau.
+
+      Les messages indiquant qu'un composant est introuvable ou qu'un pilote dépend d'un autre sont très fréquents et n'ont souvent aucune conséquence.
+
+      Le noyau recherche systématiquement des périphériques variés qui ne sont pas forcément présents sur la machine utilisée.
+
+      Un arrêt prolongé du système peut survenir lorsque le noyau attend la réponse d'un périphérique qui n'est pas connecté.
+
+      Si le temps de démarrage est anormalement long, la création d'un noyau personnalisé peut être envisagée pour optimiser le processus.
+
+   D. Signalement des bogues et rapports d'installation.
+
+      L'option Sauvegarder les journaux de débogage du menu permet de copier les erreurs système sur un support externe ou de les consulter via un navigateur web.
+
+      Les journaux d'installation sont stockés dans le répertoire /var/log/debian-installer/ pendant le processus ou dans /var/log/installer/ après l'installation.
+
+      Les rapports de bogues doivent être envoyés de préférence en anglais à l'adresse submit@bugs.debian.org en utilisant le paquet installation-reports.
+
+      Le rapport doit inclure des informations précises comme la version de l'image, la date, la description de la machine et le résultat de la commande lspci.
+
+      Il est recommandé d'envoyer également des rapports sur les installations réussies afin d'aider à la recherche d'informations sur toutes les configurations matérielles.
+
+POINTS D'ATTENTION.
+
+      Lors de la préparation d'une clé USB, il est crucial de ne pas se tromper de périphérique car l'écriture sur un disque dur à la place de la clé entraînera la perte de toutes les données.
+
+      L'utilisation d'outils comme unetbootin est déconseillée car ils peuvent modifier l'image, alors qu'il faut copier l'image directement sur le disque complet comme /dev/sdb et non sur une partition.
+
+      Il existe une nuance importante entre l'installateur graphique et l'installateur texte, car le mode graphique nécessite beaucoup plus de mémoire vive, soit huit cent dix Mo.
+
+      Pour les utilisateurs de synthèse vocale, il faut savoir que la première question sur la langue est toujours posée en anglais, même si le reste de l'installation utilise la langue choisie.
+
+      Une confusion possible concerne les paramètres d'amorçage où l'utilisation de la forme courte est recommandée pour faciliter la saisie et éviter les limitations de la ligne de commande.
+
+EXEMPLES CITÉS.
+
+      Pour vérifier l'intégrité d'un fichier, on peut utiliser la commande sha256sum fichier.iso et comparer le résultat avec les sommes de contrôle présentes sur les miroirs Debian.
+
+      Un utilisateur peut configurer un serveur DHCP avec le paquet isc-dhcp-server en utilisant un fichier de configuration comme /etc/dhcp/dhcpd.conf.
+
+      En cas de problème d'affichage avec la carte vidéo, l'ajout du paramètre vga=normal nomodeset permet de désactiver la console framebuffer.
+
+      Pour les systèmes avec peu de mémoire, l'installateur peut basculer de l'interface graphique vers l'interface newt si la quantité de mémoire est inférieure à sept cent quatre-vingts Mo.
+
+      Le document mentionne que pour un démarrage PXE, le fichier d'amorçage est pxelinux.0, tandis que pour les machines UEFI, il faut utiliser un fichier comme debian-installer/amd64/bootnetx64.efi.

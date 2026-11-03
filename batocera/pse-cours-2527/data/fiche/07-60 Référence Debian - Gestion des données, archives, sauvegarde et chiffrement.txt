@@ -1,0 +1,245 @@
+GUIDE DE GESTION DES DONNÉES, DES SAUVEGARDES ET DE LA SÉCURITÉ SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle VCS désigne un système de gestion de versions.
+
+      Le sigle DVCS désigne un système de gestion de versions distribué.
+
+      Le sigle FOSS désigne les outils de type Free and Open Source Software utilisés pour la compression.
+
+      Le sigle GNU désigne des utilitaires comme gzip qui sont des standards de fait.
+
+      Le sigle SSL désigne un protocole permettant de sécuriser une connexion réseau par chiffrement.
+
+      Le sigle TLS désigne un protocole de sécurité utilisé pour chiffrer une connexion réseau.
+
+      Le sigle VPN désigne un tunnel permettant de sécuriser une connexion réseau.
+
+      Le sigle LUKS désigne un mode de chiffrement de périphérique en mode bloc prenant en charge le chiffrement dm-crypt.
+
+      Le sigle MD5 désigne une méthode de calcul de condensé de message utilisée pour vérifier l'intégrité des données.
+
+      Le sigle SHA1 désigne une méthode de calcul de condensé de message.
+
+      Le sigle OpenPGP désigne un standard utilisé pour le chiffrement et la signature de données.
+
+      Le sigle Debian désigne le système d'exploitation dont la documentation officielle est rédigée par Osamu Aoki.
+
+COURS DÉTAILLÉ.
+
+I. ARCHIVAGE ET COMPRESSION DES DONNÉES.
+
+   A. Outils et extensions de fichiers.
+
+      Le système Debian propose plusieurs outils pour l'archivage et la compression. L'archiveur standard est tar qui utilise les extensions .tar, .tgz ou .tar.gz.
+
+      L'outil cpio utilise l'extension .cpio et est de style UNIX System V. Il est souvent utilisé avec la commande find pour la création de scripts de sauvegarde.
+
+      Pour la compression, gzip est le standard de fait avec l'extension .gz. bzip2 offre un taux de compression plus élevé avec l'extension .bz2 mais il est plus lent que gzip.
+
+      L'utilitaire xz-utils utilise l'extension .xz et possède un taux de compression supérieur à bzip2. Il remplace l'utilitaire lzma qui est désormais considéré comme obsolète.
+
+      Le format zip est l'outil d'archive de facto de la plateforme avec l'extension .zip. Il peut être utilisé avec l'outil unzip pour la décompression.
+
+      L'outil p7zip permet d'obtenir un haut taux de compression avec l'extension .7z. Il utilise la compression LZMA.
+
+   B. Méthodes et idiomes d'archivage.
+
+      Pour archiver le répertoire source avec GNU tar, on utilise la commande tar -cvJf archive.tar.xz ./source. On peut aussi utiliser find pour lister les fichiers avant de les passer à tar.
+
+      L'outil cpio nécessite une approche différente avec la commande find ./source -xdev -print0 | cpio -ov --null > archive.cpio. On peut ensuite compresser le résultat avec xz.
+
+      Pour désarchiver un fichier cpio, on utilise la commande zcat archive.cpio.xz | cpio -i. Cette méthode permet de lire le contenu compressé directement.
+
+      Il est important de ne pas positionner la variable $TAPE sans savoir ce que l'on attend car elle modifie le comportement de tar.
+
+      La méthode de compression habituelle des outils FOSS a évolué de gzip vers bzip2 puis vers xz.
+
+   C. Sélection de fichiers avec find.
+
+      La commande find est utilisée pour la sélection de fichiers avec les commandes d'archive et de copie. Elle permet d'évaluer des paramètres conditionnels de gauche à droite.
+
+      L'évaluation des conditions s'arrête dès que le résultat est déterminé. Le OU logique est indiqué par -o et possède une priorité plus faible que le ET logique.
+
+      Le NON logique est indiqué par le symbole ! et possède une priorité plus élevée que le ET logique. L'option -prune permet d'arrêter la recherche de fichiers dans un répertoire.
+
+      L'option -name permet de correspondre à la base du nom de fichier avec des motifs génériques. L'option -size permet de filtrer les fichiers selon leur taille avec + pour plus grand et - pour plus petit.
+
+      L'option -print0 est utilisée pour afficher le nom de fichier en entier terminé par le caractère null. Cela est utile pour traiter les noms de fichiers contenant des espaces.
+
+II. COPIE, SYNCHRONISATION ET PARTAGE.
+
+   A. Outils de copie locale et distante.
+
+      Le paquet coreutils propose l'outil GNU cp qui permet de copier localement des fichiers et des répertoires en utilisant l'option -a pour le mode récursif.
+
+      Pour les transferts à distance, le paquet openssh-client fournit la commande scp qui nécessite l'option -r pour copier des fichiers et des répertoires de manière récursive.
+
+      Le paquet openssh-server inclut le service sshd qui permet de copier des fichiers et des répertoires vers une machine distante agissant comme serveur.
+
+      L'outil rsync offre des fonctionnalités de synchronisation et de sauvegarde distantes de type unidirectionnelle.
+
+      L'outil unison permet d'effectuer des synchronisations et des sauvegardes distantes de manière bidirectionnelle.
+
+      Les outils de système de contrôle de version peuvent également être utilisés comme des outils de synchronisation et de copie multi-voies.
+
+   B. Fonctionnalités de rsync.
+
+      L'outil rsync(8) propose un algorithme de transfert delta qui n'envoie que la différence entre les fichiers sources et les fichiers déjà existants sur la destination.
+
+      Il utilise par défaut un algorithme de vérification rapide qui recherche les fichiers dont la taille ou l'heure de dernière modification a été modifiée.
+
+      Les options --exclude et --exclude-from de rsync sont similaires à celles utilisées par l'outil tar(1).
+
+      L'utilisation d'un slash en fin de répertoire source avec rsync permet d'éviter la création d'un niveau de répertoire supplémentaire à la destination.
+
+      Il est possible d'utiliser rsync avec la commande find en utilisant la syntaxe find . -print0 combinée à l'option --files-from=- et l'option -0.
+
+      L'option -u peut être utilisée avec rsync(8) pour sauter les fichiers qui sont déjà plus récents sur la destination.
+
+   C. Partage de données via le réseau et systèmes de fichiers.
+
+      Le partage de fichiers par l'intermédiaire de Microsoft Windows Network peut être réalisé avec le système de fichiers SMB/CIFS monté via Samba.
+
+      Le partage par UNIX/Linux Network utilise le système de fichiers NFS monté au travers du noyau Linux.
+
+      Les services HTTP et HTTPS permettent de partager des fichiers entre un client et un serveur web, le second utilisant le chiffrement SSL ou TLS.
+
+      Le service FTP est une méthode pour partager des fichiers entre un serveur et un client FTP.
+
+      Pour sécuriser les connexions réseau qui peuvent être non sûres, il est recommandé de chiffrer avec SSL/TLS, de tunneler par SSH ou par VPN, ou de limiter l'accès derrière un pare-feu sûr.
+
+      Le système exFAT permet le partage de données entre plateformes pour les périphériques de grande capacité et est pris en charge par WindowsXP, Mac OS X Snow Leopard 10.6.5 et Linux depuis la version cinq virgule quatre.
+
+III. STRATÉGIES DE SAUVEGARDE ET DE RESTAURATION.
+
+   A. Politique de sauvegarde et éléments à protéger.
+
+      Une stratégie efficace repose sur la définition de ce qu'il faut sauvegarder, notamment les données de l'utilisateur dans le répertoire ~/ et les fichiers de configuration du système situés dans /etc/. Il est également crucial de protéger les données d'applications dans /var/, à l'exception des répertoires /var/cache/, /var/run/ et /var/tmp/.
+
+      La protection des programmes locaux dans /usr/local/ ou /opt/ et la conservation des informations d'installation sous forme de mémo sont recommandées. Pour les processus utilisateur, il faut inclure les tâches cron dans /var/spool/cron/crontabs et les tâches systemd liées au temps dans ~/.config/systemd/user.
+
+      La sécurité des données sensibles comme les clés SSH ou les mots de passe dans /etc/shadow doit être assurée par un chiffrement. Il ne faut jamais coder en dur un mot de passe ou une phrase de passe de décryptage dans un script, même sur un système de confiance.
+
+      Pour garantir la résilience, les données doivent être stockées sur des partitions ou des disques différents afin de résister à la corruption du système de fichiers. L'utilisation de systèmes de fichiers en lecture seule est préférable pour les données importantes.
+
+      Il est impératif de ne pas sauvegarder les pseudo systèmes de fichiers tels que /proc, /sys, /tmp ou /run car ils contiennent des données inutiles. Une sauvegarde doit être fréquente, planifiée, redondante et disposer d'un processus indéréglable réalisable en une seule commande.
+
+   B. Suites d'utilitaires de sauvegarde.
+
+      Les suites de sauvegarde orientées vers les réseaux et les fonctionnalités avancées incluent Bacula, Amanda et BackupPC. Bacula permet la sauvegarde, la restauration et la vérification par le réseau via des paquets comme bacula-server ou bacula-client.
+
+      Pour les stations de travail typiques, des utilitaires plus simples comme Duplicity, Borg ou rdiff-backup sont adaptés. Duplicity permet une sauvegarde incrémentale distante tandis que Borg propose une sauvegarde sans doublon.
+
+      D'autres outils spécialisés complètent l'offre comme restic ou slbackup pour les sauvegardes incrémentales distantes. L'outil backupninja est décrit comme un système de sauvegarde meta-backup léger et extensible.
+
+      Il existe également des solutions de faible maintenance comme backup2l, qui est basé sur disque pour des supports pouvant être montés. Mondo Rescue est un système spécifique qui facilite la restauration rapide d'un système complet depuis des supports comme les CD/DVD.
+
+   C. Automatisation et déclenchement par événements.
+
+      L'automatisation peut être réalisée via une interface graphique en créant un fichier .desktop pour lancer un script de sauvegarde, comme bkss.sh, par un simple clic. Dans l'exemple fourni, le script utilise rsync pour copier les données vers un périphérique USB et crée un instantané btrfs.
+
+      Le système systemd permet de déclencher des sauvegardes lors d'événements de montage de périphériques. En configurant une unité de service utilisateur, la sauvegarde de ~/Documents vers un disque USB nommé BKUP s'exécute automatiquement dès que le support est branché.
+
+      Une autre méthode consiste à utiliser des déclenchements par événements d'horloge grâce aux unités de timer de systemd. Cette approche offre un contrôle plus fin que les méthodes traditionnelles d'Unix comme cron ou anacron.
+
+      L'utilisation de systemd pour les sauvegardes planifiées permet de définir des paramètres comme OnStartupSec ou OnUnitInactiveSec. Cela garantit que les tâches de sauvegarde s'exécutent de manière prévisible et gérée par le système.
+
+IV. INFRASTRUCTURE DE SÉCURITÉ ET GESTION DES CLÉS.
+
+   A. Outils de chiffrement et de hachage.
+
+      L'infrastructure de sécurité des données repose sur la combinaison d'un outil de chiffrement, d'un outil de condensé de messages et d'un outil de signature.
+
+      Le paquet gnupg fournit l'outil gpg(1) qui sert à la signature et au chiffrement selon le standard OpenPGP.
+
+      Pour le chiffrement de périphériques en mode bloc, les utilitaires cryptsetup(8) utilisent le module dm-crypt avec le standard LUKS.
+
+      La vérification de l'intégrité peut être réalisée avec md5sum(1) pour les condensés MD5 ou sha1sum(1) pour les condensés SHA1.
+
+      Le paquet openssl permet également de calculer un condensé de message en utilisant la commande openssl dgst.
+
+   B. Gestion des clés avec GnuPG.
+
+      La gestion des clés avec GnuPG s'effectue via diverses commandes comme gpg --gen-key pour générer une nouvelle clé.
+
+      L'utilisateur peut exporter ses clés publiques avec gpg -o file --export ou ses clés privées avec gpg -o file --export-secret-keys.
+
+      Pour la vérification, la commande gpg --check-sigs permet de contrôler les signatures tandis que gpg --fingerprint affiche l'empreinte.
+
+      Le système utilise des codes de confiance spécifiques comme f pour une confiance complète ou u pour une confiance ultime.
+
+      Il est possible d'envoyer une clé vers un serveur de clés en utilisant la commande gpg --send-keys avec l'adresse hkp://keys.gnupg.net.
+
+      Les commandes sq(1) et sqv(1) de Sequoia-PGP constituent une alternative pour l'encryption et la vérification OpenPGP.
+
+   C. Sécurisation des mots de passe avec le trousseau.
+
+      Sur le système GNOME, l'outil graphique seahorse(1) assure la gestion et le stockage sécurisé des mots de passe.
+
+      Ces données sensibles sont conservées dans le trousseau situé au chemin ~/.local/share/keyrings/*.
+
+      L'utilitaire secret-tool(1) permet de manipuler le trousseau de clés directement depuis la ligne de commande.
+
+      Il est recommandé d'utiliser secret-tool pour stocker une phrase secrète plutôt que de la coder en dur dans un script.
+
+      Par exemple, la commande secret-tool store peut enregistrer une phrase pour une image disque LUKS avec un label spécifique.
+
+      La récupération de ce mot de passe peut ensuite être transmise à cryptsetup(8) pour ouvrir un périphérique chiffré.
+
+V. FUSION DE CODE ET GESTION DE VERSIONS.
+
+   A. Outils de fusion et de comparaison de fichiers.
+
+      La fusion de code source peut s'effectuer via de nombreux outils comme patch qui applique un fichier de différences à un original. L'outil diff permet de comparer des fichiers ligne à ligne tandis que diff3 permet de comparer ou fusionner trois fichiers.
+
+      Il existe des solutions interactives comme imediff qui permet de fusionner deux ou trois fichiers ou encore meld qui est un outil graphique sous GTK. L'outil wiggle est capable d'appliquer des rustines qui ont été rejetées.
+
+      La suite d'outils patchutils propose des fonctionnalités variées comme combinediff pour créer une rustine cumulative ou filterdiff pour extraire des différences. On trouve aussi d'autres utilitaires comme rediff pour corriger les décalages d'un fichier édité manuellement.
+
+      Pour comparer des arbres de répertoires, l'outil dirdiff est disponible. L'outil docdiff permet quant à lui une comparaison mot par mot ou caractère par caractère.
+
+   B. Utilisation et commandes de base de Git.
+
+      Git est un système de contrôle de version distribué qui gère à la fois le code source local et distant. Il utilise une arborescence de travail, un index pour les changements sélectionnés, un dépôt local et un dépôt distant.
+
+      Les commandes fondamentales incluent git init pour créer un dépôt et git clone pour cloner un dépôt distant. Pour enregistrer des modifications, on utilise git add pour l'index et git commit pour valider les changements dans le référentiel local.
+
+      La synchronisation avec le dépôt distant se fait via git push pour envoyer les données ou git pull pour les recevoir. La commande git pull effectue par défaut un git merge, mais peut être configurée pour effectuer un git rebase.
+
+      Pour l'exploration de l'historique, l'interface graphique gitk est disponible. Des outils en ligne de commande comme tig ou lazygit permettent également de naviguer dans l'historique du dépôt.
+
+      La configuration globale se définit dans le fichier ~/.gitconfig avec des commandes comme git config --global user.name ou git config --global user.email.
+
+   C. Autres systèmes de gestion de versions (VCS).
+
+      Il existe plusieurs autres types de systèmes de gestion de versions comme les systèmes distribués ou les systèmes distants. Mercurial est un système distribué écrit en Python avec un peu de C.
+
+      Darcs est un autre système distribué qui utilise une algèbre intelligente des rustines mais il est décrit comme lent. Les outils tels que GNU arch, GNU Bazaar et tla sont également des systèmes distribués.
+
+      Les systèmes de type distant incluent Subversion qui est un remplaçant standard de CVS, ainsi que CVS lui-même. L'outil tkcvs propose une interface graphique pour afficher l'arborescence de dépôts comme CVS ou Subversion.
+
+      Enfin, des systèmes locaux comme RCS ou CSSC sont mentionnés comme étant des clones de SCCS UNIX.
+
+POINTS D'ATTENTION.
+
+      Il faut éviter d'accéder de manière non coordonnée en écriture à des fichiers à haut trafic pour prévenir une compétition d'accès ou race condition. L'utilisation de mécanismes de verrouillage comme flock(1) est recommandée pour sécuriser ces processus.
+
+      Une confusion fréquente réside dans l'utilisation de la variable $TAPE qui modifie le comportement de tar(1). Il est également important de noter que cpio(1) est plus souple que cp(1), scp(1) ou tar(1) pour les fichiers spéciaux.
+
+      Lors de l'utilisation de rsync(8), la syntaxe d'un slash en fin de répertoire source est cruciale pour éviter la création d'un niveau de répertoire supplémentaire à la destination. L'option -u permet de sauter les fichiers déjà plus récents sur la destination.
+
+      Pour le partage de données via des systèmes de fichiers comme FAT, il est prudent d'archiver les fichiers avec tar(1) ou cpio(1) au préalable. Cela permet de conserver les permissions UNIX et les noms de fichiers longs qui pourraient être perdus.
+
+      En ce qui concerne Git, l'utilisation de l'option --force est nécessaire si une branche locale a été rebasée ou compressée avant d'être poussée. Cette manipulation est risquée et doit être évitée pour la branche main.
+
+EXEMPLES CITÉS.
+
+      Le document mentionne des durées de vie optimistes pour divers supports de stockage. Le papier non acide et l'encre peuvent durer cent ans et plus, tandis que les supports magnétiques comme la bande ou la disquette durent environ trente ans.
+
+      Les cycles d'écriture varient considérablement selon la technologie utilisée. Un disque dur peut supporter plus de deux cent cinquante mille cycles, alors que les mémoires Flash sont estimées à dix mille cycles et les CD/DVD-RW à mille cycles.
+
+      Pour le partage entre plateformes, le système FAT32 est utilisé pour des périphériques de grande capacité inférieurs à 8Tio. Le système exFAT est également une option pour les disques de moins de 8Tio avec un support depuis WindowsXP ou Linux version cinq virgule quatre.
+
+      Un exemple de commande pour créer une archive compressée avec GNU tar(1) est tar -cvJf archive.tar.xz ./source. Pour les fichiers de différences, la commande diff -u file.old file.new permet de générer un fichier patch0.

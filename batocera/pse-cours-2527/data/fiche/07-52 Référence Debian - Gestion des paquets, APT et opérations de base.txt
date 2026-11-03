@@ -1,0 +1,271 @@
+GUIDE COMPLET DE LA GESTION DES PAQUETS SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      APT désigne l'Advanced Packaging Tool qui est le système actuel de gestion des paquets de Debian.
+
+      Debian désigne une association de volontaires qui construit des distributions cohérentes de paquets binaires de logiciels libres pré-compilés.
+
+      dpkg désigne le système de gestion des paquets de bas niveau pour Debian basé sur les fichiers.
+
+      debconf désigne une interface utilisateur standardisée qui permet de faciliter le processus initial d'installation d'un paquet.
+
+      BTS désigne le Système Debian de suivi des bogues qui permet de rechercher des informations sur les problèmes rencontrés.
+
+      DFSG désigne les lignes directrices qui définissent la conformité des logiciels libres au sein de la section main.
+
+      ERE désigne la méthode d'extension des expressions rationnelles utilisée par aptitude pour la recherche de paquets.
+
+      GTK désigne le toolkit utilisé pour le fonctionnement du gestionnaire de paquets graphique synaptic.
+
+      HTTP désigne l'une des méthodes permettant d'accéder à l'archive Debian via des sites-miroirs distants.
+
+      ABI désigne une notion de connaissance en profondeur nécessaire pour gérer la cohérence des paquets lors du mélange de suites.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION AU SYSTÈME DE GESTION DES PAQUETS.
+
+   A. Le rôle de l'archive Debian et d'APT.
+
+      L'archive Debian est une collection de paquets binaires de logiciels libres pré-compilés qui est distribuée par une association de volontaires. Cette archive est accessible via des sites-miroirs distants par les méthodes HTTP et FTP ou sous forme de CD-ROM/DVD.
+
+      Le système Advanced Packaging Tool, appelé APT, est l'outil actuel qui peut utiliser toutes ces ressources pour gérer les paquets. Il permet à l'utilisateur d'installer sur son système des ensembles cohérents de paquets binaires à partir de l'archive.
+
+      La source des données du système APT est collectivement désignée comme la liste des sources dans la documentation. Cette liste peut être définie dans le fichier /etc/apt/sources.list ou dans les fichiers /etc/apt/sources.list.d/*.list ou /etc/apt/sources.list.d/*.sources.
+
+      Pour l'architecture amd64, il y a actuellement soixante-dix-huit mille soixante-douze paquets disponibles dans l'archive. Le système de gestion des paquets assure la cohérence de l'installation en utilisant des mécanismes de déclaration de dépendances.
+
+   B. Comparaison des outils : apt, apt-get, aptitude et dpkg.
+
+      Le paquet dpkg constitue le système de gestion des paquets de bas niveau pour Debian et il est basé sur les fichiers. Il est différent des outils de plus haut niveau qui servent de frontaux à APT.
+
+      La commande apt est recommandée pour toutes les opérations interactives en ligne de commande, comme l'installation, la suppression ou la mise à niveau de la distribution. Elle propose des fonctionnalités comme une barre de progression pour l'utilisateur final.
+
+      L'outil apt-get est privilégié pour appeler le système de gestion de paquet Debian depuis des scripts. Il offre un système de résolution des dépendances robuste et consomme moins de ressources matérielles que d'autres outils.
+
+      Aptitude est un frontal d'APT qui permet une gestion interactive avec une console plein écran. C'est l'outil le plus flexible car il propose une recherche avancée et peut gérer des versions multiples de paquets de manière intuitive.
+
+   C. Les différents outils et utilitaires spécialisés.
+
+      Plusieurs utilitaires complètent la gestion des paquets comme tasksel qui est un frontal d'APT pour installer des tâches sélectionnées. Le paquet unattended-upgrades permet une installation automatique des mises à niveau de sécurité.
+
+      Pour les interfaces graphiques, gnome-software sert de gestionnaire de logiciels pour GNOME tandis que synaptic est un gestionnaire de paquets graphique utilisant le toolkit GTK.
+
+      Des outils spécifiques comme apt-listbugs affichent la liste des bogues critiques avant chaque installation par APT. L'utilitaire apt-file permet de réaliser des recherches de paquets directement en ligne de commande.
+
+      Enfin, apt-rdepends est utilisé pour afficher de manière récursive la liste des dépendances d'un paquet. Le paquet apt-utils fournit des programmes utilitaires tels que apt-extracttemplates, apt-ftparchive et apt-sortpkgs.
+
+II. PRINCIPES DE CONFIGURATION ET PRÉCAUTIONS D'USAGE.
+
+   A. Mécanismes de configuration et debconf.
+
+      Le système de configuration des paquets Debian respecte la configuration manuelle effectuée par l'administrateur du système. Il effectue une configuration non intrusive pour des raisons de commodité.
+
+      Chaque paquet possède son propre script de configuration avec une interface utilisateur standardisée appelée debconf(7) qui permet de faciliter le processus initial d'installation du paquet.
+
+      Les développeurs Debian s'efforcent de garantir que les mises à jour se déroulent de manière impeccable grâce aux scripts de configuration du paquet.
+
+      Pour les environnements de bureau modernes, il est recommandé de redémarrer le système après un changement de configuration ou une mise à niveau de paquet. Cela assure le bon fonctionnement du système.
+
+      Des configurations ésotériques peuvent être activées manuellement par l'administrateur. Cela peut toutefois créer une interférence avec les programmes génériques d'assistance à la configuration du système.
+
+   B. Règles de sécurité et responsabilités de l'administrateur.
+
+      L'administrateur du système peut utiliser toutes les fonctionnalités des paquets de logiciels. Cependant, celles qui présentent un risque de sécurité sont désactivées lors de l'installation par défaut.
+
+      Si l'administrateur active lui-même un service présentant certains risques de sécurité, il est responsable du confinement du risque.
+
+      L'administrateur système est finalement responsable de son système. La longue histoire de stabilité de Debian n'est pas, en elle-même, une garantie de sécurité.
+
+      Pour les serveurs dont la mission est critique, l'administrateur sérieux ne doit pas installer de paquets ou de mises à jour de sécurité sans les avoir testés soigneusement dans des conditions sûres.
+
+   C. Précautions pour éviter l'instabilité du système.
+
+      Il ne faut pas installer de paquets provenant d'un mélange aléatoire de suites. Cela risque de casser la cohérence des paquets et nécessite une connaissance approfondie de l'ABI, du compilateur ou des bibliothèques.
+
+      Le nouvel administrateur devrait rester sur la version stable de Debian en appliquant seulement les mises à jour de sécurité. Il ne doit pas inclure testing ou unstable dans la liste des sources.
+
+      Il est interdit de mélanger les archives Debian standard avec d'autres archives non Debian comme Ubuntu. Il ne faut pas non plus créer le fichier /etc/apt/preferences.
+
+      L'administrateur ne doit pas modifier le comportement par défaut des outils de gestion de paquets sans en connaître toutes les conséquences. L'utilisation de dpkg -i ou dpkg --force-all -i pour des paquets quelconques est déconseillée.
+
+      Il est crucial de ne pas effacer ni modifier les fichiers situés dans /var/lib/dpkg/. De même, il ne faut pas écraser les fichiers systèmes en installant des logiciels directement depuis les sources.
+
+      Si nécessaire, les logiciels installés depuis les sources doivent être placés dans /usr/local ou /opt. La violation de ces précautions peut rendre le système inutilisable.
+
+III. COMPRÉHENSION DE L'ARCHIVE ET DES SOURCES.
+
+   A. Structure des fichiers de sources et format deb822.
+
+      La source des données du système APT est collectivement appelée la liste des sources. Elle peut être définie dans le fichier /etc/apt/sources.list, les fichiers /etc/apt/sources.list.d/*.list ou les fichiers /etc/apt/sources.list.d/*.sources.
+
+      Pour le système trixie avec un accès HTTP typique, la liste des sources est fournie dans le format moderne deb822 dans le fichier /etc/apt/sources.list.d/debian.sources. Chaque bloc de lignes séparé par une ligne vierge définit une source de données pour le système APT.
+
+      La strophe Types définit la liste des types tels que deb et deb-src. La strophe URIs définit la liste des URIs racine de l'archive Debian.
+
+      La section Suites définit la liste des noms de distribution en utilisant soit le nom de la suite, soit le nom de code. La section Composants définit la liste des noms de zones d'archivage valides de l'archive Debian.
+
+      La définition de deb-src peut être omise sans risque si elle ne concerne qu'aptitude qui n'accède pas aux métadonnées relatives aux sources. Cela permet d'accélérer la mise à jour des métadonnées de l'archive.
+
+      Si la liste des sources est fournie dans l'ancien format obsolète en une ligne dans les fichiers /etc/apt/sources.list ou /etc/apt/sources.list.d/*.list, il faut les mettre à jour avec la commande sudo apt modernize-sources.
+
+   B. Les différentes publications : stable, testing et unstable.
+
+      La publication stable est une publication quasi statique après des vérifications intensives. Pour un serveur de production ou un PC de bureau nécessitant peu d'efforts d'administration, l'utilisation de la suite stable avec les mises à jour de sécurité est recommandée.
+
+      La publication testing est une publication évolutive qui bénéficie de sérieuses vérifications et d'un délai d'attente. Elle est gérée par l'infrastructure d'assurance qualité de l'archive Debian et ses paquets sont mis à jour assez fréquemment pour offrir les fonctionnalités les plus récentes.
+
+      L'utilisation de la publication unstable est déconseillée pour une utilisation normale comme bureau car elle est destinée au débogage des paquets par les développeurs. Elle expose l'utilisateur à des risques inutiles malgré une apparence de stabilité.
+
+      Il est recommandé d'utiliser le nom de code correspondant à la suite testing, comme forky pendant le cycle de publication trixie-as-stable, dans le répertoire des sources. Il convient de mettre à jour ce nom de code vers le nouveau nom seulement après avoir évalué la situation pendant environ un mois après la publication de la suite majeure.
+
+      Pour la suite unstable, il n'existe pas d'archive de mise à jour de sécurité spécifique. Les paquets de la suite unstable sont corrigés par les responsables individuels.
+
+   C. Organisation des sections et des composants de l'archive.
+
+      L'archive Debian est organisée en sections qui catégorisent les paquets par zone d'application. La section main fournit le système Debian et contient soixante-seize mille cinq cent quatre-vingt-sept paquets pour l'architecture amd64.
+
+      La section non-free-firmware contient soixante-dix-huit paquets qui ne sont pas compatibles avec la DFSG mais dont le microprogramme est requis pour une expérience satisfaisante de l'installation. La section contrib contient trois cent soixante-deux paquets conformes à la DFSG mais ayant des dépendances vers le non-free.
+
+      La section non-free contient mille quarante-cinq paquets qui ne sont pas conformes à la DFSG et qui ne sont pas dans non-free-firmware. Le nombre de paquets dans ces trois sections est inférieur à deux pour cent de ceux présents dans la section main.
+
+      Le système Debian est totalement libre car il n'installe que des logiciels libres par défaut et ne fournit que des logiciels libres dans la section main. Aucun paquet de la section main ne dépend ou ne recommande de paquets de non-free, non-free-firmware ou contrib.
+
+      Les paquets hors du système Debian sont hébergés par les serveurs Debian dans les sections non-free, non-free-firmware et contrib. Ces travaux ne font pas partie de Debian, bien qu'ils aient été configurés pour être utilisés avec elle.
+
+IV. PHILOSOPHIE DU LOGICIEL LIBRE ET DÉPENDANCES.
+
+   A. Le contrat social et les sections main, contrib et non-free.
+
+      Debian est un système totalement libre car il n'installe que des logiciels libres par défaut pour respecter les libertés des utilisateurs. La section main fournit le système Debian et ne contient que des logiciels libres qui ne dépendent pas de composants non libres.
+
+      Les serveurs Debian hébergent également des paquets dans les sections contrib, non-free-firmware et non-free sans que cela ne contredise le contrat social. Ces travaux ne font pas partie du système Debian bien qu'ils soient configurés pour être utilisés avec celui-ci.
+
+      La section contrib contient des logiciels conformes à la DFSG mais qui possèdent des dépendances vers du non-free. La section non-free-firmware est destinée aux microprogrammes requis pour une expérience d'installation satisfaisante.
+
+      La section non-free regroupe les paquets non conformes à la DFSG et qui ne sont pas dans non-free-firmware. Les paquets de ces trois sections représentent moins de deux pour cent de ceux présents dans la section main.
+
+      L'utilisation de ces sections comporte des risques comme l'absence de liberté ou l'absence de suivi par Debian. L'outil aptitude permet de garder un contrôle complet sur les paquets installés et leur section.
+
+   B. Typologie des relations de dépendances entre paquets.
+
+      Le système Debian utilise des champs dans le fichier control pour déclarer des dépendances binaires versionnées. Le champ Depends déclare une dépendance absolue qui doit être installée en même temps ou à l'avance.
+
+      Le champ Pre-Depends est similaire à Depends mais exige une installation complète et préalable des paquets cités. Le champ Recommends déclare une dépendance forte mais non absolue que la plupart des utilisateurs n'installeront pas si elle n'est pas remplie.
+
+      Le champ Suggests représente une dépendance faible qui apporte des fonctionnalités supplémentaires sans être indispensable. Le champ Enhances fonctionne de manière opposée à Suggests en étant une dépendance faible.
+
+      Les champs Conflicts et Breaks servent à déclarer des incompatibilités entre les paquets. Conflicts exprime une incompatibilité absolue nécessitant la suppression des paquets cités, tandis que Breaks indique une incompatibilité souvent liée à une version.
+
+      Les champs Replaces et Provides permettent de gérer les remplacements et les fonctionnalités fournies. Un paquet peut déclarer Provides pour indiquer qu'il fournit les fichiers et fonctionnalités d'un autre paquet.
+
+   C. Critères pour choisir les meilleurs paquets.
+
+      Pour choisir un paquet sans procéder par essais et erreurs, plusieurs indicateurs de qualité peuvent être utilisés. Il est préférable de privilégier les paquets dont le champ Essential est marqué yes plutôt que no.
+
+      La section du paquet est un critère déterminant avec une hiérarchie allant de main à contrib puis non-free. La priorité des paquets suit également un ordre allant de required à important, standard, optional et enfin extra.
+
+      Le nombre d'installations et les votes via Popcon constituent des indicateurs de popularité utiles. Il est aussi recommandé de vérifier la régularité des mises à jour dans le journal des modifications ou changelog.
+
+      Le système de suivi des bogues Debian ou BTS permet d'évaluer la fiabilité d'un logiciel. Un bon paquet ne doit pas présenter de bogue RC et son responsable doit être réactif aux signalements.
+
+      Enfin, la réactivité du responsable aux signalements et le nombre de bogues réglés récemment sont des signes de qualité. Un paquet est considéré comme robuste s'il possède un faible nombre de bogues restants qui ne sont pas dans la liste des vœux.
+
+V. MAÎTRISE DE L'OUTIL INTERACTIF APTITUDE.
+
+   A. Fonctionnement des modes ligne de commande et plein écran.
+
+      L'outil aptitude propose deux modes d'utilisation distincts pour la gestion des paquets. Il peut être utilisé en ligne de commande pour des recherches ou des opérations spécifiques, ou en mode interactif plein écran via la commande sudo aptitude -u.
+
+      Le mode ligne de commande permet d'effectuer des tâches comme aptitude search ou aptitude show. Il est utile pour obtenir des informations détaillées ou des résultats basés sur des expressions rationnelles sans ouvrir d'interface visuelle.
+
+      Le mode interactif plein écran est idéal pour la gestion quotidienne et la vérification des paquets installés. En lançant cet outil, l'utilisateur accède à un menu complet et une liste de paquets affichée sur toute la console.
+
+      Dans l'interface plein écran, l'utilisateur peut basculer entre les modes en pressant la touche e si des conflits de paquets surviennent. Cette flexibilité permet de passer rapidement d'une commande simple à une résolution de problèmes plus complexe.
+
+      L'utilisateur peut également choisir d'utiliser la configuration de l'administrateur root en utilisant la commande sudo -H aptitude. Cela permet de différencier les préférences de l'utilisateur de celles du système.
+
+   B. Utilisation des raccourcis clavier et des vues de paquets.
+
+      Le mode plein écran d'aptitude repose sur un système de raccourcis clavier pour manipuler les paquets. Les touches plus et moins permettent de marquer un paquet pour une mise à niveau ou une suppression, tandis que la touche égale sert à le conserver.
+
+      Pour valider les changements préparés, l'utilisateur doit presser la touche g afin de lancer le téléchargement et l'installation. À l'inverse, la touche x permet de quitter l'écran en abandonnant toutes les modifications en cours.
+
+      Plusieurs vues sont disponibles pour organiser l'affichage des paquets, comme la vue standard Package View. Il existe aussi des vues spécialisées comme Audit Recommendations pour lister les paquets recommandés non installés.
+
+      La vue des tâches est particulièrement utile pour identifier les paquets nécessaires à une fonction précise du système. Les utilisateurs peuvent aussi explorer la vue Source Package View pour regrouper les paquets par paquet source.
+
+      L'affichage des paquets utilise des indicateurs spécifiques pour montrer l'état actuel et l'action prévue. Par exemple, l'indicateur de la troisième colonne permet de savoir si un paquet est marqué comme installé automatiquement.
+
+   C. Syntaxe avancée des expressions rationnelles.
+
+      Aptitude utilise une syntaxe d'expressions rationnelles étendue pour effectuer des recherches très précises. Ces formules peuvent cibler le nom du paquet avec le symbole ~n ou la description avec le symbole ~d.
+
+      Il est possible de filtrer les résultats selon des critères de maintenance ou de section. Les symboles ~m et ~s permettent respectivement de rechercher par responsable du paquet ou par section de l'archive.
+
+      La puissance de l'outil réside dans sa capacité à cibler l'état des paquets installés. Les formules ~i et ~M permettent de distinguer les paquets installés des paquets installés automatiquement.
+
+      Les relations de dépendance sont également intégrables dans les recherches grâce à des règles spécifiques. On peut ainsi identifier les paquets dont dépendent d'autres paquets installés en utilisant la formule ~R~i.
+
+      Pour les utilisateurs de la ligne de commande, l'expression peut être combinée avec des motifs comme dans l'exemple aptitude search '~n(pam|nss).*ldap'. Cela permet de trouver rapidement des paquets répondant à des critères multiples et complexes.
+
+VI. OPÉRATIONS DE MAINTENANCE ET GESTION DES MISES À JOUR.
+
+   A. Flux d'événements pour l'installation et la suppression.
+
+      Le processus de mise à jour commence par la commande update qui recherche les métadonnées d'une archive distante pour reconstruire les métadonnées locales.
+
+      Pour l'installation d'un paquet, le système choisit les paquets indiqués, résout les dépendances, télécharge les binaires, puis lance les scripts preinst, l'installation des fichiers et enfin les scripts postinst.
+
+      La mise à niveau suit un flux similaire mais commence par le choix de la version candidate pour tous les paquets installés avant de résoudre les dépendances.
+
+      La suppression d'un paquet nécessite la résolution des dépendances puis l'exécution des scripts prerm, la suppression des fichiers sauf la configuration et enfin les scripts postrm.
+
+      La purge est une opération plus radicale qui supprime l'intégralité des fichiers installés ainsi que les fichiers de configuration après l'exécution des scripts prerm et postrm.
+
+   B. Procédures de mise à niveau majeure du système.
+
+      Une mise à niveau vers une nouvelle version peut s'effectuer en modifiant la liste des sources pour pointer vers une nouvelle publication puis en exécutant apt update et apt dist-upgrade.
+
+      Il est fortement recommandé de réaliser une installation propre d'un nouveau système plutôt que de tenter une mise à niveau pour éviter les résidus et garantir la meilleure combinaison de paquets.
+
+      Avant toute opération, l'administrateur doit lire les notes de diffusion, effectuer une sauvegarde totale du système et préparer un support amorçable en cas de rupture du chargeur initial.
+
+      La procédure sécurisée consiste à informer les utilisateurs, à enregistrer l'activité avec script, à désactiver l'apt-pinning et à tester la mise à niveau par étapes de oldstable vers stable puis testing et unstable.
+
+      Pour minimiser les risques de conflits, il est conseillé de supprimer les paquets de la tâche bureau et d'utiliser apt-get -s dist-upgrade pour contrôler l'impact avant l'exécution finale.
+
+   C. Stratégies de résolution de problèmes et de recherche de bogues.
+
+      La première étape pour résoudre un problème est de consulter la documentation officielle située dans le répertoire /usr/share/doc/nom_paquet/ avec une attention particulière pour le fichier README.Debian.
+
+      Si un problème persiste avec un paquet spécifique, l'administrateur doit effectuer une recherche sur le site du système de suivi des bogues Debian en utilisant l'URL https://bugs.debian.org/.
+
+      Il est possible de signaler un bogue directement via la commande reportbug ou d'utiliser un navigateur pour cibler un paquet ou un numéro de bogue précis sur le site du BTS.
+
+      Pour les utilisateurs des versions testing ou unstable, il est conseillé d'installer le paquet apt-listbugs afin de vérifier les informations du système de suivi avant chaque installation.
+
+      Une autre méthode de recherche efficace consiste à utiliser Google avec des mots de recherche incluant les domaines site:debian.org, site:wiki.debian.org ou site:lists.debian.org.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas mélanger les archives Debian avec des archives non Debian comme Ubuntu pour éviter de casser la cohérence du système.
+
+      L'utilisation de la commande aptitude pour une mise à niveau majeure entre deux versions stables est déconseillée au profit de apt full-upgrade ou apt-get dist-upgrade.
+
+      L'administrateur doit distinguer la section main qui est totalement libre des sections contrib, non-free et non-free-firmware qui contiennent des logiciels non conformes à la DFSG.
+
+      Il ne faut jamais utiliser l'option force-all avec la commande dpkg pour installer un paquet car cela peut rendre le système inutilisable.
+
+      L'utilisation des versions testing ou unstable présente des risques de dépendances cassées et nécessite de maîtriser l'infrastructure des paquets pour pouvoir intervenir.
+
+EXEMPLES CITÉS.
+
+      Le système Debian propose actuellement soixante-dix-huit mille soixante-douze paquets disponibles pour l'architecture amd64.
+
+      Les paquets des sections non-free, non-free-firmware et contrib représentent moins de deux pour cent de l'ensemble des paquets de l'archive.
+
+      Pour rechercher des paquets avec aptitude, la commande aptitude search '~n(pam|nss).*ldap' permet de trouver des modules comme libnss-ldap ou libpam-ldap.
+
+      La source de données pour le système Trixie peut être définie dans le fichier /etc/apt/sources.list.d/debian.sources en utilisant le style deb822.

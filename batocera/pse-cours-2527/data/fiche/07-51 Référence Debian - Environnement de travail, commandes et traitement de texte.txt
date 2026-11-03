@@ -1,0 +1,319 @@
+GUIDE DE L'ENVIRONNEMENT DE TRAVAIL UNIX ET DES COMMANDES DE BASE SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle POSIX désigne un standard qui définit une syntaxe commune pour les différents interpréteurs de commandes.
+
+      Le terme bash désigne le GNU Bourne Again Shell qui est l'interpréteur de commandes standard par défaut.
+
+      Le sigle UTF-8 désigne un jeu de caractères utilisé pour le codage des textes et des environnements graphiques.
+
+      Le terme vim désigne un éditeur de texte puissant qui propose un mode normal et un mode insertion.
+
+      Le sigle BRE désigne le style d'expression rationnelle basique utilisé par des outils comme ed ou sed.
+
+      Le sigle ERE désigne le style d'expression rationnelle étendue utilisé par des outils comme awk ou egrep.
+
+      Le sigle PCRE désigne les expressions rationnelles compatibles avec Perl utilisées pour la correspondance de texte.
+
+      Le terme stdin désigne l'entrée standard qui correspond au descripteur de fichier zéro.
+
+      Le terme stdout désigne la sortie standard qui correspond au descripteur de fichier un.
+
+      Le terme stderr désigne l'erreur standard qui correspond au descripteur de fichier deux.
+
+      Le sigle IFS désigne les séparateurs de champs internes utilisés par l'interpréteur de commandes pour scinder les mots.
+
+      Le sigle RFC2822 désigne une norme utilisée par la commande date avec l'option -R pour formater la sortie.
+
+COURS DÉTAILLÉ.
+
+I. L'ENVIRONNEMENT DE L'INTERPRÉTEUR DE COMMANDES.
+
+   A. Types d'interpréteurs et conformité POSIX.
+
+      L'environnement de travail de type UNIX utilise divers interpréteurs de commandes appelés shells. Il est recommandé de conserver bash comme interpréteur de connexion pour éviter des problèmes avec les programmes d'initialisation du système.
+
+      Les interpréteurs POSIX partagent une syntaxe commune mais peuvent diverger sur des éléments comme les variables ou les expansions de motifs. Bash est considéré comme le standard de fait et sera l'interpréteur utilisé dans ce didacticiel.
+
+      Plusieurs options existent comme dash qui est le shell Almquist de Debian, idéal pour les scripts. Zsh est un interpréteur standard offrant de nombreuses améliorations, tandis que ksh est la version de AT&T du shell Korn.
+
+      Certains shells ne sont pas POSIX comme tcsh ou csh qui sont des versions de Berkeley. D'autres comme sash sont des interpréteurs autonomes qui ne conviennent pas comme un sh standard.
+
+   B. Personnalisation de bash via .bashrc.
+
+      La personnalisation du comportement de bash s'effectue principalement à l'aide du fichier ~/.bashrc. Ce fichier permet d'activer des fonctionnalités comme l'autocomplétion programmable via le paquet bash-completion.
+
+      Il est possible de configurer des variables d'environnement essentielles dans ce fichier. Par exemple, on peut définir l'éditeur par défaut avec la variable EDITOR ou modifier le chemin de recherche avec la variable PATH.
+
+      Le fichier peut aussi inclure des scripts spécifiques comme celui de MC pour permettre le changement de répertoire lors de la sortie. On peut également définir le CDPATH pour faciliter la navigation vers des répertoires comme ~/Desktop.
+
+      La gestion du PATH permet d'inclure des répertoires privés de l'utilisateur comme ~/bin s'ils existent. Cela garantit que les commandes personnalisées sont reconnues par l'interpréteur.
+
+   C. Raccourcis clavier et combinaisons de touches.
+
+      L'utilisation d'un terminal nécessite la connaissance de certaines séquences de touches spécifiques. Sur une console Linux en mode caractères, seules les touches Ctrl et Alt situées à gauche fonctionnent correctement.
+
+      Certaines combinaisons permettent de manipuler la ligne de commande, comme Ctrl-U pour effacer avant le curseur ou Ctrl-H pour effacer le caractère précédent. La touche Tab est indispensable pour compléter les noms de fichiers.
+
+      La gestion des programmes s'effectue avec Ctrl-C pour terminer un processus ou Ctrl-Z pour le mettre en tâche de fond. La recherche dans l'historique est facilitée par Ctrl-R pour une recherche incrémentale.
+
+      Le contrôle de l'affichage peut être géré avec Ctrl-S pour arrêter le défilement et Ctrl-Q pour le reprendre. La touche Alt de gauche ou la touche Windows sert de touche meta pour les interfaces de type Emacs.
+
+II. INTERACTION ET MANIPULATION DU TEXTE.
+
+   A. Opérations de la souris et styles de sélection.
+
+      Le système Debian mélange deux styles d'opérations de souris pour le texte. Le style Unix traditionnel utilise trois boutons et la sélection PRIMAIRE, tandis que le style graphique moderne utilise deux boutons avec les sélections PRIMAIRE et PRESSE-PAPIER.
+
+      Dans le style traditionnel, le clic gauche et le glissement sélectionnent la plage PRIMAIRE. Le clic droit traditionnel sert également à sélectionner la fin de la plage pour la sélection PRIMAIRE.
+
+      Pour le style moderne, le clic gauche et le glissement sélectionnent la plage PRIMAIRE. Le clic droit moderne déclenche une action dépendante du contexte comme couper ou copier.
+
+      L'insertion de la sélection PRIMAIRE à la position du curseur se fait par un clic central ou via Maj-Inser. Le bouton du milieu peut être simulé par la molette centrale ou en cliquant simultanément sur les boutons gauche et droit.
+
+      Le transfert vers le PRESSE-PAPIER s'effectue avec Ctrl-X pour couper ou avec Ctrl-C pour copier. Dans un terminal, il faut utiliser Shift-Ctrl-C pour copier afin d'éviter de terminer un programme.
+
+      Pour pouvoir utiliser une souris avec les consoles Linux en mode caractère, il faut que gpm(8) tourne en tant que démon.
+
+   B. Utilisation du visualisateur de fichiers less.
+
+      La commande less(1) est un visualisateur moderne qui affiche le contenu d'un fichier ou d'une entrée standard. Elle offre plus de fonctionnalités que la commande more(1).
+
+      Pour obtenir de l'aide lors du parcours, il suffit de presser la touche h. L'option -R permet d'afficher la sortie en mode caractères bruts avec les séquences d'échappement de couleurs ANSI.
+
+      La recherche d'une chaîne de caractères peut être effectuée en saisissant le caractère / ou le caractère ?. Pour modifier la sensibilité à la casse, on utilise l'option -i.
+
+      Le programme peut être amélioré en exécutant eval $(lesspipe) ou eval $(lessfile) dans le script de démarrage de l'interpréteur de commandes. Des informations complémentaires sont disponibles dans le fichier /usr/share/doc/less/LESSOPEN.
+
+   C. Éditeurs de texte Vim et Emacs.
+
+      Il est recommandé de maîtriser une variante de Vim ou d'Emacs pour être compétent sur les systèmes de type UNIX. Vim est particulièrement utile car l'éditeur Vi est présent partout dans le monde Linux et UNIX.
+
+      Pour les débutants, Vim est conseillé car il propose de l'aide avec la touche F1. Il est possible de suivre un tutoriel interactif en lançant vim et en sélectionnant l'option |tutor|.
+
+      Emacs est un autre choix populaire, notamment pour la programmation, grâce à ses nombreuses fonctionnalités comme un lecteur de nouvelles ou un éditeur de répertoires. Il reconnaît intelligemment le format des fichiers pour aider l'utilisateur.
+
+      Debian permet de définir un éditeur par défaut via la commande sudo update-alternatives --config editor. Il est préférable de choisir /usr/bin/vim.basic plutôt que /usr/bin/vim.tiny pour bénéficier de la mise en évidence de la syntaxe.
+
+      Les variables d'environnement $EDITOR et $VISUAL sont utilisées par de nombreux programmes. Pour assurer la cohérence sur Debian, il est conseillé de les définir sur /usr/bin/editor.
+
+      Les bons éditeurs comme Vim et Emacs traitent correctement les textes codés en UTF-8. Il est préconisé d'utiliser l'environnement graphique avec les paramètres linguistiques UTF-8 locaux.
+
+III. CONFIGURATION ET GESTION DES ÉDITEURS.
+
+   A. Définition de l'éditeur par défaut.
+
+      Debian propose de nombreux éditeurs différents et il est recommandé d'installer le paquet vim.
+
+      Le système offre un accès unifié à l'éditeur par défaut via la commande /usr/bin/editor.
+
+      Cela permet à d'autres programmes comme reportbug(1) d'appeler l'éditeur de manière cohérente.
+
+      Pour modifier l'éditeur par défaut, l'utilisateur doit utiliser la commande sudo update-alternatives --config editor.
+
+      Il est conseillé aux débutants de choisir /usr/bin/vim.basic plutôt que /usr/bin/vim.tiny pour bénéficier de la mise en évidence de la syntaxe.
+
+      Les variables d'environnement $EDITOR ou $VISUAL peuvent être définies sur /usr/bin/editor pour assurer la cohérence du système.
+
+   B. Fonctionnement et modes de l'éditeur Vim.
+
+      Le vim(1) récent démarre avec l'option nocompatible et entre directement dans le mode NORMAL.
+
+      Le mode NORMAL est utilisé pour le déplacement du curseur, tandis que le mode INSERTION ou le mode REMPLACEMENT servent à la saisie de texte.
+
+      La sélection interactive du texte s'effectue via le mode VISUEL, le mode VISUEL LIGNE ou le mode VISUEL BLOC.
+
+      Le mode Ex est activé en saisissant deux points dans le mode NORMAL et permet d'accepter des commandes.
+
+      Le mode TERMINAL-JOB permet d'utiliser vim pour enregistrer l'activité de l'interpréteur de commandes.
+
+      L'outil Netrw est fourni avec le paquet pour gérer la lecture, l'écriture et le parcours de répertoires.
+
+   C. Enregistrement de l'activité de la console.
+
+      Il est recommandé d'enregistrer l'activité de l'interpréteur de commandes dans un fichier pour les tâches d'administration.
+
+      La méthode de base consiste à lancer l'activité sous la commande script(1).
+
+      L'utilisation de la commande script crée un fichier nommé typescript qui contient l'historique de la session.
+
+      Pour quitter le mode script, l'utilisateur doit presser les touches Ctrl-D.
+
+      Le nouveau Vim, version >= huit virgule deux, peut enregistrer l'activité proprement grâce au mode TERMINAL-JOB.
+
+IV. MAÎTRISE DES COMMANDES UNIX DE BASE.
+
+   A. Commandes de navigation et d'information système.
+
+      La commande pwd permet d'afficher le nom du répertoire actuel ou de travail. Pour connaître l'identité de l'utilisateur actuel, on utilise la commande whoami ou la commande id qui affiche le nom, l'uid, le gid et les groupes associés.
+
+      Le type d'un fichier peut être déterminé avec la commande file suivi du nom du fichier. Pour localiser l'emplacement d'une commande, on peut utiliser type -p, which ou type.
+
+      La commande apropos ou man -k permet de rechercher des commandes liées à un mot-clé. La commande whatis affiche une ligne d'explication, tandis que man -a fournit une explication complète au style UNIX.
+
+      La commande info propose une explication plus longue au style GNU. Pour lister le contenu d'un répertoire, on utilise ls, avec les options -a pour tous les fichiers ou -la pour un affichage détaillé.
+
+      La commande cd est utilisée pour naviguer entre les répertoires. On peut aller au répertoire racine avec cd /, au répertoire personnel avec cd, ou revenir au répertoire parent avec cd ..
+
+      L'arborescence des fichiers peut être visualisée avec la commande tree. Pour afficher le contenu d'un fichier comme /etc/motd, on utilise un visualisateur comme le pager par défaut.
+
+   B. Gestion des fichiers, répertoires et permissions.
+
+      Pour créer un nouveau répertoire, on utilise la commande mkdir. La suppression d'un répertoire se fait avec rmdir, tandis que la commande rm permet de supprimer un fichier spécifique.
+
+      La commande touch est utilisée pour créer un fichier vide. Pour copier un fichier, on utilise cp, et pour renommer ou déplacer un fichier, on utilise la commande mv.
+
+      Les permissions se gèrent avec la commande chmod. Par exemple, chmod 600 rend un fichier non lisible et non modifiable par les autres, alors que chmod 755 le rend accessible en lecture et exécutable par tous.
+
+      La recherche de fichiers peut s'effectuer avec find qui utilise des motifs de l'interpréteur, ou avec locate qui est plus rapide grâce à une base de données. La commande grep permet de rechercher un motif dans des fichiers.
+
+      L'arborescence peut être explorée avec ls -d pour voir les sous-répertoires. Les fichiers dont le nom commence par un point sont traditionnellement cachés dans l'environnement UNIX.
+
+      Pour manipuler des archives, la commande tar est indispensable. Elle permet d'extraire des fichiers avec l'option -xvf ou d'archiver un répertoire avec l'option -cvf.
+
+   C. Gestion des processus et de la compression.
+
+      La commande top affiche en plein écran les informations sur les processus en cours. On peut aussi utiliser ps aux ou ps -ef pour afficher les informations sur les processus actifs.
+
+      Pour identifier les fichiers ouverts par un processus, on utilise lsof. Si un processus doit être arrêté, la commande kill permet de le terminer en utilisant son identifiant de processus.
+
+      La compression de fichiers est possible avec gzip qui crée une extension .gz. Le format bzip2 offre une meilleure compression que gzip, et l'algorithme xz propose une compression encore supérieure.
+
+      Pour décompresser, on utilise gunzip pour les fichiers .gz, bunzip2 pour les .bz2 et unxz pour les .xz. La commande zcat permet d'afficher le contenu d'un fichier compressé.
+
+      L'archivage et la compression peuvent être combinés avec tar. On utilise par exemple tar -xvzf pour extraire une archive gzippée ou tar -xvjf pour une archive bzip2.
+
+      La gestion des tâches en arrière-plan est possible grâce aux commandes internes comme jobs, fg, bg et kill. Le système Debian est un système multi-tâches permettant de faire tourner plusieurs programmes.
+
+V. MÉCANISMES D'EXÉCUTION ET VARIABLES D'ENVIRONNEMENT.
+
+   A. Structure d'une commande et redirections.
+
+      Une commande simple se compose d'une séquence incluant des assignations de variables optionnelles, le nom de la commande et des paramètres optionnels.
+
+      Elle peut également intégrer des redirections comme le symbole supérieur ou le symbole inférieur ainsi que des opérateurs de contrôle tels que les doubles esperluettes ou le point-virgule.
+
+      Les redirections permettent de diriger la sortie standard vers un fichier en l'écrasant avec le symbole supérieur ou de l'ajouter à la fin avec le symbole supérieur double.
+
+      Il est possible de rediriger la sortie d'erreur standard vers un fichier en utilisant le symbole supérieur suivi du chiffre deux.
+
+      L'utilisation du symbole inférieur permet de rediriger l'entrée standard d'une commande vers un fichier spécifique.
+
+      Les descripteurs de fichiers prédéfinis incluent le zéro pour l'entrée standard, le un pour la sortie standard et le deux pour l'erreur standard.
+
+   B. Paramètres régionaux et variable LANG.
+
+      Les paramètres régionaux par défaut sont définis par la variable d'environnement LANG qui est configurée sous la forme xx_YY.UTF-8.
+
+      La valeur de cette variable est constituée de trois parties comprenant le code de langue ISO six cent trente-neuf, le code de pays ISO trois mille cent soixante-six et le jeu de caractères UTF-8.
+
+      Par exemple, la valeur fr_FR.UTF-8 correspond au français de France avec le codage UTF-8.
+
+      Il est recommandé de configurer l'environnement du système en ne touchant qu'à la variable LANG pour le moment.
+
+      Lors de la rédaction d'un rapport de bogue, il est conseillé de lancer la commande avec les paramètres régionaux en_US.UTF-8 si l'environnement n'est pas anglais.
+
+   C. Variables PATH, HOME et motifs génériques (glob).
+
+      La variable PATH contient la liste des répertoires dans lesquels l'interpréteur recherche le nom d'une commande.
+
+      Dans une installation Debian par défaut, les répertoires /usr/sbin et /sbin peuvent ne pas être inclus dans le PATH des utilisateurs.
+
+      La variable HOME identifie le répertoire personnel de l'utilisateur et est utilisée par de nombreuses commandes pour enregistrer la configuration.
+
+      L'interpréteur étend le symbole tilde suivi d'un nom pour former le répertoire personnel de cet utilisateur.
+
+      Les motifs génériques ou globs permettent d'utiliser des jokers pour agir sur un groupe de fichiers sans les entrer individuellement.
+
+      Le motif étoile correspond à n'importe quel nom de fichier ne commençant pas par un point, tandis que le point d'interrogation correspond à exactement un caractère.
+
+VI. TRAITEMENT AVANCÉ DES DONNÉES TEXTUELLES.
+
+   A. Outils de traitement et expressions rationnelles.
+
+      Le traitement du texte sous UNIX repose sur le passage de données à travers une chaîne d'outils standards via des tubes. On distingue les outils n'utilisant pas d'expressions rationnelles comme cat, tac, cut, head, tail, sort, uniq, tr ou diff.
+
+      Certains programmes utilisent des expressions rationnelles basiques ou BRE, tels que ed, sed, grep, vim et emacs. Les outils utilisant des expressions rationnelles étendues ou ERE incluent awk, egrep, tcl, perl, pcre2grep et python avec son module re.
+
+      Les expressions rationnelles sont composées de caractères de texte et de métacaractères pour décrire des motifs de correspondance. Les métacaractères courants comme le point, l'accent circonflexe, le dollar, les crochets et l'astisque sont présents dans les styles BRE et ERE.
+
+      Le style BRE utilise des métacaractères spécifiques comme le plus ou le point d'interrogation qui doivent être précédés d'un antislash. À l'inverse, le style ERE utilise des métacaractères comme le plus, le point d'interrogation, les parenthèses, les accolades ou la barre verticale sans nécessiter d'échappement.
+
+   B. Substitution globale et remplacement de texte.
+
+      La commande ed permet de remplacer toutes les instances d'un motif par un texte de destination dans un fichier. La commande sed peut également effectuer ces substitutions de manière globale avec l'option -i pour une édition directe.
+
+      L'éditeur vim propose des commandes ex pour remplacer des motifs dans un fichier avec l'indicateur c pour une confirmation interactive. Il est possible de traiter plusieurs fichiers simultanément avec vim ou perl en utilisant des commandes spécifiques.
+
+      L'utilisation du paramètre -i.bak avec perl permet de conserver le fichier d'origine en ajoutant l'extension .bak à son nom. Cette méthode facilite la récupération en cas d'erreurs lors de substitutions complexes.
+
+      Dans les expressions de remplacement, le symbole et représente la chaîne correspondant à l'expression rationnelle. Les symboles \n permettent de désigner la nième expression rationnelle entre crochets, tandis que perl utilise $& et $n.
+
+   C. Extraction de données et utilisation d'awk.
+
+      L'outil awk est fréquemment utilisé pour extraire des données de fichiers texte structurés comme des tableaux. Il permet de filtrer des lignes selon des conditions précises sur les colonnes ou les champs du fichier.
+
+      Le programme peut afficher des champs spécifiques en utilisant la syntaxe print suivie du numéro du champ. Par exemple, awk peut extraire le troisième champ d'un fichier pour obtenir une information précise comme un mois.
+
+      L'interpréteur de commandes Bash peut également analyser des fichiers en utilisant la commande interne read. Cette méthode repose sur l'utilisation de la variable IFS pour scinder les lignes en mots selon des séparateurs définis.
+
+      La variable IFS est composée par défaut de l'espace, de la tabulation et du saut de ligne. En modifiant cette variable, comme pour utiliser le caractère deux-points, il devient possible d'analyser facilement des fichiers comme /etc/passwd.
+
+VII. AUTOMATISATION ET ENCHAÎNEMENT DE COMMANDES.
+
+   A. Idiomes de redirection et de tubes (pipes).
+
+      L'enchaînement de commandes permet de passer la sortie standard d'une première commande directement dans l'entrée standard d'une seconde via le symbole pipe. Cette méthode permet aux deux commandes de tourner simultanément pour traiter les données.
+
+      Pour rediriger la sortie standard vers un fichier en écrasant son contenu existant, on utilise le symbole supérieur suivi du nom du fichier. Si l'on souhaite ajouter les données à la fin du fichier sans supprimer l'ancien contenu, on utilise le symbole double supérieur.
+
+      La gestion des erreurs est possible en redirigeant spécifiquement la sortie d'erreur standard vers un fichier avec le symbole deux supérieur. Il est également possible de rediriger à la fois la sortie standard et l'erreur standard vers un même fichier en utilisant la syntaxe command > foo deux>&un.
+
+      Les opérateurs de contrôle permettent de définir des séquences logiques comme l'exécution de deux commandes l'une après l'autre avec le point-virgule. Le symbole & exécute la commande en arrière-plan dans un sous-shell, tandis que le symbole && permet de n'exécuter la seconde commande qu'en cas de succès de la première.
+
+      L'entrée standard peut être redirigée depuis un fichier en utilisant le symbole inférieur. On peut aussi utiliser un délimiteur pour rediriger l'entrée standard vers les lignes suivantes jusqu'à ce que ce délimiteur soit rencontré.
+
+   B. Utilisation de xargs et de find.
+
+      La commande find permet de rechercher des fichiers selon des critères précis comme un motif de nom de fichier. Elle peut être utilisée pour lister tous les fichiers situés sous un répertoire spécifique comme /usr en utilisant l'option -print.
+
+      L'outil xargs est utilisé pour lancer une commande de manière répétitive en utilisant chaque élément provenant d'un tube comme paramètre. Par exemple, l'enchaînement avec xargs -n 1 permet de traiter les éléments un par un.
+
+      On peut utiliser xargs pour scinder des éléments séparés par des espaces en différentes lignes grâce à l'option -n 1 suivie de la commande echo. À l'inverse, l'utilisation de xargs echo permet de concaténer des lignes provenant d'un tube en une seule ligne.
+
+      La combinaison de find et de xargs permet de créer des scripts d'une seule ligne capables de reboucler sur de nombreux fichiers pour effectuer des tâches complexes. Cela évite d'avoir à écrire des scripts shell complets lorsque la tâche est simple.
+
+   C. Manipulation de champs et de lignes avec sed et tr.
+
+      La commande tr est un outil de traitement de texte qui permet de traduire ou de supprimer des caractères. Elle peut être utilisée pour convertir des majuscules en minuscules ou pour supprimer des caractères spécifiques comme le retour à la ligne avec l'option tr -d '\n'.
+
+      L'outil sed est un éditeur de flux qui utilise des expressions rationnelles pour transformer le texte. Il permet d'ajouter des caractères au début de chaque ligne ou de supprimer une extension de fichier spécifique dans tout un flux de données.
+
+      Avec sed, il est possible d'afficher uniquement une ligne précise, comme la seconde ligne, en utilisant l'option -n combinée à l'expression -e 2p. On peut également limiter l'affichage aux deux premières ou aux deux dernières lignes d'un flux.
+
+      La substitution globale peut être réalisée avec sed en utilisant l'option -i pour modifier directement le fichier cible. L'ajout de l'extension .bak après l'option -i permet de conserver une copie de sauvegarde du fichier original pour faciliter la récupération en cas d'erreur.
+
+POINTS D'ATTENTION.
+
+      Il est déconseillé de basculer l'interpréteur de connexion avec la commande chsh car certains programmes d'initialisation pourraient en dépendre. Il vaut mieux définir un autre interpréteur via la configuration de l'émulateur de terminal ou le fichier ~/.bashrc.
+
+      Les interpréteurs de commandes POSIX partagent une syntaxe commune mais leurs comportements divergent sur les variables ou les expansions de motifs. Il faut donc toujours consulter la documentation spécifique de chaque outil.
+
+      La valeur de retour d'une commande peut paraître contre-intuitive car un succès est représenté par la valeur numérique zéro, ce qui correspond à la valeur logique VRAI. Une erreur renvoie une valeur non nulle.
+
+      L'utilisation de la variable IFS pour analyser des fichiers comme /etc/passwd peut provoquer des comportements étranges si elle n'est pas restaurée correctement. Il est prudent de sauvegarder l'ancienne valeur avant de la modifier.
+
+      Il existe une différence importante entre le motif étoile utilisé dans le shell et celui utilisé par la commande find avec l'option -name. Dans le second cas, le point est également pris en compte.
+
+EXEMPLES CITÉS.
+
+      Pour personnaliser son environnement, on peut ajouter la commande exec /usr/bin/zsh -i -l dans le fichier ~/.bashrc. On peut aussi définir l'éditeur par défaut avec la commande sudo update-alternatives --config editor.
+
+      Le fichier DPL contient des données comme Ian Murdock August mille neuf cent quatre-vingt-treize ou Ben Collins April deux mille un. La commande awk permet d'extraire le troisième champ pour obtenir des mois comme August ou April.
+
+      La commande sed peut être utilisée pour transformer une chaîne de caractères comme zzz1abc2efg3hij4. En utilisant l'expression régulière (un[a-z]*)[0-9]*(.*)$, on peut obtenir le résultat zzz=1abc2efg3hij4=.
+
+      Pour enregistrer l'activité de la console, on peut lancer la commande script qui crée un fichier nommé typescript. On peut ensuite consulter ce contenu avec vim typescript.
+
+      L'expression régulière egrep 'GNU.*LICENSE|Yoyodyne' appliquée sur /usr/share/common-licenses/GPL peut retourner GNU GENERAL PUBLIC LICENSE.

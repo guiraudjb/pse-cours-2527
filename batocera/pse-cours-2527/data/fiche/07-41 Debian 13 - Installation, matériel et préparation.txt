@@ -1,0 +1,263 @@
+GUIDE DE RÉVISION SUR L'INSTALLATION ET LES FONDAMENTAUX DE DEBIAN GNU/LINUX.
+
+LEXIQUE COMPLET.
+
+      Debian désigne une organisation composée uniquement de bénévoles dont le but est de développer le logiciel libre et de promouvoir les idéaux de la communauté du logiciel libre.
+
+      GNU désigne un projet lancé en mille neuf cent quatre-vingt-quatre par la Free Software Foundation pour développer un ensemble complet d'outils libres destinés aux systèmes de type Unix.
+
+      Linux désigne le noyau qui constitue la partie la plus importante d'un système d'exploitation GNU/Linux.
+
+      FHS désigne le standard pour l'organisation des systèmes de fichiers qui permet de standardiser l'organisation du système de fichiers Linux.
+
+      DFSG désigne les directives Debian pour le logiciel libre qui constituent une déclaration des critères de l'organisation en matière de logiciel libre.
+
+      GPL désigne la licence GNU General Public License qui oblige à donner le code source du programme lorsque l'on distribue une copie binaire.
+
+      AMD64 désigne l'architecture PC soixante-quatre bits utilisée pour l'installation décrite dans ce manuel.
+
+      UEFI désigne l'interface micrologicielle extensible unifiée qui est un nouveau type de microprogramme destiné à remplacer le BIOS classique.
+
+      CSM désigne le module de compatibilité qui permet aux logiciels écrits pour le BIOS classique d'être utilisés sur les systèmes utilisant l'UEFI.
+
+      GPT désigne le schéma de partitionnement GUID Partition Table utilisé par l'UEFI pour enregistrer les partitions sur le disque dur.
+
+      DHCP désigne le protocole qui permet de fournir automatiquement les informations de configuration réseau pendant le processus d'installation.
+
+COURS DÉTAILLÉ.
+
+I. PRÉSENTATION DU PROJET DEBIAN ET DE GNU/LINUX.
+
+   A. Définition et philosophie de Debian.
+
+      Debian est une organisation composée uniquement de bénévoles dont le but est de développer le logiciel libre et de promouvoir les idéaux de la communauté du logiciel libre.
+
+      Le projet a démarré en mille neuf cent quatre-vingt-treize quand Ian Murdock a invité les développeurs à créer une distribution complète et cohérente basée sur le noyau Linux.
+
+      Cette organisation est aujourd'hui composée d'environ mille développeurs qui s'impliquent dans des activités comme la maintenance des paquets ou l'analyse juridique des licences.
+
+      Le contrat social Debian constitue la déclaration des engagements de l'organisation vis-à-vis de la communauté du logiciel libre.
+
+      Les directives Debian pour le logiciel libre ou DFSG définissent les critères de liberté et servent de base à la définition de l'Open Source.
+
+      La charte Debian est une spécification détaillée qui définit les standards de qualité du projet.
+
+   B. Le système GNU/Linux et ses origines.
+
+      GNU/Linux est un système d'exploitation composé d'un ensemble de programmes permettant d'agir sur la machine et de lancer d'autres programmes.
+
+      Le noyau Linux est la partie la plus importante du système et est apparu pour la première fois en mille neuf cent quatre-vingt-onze grâce à Linus Torvalds.
+
+      Le projet GNU a débuté en mille neuf cent quatre-vingt-quatre avec la Free Software Foundation pour développer un système libre de type Unix.
+
+      Le terme GNU/Linux est préféré à Linux car le noyau seul ne forme pas un système d'exploitation fonctionnel sans les outils du projet GNU.
+
+      Ce système est conçu comme un système multitâche et multiutilisateur fondé sur le système d'exploitation Unix.
+
+      Les utilisateurs de GNU/Linux bénéficient d'une grande liberté de choix entre de nombreux interpréteurs de commandes et interfaces graphiques.
+
+   C. Spécificités de la distribution Debian GNU/Linux.
+
+      La distribution Debian GNU/Linux combine la philosophie de Debian avec les outils GNU et le noyau Linux.
+
+      Elle se distingue par son système de gestion des paquets qui offre un contrôle complet à l'administrateur pour installer ou mettre à jour le système.
+
+      Debian a été la première distribution Linux à proposer un système de gestion des paquets et une mise à jour sans réinstallation.
+
+      La distribution est réputée pour sa stabilité, sa qualité technique et sa capacité à être paramétrée pour des usages variés comme les serveurs ou les postes de travail.
+
+      Pour assurer la sécurité, Debian vérifie que les paquets proviennent de responsables officiels afin de protéger le système contre les logiciels malveillants.
+
+      La communication avec les développeurs peut se faire via plus de trois cent trente-quatre listes de diffusion gérées par le projet.
+
+II. L'INSTALLATEUR ET LES MODALITÉS D'OBTENTION.
+
+   A. Fonctionnement de l'installateur Debian.
+
+      L'installateur Debian, aussi appelé d-i, est le logiciel qui permet d'installer un système Debian basique et fonctionnel.
+
+      Il prend en charge une large gamme de matériel comme les périphériques embarqués, les ordinateurs portables, les ordinateurs de bureau et les serveurs.
+
+      L'installation s'effectue en répondant à une série de questions simples, mais un mode expert est disponible pour contrôler finement chaque détail.
+
+      L'installateur détecte le matériel, charge les pilotes nécessaires, établit la connexion réseau avec dhcp-client et installe les paquets de base avec debootstrap.
+
+      Il utilise le programme tasksel pour permettre à l'utilisateur d'installer des ensembles de logiciels thématiques comme un environnement de bureau ou un serveur web.
+
+   B. Méthodes de téléchargement et de supports.
+
+      L'installation peut être réalisée à partir de nombreux supports tels que la clé USB, le CD, le DVD, le Blu-Ray ou même par le réseau.
+
+      Pour les utilisateurs ne possédant pas de lecteur de disque optique, l'installation peut se faire via une clé USB.
+
+      Le système d'installation accepte la plupart des modes de connexion réseau comme le HTTP ou le FTP, mais pas le RNIS.
+
+      Il est possible d'amorcer le système d'installation sur le réseau si l'infrastructure dispose des services DHCP et TFTP.
+
+      L'installateur est capable de gérer des systèmes localisés avec un choix de plus de quatre-vingts langues.
+
+   C. Organisation du manuel d'installation.
+
+      Ce document est organisé de façon linéaire pour guider l'utilisateur à travers les différentes étapes du processus d'installation.
+
+      Le manuel commence par la configuration nécessaire au chapitre deux, puis traite de la préparation et des sauvegardes au chapitre trois.
+
+      Les chapitres suivants détaillent l'obtention des supports au chapitre quatre, le démarrage du système au chapitre cinq et l'utilisation réelle de l'installateur au chapitre six.
+
+      Le chapitre sept explique comment démarrer le nouveau système et le chapitre huit propose des informations sur les prochaines étapes.
+
+      Des informations complémentaires sur le document et la manière d'y contribuer se trouvent dans l'annexe E, intitulée Administrivia.
+
+III. CONFIGURATION MATÉRIELLE ET COMPATIBILITÉ.
+
+   A. Architectures et microprocesseurs supportés.
+
+      Debian GNU/Linux treize fonctionne sur six architectures principales et de nombreuses variantes appelées saveurs.
+
+      Les architectures incluent AMD64 et Intel soixante-quatre, ARM avec matériel FPU, ARM soixante-quatre bits, Power Systems, RISC-V soixante-quatre bits et IBM S/390 soixante-quatre bits.
+
+      Le document décrit spécifiquement l'installation pour l'architecture PC soixante-quatre bits avec le noyau Linux.
+
+      Les processeurs AMD64 et Intel soixante-quatre sont explicitement reconnus par le système.
+
+      L'architecture accepte les systèmes à plusieurs processeurs via l'option SMP-alternatives de l'image standard du noyau.
+
+   B. Gestion du matériel graphique et réseau.
+
+      La reconnaissance des interfaces graphiques dépend du système X11 de X.Org et du noyau qui fournit le tampon vidéo.
+
+      Certaines fonctionnalités comme l'accélération 3D ou l'accélération matérielle de la vidéo peuvent nécessiter l'installation de microprogrammes supplémentaires.
+
+      Debian treize propose la version sept virgule sept de X.Org pour la gestion de l'affichage.
+
+      Toute carte réseau reconnue par le noyau Linux devrait être reconnue par l'installateur grâce au chargement automatique des pilotes.
+
+      Les cartes PCI et PCI-Express ainsi que les cartes PCMCIA et ExpressCard sont généralement prises en charge.
+
+      Le RNIS ne peut pas être utilisé pour effectuer l'installation du système.
+
+   C. Périphériques et gestion des microprogrammes.
+
+      Certains périphériques comme les cartes réseau sans fil, les périphériques USB ou certains contrôleurs de disque dur exigent le chargement d'un microprogramme.
+
+      Depuis Debian GNU/Linux douze virgule zéro, les images d'installation officielles peuvent inclure des paquets de microprogrammes non libres.
+
+      Ces composants sont disponibles dans la section non-free-firmware de l'archive pour recevoir les mises à jour de sécurité.
+
+      L'installateur peut détecter et installer les microprogrammes nécessaires s'ils sont présents sur le support d'installation.
+
+      Le système reconnaît une large gamme de périphériques tels que les souris, les imprimantes, les scanners et les dispositifs USB.
+
+      La gestion des plages Braille est assurée par brltty en version six virgule sept et la synthèse vocale matérielle par speakup en version 3.1.6.
+
+IV. PRÉPARATION DE L'INSTALLATION.
+
+   A. Processus général et sauvegarde des données.
+
+      Le processus d'installation commence par la sauvegarde de toutes les données du disque dur sur lequel l'installation sera effectuée. Il est crucial de noter que le partitionnement d'un disque comporte toujours un risque de perte de données, même avec des programmes fiables.
+
+      L'installation de Debian suit une série d'étapes allant du téléchargement de l'installateur à l'amorçage du nouveau système. L'installateur Debian détecte le matériel, charge les pilotes, configure le réseau avec dhcp-client et installe le système de base via debootstrap.
+
+      Contrairement à d'autres systèmes, il est très rare de devoir réinstaller complètement Debian en cas de problème. Les mises à jour ne nécessitent jamais une installation complète et les programmes sont presque toujours compatibles avec les versions successives.
+
+      L'utilisateur peut utiliser le programme tasksel pour installer des ensembles thématiques de paquets comme un environnement de bureau. Si l'option Desktop environment n'est pas choisie, le système sera minimal avec une ligne de commande.
+
+   B. Recherche d'informations sur le matériel.
+
+      Il est conseillé de bien connaître son matériel avant de commencer, notamment le nombre et le type de disques durs. Les informations peuvent être trouvées dans les manuels, les écrans de configuration du BIOS ou de l'UEFI, ou via la fenêtre Système de Windows.
+
+      Pour les périphériques USB et PCI/PCI-Express, il est utile de connaître les identifiants vendor et product. Sur Linux, ces identifiants se lisent avec les commandes lsusb ou lspci -nn, comme l'exemple 1d6b:0001.
+
+      Les pilotes Linux sont écrits pour une puce spécifique plutôt que pour une marque de produit. Deux exemplaires d'un même produit peuvent utiliser des pilotes différents si le constructeur a modifié la puce sans changer le nom du modèle.
+
+      L'utilisation d'un système autonome, ou Debian Live Images, permet de tester la compatibilité du matériel sans modifier l'ordinateur. Ce système fonctionne dans la mémoire vive et toutes les modifications sont effacées au redémarrage.
+
+   C. Configuration réseau et besoins minimaux.
+
+      Pour une connexion ethernet, il faut connaître le nom de la machine, le nom du domaine, l'adresse IP, le masque réseau, la passerelle et le serveur DNS. Si un serveur DHCP est disponible, ces informations sont fournies automatiquement.
+
+      Pour un réseau WLAN/WiFi, l'utilisateur doit disposer de l'ESSID et de la clé WEP ou WPA/WPA2. L'installateur peut demander le téléchargement de microprogrammes non libres pour faire fonctionner les cartes sans fil.
+
+      Pour une installation avec bureau, il faut au minimum un Go de RAM, la configuration recommandée étant de deux Go de RAM et dix Go d'espace disque. Pour une installation sans bureau, le minimum est de cinq cent douze Mo de RAM, un Go étant recommandé, avec quatre Go d'espace disque.
+
+      Il est possible d'installer Debian avec seulement trois cent cinquante Mo de RAM si une partition d'échange swap est activée. L'installateur graphique est cependant déconseillé sur les systèmes possédant moins de sept cent quatre-vingts Mo de mémoire.
+
+V. GESTION DU STOCKAGE ET DU PARTITIONNEMENT.
+
+   A. Principes du partitionnement et multisystème.
+
+      Le partitionnement consiste à diviser un disque dur en plusieurs sections indépendantes. Chaque section fonctionne comme une pièce séparée où l'ajout de contenu dans l'une n'affecte pas les autres.
+
+      Debian nécessite des partitions spécifiques pour son fonctionnement et ne peut pas être installé directement sur des partitions Windows ou Mac OS X. Il est toutefois possible de partager des partitions avec d'autres systèmes de type Unix.
+
+      L'installation d'un système sur un disque déjà utilisé par un autre système d'exploitation comme Windows ou MacOS nécessite une repartition du disque. Il est impératif d'attribuer au moins une partition à la racine du système Debian.
+
+      Toute modification de partition comportant déjà un système de fichiers entraîne la destruction des fichiers existants. Il est donc indispensable d'effectuer une sauvegarde complète des données avant toute opération de partitionnement.
+
+      L'utilisation de l'UEFI moderne impose l'usage du schéma de partitionnement GUID Partition Table. En cas d'installation multisystème sur un même disque, tous les systèmes doivent utiliser le même type de table de partitions.
+
+   B. Méthodes de redimensionnement des partitions.
+
+      Plusieurs systèmes d'exploitation modernes permettent de déplacer ou de redimensionner des partitions existantes sans perdre les données. Cette méthode permet de créer l'espace nécessaire pour l'ajout d'un nouveau système.
+
+      Bien que ces outils soient efficaces dans la majorité des cas, la modification des partitions d'un disque reste une opération fondamentalement dangereuse. Une sauvegarde préalable demeure la seule sécurité contre la perte de données.
+
+      L'installateur Debian propose une option de partitionnement manuel pour gérer les partitions de type FAT ou NTFS. L'utilisateur peut alors sélectionner une partition existante et indiquer sa nouvelle dimension pour libérer de l'espace.
+
+      L'installateur Debian est capable de reconnaître et de gérer les systèmes de fichiers FAT, VFAT et NTFS. Il permet également de modifier les partitions Windows directement lors de l'étape du partitionnement.
+
+VI. RÉGLAGES DU MICROPROGRAMME ET DE L'AMORÇAGE.
+
+   A. Configuration du BIOS et de l'UEFI.
+
+      Le BIOS et l'UEFI sont les logiciels de base utilisés par le matériel pour permettre au système d'exploitation d'accéder aux composants. Ils fournissent un menu de configuration accessible au démarrage de l'ordinateur, souvent via la touche Suppr ou F2.
+
+      Dans ce menu, il est possible de choisir les périphériques utilisables pour l'amorçage et de définir leur ordre de priorité. On peut ainsi sélectionner des disques durs internes, des lecteurs de CD/DVD ou des supports USB.
+
+      L'UEFI est un nouveau type de microprogramme destiné à remplacer le BIOS classique. Il utilise un schéma de partitionnement différent appelé GUID Partition Table ou GPT, contrairement au système DOS utilisé par le BIOS.
+
+      L'utilisation de l'UEFI natif est nécessaire pour amorcer un disque avec GPT. Pour les installations multi-boot, il est important que tous les systèmes utilisent le même type de table de partitions sur un seul disque.
+
+   B. Gestion du démarrage sécurisé et du démarrage rapide.
+
+      Le mécanisme de secure boot est une fonction de l'UEFI qui n'autorise que le chargement de code signé par cryptographie. Cela permet de bloquer les codes d'amorçage non signés ou possédant une clé inconnue.
+
+      Debian utilise un chargeur d'amorçage d'adaptation appelé shim qui est signé par Microsoft. Cette solution permet au système de fonctionner correctement même lorsque le démarrage sécurisé est activé sur les machines.
+
+      La fonctionnalité fast boot ou fast startup de Windows réduit le temps de démarrage en effectuant une hibernation partielle. Cela peut provoquer une corruption du système de fichiers si un autre système d'exploitation accède aux mêmes données.
+
+      En configuration dual boot, il est impératif de désactiver cette fonction depuis Windows pour éviter des pertes de données. Il faut également surveiller que les mises à jour de Windows ne réactivent pas ce paramètre automatiquement.
+
+   C. Résolution des problèmes de clavier et d'amorçage.
+
+      Certains BIOS défectueux peuvent empêcher l'amorçage d'une clé USB même si l'option est présente. Il est parfois nécessaire de changer le type de périphérique de USB harddisk vers USB ZIP ou USB CDROM.
+
+      L'activation de l'option USB legacy support dans la configuration peut aider à résoudre ces problèmes d'amorçage. Si cela échoue, il est possible de copier une image ISO directement sur la clé pour l'utiliser.
+
+      Sur les anciens systèmes sans clavier PS/2, le clavier USB peut ne pas répondre dans le menu du programme d'amorçage. Il faut alors chercher une option nommée Legacy keyboard emulation ou USB keyboard support dans le BIOS.
+
+      Les ordinateurs modernes ne présentent généralement aucun problème avec les claviers et souris USB. Pour les systèmes avec UEFI, l'installateur Debian détecte automatiquement s'il doit installer un chargeur d'amorçage BIOS ou UEFI.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le noyau Linux avec le système GNU/Linux car le noyau seul ne constitue pas un système d'exploitation fonctionnel.
+
+      Une confusion fréquente réside dans la distinction entre le logiciel libre et le copyright car un logiciel libre possède toujours un auteur et peut être soumis à des licences.
+
+      Il est crucial de ne pas confondre l'installateur graphique avec le système X Window car ils sont distincts et les problèmes de l'un ne relèvent pas de l'autre.
+
+      Une nuance importante concerne le démarrage sécurisé qui utilise des clés de signature cryptographique pour bloquer les codes d'amorçage non autorisés.
+
+      Il faut éviter de croire que le microprogramme est toujours intégré au matériel car il doit souvent être chargé par le système d'exploitation à chaque démarrage.
+
+EXEMPLES CITÉS.
+
+      Le projet Debian a démarré en mille neuf cent quatre-vingt-treize sous l'impulsion d'Ian Murdock et compte aujourd'hui environ mille développeurs.
+
+      Pour une installation avec bureau, la configuration recommandée est de 1GB de RAM minimum et 2GB de RAM recommandée avec 10GB d'espace disque.
+
+      L'installateur Debian peut gérer plus de quatre-vingts langues différentes pour proposer un système localisé.
+
+      Un utilisateur peut identifier une puce spécifique en utilisant les commandes lsusb ou lspci -nn pour obtenir les identifiants vendor et product.
+
+      Le projet Debian propose plus de trois cent trente-quatre listes de diffusion pour permettre la communication avec les développeurs.

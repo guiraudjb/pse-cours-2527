@@ -1,0 +1,259 @@
+GUIDE COMPLET SUR LE PARTITIONNEMENT ET L'INSTALLATION DE DEBIAN GNU/LINUX.
+
+LEXIQUE COMPLET.
+
+      Le sigle Debian désigne la distribution GNU/Linux faisant l'objet de ce manuel d'installation pour l'architecture amd64.
+
+      Le terme Swap désigne l'espace de travail du système d'exploitation qui lui permet d'utiliser de l'espace disque comme mémoire virtuelle.
+
+      La partition racine désigne le répertoire représenté par la barre oblique / qui contient les composants les plus essentiels du système.
+
+      Le répertoire /var désigne l'emplacement où sont placées toutes les données variables comme les messages électroniques ou le cache du système des paquets.
+
+      Le répertoire /home désigne l'emplacement où chaque utilisateur met ses données dans un sous-répertoire.
+
+      Le sigle UEFI désigne un type de table de partition de type gpt utilisé par défaut sur les systèmes récents.
+
+      Le sigle BIOS désigne un type de table de partition de type msdos utilisé par défaut sur les anciens systèmes de PC.
+
+      Le sigle SCSI désigne un type de protocole utilisé pour nommer les disques et les lecteurs de CD comme /dev/scd0.
+
+      Le sigle GNOME désigne l'environnement de bureau installé par défaut par l'installateur de Debian.
+
+      Le sigle SSH désigne un protocole de service permettant l'accès distant à la machine.
+
+      Le sigle PLIP désigne un protocole permettant d'installer Debian sur un ordinateur sans carte Ethernet via un câble Null-Modem.
+
+      Le sigle PPPoE désigne un protocole utilisé pour établir des connexions de type ADSL ou câble à un fournisseur d'accès à Internet.
+
+COURS DÉTAILLÉ.
+
+I. PRINCIPES DU PARTITIONNEMENT ET GESTION DE L'ESPACE.
+
+   A. Décision sur les partitions et le swap.
+
+      Au strict minimum, GNU/Linux nécessite une seule partition pour lui-même, ce qui permet de contenir le système entier, les applications et les fichiers personnels.
+
+      La partition d'échange, ou swap, sert d'espace de travail au système d'exploitation en utilisant l'espace disque comme mémoire virtuelle.
+
+      Placer le swap sur une partition séparée permet à Linux d'en faire un usage bien plus efficace.
+
+      Bien qu'il soit possible de forcer l'utilisation d'un fichier normal comme espace d'échange, cette méthode n'est pas recommandée.
+
+      Pour les nouveaux utilisateurs ou les machines personnelles, une simple partition racine accompagnée d'une partition d'échange est la solution la plus simple.
+
+      Une règle traditionnelle consiste à utiliser une taille d'espace d'échange égale à la quantité de RAM, sans descendre en dessous de cinq cent douze Mo.
+
+   B. Avantages de la division du système de fichiers.
+
+      La division du système de fichiers en plusieurs petites partitions offre un avantage majeur concernant la sécurité du système.
+
+      En cas de corruption, une seule partition est généralement affectée, ce qui permet de ne restaurer qu'une partie du système via les sauvegardes.
+
+      La création d'une partition racine est essentielle car elle contient les composants les plus importants pour amorcer Linux et réparer le système.
+
+      Une seconde raison de diviser le système concerne l'utilisation spécifique de la machine, notamment pour les entreprises.
+
+      Par exemple, isoler le répertoire /var/mail sur sa propre partition protège le reste du système si une accumulation de messages de spam remplit l'espace.
+
+   C. Inconvénients et gestion des tailles.
+
+      Le principal inconvénient de l'utilisation de plusieurs partitions est la difficulté de prévoir précisément les besoins en espace à l'avance.
+
+      Une partition trop petite impose de réinstaller le système ou de déplacer constamment des fichiers pour libérer de la place.
+
+      À l'inverse, une partition trop grande entraîne une perte d'espace disque inutile, même si ce dernier est bon marché.
+
+      Pour la partition racine incluant /usr, il faut prévoir entre sept cents et huit cent cinquante Mo, ou de cinq à six Go pour un serveur ou un poste de travail.
+
+      Le répertoire /var nécessite entre trente à quarante Mo pour une utilisation minimale sans mises à jour, ou deux à trois Go pour une installation complète.
+
+      L'espace pour /tmp doit être de quarante à cent Mo, tandis que /home nécessite environ cent Mo par utilisateur, plus si des fichiers multimédias sont stockés.
+
+II. ORGANISATION DE L'ARBORESCENCE ET DES RÉPERTOIRES.
+
+   A. Normes et répertoire racine.
+
+      Debian GNU/Linux respecte la norme sur l'organisation des systèmes de fichiers pour le nommage des fichiers et des répertoires. Cette organisation permet aux utilisateurs et aux auteurs de logiciel de prévoir l'emplacement des fichiers.
+
+      Le répertoire racine est représenté par la barre oblique /. Tous les systèmes Debian incluent des répertoires spécifiques au niveau de cette racine.
+
+      La partition racine / doit impérativement contenir les répertoires /etc, /bin, /sbin, /lib, /dev et /usr. Si ces éléments sont absents, le système ne pourra pas démarrer.
+
+   B. Rôles des répertoires système et des données variables.
+
+      Les répertoires bin et sbin contiennent les exécutables essentiels et les commandes système. Le répertoire lib héberge les bibliothèques partagées et les modules noyaux essentiels.
+
+      Le répertoire etc est dédié à la configuration système propre à la machine. Les répertoires proc et sys sont des répertoires virtuels utilisés pour les informations système.
+
+      Le répertoire var est destiné aux données variables comme les messages électroniques ou le cache des paquets. Une partition séparée pour /var/mail peut protéger le système en cas de saturation par des spams.
+
+      Le répertoire tmp sert au stockage provisoire de données par les programmes. Le répertoire home contient les répertoires personnels des utilisateurs.
+
+   C. Estimation de l'espace disque par répertoire.
+
+      Pour la partition racine incluant /usr, il faut prévoir entre sept cents et huit cent cinquante Mo, ou de cinq à six Go pour un serveur ou un poste de travail.
+
+      L'espace pour /var dépend de l'usage, mais une installation complète nécessite deux à trois Go. On peut se contenter de trois cents à cinq cents Mo pour une installation par étapes ou de trente à quarante Mo si l'espace est une contrainte majeure.
+
+      Le répertoire /tmp nécessite généralement entre quarante et cent Mo, sauf si des logiciels multimédias ou des gestionnaires d'archives exigent plus d'espace.
+
+      Pour le répertoire /home, il est conseillé de réserver environ cent Mo par utilisateur, avec davantage si des fichiers multimédias comme des films ou des MP3 sont stockés.
+
+III. CONVENTIONS DE NOMMAGE ET OUTILS DE GESTION.
+
+   A. Nomenclature des disques et des partitions.
+
+      Le premier disque dur détecté est nommé sda tandis que le second est nommé sdb. Les partitions de ces disques sont identifiées par l'ajout d'un numéro au nom du disque comme sda1 ou sda2.
+
+      Le premier lecteur CD SCSI est désigné par le nom /dev/scd0 ou /dev/sr0. Les périphériques de type bloc sont représentés par des fichiers spéciaux dans le répertoire /dev.
+
+      Linux utilise des conventions spécifiques pour les partitions primaires et logiques. Les partitions primaires sont numérotées de un à quatre, alors que les partitions logiques commencent à partir du numéro cinq.
+
+      La partition étendue sert de conteneur pour les partitions logiques mais elle n'est pas utilisable en elle-même. Il ne peut y avoir qu'une seule partition étendue par disque.
+
+   B. Présentation des programmes de partitionnement.
+
+      Le programme partman est le partitionneur recommandé par Debian car il est capable de redimensionner des partitions et de formater des systèmes de fichiers.
+
+      L'utilitaire fdisk est présenté comme le premier partitionneur de disque pour Linux destiné aux experts. Il peut présenter des variations de noms de périphériques en présence de partitions FreeBSD.
+
+      Le programme cfdisk propose une interface simple en mode plein écran pour faciliter l'utilisation. Il ne reconnaît cependant pas les partitions FreeBSD.
+
+      L'installateur lance par défaut l'un de ces programmes lorsque l'utilisateur sélectionne l'option de partitionnement d'un disque dur.
+
+   C. Spécificités du partitionnement pour PC soixante-quatre bits.
+
+      Pour les nouveaux disques ou les tables de partitions à supprimer, une nouvelle table doit être créée. Le partitionnement assisté permet de réaliser cette opération de manière automatique.
+
+      Le type de table de partition dépend du système utilisé avec le format gpt par défaut pour l'UEFI et le format msdos pour les systèmes BIOS.
+
+      Lors de la sélection du type gpt, un espace libre de un Mo est automatiquement créé au début du disque pour le programme d'amorçage GRUB2.
+
+      Pour conserver un système Windows, l'installateur peut redimensionner les partitions FAT et NTFS. L'utilisateur doit choisir le mode manuel pour indiquer la nouvelle taille.
+
+      Les anciens systèmes BIOS sont limités à quatre partitions primaires. Pour dépasser cette limite, l'utilisateur doit configurer une partition étendue pour y loger des partitions logiques.
+
+IV. GESTION DES PÉRIPHÉRIQUES ET BESOINS EN ESPACE.
+
+   A. Fichiers de périphériques et interfaces.
+
+      Sous Linux, les périphériques sont représentés par des fichiers spéciaux situés dans le répertoire /dev. Ces fichiers de périphérique servent d'interfaces aux pilotes réels du noyau pour accéder au matériel.
+
+      On distingue principalement les fichiers de périphérique de type bloc et ceux de type caractère. Il existe également un type moins courant appelé pipe.
+
+      Le premier disque dur est identifié par sda et le second par sdb. Les partitions sont nommées en ajoutant un numéro, comme sda1 pour la première partition du premier disque.
+
+      Le premier lecteur de CD-ROM est nommé sr0 ou scd0. Les ports série sont désignés par ttyS0 pour le premier et ttyS1 pour le second.
+
+      Certains fichiers ont des fonctions spécifiques comme null qui fait disparaître tout ce qui lui est écrit. Le fichier zero fabrique continuellement des zéros.
+
+   B. Configuration de la souris.
+
+      La souris peut être utilisée dans une console Linux avec le paquet gpm ou dans un environnement X Window. Pour cela, il faut installer le serveur X et le fichier gpm.
+
+      Les deux systèmes doivent utiliser le périphérique /dev/input/mice. Le protocole utilisé par gpm est exps2 tandis que le serveur X utilise ExplorerPS/2.
+
+      La configuration de ces services s'effectue dans les fichiers /etc/gpm.conf et /etc/X11/xorg.conf.
+
+   C. Calcul de l'espace nécessaire selon les tâches.
+
+      Une installation standard pour l'architecture amd64 avec le noyau par défaut nécessite huit cent quarante-trois Mo. Une installation minimale sans les utilitaires de système standard demande six cent quarante-sept Mo.
+
+      L'espace pour l'environnement GNOME nécessite quatre mille cent quatre-vingt-quatre Mo au total, dont trois mille trois cent vingt-trois Mo installés et huit cent soixante et un Mo à télécharger. L'environnement KDE Plasma demande six mille neuf cent vingt-huit Mo pour l'installation complète.
+
+      Pour l'environnement Xfce, il faut prévoir trois mille cinq cent cinq Mo, alors que LXDE nécessite trois mille trois cent quarante-trois Mo. MATE demande quatre mille vingt-neuf Mo et Cinnamon nécessite quatre mille huit cent soixante-dix-neuf Mo.
+
+      Les services additionnels comme un serveur web demandent cent quarante-deux Mo et un serveur SSH seulement trois Mo. L'installation d'une langue supplémentaire nécessite environ trois cent cinquante Mo.
+
+      Pour le partitionnement, la racine / doit prévoir entre sept cents et huit cent cinquante Mo incluant /usr, ou cinq à six Go pour un serveur. Le répertoire /var peut nécessiter de trente à quarante Mo ou jusqu'à trois Go selon l'usage.
+
+V. MÉTHODES D'INSTALLATION MANUELLE VIA DEBOOTSTRAP.
+
+   A. Préparation du système et de la zone d'échange.
+
+      L'installation commence par le partitionnement du disque dur avec un outil habituel pour créer au moins un système de fichiers et une zone d'échange. Il faut prévoir au minimum six cent quarante-sept Mo pour un mode console ou deux mille six cent trente-cinq Mo si l'on souhaite installer X.
+
+      Pour créer un système de fichiers ext3 sur la partition /dev/sda6, la commande utilisée est # mke2fs -j /dev/sda6. Si l'on souhaite utiliser le format ext2, il convient simplement de retirer l'option -j.
+
+      La zone d'échange doit être initialisée et activée avec les commandes # mkswap /dev/sda5 suivi de # sync et # swapon /dev/sda5. Le numéro de la partition doit être adapté selon le choix effectué.
+
+      Une fois les partitions prêtes, il faut créer un répertoire pour le point de montage, par exemple # mkdir /mnt/debinst. La partition est ensuite montée avec la commande # mount /dev/sda6 /mnt/debinst.
+
+      Si des répertoires comme /usr doivent être sur des partitions distinctes, il est nécessaire de les créer et de les monter manuellement avant de poursuivre.
+
+   B. Utilisation de debootstrap et configuration de base.
+
+      L'outil officiel pour cette procédure est debootstrap, qui nécessite l'installation préalable de wget et ar. On peut installer debootstrap en téléchargeant le paquet .deb et en décompressant les fichiers dans un répertoire de travail.
+
+      La commande de lancement de debootstrap utilise l'architecture cible comme amd64 ou arm64 et l'URL du miroir Debian. Par exemple, la commande est # /usr/sbin/debootstrap --arch ARCH trixie /mnt/debinst http://ftp.fr.debian.org/debian.
+
+      Après le téléchargement, il faut entrer dans le nouveau système en utilisant la commande # LANG=C.UTF-8 chroot /mnt/debinst /bin/bash. Si l'architecture est différente de l'hôte, l'utilisation de qemu-user-static est requise.
+
+      La création des fichiers de périphériques est une étape cruciale qui peut se faire via le paquet makedev ou en montant le répertoire /dev du système hôte. L'installation du paquet makedev permet d'utiliser la commande MAKEDEV generic.
+
+      Le fichier /etc/fstab doit être édité pour définir les points de montage permanents des partitions. Une fois le fichier complété, la commande mount -a permet de monter l'ensemble des systèmes de fichiers indiqués.
+
+   C. Configuration réseau, locale et du programme d'amorçage.
+
+      La configuration réseau s'effectue en modifiant les fichiers /etc/network/interfaces, /etc/resolv.conf, /etc/hostname et /etc/hosts. On peut utiliser DHCP ou configurer une adresse IP statique selon les besoins du système.
+
+      Pour les paramètres de langue, il faut installer le paquet locales puis exécuter la commande # dpkg-reconfigure locales. Il est fortement conseillé d'utiliser les locales UTF-8 pour une utilisation optimale.
+
+      Le fuseau horaire est réglé via la commande # dpkg-reconfigure tzdata. Il faut également vérifier la troisième ligne du fichier /etc/adjtime pour savoir si l'horloge est en UTC ou en LOCAL.
+
+      L'installation d'un noyau est indispensable pour le démarrage, ce qui peut se faire avec la commande # apt install linux-image-arch-etc. Le programme d'amorçage grub2 est ensuite installé via # apt install grub-pc.
+
+      Pour finaliser l'amorçage sur le disque sda, on utilise # grub-install /dev/sda suivi de # update-grub. Cette dernière commande génère un fichier /boot/grub/grub.cfg fonctionnel pour le système.
+
+VI. PROCÉDURES D'INSTALLATION PAR PROTOCOLES SPÉCIFIQUES.
+
+   A. Installation via le protocole PLIP.
+
+      L'installation via le protocole PLIP permet de relier une machine cible à une passerelle distante par un câble Null-Modem DB-25 sans carte Ethernet. La machine source doit être connectée à un réseau possédant un miroir Debian, par exemple via une connexion ppp0.
+
+      Avant de commencer, il est nécessaire de vérifier la configuration du BIOS pour les ports parallèles des deux systèmes. Les valeurs habituelles pour les adresses IO et IRQ sont io=0x378 et irq=7.
+
+      La configuration de la machine source nécessite l'utilisation de commandes pour charger les modules plip et parport_pc. L'interface plip0 doit être configurée avec l'adresse 192.168.0.2 et l'adresse point-to-point 192.168.0.1 avec un masque de 255.255.255.255.
+
+      L'utilisateur doit amorcer le support d'installation en saisissant expert pour accéder au mode expert. S'il faut passer des paramètres au noyau, comme les valeurs io et irq, cela se fait dès l'invite d'amorçage.
+
+      Lors du chargement des composants, il faut sélectionner l'option plip-modules pour rendre le pilote disponible. Pour la détection réseau, il faut désélectionner tous les modules affichés et choisir le module plip dans la liste.
+
+      La configuration finale du réseau demande de refuser le DHCP et de renseigner l'adresse IP 192.168.0.1 ainsi que l'adresse point-to-point 192.168.0.2. Les adresses des serveurs de noms doivent être celles utilisées par le système source.
+
+   B. Installation via le protocole PPPoE.
+
+      Le protocole PPPoE est utilisé pour établir des connexions de type ADSL ou câble auprès d'un fournisseur d'accès à Internet. Cette méthode nécessite l'utilisation d'une image CD-ROM ou DVD et ne peut pas être réalisée avec une image netboot.
+
+      Pour débuter l'installation, il faut amorcer l'installateur avec le paramètre spécifique modules=ppp-udeb. Cela permet l'exécution automatique du composant chargé de la mise en œuvre du protocole PPPoE.
+
+      Après avoir suivi les étapes habituelles comme la sélection de la langue et du clavier, l'installateur procède à la détection du matériel réseau. Il cherche ensuite les interfaces Ethernet pour identifier un concentrateur PPPoE.
+
+      Si le concentrateur n'est pas trouvé immédiatement à cause d'un réseau lent ou de serveurs défectueux, l'utilisateur peut réessayer. Pour cela, il faut sélectionner l'option Configurer et lancer une connexion PPPoE dans le menu principal.
+
+      Une fois le concentrateur identifié, l'utilisateur doit fournir son identifiant et son mot de passe PPPoE. Si les informations sont correctes, la connexion est établie et l'installateur peut récupérer les paquets sur internet.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas confondre la partition racine avec les autres répertoires car elle doit impérativement contenir les dossiers etc, bin, sbin, lib, dev et usr pour permettre le démarrage.
+
+      Une confusion fréquente concerne le swap qui est souvent jugé nécessaire alors qu'il ne l'est pas strictement pour le fonctionnement de GNU/Linux.
+
+      La gestion de l'espace disque présente une nuance importante entre le risque de créer une partition trop petite nécessitant une réinstallation et celui de gaspiller de l'argent avec une partition trop grande.
+
+      Il faut éviter de croire que la partition étendue est utilisable en elle-même car elle ne sert qu'à contenir des partitions logiques.
+
+      Une distinction importante doit être faite entre les partitions primaires qui sont limitées à quatre sur les anciens systèmes BIOS et les partitions logiques qui peuvent atteindre soixante unités.
+
+EXEMPLES CITÉS.
+
+      Pour une installation standard de Debian sur l'architecture amd64, le système demande huit cent quarante-trois Mo alors qu'une installation minimale nécessite six cent quarante-sept Mo.
+
+      Dans le cas d'un environnement de bureau GNOME, l'espace nécessaire pour l'installation est de quatre mille cent quatre-vingt-quatre Mo incluant la taille installée et la taille à charger.
+
+      Une règle traditionnelle pour la taille de la partition d'échange consiste à utiliser autant d'espace que de RAM, sans descendre en dessous de cinq cent douze Mo.
+
+      Un exemple de configuration pour un ancien disque IDE de vingt Go avec cinq cent douze Mo de RAM propose une partition de huit Go pour un autre système et une partition Linux de onze virgule quatre Go.
+
+      Pour le partitionnement manuel via debootstrap, l'utilisateur peut créer un système de fichiers ext3 sur la partition /dev/sda6 en utilisant la commande # mke2fs -j /dev/sda6.

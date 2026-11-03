@@ -1,0 +1,311 @@
+GUIDE DE LA CONVERSION DE DONNÉES SUR LE SYSTÈME DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle ASCII désigne le American Standard Code for Information Interchange, qui est un code sur sept bits sans caractère accentué.
+
+      Le terme UTF-8 désigne la norme actuelle multi-langues utilisée pour tous les systèmes d'exploitation modernes.
+
+      Le sigle EOL désigne la fin de ligne, dont le format dépend de la plateforme comme le LF pour Debian ou le CR-LF pour Windows.
+
+      Le sigle HTML désigne le langage utilisé pour les pages web et peut être converti en texte brut via des outils comme w3m ou lynx.
+
+      Le sigle XML désigne le Extensible Markup Language, un langage de balisage de documents dont les informations sont structurées.
+
+      Le sigle XSLT désigne l'Extensible Stylesheet Language Transformations, utilisé pour convertir un fichier XML vers n'importe quel format.
+
+      Le sigle PDF désigne le Portable Document Format, un format imprimable multi-plateformes qui est essentiellement un format PS compressé.
+
+      Le sigle PS désigne le PostScript, le format dans lequel les données imprimables sont définies sur un système Debian.
+
+      Le sigle MIME désigne le Multipurpose Internet Mail Extensions, utilisé pour coder les données binaires et textuelles sur huit bits en un format sur sept bits pour le courrier électronique.
+
+      Le sigle JPEG désigne un format d'image utilisé par les appareils photo numériques et peut contenir des métadonnées au format EXIF.
+
+      Le sigle SVG désigne le Scalable Vector Graphics, un format de données graphiques vectorielles.
+
+      Le sigle CAD désigne la conception assistée par ordinateur, utilisée par des éditeurs comme librecad ou freecad pour les données 2D et 3D.
+
+COURS DÉTAILLÉ.
+
+I. CONVERSION DE DONNÉES TEXTUELLES.
+
+   A. Outils de conversion de codage de caractères.
+
+      Le paquet libc6 fournit l'outil iconv(1) qui est un convertisseur fondamental pour changer les codages de caractères entre différents paramètres linguistiques.
+
+      D'autres outils comme recode offrent plus de flexibilité avec des alias supplémentaires, tandis que konwert est décrit comme une option de luxe pour les jeux de caractères.
+
+      Pour des besoins spécifiques, le paquet nkf est dédié aux jeux de caractères japonais et le paquet tcs est destiné au traducteur.
+
+      L'outil unaccent permet de remplacer les lettres accentuées par leur équivalent sans accent.
+
+      La commande iconv(1) utilise la syntaxe iconv -f encoding1 -t encoding2 input.txt >output.txt pour effectuer une conversion.
+
+      Il est possible de vérifier quels sont les codages pris en charge par le système en utilisant la commande iconv -l.
+
+   B. Gestion des fins de ligne et des tabulations.
+
+      Le format de fin de ligne ou EOL dépend de la plateforme utilisée comme Debian avec le code LF, MSDOS et Windows avec CR-LF, ou Macintosh avec CR.
+
+      Les programmes fromdos(1), todos(1), frommac(1) et tomac(1) sont des outils pratiques pour convertir ces formats de fin de ligne.
+
+      L'utilisation de la commande sed -e '/\r$/!s/$/\r/' est préférable à todos(1) pour unifier un style mixte vers le style MSDOS.
+
+      Pour les tabulations, le paquet bsdmainutils propose la commande col -x pour étendre les tabulations en espaces.
+
+      Le paquet coreutils offre la commande expand pour étendre les tabulations et unexpand pour convertir les espaces en tabulations.
+
+      Le programme indent(1) permet de reformater complètement les espaces dans un programme écrit en langage C.
+
+   C. Utilisation des éditeurs de texte et extraction de texte brut.
+
+      Les éditeurs modernes comme vim ou emacs gèrent de manière transparente les différents systèmes de codage de caractères.
+
+      Avec vim, on peut ouvrir un fichier spécifique en précisant l'encodage avec l'option ++enc, comme pour le latin2 ou le CP932.
+
+      Pour extraire du texte brut depuis une page web, l'outil w3m peut utiliser la commande w3m -dump.
+
+      D'autres convertisseurs HTML vers texte incluent html2text, lynx, elinks, links et links2.
+
+      Le paquet catdoc permet de convertir des fichiers MSWord en texte brut ou en TeX, alors qu'antiword peut convertir vers le format ps.
+
+      Les outils odt2txt et unhtml permettent respectivement de convertir l'OpenDocument vers le texte et de supprimer les balises HTML.
+
+   D. Mise en évidence et formatage de texte.
+
+      Le paquet vim-runtime contient une macro Vim pour convertir du code source en HTML via la commande :source $VIMRUNTIME/syntax/html.vim.
+
+      Les outils cxref et src2tex sont utilisés pour convertir des programmes en langage C vers les formats latex ou TeX.
+
+      Le paquet highlight permet de convertir des codes sources vers de nombreux formats comme HTML, XHTML, RTF, LaTeX, TeX ou XSL-FO.
+
+      Le programme grc agit comme un coloriseur générique pour n'importe quel contenu.
+
+      Pandoc est un marqueur de conversion global capable de transformer du texte vers n'importe quel format.
+
+      Les systèmes de publication comme asciidoctor ou hugo permettent de formater des documents vers XML, HTML ou des sites statiques.
+
+II. TRAITEMENT ET MANIPULATION DES DONNÉES XML.
+
+   A. Principes de base et syntaxe XML.
+
+      Le langage XML est un langage de balisage de documents dont les informations sont structurées. Il ressemble un peu au HTML et permet de gérer de nombreux formats de sortie pour un document.
+
+      Chaque fichier XML commence par la déclaration XML standard suivante : <?xml version="1.0" encoding="UTF-8"?>. La syntaxe de base d'un élément est balisée par une balise de nom avec des attributs optionnels et un contenu.
+
+      Un élément dont le contenu est vide peut utiliser une syntaxe raccourcie avec une seule balise de fermeture. L'action de commentaire est réalisée entre les balises <!-- comment -->.
+
+      Le XML impose l'utilisation d'entités prédéfinies pour certains caractères comme le double apostrophe avec &quot; ou l'esperluette avec &amp;. Les caractères < et > ne peuvent pas être utilisés dans les attributs ou les éléments.
+
+      La conversion vers un autre XML est une tâche triviale dès lors que le balisage est cohérent avec un jeu particulier de noms de balises. On utilise alors l'Extensible Stylesheet Language Transformations ou XSLT.
+
+   B. Transformation et traitement via XSLT et DSSSL.
+
+      Le traitement XML repose sur l'utilisation de feuilles de style pour convertir un fichier vers n'importe quel format. Le langage XSLT est l'outil principal pour effectuer ces transformations de contenu.
+
+      Le langage XSL-FO est une solution dédiée au formatage des objets. Le paquet fop permet de convertir des fichiers Docbook XML en PDF en utilisant ce langage.
+
+      Le système LaTeX est souvent utilisé pour créer des fichiers imprimables comme le DVI, le PostScript ou le PDF à partir de XML via XSLT. Des outils comme dblatex ou dbtoepub facilitent ces conversions vers le format DVI ou epub.
+
+      Le XML est un sous-ensemble du SGML et peut donc être traité par des outils comme le DSSSL. Le paquet openjade est un processeur DSSSL conforme à la norme ISO/IEC 10179:1996.
+
+      Le paquet docbook-dsssl fournit des feuilles de style pour le traitement des fichiers DocBook XML vers divers formats grâce au DSSSL. Les utilitaires docbook-utils permettent également des conversions vers le HTML, le RTF ou le PDF.
+
+   C. Extraction et analyse syntaxique des données.
+
+      Il est possible d'extraire des données HTML ou XML à partir d'autres formats de fichiers. Le paquet man2html convertit les pages de manuel en HTML tandis que doclifter transforme le troff en DocBook XML.
+
+      D'autres outils permettent des conversions spécifiques comme texi2html pour le Texinfo ou wv pour transformer des documents MSWord en HTML ou LaTeX. Le paquet wp2x permet de convertir des fichiers WordPerfect cinq virgule zéro et cinq virgule un vers divers formats comme le TeX ou le HTML.
+
+      Pour garantir la qualité des données, on peut convertir les fichiers HTML non-XML en XHTML pour qu'ils soient traités par les outils XML. L'outil xmllint du paquet libxml2-utils permet de vérifier la syntaxe et de reformatage.
+
+      Le paquet tidy sert de vérificateur de syntaxe et de reformateur pour le HTML. Pour la maintenance des sites web, weblint-perl vérifie la syntaxe et le style minimal du HTML.
+
+      Enfin, linklint est un outil de vérification rapide des liens. Une fois le fichier XML propre, la technologie XSLT peut être utilisée pour extraire des données dans le contexte de balisage.
+
+III. COMPOSITION ET TYPOGRAPHIE.
+
+   A. Systèmes de composition roff et groff.
+
+      Le programme UNIX troff a été développé à l'origine par AT&T pour effectuer une composition simple. Il est habituellement utilisé pour la création de pages de manuel.
+
+      Le système de formatage GNU troff est disponible via le paquet groff. Ce système propose de nombreuses macros comme -me, -ms, -mm ou encore -man.
+
+      L'utilisation de la commande groff -Tascii -me - permet de produire une sortie en texte brut avec du code d'échappement ANSI. Pour obtenir un résultat similaire à une page de manuel, il faut utiliser la variable GROFF_NO_SGR=1.
+
+      Il est possible de supprimer les caractères spéciaux comme les ^H ou les _ dans un fichier issu de groff en le filtrant par col -b -x.
+
+   B. Environnement de composition TeX et LaTeX.
+
+      TeX a été créé par Donald Knuth et constitue le standard de fait pour la composition typographique. LaTeX a été écrit par Leslie Lamport pour offrir un accès de haut niveau à la puissance de TeX.
+
+      La distribution logicielle TeX Live offre un système TeX complet et le métapaquet texlive fournit une sélection de paquets pour les tâches courantes. Des environnements WYSIWYG comme Lyx ou GNU TeXmacs permettent d'éditer les sources de manière agréable.
+
+      Pour les documents de grande importance, il est parfois nécessaire d'augmenter la taille de l'espace dans le fichier /etc/texmf/texmf.cnf. Cette modification peut être faite de manière plus rigoureuse en éditant /etc/texmf/texmf.d/95NonPath et en lançant update-texmf(8).
+
+      Le fichier source au format TeX de The TeXbook est disponible sur le site www.ctan.org. Ce document est considéré comme un excellent exemple d'utilisation de TeX.
+
+   C. Création et impression de pages de manuel.
+
+      Bien que l'écriture d'une page de manuel en format troff brut soit possible, plusieurs paquets facilitent cette tâche. Le paquet docbook-to-man permet la conversion de macros SGML DocBook vers roff man.
+
+      Le paquet help2man agit comme un générateur automatique de pages de manuel à partir de l'option --help. D'autres outils comme info2man ou txt2man permettent également de convertir des formats vers des pages de manuel.
+
+      Pour l'impression, une page de manuel peut être convertie convenablement en PostScript. On utilise pour cela la commande man -Tps suivie de l'imprimante avec lpr.
+
+IV. GESTION DES DONNÉES IMPRIMABLES.
+
+   A. Interpréteurs Ghostscript et format PDF.
+
+      Le cœur de la manipulation des données imprimables repose sur l'interpréteur Ghostscript PostScript qui génère une image tramée.
+
+      Le paquet ghostscript fournit l'interpréteur GPL Ghostscript PostScript/PDF pour effectuer ces opérations.
+
+      Il existe également le paquet ghostscript-x qui propose une prise en charge de l'affichage X pour cet interpréteur.
+
+      La bibliothèque de rendu PDF appelée libpoppler162 est dérivée du visualisateur PDF xpdf.
+
+      Le paquet poppler-data contient les CMaps pour PDF afin d'assurer la prise en charge des caractères CJK Adobe-*.
+
+   B. Fusion et manipulation de fichiers PostScript et PDF.
+
+      Il est possible de fusionner deux fichiers PostScript ou PDF en utilisant la commande gs(1) de Ghostscript.
+
+      Pour les fichiers PostScript, la commande utilise le dispositif pswrite pour créer un nouveau fichier bla.ps.
+
+      La manipulation de fichiers PDF s'effectue avec le dispositif pdfwrite pour générer un fichier bla.pdf.
+
+      Le paquet psutils propose la commande psmerge(1) qui est utile pour manipuler les documents PostScript en ligne de commande.
+
+      Le paquet pdftk contient l'outil pdftk(1) qui est également utile pour la manipulation des documents PDF.
+
+   C. Utilitaires de conversion et impression via CUPS.
+
+      Le paquet poppler-utils propose divers utilitaires PDF comme pdftops, pdfinfo, pdfimages, pdftotext et pdffonts.
+
+      Le paquet enscript permet de convertir du texte ASCII en PostScript, HTML, RTF ou Pretty-Print.
+
+      Le convertisseur a2ps permet de transformer n'importe quoi en PostScript de manière élégante.
+
+      Le paquet pdftk permet la conversion de documents PDF tandis que le paquet html2ps convertit du HTML en PostScript.
+
+      Les commandes lp(1) et lpr(1) du système CUPS permettent de personnaliser les données imprimables.
+
+      On peut imprimer trois copies d'un fichier en utilisant l'option Collate=True avec les commandes lp ou lpr.
+
+V. CONVERSION DES COURRIERS ÉLECTRONIQUES.
+
+   A. Protocoles et encodages MIME.
+
+      Les données de courrier électronique via le protocole SMTP doivent être limitées à des séries de données sur sept bits.
+
+      Pour gérer les données binaires ou les textes sur huit bits, on utilise le format MIME avec une sélection de jeu de caractères.
+
+      Pour les langues européennes, l'utilisation du Content-Transfer-Encoding: quoted-printable avec le jeu de caractères ISO-8859-1 est habituelle.
+
+      Si le texte européen est codé en UTF-8, le Content-Transfer-Encoding: quoted-printable est également préférable car il s'agit essentiellement de données sur sept bits.
+
+      Pour le japonais, le Content-Type: text/plain; charset=ISO-2022-JP est couramment utilisé afin de maintenir le texte sur sept bits.
+
+      En cas de texte japonais en UTF-8, l'utilisation de Base64 est préférée car elle comporte de nombreuses données sur huit bits.
+
+   B. Formats d'enregistrement et gestion des messages.
+
+      Le format standard d'enregistrement pour le courrier électronique est le format mbox selon la norme RFC2822.
+
+      Le logiciel client mutt peut être utilisé pour convertir d'autres formats d'enregistrement vers le format mbox.
+
+      Il est possible d'éclater le contenu d'une boîte à lettre en messages séparés grâce à procmail(1) ou formail(1).
+
+      Le paquet mpack propose les commandes munpack(1) et mpack(1) pour encoder et décoder les messages MIME.
+
+      Le paquet sharutils permet d'utiliser les outils uuencode(1) et uudecode(1) pour la conversion de données.
+
+      L'outil uudeview sert d'encodeur et de décodeur pour les formats BASE64, xxencode, quoted printable et BinHex.
+
+VI. MANIPULATION DE DONNÉES GRAPHIQUES.
+
+   A. Outils d'interface graphique pour l'édition et la gestion.
+
+      Le système propose une grande variété de programmes avec interface graphique pour la manipulation d'images bitmap comme GIMP qui est un programme GNU de manipulation d'images.
+
+      Pour la gestion et la visualisation des photos numériques, des outils comme Gthumb, Geeqie ou Shotwell sont disponibles pour les utilisateurs de GNOME.
+
+      Les utilisateurs de l'environnement KDE peuvent se tourner vers Gwenview pour la visionneuse ou Digikam pour la gestion de photos numériques.
+
+      La gestion des images vectorielles est assurée par des logiciels tels que Inkscape pour le format SVG ou Dia pour la création de diagrammes.
+
+      Pour les besoins de conception assistée par ordinateur, Librecad permet l'édition de données 2D tandis que Freecad est dédié aux données 3D.
+
+      Le domaine de l'animation 3D est couvert par Blender qui peut traiter des formats comme le TIFF ou le VRML.
+
+   B. Outils en ligne de commande et traitement d'images.
+
+      La manipulation automatique d'images par des scripts est possible grâce à des outils puissants comme Imagemagick ou son dérivé Graphicsmagick.
+
+      Le paquet Netpbm fournit des outils de conversion graphique tandis que Libheif-examples permet de convertir le format HEIF vers JPEG, PNG ou Y4M.
+
+      Pour les icônes et les curseurs de MS Windows, le paquet Icoutils permet de convertir entre les formats PNG et ICO.
+
+      Des utilitaires comme Pstoedit transforment les fichiers PostScript et PDF en graphiques vectoriels éditables au format SVG.
+
+      L'optimisation des fichiers est facilitée par des programmes comme Jpegoptim pour le format JPEG ou Optipng et Pngquant pour le format PNG.
+
+      Le paquet Findimagedupes est utile pour rechercher des images qui sont visuellement similaires ou des doublons.
+
+   C. Gestion des métadonnées EXIF et OCR.
+
+      La gestion des métadonnées EXIF contenues dans les fichiers JPEG peut être effectuée avec l'utilitaire de ligne de commande Exif.
+
+      Les outils Exiv2 et Exiftran permettent respectivement de manipuler les métadonnées EXIF/IPTC et de transformer les images JPEG des appareils photo numériques.
+
+      Pour la lecture des balises Exif depuis un fichier JPEG d'appareil photo, on peut utiliser l'utilitaire Exiftags ou Exifprobe.
+
+      La reconnaissance optique de caractères est assurée par des logiciels libres comme Tesseract-ocr ou Ocrad qui permettent de convertir une image en texte.
+
+      Le logiciel Gocr est également capable de réaliser la conversion d'une image vers du texte.
+
+      Enfin, l'outil Unpaper est utilisé pour le post-traitement de pages numérisées en vue d'une utilisation avec un OCR.
+
+VII. DIVERSES CONVERSIONS DE DONNÉES.
+
+   A. Conversion de paquets logiciels.
+
+      Le paquet alien permet de convertir des paquets de formats étrangers vers des paquets Debian. Il est capable de transformer des fichiers au format rpm ou tgz en paquets deb.
+
+      Il est également possible d'extraire des données directement depuis un fichier au format RPM. Pour cela, on utilise la commande rpm2cpio suivie de la commande cpio avec l'option --extract.
+
+   B. Gestion des livres numériques.
+
+      Le paquet calibre est un outil polyvalent qui permet la conversion de livres numériques. Il peut transformer n'importe quel format vers le format EPUB.
+
+      Il sert également de système de gestion de bibliothèque pour organiser ses ouvrages. Le paquet freepwing est spécialisé dans la conversion du format EB vers le format JIS X quatre mille quatre-vingt-un.
+
+      Ce format JIS X quatre mille quatre-vingt-un est décrit comme un sous-ensemble du format EPWING V1. Ces outils permettent de manipuler divers types de contenus de lecture électronique.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le jeu de caractères et le codage des caractères pour les formats complexes comme l'Unicode.
+
+      Lors de la conversion de programmes C ou d'URL japonais vers l'UTF-8, l'utilisation de CP932 est préférable à shift-JIS pour éviter des erreurs de conversion sur les caractères 0x5C et 0x7E.
+
+      L'outil todos ajoute systématiquement un retour charriot, ce qui peut être problématique lors de l'unification de fichiers mixtes.
+
+      L'utilisation de sed est recommandée à la place de todos pour unifier les styles vers MSDOS sans ajouter de caractères indésirables.
+
+      En XML, les caractères inférieur à et esperluette ne peuvent pas être utilisés directement dans les attributs ou les éléments.
+
+      Pour les données de courriel japonais, l'usage de Base64 est préférable à l'ISO-2022-JP si le texte est déjà codé en UTF-8.
+
+EXEMPLES CITÉS.
+
+      La commande iconv -f utf8 -t utf8 input.txt >/dev/null permet de vérifier si un fichier est correctement encodé en UTF-8.
+
+      Pour fusionner deux fichiers PDF avec Ghostscript, on utilise la commande gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=bla.pdf -f foo1.pdf foo2.pdf.
+
+      Un script shell peut convertir les noms de fichiers d'un répertoire en utilisant la variable ENCDN pour définir l'encodage d'origine.
+
+      Le système de composition TeX peut nécessiter une augmentation de l'espace dans le fichier /etc/texmf/texmf.cnf pour les documents volumineux.
+
+      L'outil w3m -dump permet d'extraire le contenu d'une page web pour le transformer en un fichier texte brut.

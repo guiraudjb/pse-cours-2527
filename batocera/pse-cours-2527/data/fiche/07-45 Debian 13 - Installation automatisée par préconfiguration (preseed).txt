@@ -1,0 +1,323 @@
+GUIDE COMPLET DE L'AUTOMATISATION DE L'INSTALLATION DEBIAN PAR PRÉCONFIGURATION.
+
+LEXIQUE COMPLET.
+
+      Le preseed désigne une méthode de préconfiguration permettant de donner des réponses automatiques aux questions de l'installateur Debian sans saisie manuelle.
+
+      L'architecture amd64 désigne l'architecture matérielle cible pour laquelle ce manuel d'installation de Debian treize Trixie est rédigé.
+
+      Le sigle initrd désigne une méthode de préconfiguration où le fichier est chargé au tout début de l'installation, avant même la première question.
+
+      Le sigle DHCP désigne un protocole permettant de configurer automatiquement le réseau et peut servir à indiquer un fichier de préconfiguration via une URL.
+
+      Le sigle MD5 désigne un type de somme de contrôle utilisé pour vérifier l'intégrité du fichier de préconfiguration avant son chargement.
+
+      Le sigle LVM désigne une méthode de partitionnement du disque permettant d'utiliser des volumes logiques.
+
+      Le sigle RAID désigne une méthode de partitionnement permettant de gérer des ensembles de disques pour assurer la redondance ou la performance.
+
+      Le sigle UUID désigne un identifiant unique universel utilisé par défaut pour le montage des systèmes de fichiers.
+
+      Le sigle EFI désigne une technologie liée au partitionnement et à l'amorçage des systèmes modernes nécessitant une table de partitionnement GPT.
+
+      Le sigle GPT désigne un type de table de partitionnement nécessaire pour l'amorçage avec EFI.
+
+      Le sigle SHA désigne un algorithme de hachage recommandé, comme SHA-256 ou SHA-512, pour sécuriser la configuration des mots de passe.
+
+      Le sigle SSH désigne un protocole permettant de réaliser une installation via une console réseau.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET MÉTHODES DE PRÉCONFIGURATION.
+
+   A. Concept et fonctionnement de la préconfiguration.
+
+      La préconfiguration permet de fournir des réponses automatiques aux questions de l'installateur sans intervention humaine. Cette technique rend possible une automatisation complète du processus d'installation de Debian treize Trixie.
+
+      Ce mécanisme offre des fonctionnalités qui ne sont pas disponibles lors d'une installation classique. Si le fichier de préconfiguration est vide, l'installateur se comporte de manière identique à une installation normale.
+
+      Chaque question correctement préconfigurée modifie le déroulement de l'installation. Le format du fichier de préconfiguration suit celui de la commande debconf-set-selections et doit débuter par la mention #_preseed_V1.
+
+      Le fichier peut être chargé de différentes manières selon le support utilisé. Il est possible de chaîner plusieurs fichiers de préconfiguration pour combiner des configurations réseau et locales.
+
+   B. Comparaison des méthodes initrd, file et network.
+
+      La méthode initrd est compatible avec tous les types d'installation et offre l'intégralité des possibilités. Elle demande cependant une préparation soignée car le fichier preseed.cfg doit se trouver dans le répertoire racine de l'initrd.
+
+      La méthode file nécessite que l'image d'installation ait été chargée pour fonctionner. Elle est compatible avec les installations sur CD/DVD/USB ainsi que sur les disques externes incluant les clés USB.
+
+      La méthode network exige que le réseau soit préalablement configuré pour charger le fichier. Elle est compatible avec les supports CD/DVD/USB, les disques externes et les installations par netboot.
+
+      La différence fondamentale entre ces méthodes réside dans le moment où le fichier est exécuté. Avec l'initrd, le chargement intervient au tout début, avant même la première question posée par l'installateur.
+
+      Il est possible de modifier la configuration de l'image initiale en utilisant la ligne de commande du noyau. Cela peut se faire via la configuration du chargeur d'amorçage ou manuellement lors de l'amorçage.
+
+   C. Limitations et gestion des questions prioritaires.
+
+      Toutes les questions ne peuvent pas être préconfigurées par les méthodes file et network. Les questions posées avant le chargement du fichier ou celles ayant une priorité médium ou basse échappent à cette automatisation.
+
+      La détection initiale du matériel constitue une exception notable car elle ne peut être préconfigurée par ces méthodes. Une autre limitation concerne le partitionnement qui impose d'utiliser un disque entier ou un espace libre.
+
+      Pour éviter les questions précoces, il est possible d'utiliser les paramètres d'amorçage comme décrit dans la documentation. Une autre solution consiste à lancer l'installateur en mode auto pour retarder certaines interrogations.
+
+      Le mode auto définit la priorité à critical, ce qui permet d'écarter les questions sans importance. Ce mode permet de préconfigurer la langue, le pays et le clavier après l'installation du réseau.
+
+II. MISE EN ŒUVRE ET CHARGEMENT DU FICHIER PRESEED.
+
+   A. Méthodes de chargement et paramètres de la ligne de commande.
+
+      La préconfiguration peut être réalisée via trois méthodes distinctes nommées initrd, file et network. La méthode initrd est compatible avec tous les types d'installation mais nécessite une préparation soignée.
+
+      Avec la méthode file, le fichier de préconfiguration est chargé une fois que l'image a été chargée. Pour une clé USB, le fichier doit se trouver dans le répertoire racine et on utilise le paramètre preseed/file=/hd-media/preseed.cfg.
+
+      La méthode network nécessite que le réseau soit préalablement configuré pour fonctionner. On utilise alors le paramètre preseed/url suivi de l'adresse HTTP ou TFTP du fichier.
+
+      Il est possible de raccourcir les paramètres lors du passage en ligne de commande du noyau. Les termes preseed/url peuvent devenir url et preseed/file peut devenir file.
+
+      Si l'on souhaite inclure le fichier directement dans une image d'installation, il faut recréer l'image ISO. Le paramètre preseed/file=/cdrom/preseed.cfg est alors utilisé pour lire le fichier sur le support.
+
+   B. Utilisation des sommes de contrôle md5sum.
+
+      Pour garantir que l'installateur charge le fichier de préconfiguration correct, il est possible d'indiquer une somme de contrôle. Cette somme doit être de type md5sum pour le moment.
+
+      Si une somme de contrôle est spécifiée, elle doit correspondre exactement au fichier. Dans le cas contraire, l'installateur refusera de charger le fichier de préconfiguration.
+
+      Lors d'un amorçage sur le réseau, on utilise le paramètre preseed/url/checksum suivi de la valeur md5sum. Cela sécurise le téléchargement du fichier via le protocole HTTP ou TFTP.
+
+      Pour une image modifiée ou une clé USB, on utilise le paramètre preseed/file/checksum. On peut également utiliser l'alias plus court preseed-md5 pour simplifier la ligne de commande.
+
+   C. Paramètres d'amorçage et utilisation des alias.
+
+      Les paramètres d'amorçage permettent de préconfigurer des questions qui ne peuvent pas être traitées par un fichier de préconfiguration. On utilise pour cela des paires de type chemin/vers/variable=valeur.
+
+      Certaines variables possèdent des alias plus courts pour faciliter la saisie à l'invite de démarrage. Par exemple, l'alias url remplace preseed/url et l'alias tasks remplace tasksel:tasksel/first.
+
+      L'opérateur ?= permet de donner une valeur par défaut à une question tout en permettant à l'installateur de la poser. Cela diffère de l'opérateur = qui supprime la question.
+
+      L'utilisation de l'élément --- dans les paramètres d'amorçage a une signification spéciale. Tous les paramètres placés après ces trois tirets seront copiés dans la configuration du programme d'amorçage.
+
+      Le noyau Linux accepte un maximum de trente-deux options en ligne de commandes et trente-deux variables d'environnement. Un dépassement de ce nombre peut provoquer un panique du noyau.
+
+III. LE MODE AUTOMATIQUE ET LES PARAMÈTRES D'AMORÇAGE.
+
+   A. Fonctionnement du mode auto et résolution DNS/DHCP.
+
+      Le mode auto est un type d'amorçage qui ajoute automatiquement des paramètres à l'invite d'amorçage pour automatiser l'installation. Il permet de simplifier les lignes de commande pour des processus d'installation complexes.
+
+      Si l'on utilise l'option auto url=autoserver, le système suppose qu'un serveur DHCP permettra de résoudre ce nom via un serveur DNS. Le fichier de préconfiguration sera alors cherché à l'URL http://autoserver.example.com/d-i/trixie/./preseed.cfg.
+
+      La partie finale de l'adresse provient de auto-install/defaultroot qui contient le répertoire trixie par défaut. L'utilisation de l'élément /./ permet de définir une racine relative pour rendre les scripts portables entre un serveur web et une clé USB.
+
+      Si l'URL ne contient pas de protocole, le système suppose l'utilisation de HTTP. Si le domaine ne possède pas de point, le domaine fourni par le DHCP lui sera ajouté automatiquement.
+
+      En l'absence de slash après le domaine, le chemin par défaut est ajouté à l'adresse. Il est aussi possible d'utiliser une URL explicite comme http://192.168.1.2/path/to/mypreseed.file pour une gestion minimale du réseau.
+
+   B. Utilisation des classes et des espaces de noms auto-install.
+
+      Le mode auto permet de passer des paramètres qui ne concernent pas directement l'installateur Debian mais des scripts spécifiés par preseed/run. Le seul exemple actuel est l'utilisation de auto-install/classes, dont l'alias est classes.
+
+      Une classe peut servir à indiquer le type de système à installer ou la locale à utiliser. On peut par exemple utiliser la commande auto url=example.com classes=class_A;class_B.
+
+      Il est recommandé d'utiliser l'espace de noms auto-install pour étendre ce concept de manière raisonnable. Un utilisateur pourrait par exemple créer un paramètre auto-install/style pour être utilisé dans ses propres scripts.
+
+      L'utilisation de cet espace de noms doit être coordonnée avec les développeurs pour éviter les conflits. Il est possible d'envoyer un courriel à la liste debian-boot@lists.debian.org pour proposer un nouvel espace de noms ou un alias.
+
+   C. Configuration des paramètres de priorité et de locale.
+
+      Pour les architectures où le type d'amorçage auto n'est pas défini, il suffit d'ajouter les paramètres auto=true et priority=critical sur la ligne de commande du noyau. Le paramètre auto est un alias pour auto-install/enable.
+
+      Le paramètre priority est un alias pour debconf/priority. Lorsque sa valeur est fixée à critical, l'installateur écarte les questions dont la priorité est jugée sans importance.
+
+      Le paramètre auto=true a pour effet de retarder les questions relatives à la locale et au clavier. Ce délai permet à ces questions d'être préconfigurées via un fichier de préconfiguration.
+
+      L'installateur Debian permet également de configurer la langue et le pays via des paramètres d'amorçage. On peut par exemple utiliser language=fr et country=FR pour définir ces paramètres dès le démarrage.
+
+IV. STRUCTURE ET CRÉATION DU FICHIER DE PRÉCONFIGURATION.
+
+   A. Format de syntaxe et règles d'écriture.
+
+      Le fichier de préconfiguration adopte le format de la commande debconf-set-selections. Chaque ligne doit respecter la structure composée du propriétaire, du nom de la question, du type de question et de la valeur.
+
+      Le fichier doit impérativement commencer par la ligne #_preseed_V1. Un seul espace ou une tabulation est autorisé entre le type et la valeur, car tout autre espace sera considéré comme faisant partie de la valeur.
+
+      Il est possible de diviser une ligne en utilisant une barre oblique inverse pour signifier la continuation. Il est préférable de couper la ligne après le nom de la question plutôt qu'entre le type et la valeur.
+
+      Le propriétaire des variables utilisées uniquement par l'installateur doit être d-i. Pour les variables du système installé, le nom du paquet contenant ces variables doit être utilisé comme propriétaire.
+
+      La plupart des valeurs doivent être rédigées en anglais. Cependant, certaines valeurs comme celles de partman doivent être fournies en français.
+
+      Les commentaires sont autorisés et commencent par un dièse qui s'étend jusqu'à la fin de la ligne.
+
+   B. Méthodes de génération via debconf-get-selections.
+
+      La méthode la plus simple pour créer un fichier consiste à utiliser le fichier d'exemple disponible dans la documentation. Cela permet de s'appuyer sur des éléments de configuration déjà testés.
+
+      Une autre technique consiste à effectuer une installation manuelle puis à utiliser la commande debconf-get-selections du paquet debconf-utils. Cette commande permet de copier la base de données debconf et cdebconf dans un fichier unique.
+
+      Pour générer ce fichier, il faut d'abord rediriger la mention #_preseed_V1 vers le fichier cible. Ensuite, on utilise debconf-get-selections avec l'option --installer pour capturer les données de l'installateur.
+
+      Enfin, on ajoute les sélections classiques du système en utilisant la commande debconf-get-selections sans option supplémentaire.
+
+      Il faut noter que ce fichier contiendra des éléments ne pouvant pas être préconfigurés. L'utilisation du fichier d'exemple reste donc recommandée pour plus de fiabilité.
+
+      La base de données cdebconf est sauvegardée dans le répertoire /var/log/installer/cdebconf. Cependant, ces fichiers sont détruits si le paquet installation-report est purgé.
+
+   C. Vérification et débogage du fichier.
+
+      Avant de procéder à une installation réelle, il est possible de vérifier la validité du fichier avec la commande debconf-set-selections -c preseed.cfg.
+
+      Pour examiner les valeurs des variables pendant l'installation, on peut utiliser l'éditeur nano pour consulter les fichiers dans /var/lib/cdebconf. Les fichiers templates.dat et questions.dat fournissent des exemples et les valeurs actuelles.
+
+      Le paramètre DEBCONF_DEBUG=5 est un outil de débogage puissant. Il permet d'afficher de nombreux détails sur la configuration de chaque variable et sur l'exécution des scripts de chaque paquet.
+
+      Si l'on souhaite tester le fichier de préconfiguration tout en maintenant l'interrogation de l'utilisateur, il faut déclarer le paramètre preseed/interactive=true au moment de l'amorçage.
+
+      Pour les questions dont on veut modifier la valeur par défaut sans supprimer l'interrogation, il faut ajouter le drapeau seen remis à false après la modification.
+
+V. CONFIGURATION DES COMPOSANTS DU SYSTÈME.
+
+   A. Localisation, clavier et synthèse vocale.
+
+      La localisation peut être configurée en définissant une locale unique qui détermine simultanément la langue, le pays et la locale. Si la combinaison choisie n'est pas valide, l'installateur sélectionnera automatiquement une locale correspondant à la langue.
+
+      Il est possible de spécifier les valeurs de langue, de pays et de locale de manière individuelle pour plus de précision. Pour les claviers non latins, une touche de bascule vers un clavier US peut être configurée.
+
+      La synthèse vocale logicielle peut être préconfigurée via l'initrd ou la ligne de commande du noyau. Cela permet de définir la carte ALSA à utiliser ainsi que la voix espeak-ng.
+
+   B. Configuration réseau et gestion des miroirs.
+
+      Le réseau peut être configuré de manière automatique ou manuelle avec des adresses IP statiques. Pour les installations utilisant une méthode réseau, il est possible de forcer une nouvelle configuration après le chargement du fichier de préconfiguration.
+
+      L'installateur permet de choisir une interface spécifique ou de laisser le système détecter automatiquement la connexion. Des paramètres comme le délai de détection de lien ou le délai d'attente du serveur DHCP peuvent être ajustés.
+
+      Les miroirs sont utilisés pour installer le système de base et configurer le fichier sources.list. On peut spécifier le protocole, le pays, l'hôte et le répertoire du miroir pour les téléchargements.
+
+   C. Gestion des comptes utilisateurs et mots de passe.
+
+      Le mot de passe du compte root et les informations du premier utilisateur peuvent être préconfigurés. Il est possible de choisir de ne pas créer de compte root pour privilégier l'usage de sudo.
+
+      Les mots de passe peuvent être saisis en texte clair ou via un hachage crypt(3). Pour une sécurité accrue, les algorithmes de hachage SHA-256 ou SHA-512 sont recommandés.
+
+      L'identifiant de connexion et le nom complet de l'utilisateur peuvent également être définis à l'avance. Il est aussi possible de spécifier l'UID du premier utilisateur ou ses groupes par défaut.
+
+   D. Partitionnement automatique, RAID et gestion des disques.
+
+      Le partitionnement automatique est limité aux options de partman-auto qui permettent de traiter un disque entier ou un espace libre. Des schémas prédéfinis comme atomic, home, multi ou server sont disponibles.
+
+      Le système supporte la configuration de RAID logiciel pour les niveaux zéro, un, cinq, six et dix. Il est possible de préconfigurer les disques physiques et les partitions qui composent l'ensemble RAID.
+
+      Le montage des partitions peut s'effectuer par UUID, par noms traditionnels de périphériques ou par étiquettes. L'utilisation de l'UUID est le comportement par défaut du système.
+
+      Pour les architectures nécessitant l'EFI, une partition spécifique doit être ajoutée au schéma de partitionnement. La table de partitionnement peut être forcée en format GPT pour répondre à ces exigences.
+
+VI. INSTALLATION DU SYSTÈME DE BASE ET FINALISATION.
+
+   A. Configuration d'Apt et des dépôts de logiciels.
+
+      La création du fichier sources.list et les options de configuration se font automatiquement selon la méthode d'installation et les réponses précédentes.
+
+      Il est possible de choisir si l'on souhaite analyser un autre support d'installation ou installer des microprogrammes non libres.
+
+      L'utilisateur peut également décider d'installer des logiciels provenant des distributions non-free et contrib.
+
+      On peut désactiver l'entrée du CD-ROM dans le fichier sources.list ou spécifier des miroirs et des services de mise à jour comme security et updates.
+
+      Il est possible d'ajouter des sources locales en indiquant une URL de clé publique, soit par un lien, soit en utilisant un format base64.
+
+      L'authentification des dépôts par une clé GPG peut être désactivée, bien que cette méthode ne soit ni sécurisée ni recommandée.
+
+   B. Choix des paquets et des tâches système.
+
+      L'installateur permet d'installer toute combinaison de tâches parmi les options disponibles comme standard, desktop ou web-server.
+
+      Certaines tâches spécifiques incluent gnome-desktop, xfce-desktop, kde-desktop, cinnamon-desktop, mate-desktop, lxde-desktop ou ssh-server.
+
+      Il est recommandé d'inclure la tâche standard, mais on peut choisir de n'installer aucun paquet via la commande pkgsel/run_tasksel.
+
+      Des paquets supplémentaires peuvent être ajoutés en utilisant le paramètre pkgsel/include avec des valeurs séparées par des virgules ou des espaces.
+
+      L'utilisateur peut définir la mise à jour des paquets après debootstrap avec les valeurs none, safe-upgrade ou full-upgrade.
+
+      Il est possible de signaler les logiciels installés via le mécanisme popularity-contest, bien que cela soit désactivé par défaut.
+
+   C. Installation du programme d'amorçage Grub.
+
+      Grub est le programme d'amorçage utilisé pour l'architecture x86.
+
+      Le paramètre grub-installer/only_debian permet d'installer Grub sur la partition UEFI ou le secteur d'amorçage si aucun autre système n'est présent.
+
+      Il est possible de forcer l'installation sur la partition UEFI même si un autre système d'exploitation existe, bien que cela soit moins sûr.
+
+      La position du disque principal peut être spécifiée ou réglée sur default pour installer Grub sur le premier périphérique.
+
+      Le mot de passe de Grub peut être configuré en texte clair ou chiffré avec un hachage MD5.
+
+   D. Options de fin d'installation et de redémarrage.
+
+      Lors d'une installation via une console série, les consoles virtuelles VT1 à VT6 sont désactivées dans le fichier inittab.
+
+      On peut éviter l'affichage du dernier message indiquant que l'installation est terminée.
+
+      Il est possible de désactiver l'éjection du disque au moment du redémarrage, ce qui est utile pour certains supports.
+
+      L'installateur peut être configuré pour s'arrêter sans redémarrer le système installé ou pour éteindre la machine directement.
+
+VII. FONCTIONNALITÉS AVANCÉES ET OPTIONS COMPLEXES.
+
+   A. Exécution de commandes et scripts personnalisés.
+
+      La préconfiguration offre la possibilité puissante de lancer des commandes ou des scripts à des moments précis de l'installation. Cette fonctionnalité permet d'automatiser des actions spécifiques selon l'avancement du processus.
+
+      La commande preseed/early_command est exécutée le plus tôt possible, immédiatement après la lecture du fichier de préconfiguration. Elle peut servir à installer des composants comme des udeb via la commande anna-install.
+
+      Une autre option permet d'intervenir juste avant que le partitionneur ne commence son travail. Cela est utile pour configurer le partitionneur en fonction de l'état des disques détectés.
+
+      La commande preseed/late_command s'exécute juste avant la fin de l'installation tant que le répertoire /target est encore utilisable. On peut alors utiliser apt-install ou in-target pour installer des paquets ou modifier la configuration du système cible.
+
+      Il est important de noter que la préconfiguration n'est pas sécurisée car l'installateur ne vérifie pas les dépassements de tampon. Il est donc impératif de n'utiliser que des fichiers dont la provenance est connue.
+
+   B. Modification des valeurs par défaut et mode interactif.
+
+      Il est possible de modifier la réponse par défaut à une question sans pour autant supprimer l'interrogation. Pour ce faire, il faut déclarer le drapeau seen remis à false après avoir défini la nouvelle valeur.
+
+      Le paramètre preseed/interactive=true peut être déclaré au moment de l'amorçage pour appliquer ce comportement à toutes les questions. Cette option est particulièrement utile pour tester la validité d'un fichier de préconfiguration.
+
+      Lors de l'utilisation des paramètres d'amorçage, l'opérateur ?= permet de fournir une valeur par défaut tout en maintenant la question. Cela ne fonctionne que pour les questions réellement affichées durant l'installation.
+
+      Pour obtenir des informations de débogage plus précises, le paramètre DEBCONF_DEBUG=5 peut être utilisé. Il permet de voir les détails de la configuration de chaque variable et la progression des scripts de chaque paquet.
+
+   C. Chaînage de plusieurs fichiers de préconfiguration.
+
+      Le système permet d'inclure d'autres fichiers de préconfiguration au sein d'un fichier principal. Les valeurs contenues dans les fichiers inclus annuleront les valeurs préexistantes définies dans les fichiers chargés précédemment.
+
+      L'instruction preseed/include permet de lister plusieurs fichiers séparés par des espaces. Si les chemins sont relatifs, les fichiers sont recherchés dans le répertoire du fichier qui les inclut.
+
+      L'installateur peut vérifier l'intégrité des fichiers inclus via une somme de contrôle de type md5sum. Les sommes de contrôle doivent être listées dans le même ordre que les fichiers de préconfiguration.
+
+      Une méthode plus souple consiste à utiliser preseed/include_command pour exécuter des commandes de l'interpréteur. Le résultat de la commande, s'il renvoie des noms de fichiers, permet alors leur inclusion.
+
+      Il est également possible de télécharger un programme pour l'exécuter via preseed/run. Ce programme peut manipuler la base de données debconf en utilisant des commandes comme debconf-set.
+
+      Enfin, il est possible de combiner une préconfiguration de type initrd ou file avec une méthode de type network. Cela nécessite de déclarer preseed/url dans les fichiers précédents pour que le téléchargement s'effectue une fois le réseau opérationnel.
+
+POINTS D'ATTENTION.
+
+      La méthode initrd est la seule compatible avec tous les types d'installation mais elle nécessite une préparation soignée. Elle charge le fichier avant même la première question, ce qui empêche la préconfiguration de la détection de matériel.
+
+      Il existe une confusion possible entre les méthodes de chargement car la méthode network exige que le réseau soit préalablement configuré. À l'inverse, la méthode file nécessite que l'image ait été chargée pour fonctionner.
+
+      Le partitionnement automatique présente des limitations importantes car il ne permet pas d'utiliser des partitions existantes. Il faut obligatoirement partitionner un disque entier ou utiliser un espace libre disponible.
+
+      L'utilisation des paramètres d'amorçage nécessite de faire attention au nombre de variables car le noyau Linux accepte un maximum de trente-deux options en ligne de commande. Un dépassement de ce chiffre provoque un panique du noyau.
+
+      La sécurité des mots de passe est une nuance critique puisque la préconfiguration n'est pas totalement sécurisée. Il est recommandé d'utiliser des hachages SHA-256 ou SHA-512 plutôt que les algorithmes MD5 ou DES.
+
+EXEMPLES CITÉS.
+
+      Pour automatiser l'installation via un serveur DHCP, on peut utiliser l'invite de commande auto url=autoserver. Cela permet de trouver un fichier preseed.cfg à une adresse spécifique comme http://autoserver.example.com/d-i/trixie/./preseed.cfg.
+
+      Un utilisateur peut configurer le clavier en utilisant l'alias keymap avec la valeur fr(latin9). Pour installer un environnement graphique spécifique, on peut utiliser l'alias desktop avec la valeur mate-desktop.
+
+      Dans le cadre du partitionnement LVM, la commande partman-auto-lvm/guided_size peut recevoir la valeur max. Pour un schéma de partitionnement de type multi, les partitions /home, /var et /tmp sont séparées.
+
+      Le document mentionne que le délai de détection de lien peut être augmenté à dix secondes. Pour un serveur DHCP lent, on peut régler le paramètre netcfg/dhcp_timeout sur soixante.

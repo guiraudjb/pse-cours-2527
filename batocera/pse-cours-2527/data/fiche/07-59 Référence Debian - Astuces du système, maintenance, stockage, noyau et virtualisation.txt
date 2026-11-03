@@ -1,0 +1,349 @@
+GUIDE DE MAINTENANCE, DE GESTION DU STOCKAGE ET DE VIRTUALISATION SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      LVM2 désigne un gestionnaire de volume logique pour le noyau Linux qui permet de créer des partitions sur des volumes logiques plutôt que sur des disques durs physiques.
+
+      ACPI désigne l'interface avancée de configuration et de gestion de l'énergie qui est une infrastructure de gestion de l'alimentation électrique du système.
+
+      GPT désigne la table de partitionnement GUID utilisée par les PC récents avec une UEFI pour conserver les données de partitionnement ailleurs que sur le premier secteur.
+
+      MBR désigne l'enregistrement d'amorçage maître qui est le schéma classique utilisé par les anciens PC pour conserver les données de partitionnement sur le secteur zéro LBA.
+
+      ALSA désigne l'Advanced Linux Sound Architecture qui fournit les pilotes de périphériques des cartes sons pour les versions actuelles de Linux.
+
+      UUID désigne un identifiant unique qui permet d'accéder à une partition même si la reconfiguration du partitionnement ou l'ordre d'activation des médias change les noms de périphériques.
+
+      NTP désigne le service permettant d'ajuster l'heure de votre système par l'intermédiaire du réseau.
+
+      SMART désigne un système de contrôle et de surveillance des systèmes de stockage utilisé pour prédire les défaillances des disques durs.
+
+      LUKS désigne un mode de chiffrement utilisé avec l'utilitaire cryptsetup pour chiffrer des périphériques en mode bloc avec dm-crypt.
+
+      KVM désigne la machine virtuelle basée sur le noyau qui permet une virtualisation principalement au niveau du processeur.
+
+      ISO9660 désigne le format de fichier image utilisé pour les CD-ROM.
+
+      QEMU désigne un outil d'émulation qui peut fournir une émulation de processeur interplateformes ou une émulation de système complet.
+
+COURS DÉTAILLÉ.
+
+I. MAINTENANCE ET IDENTIFICATION DU SYSTÈME.
+
+   A. Surveillance des utilisateurs et messages système.
+
+      Pour savoir qui est actuellement connecté au système, on utilise la commande who(1). La commande w(1) permet d'obtenir une information plus complète en affichant les utilisateurs connectés ainsi que leurs activités en cours.
+
+      La commande last(1) fournit une liste des derniers utilisateurs ayant accédé au système. À l'inverse, la commande lastb(1) est utilisée pour lister les utilisateurs qui ont tenté de se connecter mais ont échoué.
+
+      Les informations relatives aux utilisateurs sont conservées dans les fichiers /var/run/utmp et /var/log/wtmp. Pour plus de détails sur ces mécanismes, il convient de consulter login(1) et utmp(5).
+
+      Si une annonce doit être transmise à l'ensemble des personnes connectées, on utilise la commande wall(1). Par exemple, la commande echo "We are shutting down in 1 hour" | wall permet d'envoyer ce message.
+
+   B. Identification et configuration du matériel.
+
+      L'identification des périphériques de type PCI comme l'AGP ou le PCI-Express peut se faire avec lspci(8), idéalement avec l'option -nn. Il est aussi possible de lire le contenu de /proc/bus/pci/devices ou de parcourir le répertoire /sys/bus/pci.
+
+      Plusieurs paquets spécialisés permettent d'identifier le matériel, notamment pciutils pour l'utilitaire lspci(8) et usbutils pour lsusb(8). On peut aussi utiliser nvme-cli pour les périphériques NVMe ou scsitools pour la gestion des périphériques SCSI.
+
+      Pour obtenir une vue d'ensemble de la configuration matérielle, le paquet lshw(1) est très utile. Le paquet procinfo permet également d'obtenir des informations via lsdev(8).
+
+      La configuration du matériel peut être gérée par des outils comme console-setup pour la console Linux. Pour le serveur X, on utilise les utilitaires x11-xserver-utils tels que xset(1) ou xmodmap(1).
+
+      La gestion de l'énergie est assurée par l'infrastructure ACPI, avec des outils comme acpi ou le démon acpid. Pour les disques durs, hdparm permet l'optimisation et smartmontools assure la surveillance via S.M.A.R.T.
+
+   C. Gestion de l'heure et du son.
+
+      L'heure du système et du matériel peut être définie au format MM/DD hh:mm, CCYY avec la commande date. On utilise ensuite hwclock --utc --systohc pour synchroniser l'heure.
+
+      Sur Debian, l'heure est affichée en heure locale mais le système utilise habituellement l'heure UTC(GMT). Pour relancer la configuration du fuseau horaire, on utilise la commande dpkg-reconfigure tzdata.
+
+      La synchronisation via le réseau peut se faire avec ntp, ntpdate ou chrony. Sous systemd, il est préférable d'utiliser le service systemd-timesyncd(8).
+
+      L'infrastructure sonore repose sur ALSA, qui propose aussi un mode d'émulation OSS. Les serveurs audio actuels sont PulseAudio, JACK ou PipeWire.
+
+      Pour tester les haut-parleurs, on peut utiliser la commande speaker-test(1). En cas de problème, l'utilitaire alsamixer(1) du paquet alsa-utils est pratique pour régler le volume ou la coupure du son.
+
+   D. Gestion de la mémoire et de l'affichage.
+
+      La taille de la mémoire disponible peut être consultée dans le message de démarrage du noyau situé dans /var/log/dmesg. Les commandes free(1) et top(1) affichent également l'état des ressources mémoire sur le système actif.
+
+      Il est important de noter que la valeur de la mémoire libre affichée par free(1) peut paraître faible car elle ne tient pas compte des buffers et du cache. Il faut alors regarder les lignes complémentaires sous la ligne Mem:.
+
+      Pour désactiver l'économiseur d'écran dans la console Linux, on utilise la commande setterm -powersave off. Dans l'environnement X Window, on utilise xset s off et xset -dpms.
+
+      Pour les interfaces graphiques, la commande xscreensaver-command -prefs permet de gérer les préférences. Le paquet big-cursor peut être utilisé pour obtenir des curseurs de souris plus grands sous X.
+
+II. SÉCURITÉ ET INTÉGRITÉ DU SYSTÈME.
+
+   A. Outils de vérification de l'intégrité.
+
+      Le paquet debsums permet de vérifier les fichiers des paquets installés en utilisant leur somme de contrôle MD5. Il est important de noter que comme il utilise des sommes de contrôle enregistrées de manière statique, il ne peut pas être considéré comme un outil d'audit de la sécurité totalement fiable face à des attaques malveillantes.
+
+      Pour la protection contre les virus, la famille de paquets clamav propose des utilitaires comme clamscan(1) et freshclam(1). Ces outils permettent de scanner le système pour détecter des menaces informatiques.
+
+      D'autres programmes spécialisés assurent la surveillance de l'intégrité des fichiers et des répertoires. On peut citer tripwire, integrit ou encore aide qui est un environnement avancé de détection d'intrusion.
+
+      Le paquet logcheck agit comme un démon qui poste les anomalies détectées dans les fichiers journaux du système directement à l'administrateur. Cela permet une surveillance continue de l'état du système.
+
+   B. Détection de vulnérabilités et de rootkits.
+
+      Le paquet chkrootkit est un outil dédié spécifiquement à la détection de rootkits sur le système. Il aide à identifier la présence de logiciels malveillants qui tentent de dissimuler leur activité.
+
+      Pour identifier les failles de sécurité, le paquet tiger signale les vulnérabilités du système. Il permet ainsi de renforcer la posture de sécurité globale de la machine.
+
+      Certains outils sont spécialisés dans l'analyse des mots de passe pour tester la robustesse des accès. Les paquets john et crack sont utilisés pour tester la résistance des mots de passe actifs.
+
+      L'administrateur peut également s'appuyer sur la FAQ de sécurité Debian et le manuel de sécurisation de Debian pour approfondir ses connaissances. Ces ressources officielles fournissent des directives essentielles pour maintenir un système sain.
+
+   C. Recherche de fichiers aux permissions incorrectes.
+
+      Il est possible d'utiliser un script simple pour rechercher des fichiers qui possèdent des permissions d'écriture incorrectes pour tout le monde. Cette méthode permet de repérer les vecteurs de vulnérabilité potentiels.
+
+      La commande find permet d'effectuer cette recherche avec des paramètres précis. Le script utilise l'option -perm 777 pour cibler les fichiers largement accessibles.
+
+      La recherche exclut spécifiquement les fichiers de type s, les liens symboliques et les répertoires ayant la permission 1777. Cela permet de limiter les résultats aux fichiers et répertoires réellement problématiques.
+
+      Cette procédure de vérification manuelle complète les outils automatisés pour garantir que les droits d'accès sur le système respectent les politiques de sécurité établies.
+
+III. GESTION DU STOCKAGE ET DES PARTITIONS.
+
+   A. Utilisation de l'espace disque et partitions.
+
+      L'estimation de l'utilisation de l'espace disque peut être réalisée grâce aux programmes mount(8), df(1) et du(1). Le programme mount(8) indique l'ensemble des systèmes de fichiers qui sont actuellement montés sur le système.
+
+      La commande df(1) permet d'indiquer l'espace disque occupé par les différents systèmes de fichiers. Pour connaître l'espace occupé par une arborescence de répertoires spécifique, on utilise la commande du(1).
+
+      Le résultat de la commande du(1) peut être envoyé vers xdu(1) pour obtenir une présentation graphique et interactive. On peut par exemple utiliser la commande du -k . |xdu pour cet usage.
+
+      La configuration des partitions peut être effectuée avec l'outil fdisk(8) ou avec parted(8) qui est désormais recommandé. Les termes données de partition du disque, table de partitions et étiquette de disque sont des synonymes.
+
+      Les anciens PC utilisent le schéma MBR pour conserver les données de partitionnement sur le premier secteur LBA de cinq cent douze octets. Les PC récents avec une UEFI utilisent le schéma GPT pour stocker ces données ailleurs que sur le premier secteur.
+
+      Pour passer d'un schéma GPT à un schéma MBR, il est nécessaire d'effacer les premiers blocs du disque. On utilise ensuite la commande parted /dev/sdx mklabel msdos pour mettre en place ce schéma.
+
+   B. Accès par UUID et gestion LVM2.
+
+      L'accès à une partition peut se faire par son UUID pour éviter les erreurs liées au changement de nom des périphériques. La commande mount(8) avec l'option -U permet de monter un périphérique en mode bloc en utilisant son UUID.
+
+      Le fichier /etc/fstab peut également utiliser l'UUID pour identifier les partitions. Les chargeurs initiaux peuvent aussi utiliser cette méthode pour garantir un accès stable aux disques.
+
+      On peut tester l'UUID d'un périphérique spécial en mode bloc avec la commande blkid(8). La commande lsblk -f permet aussi d'examiner et d'obtenir d'autres informations sur ces identifiants.
+
+      LVM2 est un gestionnaire de volume logique pour le noyau Linux qui permet de créer des partitions sur des volumes logiques. Cette gestion nécessite la prise en charge de device-mapper dans le noyau et le paquet lvm2 en espace utilisateur.
+
+      Plusieurs commandes permettent de gérer LVM2 comme lvm(8) pour les bases du mécanisme ou lvs(8) pour les rapports d'informations. Les commandes vgs(8) et pvs(8) servent respectivement à obtenir les informations sur les groupes et les volumes physiques.
+
+   C. Configuration et optimisation des systèmes de fichiers.
+
+      Le paquet e2fsprogs fournit les utilitaires nécessaires pour la gestion des systèmes de fichiers ext2, ext3 et ext4. On utilise mkfs.ext4(8) pour créer un nouveau système de fichiers et fsck.ext4(8) pour le vérifier ou le réparer.
+
+      La commande tune2fs(8) permet de configurer le superbloc d'un système de fichiers. Elle peut par exemple modifier la fréquence des vérifications fsck lors du démarrage avec l'option -c.
+
+      Le système de fichiers ext4 est le système par défaut pour les systèmes Linux et son utilisation est fortement recommandée. Le système Btrfs est considéré comme le prochain candidat pour devenir le système de fichiers par défaut.
+
+      La configuration statique de base des systèmes de fichiers est définie dans le fichier /etc/fstab. Ce fichier permet de spécifier le point de montage, le type de système de fichiers et les options de montage.
+
+      Il est possible d'ajouter la journalisation à un système de fichiers en utilisant la commande tune2fs -j /dev/sda1. Pour convertir un système ext3 vers ext4, on utilise une combinaison de tune2fs et de fsck.
+
+   D. Optimisation des disques durs et SSD.
+
+      L'optimisation des disques durs peut être réalisée avec l'outil hdparm(8) après avoir vérifié le matériel. La commande hdparm -tT /dev/sda permet notamment de tester la vitesse de lecture d'un disque dur.
+
+      Il est possible de tester la fonctionnalité de cache d'un disque dur avec la commande hdparm -W /dev/sda. On peut choisir de désactiver le cache en écriture en utilisant l'option -W 0.
+
+      Pour les disques SSD, il est recommandé de réduire les accès inutiles pour éviter l'usure du disque. Cela peut se faire en montant tmpfs sur le chemin de données volatiles dans le fichier /etc/fstab.
+
+      La surveillance des disques conformes à SMART peut être assurée par le démon smartd(8). Pour cela, il faut installer le paquet smartmontools et activer la fonctionnalité SMART dans le BIOS.
+
+      On peut contrôler la sortie de smartctl -a /dev/sda pour vérifier si la fonctionnalité est active. Le démon smartd(8) peut être personnalisé via le fichier /etc/smartd.conf pour la gestion des avertissements.
+
+IV. MANIPULATION DES IMAGES DISQUES ET DONNÉES BINAIRES.
+
+   A. Création, écriture et montage d'images disques.
+
+      La création d'une image disque d'un périphérique non monté comme /dev/sdb peut se faire avec dd, cp ou cat en utilisant la commande dd if=/dev/sdb of=disk.img suivi de sync.
+
+      Il est possible de réaliser une image spécifique du MBR en utilisant dd avec des paramètres précis comme bs=512 et count=1 pour obtenir un fichier mbr.img contenant la table des partitions.
+
+      L'écriture d'une image disque sur un périphérique non monté de taille identique s'effectue également avec dd, cp ou cat en inversant l'ordre des fichiers d'entrée et de sortie.
+
+      Pour monter une image de partition unique, on utilise le périphérique de rebouclage avec la commande losetup --show -f partition.img puis on monte le périphérique /dev/loop0 avec l'option -t auto.
+
+      Une méthode simplifiée consiste à utiliser la commande mount -t auto -o loop partition.img /mnt/loop0 pour monter directement l'image sans passer par losetup.
+
+      Pour les images contenant plusieurs partitions, l'utilisation de kpartx permet de créer des mappages de périphériques via le répertoire /dev/mapper/ pour accéder à chaque partition individuellement.
+
+   B. Gestion des images ISO9660 et CD/DVD.
+
+      La création d'un fichier image ISO9660 nommé cd.iso à partir d'un répertoire source peut être réalisée avec la commande genisoimage en utilisant les options -r, -J, -T et -V.
+
+      Il est possible de générer une image ISO9660 amorçable pour un chargeur Isolinux en spécifiant les fichiers isolinux/isolinux.bin et isolinux/boot.cat avec les options de boot appropriées.
+
+      Pour construire une image ISO9660 directement depuis un lecteur de CD-ROM, on utilise dd avec les options conv=notrunc,noerror pour extraire les données et calculer la somme md5.
+
+      L'écriture d'un fichier image ISO9660 sur un CD-R vierge s'effectue avec l'outil wodim en spécifiant le périphérique comme /dev/sda avec l'option -v et -eject.
+
+      Si un CD-RW est utilisé, la commande wodim nécessite l'ajout de l'option blank=fast avant de procéder à l'écriture de l'image.
+
+      Un fichier image ISO9660 peut être monté manuellement sur le répertoire /cdrom en utilisant la commande mount -t iso9660 -o ro,loop cd.iso /cdrom.
+
+   C. Édition de données binaires et manipulation sans montage.
+
+      La visualisation de base des données binaires s'effectue avec la commande od -t x1 pour afficher les fichiers en formats HEX, ASCII ou OCTAL.
+
+      Des éditeurs spécialisés comme hexedit ou des interfaces graphiques comme bless pour GNOME et okteta pour KDE4 permettent une édition complète des données en HEX ou ASCII.
+
+      Certains outils comme beav permettent de visualiser des données dans des formats plus spécifiques tels que l'EBCDIC utilisé par les systèmes de mainframe IBM.
+
+      Il existe des utilitaires pour manipuler les fichiers sans avoir besoin de monter le support, comme mtools pour les fichiers MSDOS ou hfsutils pour les systèmes HFS et HFS+.
+
+      La commande dd peut être utilisée pour créer des fichiers factices de tailles précises, par exemple un fichier de 5kb rempli de zéros ou un fichier de 7mb de données aléatoires.
+
+      L'effacement sécurisé du contenu d'un fichier sans le supprimer peut se faire avec la commande :>file_to_be_cleared.
+
+   D. Récupération de données et redondance.
+
+      Pour assurer la redondance des fichiers au niveau applicatif, le paquet par2 permet de vérifier et de réparer des fichiers grâce à un ensemble de volumes de parité.
+
+      La protection des supports CD et DVD contre les rayures ou le vieillissement peut être assurée par l'outil dvdisaster.
+
+      Plusieurs paquets sont dédiés à la récupération de données, notamment testdisk pour l'examen des partitions et magicrescue pour la recherche d'octets magiques.
+
+      Les systèmes de fichiers ext3 et ext4 disposent d'outils spécifiques comme extundelete ou ext4magic pour récupérer des fichiers effacés.
+
+      Pour les analyses par autopsie et la récupération de données, on peut utiliser foremost ou l'interface graphique autopsy qui repose sur la bibliothèque SleuthKit.
+
+      La récupération de fichiers supprimés mais encore ouverts par une application est possible en lisant le contenu via le répertoire /proc/PID/fd/ avant que le processus ne se termine.
+
+V. MANIPULATION AVANCÉE DES FICHIERS ET SÉCURITÉ DES DONNÉES.
+
+   A. Éclatement, effacement et création de fichiers.
+
+      Pour gérer des volumes de données trop importants pour un seul fichier, on peut utiliser la commande split avec l'option -b pour éclater un fichier en morceaux de 2000Mio. Le réassemblage se fait ensuite avec la commande cat en utilisant un motif comme x*.
+
+      Il est recommandé de ne pas utiliser la commande rm pour vider un fichier afin d'éviter une fenêtre de vulnérabilité entre la suppression et la recréation. La méthode sûre consiste à utiliser la syntaxe :>file_to_be_cleared.
+
+      La création de fichiers factices peut se faire de plusieurs manières selon le besoin de contenu. On peut créer un fichier de 5kb avec des zéros via dd ou un fichier de 7mb contenant des données aléatoires avec /dev/urandom.
+
+      La commande touch permet de créer un fichier de zéro octet nommé zero.file, tandis que la commande :>alwayszero.file garantit que le fichier fera toujours zéro octet même s'il existait déjà.
+
+   B. Récupération de fichiers supprimés ou ouverts.
+
+      Lorsqu'un fichier est accidentellement supprimé mais qu'il est toujours utilisé par une application en mode lecture ou écriture, il est possible de le récupérer. On peut identifier le descripteur de fichier dans le répertoire /proc/PID/fd pour rediriger le contenu vers un nouveau fichier.
+
+      L'utilisation de la commande lsof permet de repérer les fichiers supprimés qui sont encore ouverts par des processus actifs. La commande lsof -s -X / peut également être utilisée pour lister ces fichiers et leur taille.
+
+      Il existe une multitude d'outils spécialisés pour la récupération de données et l'analyse par autopsie. Des paquets comme testdisk, scalpel ou foremost permettent de retrouver des fichiers, tandis que sleuthkit et autopsy servent à l'analyse forensique.
+
+      Pour les systèmes de fichiers ext3 et ext4, des utilitaires spécifiques comme extundelete, ext4magic ou ext3grep sont disponibles. Sur un système ext2, il est possible d'annuler l'effacement de fichiers via les commandes list_deleted_inodes et undel du paquet e2fsprogs.
+
+   C. Chiffrement des disques et des périphériques amovibles.
+
+      Le chiffrement des données est essentiel pour protéger les informations sensibles en cas de vol physique du PC. Le module dm-crypt facilite ce processus en utilisant device-mapper pour un chiffrement automatique avec un minimum d'effort de l'utilisateur.
+
+      Pour chiffrer un périphérique amovible comme une clé USB sur /dev/sdx, on utilise d'abord fdisk pour créer une partition, puis cryptsetup luksFormat. Le périphérique est ensuite ouvert avec cryptsetup open pour créer un accès via /dev/mapper/.
+
+      Une fois le périphérique ouvert, on peut créer un système de fichiers comme vfat avec mkfs.vfat ou ext4 avec mkfs.ext4 sur le nouveau périphérique logique. Dans un environnement de bureau moderne, le paquet udisks permet de gérer le montage et la demande de mot de passe.
+
+      Il existe d'autres outils de chiffrement comme fscrypt pour le chiffrement du système de fichiers Linux. Le paquet cryptmount est également disponible pour mettre l'accent sur le montage et le démontage par un utilisateur normal.
+
+VI. GESTION DU NOYAU ET DES PILOTES.
+
+   A. Paramètres et en-têtes du noyau.
+
+      Les fonctionnalités du noyau peuvent être configurées via plusieurs types de paramètres. On peut utiliser les paramètres initialisés par le gestionnaire d'amorçage ou ceux modifiés par sysctl(8) via sysfs.
+
+      Les paramètres des modules sont définis par modprobe(8) lors de leur activation. Pour plus de détails, il convient de consulter le Guide de l'utilisateur et de l'administrateur du noyau Linux.
+
+      Les programmes normaux n'ont généralement pas besoin des en-têtes du noyau. L'utilisation directe de ces en-têtes peut d'ailleurs casser certains programmes.
+
+      Sur les systèmes Debian, les en-têtes se trouvent dans /usr/include/linux et /usr/include/asm. Ils sont fournis par le paquet libc6-dev.
+
+      Pour compiler des modules du noyau à partir d'une source externe, il faut inclure le chemin d'accès aux en-têtes correspondants. Par exemple, on peut utiliser l'option -I/usr/src/linux-particular-version/include/.
+
+   B. Compilation du noyau et des modules.
+
+      Debian possède sa propre méthode pour compiler le noyau et ses modules associés. Le paquet build-essential est indispensable car il fournit des outils comme make et gcc.
+
+      Plusieurs autres paquets sont nécessaires comme bzip2 pour la compression ou git pour la gestion des versions. Le paquet fakeroot permet de construire un paquet sans être root.
+
+      Pour la gestion des images mémoire initiales, il faut utiliser initramfs-tools. Le paquet dkms permet une prise en charge dynamique des modules du noyau.
+
+      Pour construire des paquets binaires à partir des sources du noyau amont, il est recommandé d'utiliser la cible deb-pkg. On peut aussi utiliser les cibles spécifiques dans debian/rules.gen.
+
+      Le paquet linux-source- version fournit les sources avec les correctifs Debian dans /usr/src/linux- version.tar.bz2. Le module-assistant aide à installer facilement des modules pour des noyaux personnalisés.
+
+   C. Pilotes de matériel et microprogrammes.
+
+      Le pilote de matériel est un code qui s'exécute sur le CPU principal du système cible. La plupart des pilotes sont disponibles en logiciels libres dans la section main.
+
+      Le microprogramme est un code ou des données chargés directement sur le périphérique. Il peut s'agir du microcode de processeur ou du code de rendu pour les processeurs graphiques.
+
+      Certains paquets de microprogramme sont libres, mais beaucoup ne le sont pas car ils contiennent des données binaires sans sources. Leur installation est essentielle au bon fonctionnement du matériel.
+
+      Les paquets de données de microprogramme sont classés dans différentes sections comme main ou non-free-firmware. On trouve par exemple intel-microcode ou amd64-microcode.
+
+      Le démon fwupd permet de mettre à jour le microprogramme en téléchargeant les données depuis Linux Vendor Firmware Service. Il existe aussi des interfaces graphiques comme gnome-firmware ou plasma-discover-backend-fwupd.
+
+VII. VIRTUALISATION ET ENVIRONNEMENTS ISOLÉS.
+
+   A. Outils d'émulation et de virtualisation.
+
+      Il existe plusieurs plateformes pour la virtualisation et l'émulation, allant de l'émulation matérielle complète avec des paquets comme games-emulator à l'émulation de processeur avec QEMU.
+
+      La virtualisation au niveau du processeur peut utiliser KVM pour une machine virtuelle basée sur le noyau, tandis que la virtualisation de conteneurs s'appuie sur des technologies comme LXC, Docker ou systemd-nspawn.
+
+      D'autres approches incluent la virtualisation de l'accès au système de fichiers via chroot ou fakeroot, ainsi que l'émulation d'API avec Wine ou la virtualisation au niveau de l'interpréteur avec virtualenv et venv pour Python.
+
+      Des outils comme virt-manager permettent de gérer les machines virtuelles KVM à l'aide de libvirt, et des solutions comme VirtualBox ou GNOME Boxes offrent des environnements de virtualisation x86.
+
+      Pour les conteneurs, des moteurs comme Podman ou Docker sont utilisés, et Incus propose une gestion de conteneurs de système et de machines virtuelles.
+
+   B. Étapes de mise en œuvre d'une machine virtuelle.
+
+      La mise en œuvre commence par la création d'un système de fichiers vide, soit une arborescence de fichiers, soit une image disque.
+
+      L'image disque brute peut être générée avec la commande dd ou via qemu-img pour créer et convertir des fichiers d'image pris en charge par QEMU.
+
+      Une fois l'image créée, elle peut être montée dans le système de fichiers ou utilisée comme périphérique réseau en mode bloc avec le module nbd et l'outil qemu-nbd.
+
+      Le processus se poursuit par le peuplement du système de fichiers cible avec les données nécessaires, parfois à l'aide de programmes comme debootstrap ou cdebootstrap.
+
+      Enfin, on peut utiliser les installateurs de systèmes d'exploitation sous émulation ou lancer un programme directement dans l'environnement virtualisé.
+
+   C. Systèmes protégés et conteneurs chroot/nspawn.
+
+      La méthode la plus basique pour exécuter des applications dans un environnement isolé est l'utilisation de chroot, ce qui permet par exemple de tester Debian unstable sans redémarrage.
+
+      Le paquet sbuild facilite la construction de paquets Debian en utilisant un environnement chroot géré par le paquet schroot.
+
+      L'outil sbuild-createchroot peut être utilisé pour créer un système de construction minimal en installant les données de Debian unstable sous un répertoire spécifique.
+
+      Pour une virtualisation plus puissante, la commande systemd-nspawn permet d'exécuter un système d'exploitation dans un conteneur léger en utilisant des espaces de noms pour virtualiser l'arbre de processus et le réseau.
+
+      Certains environnements chroot peuvent nécessiter que des fichiers du système parent comme /sys ou /etc/passwd soient montés par lien ou copiés pour fonctionner correctement.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la taille de la mémoire libre affichée par dmesg avec celle de la commande free car la seconde inclut les buffers et le cache.
+
+      L'utilisation de debsums pour l'audit de sécurité présente une limite car il utilise des sommes de contrôle MD5 statiques et ne peut pas être totalement fiable contre des attaques malveillantes.
+
+      Pour la gestion du stockage, il est préférable d'utiliser des outils spécialisés comme mkfs ou resize2fs plutôt que de s'appuyer sur les capacités de redimensionnement de parted.
+
+      L'utilisation de liens symboliques pour des répertoires gérés par le système comme le dossier opt est déconseillée car ils peuvent être écrasés lors d'une mise à jour.
+
+      Il est dangereux d'exécuter la commande fsck sur un système de fichiers qui est actuellement monté.
+
+EXEMPLES CITÉS.
+
+      Pour tester la vitesse de lecture d'un disque dur, on peut utiliser la commande hdparm -tT sur le périphérique /dev/sda.
+
+      Un utilisateur peut créer un fichier image de cinq Gio en utilisant la commande dd bs=1 count=0 if=/dev/zero of=disk.img seek=5G.
+
+      Le programme lsof permet de retrouver un fichier supprimé mais toujours ouvert en consultant le lien dans /proc/4775/fd/4.
+
+      La commande tune2fs -c 50 sur le périphérique /dev/sda1 permet de modifier la fréquence des vérifications du système de fichiers à cinquante démarrages.
+
+      Pour créer un environnement chroot avec sbuild, la commande sbuild-createchroot est utilisée pour installer les données de Debian unstable.

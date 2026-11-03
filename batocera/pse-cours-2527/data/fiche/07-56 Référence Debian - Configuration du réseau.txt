@@ -1,0 +1,273 @@
+GUIDE DE CONFIGURATION ET DE GESTION DU RÉSEAU SOUS DEBIAN.
+
+LEXIQUE COMPLET.
+
+      Le sigle DNS désigne le Système de noms de domaine Internet utilisé pour la résolution de noms d'hôte.
+
+      Le terme LAN désigne un réseau local qui utilise des plages d'adresses IPv4 réservées par la rfc1918.
+
+      Le sigle NAT désigne la traduction d'adresse réseau permettant de relier un réseau local à Internet.
+
+      Le terme MTU désigne la taille maximale de paquet de données sans fragmentation IP.
+
+      Le sigle MSS désigne la taille maximum de segment utilisée comme mesure de remplacement de la taille des paquets.
+
+      Le sigle mDNS désigne le Multicast DNS utilisé pour la résolution de nom d'hôte sur un réseau local ad hoc.
+
+      Le terme Netfilter désigne l'infrastructure fournissant un pare-feu dynamique et la traduction d'adresses réseau.
+
+      Le sigle FQDN désigne un nom de domaine complètement qualifié fourni par le système de noms de domaine.
+
+      Le sigle WPA désigne un client prenant en charge les protocoles WPA et WPA2 pour les réseaux sans fil.
+
+      Le terme YAML désigne un format de données utilisé par le paquet netplan.io pour la configuration déclarative de réseau.
+
+      Le sigle DHCP désigne un protocole permettant la configuration automatique d'un client réseau.
+
+      Le terme PMTU désigne la découverte du chemin MTU qui peut être automatisée par la commande tracepath(8).
+
+COURS DÉTAILLÉ.
+
+I. INFRASTRUCTURE ET OUTILS DE BASE DU RÉSEAU.
+
+   A. Liste des paquets de configuration et de test.
+
+      L'infrastructure réseau Debian utilise divers paquets pour la configuration comme network-manager pour une gestion automatique ou netplan.io qui sert d'interface unifiée déclarative pour les dorsaux NetworkManager et systemd-networkd.
+
+      Pour les connexions spécifiques, pppoeconf agit comme un assistant pour le protocole PPPoE tandis que wpasupplicant gère les standards WPA et WPA2. Les outils comme iw ou wireless-tools permettent la manipulation des périphériques sans fil.
+
+      La gestion avancée des protocoles IPv6 et des configurations réseau repose sur le paquet iproute2 qui inclut les commandes ip(8) et tc(8). Le filtrage des paquets et le NAT sont administrés via iptables ou son successeur nftables.
+
+      Les outils de test incluent iputils-ping pour l'accessibilité et mtr pour le traçage de chemin avec des options curses ou GTK. Pour l'analyse de trafic, des outils comme tcpdump, wireshark ou tshark sont essentiels.
+
+      La résolution DNS est supportée par dnsutils qui fournit les commandes nslookup(8), nsupdate(8) et dig(8). Des outils comme dlint ou dnstracer permettent de vérifier les zones ou de tracer la chaîne des serveurs DNS.
+
+   B. Résolution de noms et mécanisme NSS.
+
+      La résolution du nom d'hôte s'appuie sur le mécanisme NSS qui suit un flux précis défini dans le fichier /etc/nsswitch.conf. L'ordre des méthodes comme hosts: files dns détermine la priorité de la résolution.
+
+      La méthode files consulte d'abord le fichier /etc/hosts pour retourner les adresses correspondantes. Si le nom est trouvé, le processus s'arrête conformément à la configuration multi on de /etc/host.conf.
+
+      La méthode dns utilise ensuite le Système de noms de domaine Internet via les informations du fichier /etc/resolv.conf. Si une adresse IP comme 192.168.11.1 y est définie, elle sert de nameserver.
+
+      Le paquet resolvconf peut transformer /etc/resolv.conf en un lien symbolique pour gérer automatiquement son contenu. Pour les réseaux locaux, Avahi fournit un cadre pour le Multicast DNS Service Discovery.
+
+      L'utilisation du greffon libnss-mdns permet une résolution via mDNS pour les noms se terminant par le pseudo domaine .local. Cela utilise des messages UDP multicast sur les adresses IPv4 224.0.0.251 ou IPv6 FF02::FB.
+
+   C. Gestion des interfaces et adresses IP.
+
+      Le système systemd utilise des noms prévisibles pour les interfaces réseau comme enp0s25. Les interfaces sont généralement initialisées par networking.service pour l'interface lo et NetworkManager.service pour les autres.
+
+      Les plages d'adresses IPv4 réservées pour les réseaux locaux selon la rfc1918 incluent la classe A avec 10.x.x.x, la classe B de 172.16.x.x à 172.31.x.x et la classe C de 192.168.0.x à 192.168.255.x.
+
+      Pour les systèmes sans adresse IP permanente, l'installateur Debian utilise l'adresse 127.0.1.1 dans le fichier /etc/hosts. Cette configuration est un contournement pour certains programmes comme GNOME lié au bogue nº sept cent dix-neuf mille six cent vingt et un.
+
+      La configuration moderne pour l'infonuagique peut passer par netplan.io en utilisant des données YAML. On peut définir un client DHCP ou une IP statique comme 192.168.0.15/24 dans des fichiers comme 50-static.yaml.
+
+      Les commandes de bas niveau iproute2 remplacent les anciens outils net-tools comme ifconfig par ip addr. La table de routage se consulte avec ip route show et le cache ARP se gère avec ip neigh.
+
+II. CONFIGURATION POUR LES ENVIRONNEMENTS DE BUREAU.
+
+   A. Utilisation de NetworkManager.
+
+      Les systèmes de bureau modernes de Debian sous systemd utilisent généralement le service NetworkManager.service pour la gestion des interfaces réseau autres que l'interface lo.
+
+      NetworkManager est un logiciel démon de gestion qui permet une connexion facile du système à Internet. Il offre des fonctionnalités pour la configuration du réseau filaire ou sans fil.
+
+      Ce système de gestion est conçu pour les utilisateurs de bureau tournant sur des ordinateurs portables. Il ne doit pas être utilisé pour la configuration automatique du réseau sur un serveur.
+
+      L'outil est disponible via une interface utilisateur graphique ou par des lignes de commandes. Il fonctionne de manière indépendante de l'ancien paquet ifupdown.
+
+   B. Gestion via interface graphique.
+
+      La configuration réseau pour un ordinateur de bureau peut être réalisée à l'aide d'une interface graphique. Des paquets comme network-manager-gnome ou gufw sont mentionnés pour faciliter ces opérations.
+
+      Pour utiliser ces outils, l'utilisateur doit d'abord être membre du groupe netdev. Cela peut être fait avec la commande sudo usermod -a -G netdev foo.
+
+      Une fois l'utilisateur ajouté au groupe, il est possible de configurer le réseau via l'interface graphique. Des modules d'extension comme network-manager-openvpn-gnome peuvent étendre les possibilités de configuration.
+
+      La documentation officielle pour NetworkManager sous Debian se trouve dans le répertoire /usr/share/doc/network-manager/README.Debian.
+
+   C. Prévention des conflits avec ifupdown.
+
+      Il est crucial d'éviter les conflits entre les outils de configuration automatique et l'ancien paquet ifupdown. Pour cela, il faut configurer correctement les outils modernes.
+
+      Le fichier de configuration /etc/network/interfaces doit être maintenu le plus simple possible. Il ne doit contenir que l'initialisation de l'interface lo comme auto lo et iface lo inet loopback.
+
+      Seules les interfaces qui ne sont pas listées dans /etc/network/interfaces seront gérées par NetworkManager. Cette règle permet d'éviter les doubles configurations ou les erreurs de gestion.
+
+      Après avoir modifié la configuration de base, il est nécessaire de redémarrer le service avec la commande sudo systemctl restart NetworkManager.
+
+III. CONFIGURATION POUR LES ENVIRONNEMENTS SANS INTERFACE ET L'INFONUAGIQUE.
+
+   A. Configuration via systemd-networkd.
+
+      Sous systemd, le réseau peut être configuré dans le répertoire /etc/systemd/network/.
+
+      Cette méthode permet une configuration moderne de réseau sans interface graphique.
+
+      Pour régler une configuration de client DHCP, il faut créer le fichier /etc/systemd/network/dhcp.network.
+
+      Un exemple de configuration utilise la section [Match] avec Name=en* et la section [Network] avec DHCP=yes.
+
+      Une configuration de réseau statique se règle par la création du fichier /etc/systemd/network/static.network.
+
+      Ce fichier utilise la section [Match] avec Name=en* et la section [Network] avec Address=192.168.0.15/24 et Gateway=192.168.0.1.
+
+   B. Gestion déclarative avec Netplan et YAML.
+
+      La configuration moderne de réseau pour l'infonuagique peut utiliser le paquet netplan.io.
+
+      Ce paquet permet une configuration déclarative de réseau en utilisant des données YAML.
+
+      Il prend en charge systemd-networkd et NetworkManager comme dorsaux de configuration.
+
+      Si le fichier YAML est modifié, il faut exécuter la commande netplan generate pour générer la configuration.
+
+      La commande netplan apply doit ensuite être exécutée pour appliquer la configuration aux dorsaux.
+
+      Pour un client DHCP, on crée un fichier /etc/netplan/50-dhcp.yaml avec la version deux et l'option dhcp4 et dhcp6 sur true.
+
+      Pour une IP statique, le fichier /etc/netplan/50-static.yaml définit l'interface eth0 avec les adresses 192.168.0.15/24 et une route via 192.168.0.1.
+
+   C. Intégration avec cloud-init.
+
+      Les paquets cloud-init et netplan.io sont utilisés pour la configuration moderne de réseau dans l'infonuagique.
+
+      La documentation de cloud-init traite particulièrement des sources de configuration et du Netplan Passthrough.
+
+      Cloud-init permet d'intégrer la configuration de netplan.io avec des sources de données de remplacement.
+
+IV. COMMANDES DE BAS NIVEAU ET DIAGNOSTIC.
+
+   A. Transition de net-tools vers iproute2.
+
+      Le système Debian privilégie désormais l'utilisation du paquet iproute2 pour la configuration réseau de bas niveau. Les anciennes commandes du paquet net-tools sont considérées comme obsolètes au profit de nouvelles fonctionnalités.
+
+      Pour gérer l'adresse d'un protocole comme l'IPv4 ou l'IPv6, la commande ifconfig est remplacée par ip addr. La gestion des entrées de la table de routage se fait désormais avec ip route à la place de la commande route.
+
+      Les entrées de cache ARP ou NDISC sont désormais manipulées via la commande ip neigh plutôt que par l'outil arp. Les adresses multicast sont gérées par ip maddr en remplacement de ipmaddr.
+
+      La commande iptunnel est remplacée par ip tunnel pour la gestion des tunnels sur IP. Enfin, le paramétrage du périphérique Ethernet s'effectue avec ethtool au lieu de mii-tool.
+
+   B. Opérations de consultation et tests de connectivité.
+
+      Il existe des commandes de bas niveau qui permettent de consulter l'état du réseau sans modifier la configuration. La commande ip addr show permet d'afficher l'état et l'adresse du lien des interfaces actives.
+
+      Pour visualiser les tables de routage sous forme d'adresses numériques, on utilise ip route show ou la commande route -n. L'affichage du contenu actuel des tables de cache ARP s'effectue avec les commandes arp ou ip neigh.
+
+      La vérification de la connexion internet vers un domaine comme yahoo.com peut se faire avec la commande ping. Pour tracer le chemin de la connexion, les outils tracepath ou traceroute sont recommandés.
+
+      L'outil mtr permet de tracer le chemin réseau de manière répétitive avec l'interface curses ou GTK. Pour vérifier les enregistrements DNS d'un exemple.com, on utilise la commande dig en spécifiant le serveur DNS.
+
+      La surveillance des ports ouverts et des ports à l'écoute s'effectue avec la commande ss. On peut utiliser ss -a pour rechercher tous les ports ou ss -l pour identifier ceux qui sont à l'écoute.
+
+   C. Outils de surveillance de la bande passante.
+
+      Plusieurs paquets permettent de mesurer et de surveiller l'utilisation de la bande passante sur une interface. L'outil iftop est utilisé pour afficher l'utilisation de la bande passante d'une interface réseau.
+
+      L'outil iperf sert spécifiquement à la mesure de la bande passante du protocole Internet. Pour une surveillance des statistiques de l'interface, le paquet ifstat est disponible.
+
+      Le paquet bmon propose une surveillance portable de la bande passante avec une estimation du débit. Le script ethstatus permet également de mesurer rapidement le débit d'une interface.
+
+      D'autres solutions comme bwm-ng offrent un moniteur de bande passante simple en mode console. Enfin, l'outil ipfm est dédié à l'analyse de la bande passante.
+
+V. OPTIMISATION DES PERFORMANCES RÉSEAU.
+
+   A. Détermination du MTU optimal et PMTU.
+
+      Le MTU représente la taille maximale possible d'un paquet de données sans fragmentation IP, à laquelle il faut ajouter vingt-huit octets pour l'IPv4 ou quarante-huit octets pour l'IPv6.
+
+      La découverte du chemin MTU, appelée PMTU selon la RFC1191, peut être réalisée manuellement en utilisant la commande ping avec l'option -M do pour tester différentes tailles de paquets.
+
+      La commande tracepath peut également être utilisée pour automatiser ce processus de découverte du chemin.
+
+      Pour un lien Ethernet utilisant le protocole DHCP ou une adresse fixe, la valeur standard et par défaut du MTU est de mille cinq cents.
+
+      Dans le cas d'un lien commuté utilisant le protocole IP sur PPP, la valeur standard recommandée est de cinq cent soixante-seize.
+
+      Il est important de noter que l'utilisation de méthodes de tunneling comme les VPN peut réduire le MTU optimal en raison de la surcharge engendrée.
+
+   B. Relation entre MTU et MSS.
+
+      La taille maximum de segment, désignée par le sigle MSS, est utilisée comme une mesure de remplacement de la taille des paquets.
+
+      Pour les réseaux utilisant l'IPv4, la relation mathématique est MSS = MTU - quarante.
+
+      Pour les réseaux utilisant l'IPv6, la relation est différente et s'établit comme suit : MSS = MTU - soixante.
+
+      La valeur de MTU la plus élevée est généralement préférable tant que les autres limitations sont respectées.
+
+      La valeur de MTU ne doit jamais excéder la valeur expérimentale déterminée par le processus de PMTU.
+
+      Des optimisations basées sur iptables peuvent limiter la taille des paquets au MSS, ce qui s'avère utile pour le routeur grâce à l'option TCPMSS.
+
+   C. Optimisation des paramètres TCP.
+
+      Le débit TCP peut être maximisé en procédant à l'ajustement des paramètres de taille de tampon TCP.
+
+      Cette méthode d'ajustement est décrite dans les documents relatifs à l'ajustement de TCP pour les réseaux WAN modernes de haut débit et de faible latence.
+
+      À ce jour, les paramètres par défaut fournis par Debian fonctionnent correctement, même pour une connexion locale utilisant le service rapide FTTP à 1Gb/s.
+
+VI. INFRASTRUCTURE DE FILTRAGE ET DE SÉCURITÉ.
+
+   A. Fonctionnement de Netfilter et NAT.
+
+      Netfilter fournit l'infrastructure nécessaire pour mettre en place un pare-feu dynamique dit stateful firewall.
+
+      Cette technologie permet également de réaliser la traduction d'adresses réseau appelée NAT.
+
+      Le fonctionnement repose sur l'utilisation de modules spécifiques intégrés au noyau de Linux.
+
+      L'administration de ces fonctions peut se faire de manière interactive via le shell.
+
+   B. Outils d'administration nftables et iptables.
+
+      Le paquet nftables propose des outils d'administration pour le filtrage des paquets et le NAT.
+
+      Il est considéré comme le successeur des outils ip, ip6, arp et ebtables.
+
+      Le paquet iptables fournit des outils d'administration pour netfilter avec iptables pour IPv4 et ip6tables pour IPv6.
+
+      Il est possible de sauvegarder l'état de la configuration avec la commande nft list ruleset ou iptables-save.
+
+      La restauration de la configuration lors du redémarrage du système s'effectue via la commande nft -f ou iptables-restore.
+
+   C. Solutions de pare-feu (UFW, Firewalld, Shorewall).
+
+      UFW ou Uncomplicated Firewall est un programme conçu pour gérer un pare-feu netfilter.
+
+      Il existe une interface graphique nommée gufw pour faciliter la gestion de UFW.
+
+      Firewalld est un programme de pare-feu géré dynamiquement qui utilise un système de gestion par zones de réseau.
+
+      L'interface graphique firewall-config permet de piloter firewalld.
+
+      Shorewall est un générateur de fichier de configuration pour netfilter qui inclut une phase d'initialisation avec shorewall-init.
+
+      Il existe des versions spécifiques comme shorewall-lite ou les versions dédiées à l'IPv6 nommées shorewall6 et shorewall6-lite.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas utiliser les outils de configuration automatique comme NetworkManager sur un serveur car ils sont destinés aux ordinateurs de bureau et aux portables.
+
+      Une confusion fréquente réside dans l'usage de ifupdown qui peut entrer en conflit avec les outils modernes si les interfaces sont listées dans le fichier /etc/network/interfaces.
+
+      La résolution de nom d'hôte dépend de l'ordre défini dans le fichier /etc/nsswitch.conf et peut être influencée par des mécanismes comme mDNS ou systemd-resolved.
+
+      Il faut distinguer les commandes de configuration qui modifient le réseau des commandes de bas niveau comme ip addr show qui ne font qu'afficher l'état actuel.
+
+      L'utilisation de méthodes de tunneling comme un VPN peut réduire le MTU optimal en raison de la surcharge de données qu'elle engendre sur le lien.
+
+EXEMPLES CITÉS.
+
+      Pour un système sans adresse IP permanente, l'installateur Debian utilise l'adresse 127.0.1.1 dans le fichier /etc/hosts pour contourner certains bogues.
+
+      Dans une configuration DHCP via Netplan, un fichier comme /etc/netplan/50-dhcp.yaml peut être utilisé pour activer dhcp4 et dhcp6 sur les interfaces commençant par en*.
+
+      Le calcul du MSS pour IPv4 se fait en soustrayant quarante à la valeur du MTU, tandis que pour l'IPv6, il faut soustraire soixante.
+
+      Une adresse IP de la classe C se situe dans la plage allant de 192.168.0.x à 192.168.255.x avec un masque de réseau de 255.255.255.0.
+
+      L'outil mtr permet de tracer le chemin réseau vers une machine distante de manière répétitive en utilisant les interfaces curses ou GTK.

@@ -1,0 +1,283 @@
+GUIDE DE PRÉPARATION ET DE MISE À NIVEAU VERS DEBIAN treize TRIXIE.
+
+LEXIQUE COMPLET.
+
+      Le sigle SSH désigne le protocole Secure Shell qui permet la connexion à un système distant.
+
+      L'architecture i386 désigne une architecture qui n'est plus prise en charge comme une architecture normale à partir de Trixie.
+
+      La prise en charge de SSE2 fait partie des exigences du jeu d'instructions de l'architecture i386. Cela signifie qu'elle ne fonctionnera pas correctement sur la plupart des types de processeurs trente-deux bits qui sont pris en charge par Debian douze.
+
+      Le répertoire /tmp désigne un répertoire de fichiers temporaires qui est désormais stocké par défaut dans un système de fichiers tmpfs.
+
+      Le sigle PAM désigne les Pluggable Authentication Modules qui sont des bibliothèques utilisées pour la gestion de l'authentification.
+
+      Le sigle DSA désigne le Digital Signature Algorithm qui est un type de clé considéré comme intrinsèquement faible et non supporté par OpenSSH à partir de la version 9.8.p1.
+
+      Le sigle LVM désigne un système de gestion de volumes logiques permettant d'augmenter la taille d'une partition.
+
+      Le sigle LUKS désigne un format de chiffrement qui enregistre ses propres réglages directement dans le périphérique.
+
+      Le sigle HA désigne la haute disponibilité pour les files d'attente qui ne sont plus supportées par rabbitmq-server dans Trixie.
+
+      Le sigle AD-DC désigne la fonctionnalité de contrôleur de domaine Active Directory qui a été séparée du paquet Samba.
+
+      Le sigle TLS désigne le protocole utilisé dans OpenLDAP qui est désormais fourni par OpenSSL au lieu de GnuTLS.
+
+      Le sigle UEFI désigne un type de micrologiciel utilisé par les machines virtuelles arm64 dans le cloud qui peut nécessiter une mise à jour du chargeur de démarrage.
+
+COURS DÉTAILLÉ.
+
+I. PROBLÈMES CONNUS ET POINTS DE VIGILANCE POUR TRIXIE.
+
+   A. Risques liés aux mises à niveau distantes via SSH.
+
+      Un problème d'OpenSSH présent dans Bookworm peut entraîner l'inaccessibilité des systèmes distants si une mise à niveau supervisée par une connexion SSH est interrompue.
+
+      Les utilisateurs risquent de se retrouver dans l'impossibilité de se reconnecter au système distant pour reprendre la mise à niveau.
+
+      Une mise à jour des paquets de Bookworm résoudra ce problème dans Debian douze virgule douze, mais cette version est encore en préparation au moment de la publication de Trixie.
+
+      Les utilisateurs prévoyant des mises à niveau de systèmes distants sont invités à mettre d'abord à jour OpenSSH vers la version 1:9.2p1-2+deb12u7 ou supérieure via le mécanisme stable-updates.
+
+      Il est en général judicieux de s'assurer d'avoir un autre moyen de se connecter au système avant de démarrer la mise à niveau.
+
+   B. Changements majeurs d'architectures et de support matériel.
+
+      À partir de Trixie, l'architecture i386 n'est plus prise en charge comme une architecture normale car il n'y a plus de noyau officiel ni d'installateur Debian.
+
+      L'architecture i386 est désormais destinée uniquement à être utilisée sur les processeurs soixante-quatre bits amd64 avec l'exigence du jeu d'instructions SSE2.
+
+      Les utilisateurs de systèmes i386 ne doivent pas mettre à niveau vers Trixie et doivent plutôt réinstaller leurs systèmes en amd64 ou réformer le matériel.
+
+      L'architecture armel n'est plus prise en charge comme une architecture ordinaire et la version de Trixie sera la dernière pour elle.
+
+      Les utilisateurs de systèmes armel peuvent mettre à niveau à condition que leur matériel soit pris en charge par les paquets du noyau ou qu'ils utilisent un noyau d'une tierce partie.
+
+      Les architectures mipsel et mips64el ne sont plus prises en charge par Debian à partir de Trixie.
+
+   C. Gestion de l'espace disque et du répertoire temporaire.
+
+      La taille du noyau Linux et des paquets de microprogramme ayant augmenté, la partition /boot peut être trop petite et faire échouer la mise à niveau.
+
+      Il faut s'assurer que la partition /boot a une taille d'au moins sept cent soixante-huit Mo dont trois cents Mo libre avant de lancer la mise à niveau.
+
+      À partir de Trixie, le répertoire /tmp/ est par défaut stocké en mémoire en utilisant un système de fichiers tmpfs.
+
+      Par défaut, cinquante pour cent de la mémoire est allouée à /tmp, mais cela peut entraîner un manque de mémoire si de gros fichiers y sont déposés.
+
+      Les fichiers demeurés dans /tmp seront cachés après le montage du nouveau tmpfs, ce qui entraînera des avertissements dans le journal système.
+
+   D. Évolutions de la sécurité et des protocoles de connexion.
+
+      Le démon Secure Shell fourni par le paquet openssh-server ne lit plus le fichier ~/.pam_environment par défaut pour des raisons de sécurité.
+
+      À partir d'OpenSSH 9.8.p1 dans Trixie, les clés DSA ne sont plus prises en charge même avec les options de configuration spécifiques.
+
+      Les utilisateurs de clés DSA doivent générer des clés de remplacement, comme une nouvelle clé ED25519, avant la mise à niveau.
+
+      La prise en charge et le montage automatiques des systèmes de fichiers chiffrés ont été déplacés dans le nouveau paquet systemd-cryptsetup.
+
+      Les réglages par défaut des périphériques dm-crypt en mode simple ont été modifiés pour améliorer la sécurité avec les nouvelles valeurs cipher=aes-xts-plain64 et hash=sha256.
+
+      La version de ping fournie par iputils-ping n'est plus installée avec l'accès à la capacité CAP_NET_RAW de Linux.
+
+II. MODIFICATIONS TECHNIQUES ET CHANGEMENTS DE CONFIGURATION.
+
+   A. Évolution des systèmes de fichiers et du chiffrement.
+
+      Le répertoire /tmp est désormais stocké par défaut dans un système de fichiers tmpfs en mémoire. Cette modification peut entraîner un manque de mémoire si des fichiers volumineux y sont déposés.
+
+      Par défaut, cinquante pour cent de la mémoire est allouée à ce répertoire /tmp. Les utilisateurs peuvent modifier cette taille en utilisant la commande systemctl edit tmp.mount.
+
+      La gestion des systèmes de fichiers chiffrés nécessite désormais l'installation du paquet systemd-cryptsetup. Il est recommandé de s'assurer de sa présence avant tout redémarrage.
+
+      Les réglages par défaut pour les périphériques dm-crypt en mode simple ont été modifiés pour améliorer la sécurité. Les nouvelles valeurs par défaut sont cipher=aes-xts-plain64 et hash=sha256.
+
+      Pour les périphériques créés avec les anciennes valeurs de Bookworm, il faut ajouter cipher=aes-cbc-essiv:sha256,size=256,hash=ripemd160 dans le fichier /etc/crypttab.
+
+   B. Mises à jour des services réseau et de messagerie.
+
+      Le démon SSH fourni par openssh-server ne lit plus le fichier ~/.pam_environment par défaut. Les utilisateurs doivent migrer leurs configurations vers les fichiers d'initialisation de l'interpréteur de commande.
+
+      Les clés DSA ne sont plus prises en charge par OpenSSH à partir de la version 9.8.p1 dans Trixie. Il est conseillé de générer des clés de remplacement comme ED25519.
+
+      La suite de serveur de messagerie Dovecot utilise un format de configuration incompatible avec les versions précédentes. Il est fortement recommandé de tester la configuration dans un environnement dédié.
+
+      Le paquet samba-ad-dc a été séparé du paquet samba pour la gestion du contrôleur de domaine Active Directory. L'installation du paquet samba-ad-dc devient nécessaire pour cette fonctionnalité.
+
+      La prise en charge de TLS dans le client libldap2 et le serveur slapd OpenLDAP est désormais assurée par OpenSSL au lieu de GnuTLS. Cela modifie le comportement et les options de configuration.
+
+   C. Changements dans la gestion des journaux et des commandes système.
+
+      Les commandes last, lastb et lastlog ne sont plus fournies par les paquets util-linux et login. Ce changement est lié au problème de l'année deux mille trente-huit qui affecte le format de ces fichiers.
+
+      La commande lslogins peut remplacer ces outils pour indiquer la dernière utilisation des comptes. Des paquets comme wtmpdb ou lastlog2 peuvent également être installés comme remplacements directs.
+
+      Le répertoire /tmp et le répertoire /var/tmp sont désormais régulièrement nettoyés par systemd-tmpfiles. Les fichiers dans /tmp sont supprimés après dix jours d'inactivité et ceux dans /var/tmp après trente jours.
+
+      Le fichier /etc/sysctl.conf n'est plus respecté par systemd-sysctl dans Debian Trixie. Les configurations doivent désormais être placées dans des fichiers nommés /etc/sysctl.d/*.conf.
+
+      La commande ping ne s'exécute plus avec des privilèges élevés grâce à l'utilisation des sockets de datagramme ICMP_PROTO. L'accès est contrôlé via la variable net.ipv4.ping_group_range.
+
+   D. Impacts sur la virtualisation et les interfaces réseau.
+
+      Le paquet libvirt-daemon a été remanié et chaque pilote ou dorsal de stockage est désormais fourni dans des paquets binaires distincts. Il convient de vérifier la présence de tous les composants après la mise à niveau.
+
+      Le nom des interfaces réseau peut changer selon le pilote NIC i40e ou la présence de l'objet ACPI _SUN. Il est conseillé d'utiliser des fichiers systemd.link pour épingler les noms actuels.
+
+      Les machines virtuelles arm64 dans le cloud utilisant UEFI peuvent échouer au démarrage. Il faut exécuter les commandes touch /etc/grub.d/enable_cloud et apt install grub-cloud-arm64 avant de redémarrer.
+
+      Les machines virtuelles PowerPC petit boutiste soixante-quatre bits présentent des limitations avec les pages mémoire de soixante-quatre Kio sous KVM. Une configuration spécifique de la propriété cap-hpt-max-page-size est parfois nécessaire.
+
+III. OBSOLESCENCE DES PAQUETS ET ÉVOLUTIONS FUTURES.
+
+   A. Liste des paquets retirés ou remplacés.
+
+      Le paquet libnss-gw-name est retiré de Trixie et son développeur amont suggère d'utiliser libnss-myhostname à la place.
+
+      Le paquet pcregrep est également supprimé et peut être remplacé par grep -P ou par le paquet pcre2grep.
+
+      Le paquet request-tracker4 est remplacé par request-tracker5 qui contient des instructions pour la migration des données.
+
+      Les paquets git-daemon-run et git-daemon-sysvinit sont retirés de Trixie pour des raisons de sécurité.
+
+      Le paquet nvidia-graphics-drivers-tesla-470 est retiré car il n'est plus pris en charge en amont.
+
+      Le paquet deborphan est supprimé et peut être remplacé par l'utilisation de apt autoremove après apt-mark minimize-manual.
+
+      Le paquet tlsdr est retiré et peut être remplacé par les paquets tealdeer ou tldr-py.
+
+      Le paquet tpp est supprimé et peut être remplacé par les paquets lookatme ou patat.
+
+   B. Composants déconseillés pour la prochaine version Forky.
+
+      Le paquet sudo-ldap sera retiré de Forky et les utilisateurs devront migrer vers libsss-sudo pour éviter la perte de l'élévation de privilèges.
+
+      La fonctionnalité sudo_logsrvd pourrait être supprimée dans Debian Forky car elle ajoute une complexité inutile au paquet sudo de base.
+
+      Le paquet libnss-docker est déconseillé car il nécessite l'API Docker v1.21 qui sera retirée de Docker Engine v27+ dans Forky.
+
+      Les paquets openssh-client et openssh-server cesseront de prendre en charge l'authentification GSS-API à partir de Forky.
+
+      L'outil sbuild-debian-developer-setup est abandonné au profit de la nouvelle version sbuild avec l'option --chroot-mode=unshare.
+
+      Les paquets fcitx sont obsolètes et les utilisateurs doivent migrer vers fcitx5 avant la suppression de fcitx dans Forky.
+
+      Le paquet de gestion de machine virtuelle lxd n'est plus mis à jour et Debian recommande de migrer vers incus.
+
+      La suite isc-dhcp est obsolète et les utilisateurs peuvent utiliser NetworkManager, systemd-networkd ou le paquet Kea comme remplacement.
+
+      Le développement de KDE Frameworks cinq a cessé et l'équipe prévoit de le retirer pendant le cycle de développement de Forky.
+
+   C. Limitations de la prise en charge de sécurité.
+
+      Les moteurs de rendu des navigateurs web sont affectés par un flux constant de vulnérabilités de sécurité.
+
+      Il est très difficile de supporter les applications utilisant qtwebengine avec des correctifs de sécurité en raison des interdépendances de bibliothèques.
+
+      Debian recommande l'utilisation des navigateurs Firefox ou Chromium pour une utilisation classique.
+
+      Chromium ne recevra que six mois de prise en charge de sécurité dans Oldstable au lieu des douze mois habituels.
+
+      L'infrastructure de Debian rencontre des problèmes pour recompiler les paquets utilisant systématiquement des liens statiques comme Go et Rust.
+
+      Les mises à jour pour les bibliothèques de développement de Go ou de Rust ne seront publiées que lors des mises à jour intermédiaires normales.
+
+IV. GESTION DES BOGUES ET RESSOURCES D'ASSISTANCE.
+
+   A. Signalement des bogues via le système de suivi.
+
+      Debian s'efforce de fournir un système d'exploitation de qualité mais certains paquets peuvent contenir des bogues.
+
+      Les utilisateurs peuvent signaler un bogue trouvé dans la distribution ou dans un logiciel via le système de suivi des bogues appelé BTS.
+
+      Le BTS est consultable directement à l'adresse https://bugs.debian.org/.
+
+      Pour soumettre un rapport de bogue, il est nécessaire de posséder une adresse électronique valide afin que les développeurs puissent contacter l'auteur.
+
+      Le signalement peut être effectué en utilisant le programme reportbug ou en envoyant un courrier électronique.
+
+      Des informations complémentaires sur la manière de soumettre un rapport sont disponibles dans la documentation de référence située dans /usr/share/doc/debian.
+
+   B. Sources d'aide et communautés de discussion.
+
+      Il existe de nombreuses sources d'aide et de conseils pour les utilisateurs de Debian après avoir effectué des recherches dans la documentation.
+
+      Les listes de diffusion constituent des outils importants comme les listes debian-user en anglais ou debian-user-french en français.
+
+      Pour s'inscrire à ces listes, il convient de consulter le site https://lists.debian.org/.
+
+      Un canal IRC dédié à l'assistance est disponible sur le réseau OFTC à l'adresse irc.debian.org en rejoignant le canal #debian.
+
+      Les utilisateurs sont invités à respecter les usages du canal et les règles disponibles sur le Wiki Debian.
+
+   C. Contribution au projet Debian.
+
+      Il n'est pas nécessaire d'être un expert pour apporter sa contribution au projet Debian.
+
+      Aider les utilisateurs sur les listes d'assistance est une manière de contribuer à la communauté.
+
+      La participation aux listes de développement permet d'identifier ou de résoudre des problèmes liés au développement de la distribution.
+
+      Les personnes ayant des compétences en rédaction peuvent contribuer en écrivant de la documentation ou en effectuant des traductions.
+
+      Il est possible de consacrer plus de temps en gérant des logiciels de la collection des logiciels libres ou en participant à des sous-projets comme les portages vers des architectures particulières.
+
+      L'application how-can-i-help permet de trouver des bogues signalés qui sont adaptés à un travail spécifique.
+
+V. PRÉPARATION DU SYSTÈME BOOKWORM AVANT LA MIGRATION.
+
+   A. Vérification et configuration des sources APT.
+
+      Il faut d'abord vérifier que la liste des paquets contient toujours des références à bookworm. Cela se fait en examinant les fichiers sources-list d'APT comme le fichier /etc/apt/sources.list ou les fichiers du dossier /etc/apt/sources.list.d/.
+
+      Si une ligne contient le terme stable, elle pointe déjà vers trixie. Il est nécessaire de remplacer ce terme par bookworm dans toutes les lignes commençant par deb http, deb https, deb tor+http, deb tor+https, URIs: http, URIs: https, URIs: tor+http ou URIs: tor+https.
+
+      Les lignes commençant par deb file: ou URIs: file: demandent une vérification manuelle de l'emplacement pour confirmer s'il s'agit d'une archive de bookworm ou de trixie. L'utilisateur doit s'assurer de la cohérence de ces sources avant de poursuivre.
+
+      Il ne faut pas modifier les lignes qui commencent par deb cdrom: ou URIs: cdrom:. Modifier ces lignes invaliderait la configuration et nécessiterait de réexécuter la commande apt-cdrom.
+
+      Une fois les modifications effectuées et le fichier sauvegardé, il est impératif d'exécuter la commande apt update. Cette action permet de rafraîchir correctement la liste des paquets disponibles.
+
+   B. Mise à jour vers la dernière version mineure de Bookworm.
+
+      La mise à niveau du système doit être effectuée pour atteindre la dernière version mineure de bookworm. Cette étape garantit que le système est dans l'état le plus stable possible avant la migration.
+
+      Si l'utilisateur utilise un miroir Debian, la mise à jour vers la dernière version mineure se fera automatiquement. Il est essentiel de suivre cette procédure pour préparer le terrain vers trixie.
+
+      Pour réaliser cette mise à jour de tous les paquets, il convient d'exécuter la commande apt full-upgrade en tant que superutilisateur. Cette commande permet d'appliquer l'intégralité des mises à jour disponibles pour la branche actuelle.
+
+      Cette phase de préparation est cruciale pour éviter les problèmes de compatibilité lors du passage à la version suivante. Elle assure que tous les composants de bookworm sont à jour.
+
+   C. Nettoyage des fichiers de configuration obsolètes.
+
+      Avant de lancer la mise à jour vers trixie, une étape de nettoyage est fortement recommandée. Cette action vise à assainir le système pour faciliter la transition.
+
+      Il faut supprimer les vieux fichiers de configuration qui ne sont plus nécessaires. Cela concerne spécifiquement les fichiers se terminant par .dpkg-new ou .dpkg-old situés dans le répertoire /etc.
+
+      Le retrait de ces fichiers permet d'éviter des conflits ou des erreurs durant le processus de mise à niveau. Un système propre réduit les risques d'imprévus lors de l'installation des nouveaux paquets.
+
+POINTS D'ATTENTION.
+
+      La mise à niveau vers trixie nécessite une attention particulière sur l'espace libre de la partition /boot. Une partition trop petite peut provoquer l'échec de l'opération si elle ne respecte pas les dimensions recommandées.
+
+      L'architecture i386 subit un changement de statut majeur car elle n'est plus considérée comme une architecture normale. Elle est désormais destinée uniquement à l'exécution de code ancien sur des processeurs amd64.
+
+      Le répertoire /tmp est désormais stocké par défaut dans un système de fichiers tmpfs en mémoire. Cela peut entraîner une saturation de la mémoire si des fichiers volumineux y sont déposés.
+
+      Certains services comme OpenSSH ne gèrent plus certaines fonctionnalités anciennes comme les clés DSA ou le fichier ~/.pam_environment. Il est nécessaire de migrer vers des méthodes de configuration ou des types de clés plus modernes.
+
+      La gestion des systèmes de fichiers chiffrés change avec l'introduction du paquet systemd-cryptsetup. Les réglages par défaut pour les périphériques dm-crypt en mode simple ont également été modifiés pour plus de sécurité.
+
+EXEMPLES CITÉS.
+
+      Pour garantir le succès de la mise à niveau, la partition /boot doit avoir une taille d'au moins sept cent soixante-huit Mo avec trois cents Mo de libre. Les systèmes installés avec Debian dix ou une version antérieure sont particulièrement concernés.
+
+      Le répertoire /tmp reçoit par défaut cinquante pour cent de la mémoire disponible. Un utilisateur peut limiter cette taille en définissant par exemple une option size=2G via systemctl edit tmp.mount.
+
+      L'architecture armel ne sera plus prise en charge après trixie. Les utilisateurs de Raspberry Pi un, Zero et Zero W sont les seuls à bénéficier encore des paquets de noyaux.
+
+      Le passage de MariaDB dix virgule onze à la version onze virgule huit exige un arrêt propre du service pour éviter les erreurs de récupération. Il faut vérifier la présence du message Shutdown complete avant de procéder.
+
+      Pour les utilisateurs de RabbitMQ, les files d'attente HA ne sont plus supportées. Il est nécessaire de les convertir en files d'attente quorum avant de débuter la mise à niveau.

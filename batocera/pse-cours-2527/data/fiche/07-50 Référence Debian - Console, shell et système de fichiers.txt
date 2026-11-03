@@ -1,0 +1,315 @@
+GUIDE D'INTRODUCTION AUX BASES DE DEBIAN GNU/LINUX ET DE L'ENVIRONNEMENT UNIX.
+
+LEXIQUE COMPLET.
+
+      Le sigle GUI désigne un environnement graphique comme les systèmes de bureau GNOME ou KDE.
+
+      Le terme root désigne soit l'utilisateur administrateur ou superutilisateur, soit le répertoire racine du système.
+
+      Le sigle UNIX désigne un système d'exploitation multi-utilisateurs et multi-tâches dont Debian tire sa puissance.
+
+      Le terme inode désigne une structure de données qui décrit les attributs d'un fichier ou d'un répertoire.
+
+      Le sigle FIFO désigne un tube nommé qui fonctionne selon le principe du premier entré-premier sorti.
+
+      Le sigle IPC désigne l'intercommunication entre les processus, dont les sockets sont un point d'aboutissement.
+
+      Le terme tmpfs désigne un système de fichiers temporaire qui garde les fichiers en mémoire virtuelle.
+
+      Le sigle UPG désigne un schéma de groupe privé par utilisateur créé lors de l'ajout d'un utilisateur.
+
+      Le terme MC désigne le logiciel Midnight Commander qui sert de gestionnaire de fichiers pour la console.
+
+      Le sigle FHS désigne la norme de hiérarchie du système de fichiers pour l'organisation des répertoires.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET ACCÈS AU SYSTÈME.
+
+   A. Philosophie et puissance d'UNIX.
+
+      L'apprentissage d'un système d'exploitation est comparable à l'apprentissage d'une nouvelle langue étrangère qui nécessite de la pratique personnelle.
+
+      La puissance de Debian GNU/Linux repose sur le système d'exploitation UNIX qui est un système multi-utilisateurs et multi-tâches.
+
+      Il est conseillé de ne pas écarter les textes orientés UNIX au profit des seuls textes GNU/Linux pour ne pas se priver d'informations utiles.
+
+      Les utilisateurs familiers avec les outils en ligne de commande des systèmes ressemblant à UNIX peuvent utiliser ce document pour actualiser leurs connaissances.
+
+   B. L'invite de commande en mode texte et graphique.
+
+      Si aucun environnement graphique comme GNOME ou KDE n'est installé, un écran d'identification en mode caractères est présenté au démarrage.
+
+      L'utilisateur doit entrer son nom d'utilisateur et son mot de passe qui sont sensibles à la casse selon la tradition UNIX.
+
+      Sous un environnement graphique, l'utilisateur peut accéder à l'interpréteur de commandes en lançant un émulateur de terminal-x comme gnome-terminal(1), rxvt(1) ou xterm(1).
+
+      Dans l'environnement de bureau GNOME, il est possible de presser la touche SUPER et de saisir terminal dans l'invite de recherche.
+
+      Pour d'autres environnements de bureau comme fluxbox, un clic-droit sur le fond de l'écran peut permettre de faire apparaître un menu.
+
+   C. Les consoles virtuelles et la gestion de l'affichage.
+
+      Le système Debian propose par défaut six consoles commutables en mode caractères de type VT100 pour lancer l'interpréteur de commandes.
+
+      On peut basculer entre ces consoles en utilisant la touche Alt de gauche simultanément avec l'une des touches F1 à F6.
+
+      Si un environnement graphique est actif, la combinaison de touches Ctrl-Alt-F3 permet d'accéder à la console caractères trois.
+
+      Pour revenir à l'environnement graphique qui fonctionne normalement sur la console virtuelle deux, il faut appuyer sur Alt-F2.
+
+      Il est également possible de changer de console virtuelle directement depuis la ligne de commande en utilisant la commande chvt 3.
+
+II. GESTION DES UTILISATEURS ET DES PRIVILÈGES.
+
+   A. Le compte administrateur root et ses pouvoirs.
+
+      Le compte de l'administrateur est aussi appelé superutilisateur ou utilisateur privilégié.
+
+      Depuis ce compte, il est possible de lire, écrire et effacer n'importe quel fichier du système quelles que soient ses permissions.
+
+      L'administrateur peut définir l'appartenance et les permissions de n'importe quel fichier du système.
+
+      Il a la capacité de définir le mot de passe de n'importe quel utilisateur non-privilégié et de se connecter à n'importe quel compte sans mot de passe.
+
+      La puissance illimitée de ce compte impose une grande responsabilité et une attention particulière lors de son utilisation.
+
+      Il ne faut jamais donner le mot de passe de l'administrateur à d'autres personnes.
+
+   B. Méthodes d'accès au shell administrateur.
+
+      Il existe plusieurs méthodes pour obtenir l'invite de l'interpréteur de commande de l'administrateur en utilisant le mot de passe de root.
+
+      On peut entrer root directement à l'invite de connexion en mode caractère.
+
+      L'utilisation de la commande su -l depuis une invite quelconque permet d'accéder au compte sans préserver l'environnement de l'utilisateur actuel.
+
+      La commande su permet également d'accéder au compte tout en préservant une partie de l'environnement de l'utilisateur actuel.
+
+   C. Configuration et utilisation de sudo.
+
+      Pour une station de travail typique avec un seul utilisateur, il est habituel de configurer sudo afin que l'utilisateur non privilégié obtienne les privilèges d'administration avec son propre mot de passe.
+
+      La commande echo "penguin ALL=(ALL) ALL" >> /etc/sudoers permet de réaliser cette configuration pour l'utilisateur nommé penguin.
+
+      Il est aussi possible de configurer sudo pour que l'utilisateur obtienne les privilèges sans aucun mot de passe personnel.
+
+      Cette astuce de configuration sans mot de passe ne doit être utilisée que sur une station de travail mono-utilisateur administrée par l'utilisateur lui-même.
+
+      Il ne faut pas utiliser cette méthode pour des utilisateurs normaux sur une station de travail multi-utilisateurs car cela serait grave pour la sécurité.
+
+      Une configuration plus prudente avec sudo permet de donner des privilèges limités à d'autres utilisateurs sans partager le mot de passe de l'administrateur.
+
+   D. Gestion des groupes d'utilisateurs et accès aux périphériques.
+
+      L'ajout d'un utilisateur penguin à un groupe bird peut se faire via la commande sudo usermod -aG bird penguin ou sudo adduser penguin bird.
+
+      Pour retirer un utilisateur d'un groupe, on peut utiliser sudo usermod -rG bird penguin ou sudo deluser penguin bird.
+
+      Les membres de certains groupes importants peuvent accéder à des fichiers et des périphériques sans avoir les privilèges de l'administrateur.
+
+      Le groupe dialout permet un accès complet et direct aux ports série comme /dev/ttyS[0-3].
+
+      Le groupe cdrom est nécessaire pour accéder aux lecteurs et graveurs de CD-ROM ou DVD+/-RW.
+
+      Le groupe sudo permet d'exécuter n'importe quelle commande avec les privilèges de superutilisateur.
+
+III. STRUCTURE ET FONCTIONNEMENT DU SYSTÈME DE FICHIERS.
+
+   A. L'arborescence et la hiérarchie des répertoires.
+
+      Le système de fichiers Debian est organisé en répertoires selon une structure en arborescence ancrée sur le répertoire racine noté par le symbole /.
+
+      Cette structure ressemble à un arbre disposé la tête en bas où tous les fichiers et répertoires sont répartis sur plusieurs périphériques.
+
+      La commande mount(8) permet d'attacher des systèmes de fichiers situés sur certains périphériques à cette grosse arborescence globale.
+
+      Le répertoire racine / est une exception car il ne peut pas être renommé et il ne doit pas être confondu avec le répertoire personnel de l'utilisateur root qui est /root.
+
+      Certains répertoires clés ont des fonctions précises comme /etc/ pour les fichiers de configuration système ou /home/ pour les répertoires personnels des utilisateurs non privilégiés.
+
+      Le répertoire /var/log/ est spécifiquement utilisé pour stocker les fichiers journaux du système.
+
+   B. Concepts de chemins absolus et relatifs.
+
+      Chaque fichier ou répertoire est désigné par un nom de fichier entièrement qualifié que l'on appelle aussi chemin ou nom de fichier absolu.
+
+      Un chemin absolu commence toujours par le répertoire racine / et utilise le symbole / pour séparer chaque répertoire ou fichier successif.
+
+      À l'inverse, il existe des chemins relatifs qui commencent à un emplacement autre que le niveau du répertoire racine.
+
+      Le symbole ../ est utilisé pour désigner le répertoire parent dans une structure de fichiers.
+
+      Les utilisateurs expérimentés évitent d'utiliser des caractères spéciaux comme les espaces ou les tabulations dans les noms de fichiers pour faciliter la manipulation en ligne de commande.
+
+   C. Les inœuds et la représentation unifiée des périphériques.
+
+      Chaque fichier, répertoire ou périphérique physique possède une structure de données appelée inœud ou inode qui décrit ses attributs comme le propriétaire ou le groupe.
+
+      L'idée de pouvoir représenter presque tout, y compris les processus, dans le système de fichiers est une innovation majeure de l'univers UNIX.
+
+      Cette représentation unifiée permet d'utiliser la même commande pour effectuer le même type d'opération sur des périphériques totalement différents.
+
+      Les interactions avec les périphériques physiques comme les écrans de console sont représentées de manière unifiée dans le répertoire /dev/.
+
+      Les périphériques peuvent être de deux types, soit en mode caractère pour un accès octet par octet, soit en mode bloc pour un accès par éléments plus importants.
+
+   D. Les systèmes de fichiers virtuels procfs, sysfs et tmpfs.
+
+      Les systèmes de fichiers procfs et sysfs, montés sur /proc et /sys, sont des pseudo-systèmes de fichiers qui présentent des structures de données internes du noyau.
+
+      Le répertoire /proc contient des sous-répertoires nommés selon l'identifiant du processus ou PID pour chaque processus tournant sur le système.
+
+      Les répertoires situés sous /proc/sys/ offrent des interfaces permettant de modifier certains paramètres du système pendant son fonctionnement.
+
+      Le répertoire /sys contient des structures de données exportées depuis le noyau ainsi que des liens entre elles pour modifier des paramètres du noyau.
+
+      Le tmpfs est un système de fichiers temporaire qui conserve les fichiers en mémoire virtuelle, comme c'est le cas pour le répertoire /run.
+
+      Le répertoire /run est monté en tmpfs dès le début du processus de démarrage pour permettre l'écriture même quand le répertoire racine est en lecture seule.
+
+IV. GESTION DES FICHIERS ET DES PERMISSIONS.
+
+   A. Droits d'accès utilisateur, groupe et monde.
+
+      Les permissions du système de fichiers sont définies pour trois catégories d'utilisateurs distinctes.
+
+      La première catégorie est l'utilisateur qui possède le fichier, notée par la lettre u.
+
+      La deuxième catégorie concerne les autres utilisateurs du groupe auquel appartient le fichier, notée par la lettre g.
+
+      La troisième catégorie regroupe tous les autres utilisateurs, désignés comme le monde entier ou tout le monde, notée par la lettre o.
+
+      Pour les fichiers, la lecture permet de voir le contenu, l'écriture permet de le modifier et l'exécution permet de le lancer comme une commande.
+
+      Pour les répertoires, la lecture permet d'afficher le contenu, l'écriture permet d'ajouter ou supprimer des fichiers et l'exécution permet d'accéder aux fichiers ainsi que de voir leurs attributs.
+
+   B. Manipulation des permissions avec chmod et chown.
+
+      La commande chown est utilisée depuis le compte de l'administrateur pour modifier le propriétaire d'un fichier.
+
+      La commande chgrp permet de changer le groupe du fichier depuis le compte du propriétaire ou de l'administrateur.
+
+      La commande chmod est utilisée pour changer les droits d'accès à un fichier ou un répertoire.
+
+      Il est possible d'utiliser un mode numérique en base huit pour décrire les permissions avec chmod.
+
+      Le deuxième chiffre représente les permissions de l'utilisateur, le troisième celles du groupe et le quatrième celles des autres.
+
+      Trois bits particuliers existent, à savoir le set user ID, le set group ID et le bit collant ou sticky bit.
+
+   C. Le contrôle des nouveaux fichiers via umask.
+
+      Les permissions appliquées aux fichiers ou répertoires nouvellement créés sont restreintes par la commande interne du shell umask.
+
+      Le calcul des permissions est le résultat de la combinaison des permissions demandées et de la valeur umask.
+
+      Une valeur de umask 022 permet de créer des fichiers qui ne peuvent être écrits que par l'utilisateur.
+
+      Une valeur de umask 002 permet de créer des fichiers qui peuvent être écrits par le groupe.
+
+      Le système Debian utilise par défaut un schéma de groupe privé par utilisateur appelé UPG.
+
+      L'utilisation d'un UPG rend sûr le positionnement de umask à 002 car chaque utilisateur possède son propre groupe privé.
+
+   D. Les types de liens physiques et symboliques.
+
+      Il existe deux méthodes pour associer un fichier à un nom différent, à savoir le lien physique et le lien symbolique.
+
+      Le lien physique est mis en place à l'intérieur du même système de fichiers et partage le même numéro d'inœud.
+
+      Le lien symbolique est un fichier spécial qui pointe vers un autre fichier par son nom.
+
+      Les liens symboliques ont des permissions d'accès nominales de rwxrwxrwx, mais les permissions effectives sont celles du fichier cible.
+
+      Il est généralement préférable d'utiliser des liens symboliques plutôt que des liens physiques.
+
+      L'utilisation de liens trop complexes peut provoquer des boucles dans le système de fichiers.
+
+   E. Les tubes nommés et les sockets.
+
+      Un tube nommé est un fichier qui se comporte comme un tuyau et fonctionne selon le principe FIFO, soit premier entré-premier sorti.
+
+      La taille d'un tube est toujours nulle car il ne stocke pas de données mais sert de lien entre deux processus.
+
+      Les sockets sont utilisées pour les communications par Internet, les bases de données et le système d'exploitation.
+
+      Les sockets permettent aux processus d'échanger des informations même s'ils tournent sur des ordinateurs différents.
+
+      Les deux types de sockets les plus courantes sont la socket Internet et la socket du domaine UNIX.
+
+      L'échange d'informations via les sockets est le point d'aboutissement du processus d'intercommunication appelé IPC.
+
+V. OUTILS DE GESTION ET DE MAINTENANCE.
+
+   A. Utilisation de Midnight Commander pour la navigation.
+
+      Midnight Commander est un gestionnaire de fichiers plein écran en mode texte qui sert de couteau suisse pour la console Linux. Il permet aux débutants d'acquérir une expérience de la console pilotée par des menus, ce qui est plus facile à apprendre que les commandes UNIX standard.
+
+      L'outil propose par défaut deux panneaux de répertoires affichant des listes de fichiers. Il est possible de définir la fenêtre de droite sur le mode information pour visualiser les privilèges d'accès aux répertoires.
+
+      La navigation s'effectue principalement avec les touches de curseur et la touche Entrée. L'utilisateur peut utiliser la touche Tab pour passer d'une fenêtre à l'autre ou la touche F9 pour activer le menu déroulant.
+
+      Certaines commandes comme cd changent le répertoire affiché sur l'écran sélectionné. L'utilisation de Ctrl-Entrée ou Alt-Entrée permet de copier un nom de fichier sur la ligne de commandes pour l'utiliser avec les commandes cp(1) ou mv(1).
+
+      Il est possible d'accéder à des fichiers via Internet en utilisant le système de fichiers Shell avec un URL de type sh://[utilisateur@]machine[:options]/[répertoire_distant]. Cette méthode permet de récupérer un répertoire distant qui apparaît alors comme local via ssh.
+
+   B. Fonctionnalités de l'éditeur et du visualisateur de MC.
+
+      L'éditeur interne de MC permet d'effectuer des opérations de copier-coller de manière intuitive. En pressant F3 une première fois pour marquer le début et une seconde fois pour la fin, l'utilisateur peut sélectionner une zone puis utiliser F5 pour la copier ou F6 pour la déplacer.
+
+      L'utilisateur peut remplacer cet éditeur par un programme externe en définissant les variables d'environnement EDITOR ou VISUAL. Il est recommandé de définir ces variables sur vim si cela est possible.
+
+      Le visualisateur intelligent de MC est un excellent outil pour rechercher des mots dans les documents. Il est particulièrement efficace pour parcourir rapidement les masses d'informations contenues dans le répertoire /usr/share/doc.
+
+      Le programme réagit différemment selon le type de fichier lorsqu'on appuie sur la touche Entrée. Par exemple, un fichier de page de manuel est envoyé vers un logiciel de visualisation et un fichier html est envoyé vers un navigateur web.
+
+      Pour les fichiers compressés comme les extensions *.tar.gz ou *.deb, le programme permet de parcourir le contenu comme s'il s'agissait d'un sous-répertoire.
+
+   C. Gestion des horodatages des fichiers.
+
+      Il existe trois types d'horodatage pour un fichier GNU/Linux. Le mtime correspond à la date de modification du fichier, le ctime à la date de changement d'état et le atime à la date de dernier accès.
+
+      Il est important de noter que le ctime ne représente pas la date de création du fichier. L'écrasement d'un fichier modifie l'ensemble des attributs mtime, ctime et atime.
+
+      La modification du propriétaire ou des droits d'un fichier entraîne un changement des attributs ctime et atime. La lecture d'un fichier modifie l'attribut atime selon la configuration du système de fichiers.
+
+      Sur les systèmes GNU/Linux, l'attribut atime peut être géré avec l'option relatime qui est la configuration par défaut depuis Linux 2.6.30. L'option noatime peut également être utilisée pour améliorer les performances de lecture.
+
+      La commande touch(1) est l'outil utilisé pour modifier l'horodatage des fichiers existants.
+
+   D. Procédure d'arrêt sécurisée du système.
+
+      Le système Debian exige l'exécution d'une procédure d'arrêt adaptée avant toute mise hors tension. Cette étape est nécessaire car les opérations sur les fichiers utilisent un cache de données en mémoire pour améliorer les performances.
+
+      La procédure d'arrêt permet de maintenir l'intégrité des fichiers en forçant l'écriture sur le disque de toutes les informations conservées en mémoire. Si un logiciel de contrôle de l'alimentation est disponible, il coupera automatiquement l'alimentation.
+
+      Dans le mode normal multi-utilisateurs, l'arrêt du système peut être effectué depuis la ligne de commandes avec la commande shutdown -h now.
+
+      Pour un système en mode normal mono-utilisateur, la commande à utiliser est poweroff -i -f.
+
+      Si aucun logiciel de contrôle n'est présent, il faudra presser le bouton d'alimentation pendant quelques secondes une fois la procédure d'arrêt terminée.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le répertoire racine désigné par le slash avec le répertoire personnel de l'utilisateur root qui est situé dans le dossier root.
+
+      La confusion entre les liens physiques et les liens symboliques peut créer des boucles dans le système de fichiers et des difficultés de gestion.
+
+      Il est crucial de distinguer le bit set user ID du bit set group ID car leur activation présente des risques de sécurité importants.
+
+      L'utilisation du compte root pour lancer un environnement graphique ou un gestionnaire de session graphique est une pratique à ne jamais adopter.
+
+      La date de changement d'état ctime ne correspond pas à la date de création d'un fichier selon la définition historique d'Unix.
+
+EXEMPLES CITÉS.
+
+      L'utilisateur penguin peut obtenir des privilèges d'administration en ajoutant la ligne penguin ALL=(ALL) ALL dans le fichier sudoers.
+
+      La commande chmod 644 bar permet de définir des permissions spécifiques pour un fichier nommé bar.
+
+      Le répertoire tmp est un exemple de dossier où il est conseillé de positionner le sticky bit pour empêcher la suppression de fichiers par des tiers.
+
+      Un utilisateur peut basculer vers la console virtuelle trois en utilisant la combinaison de touches Ctrl-Alt-F3.
+
+      Le système Debian utilise par défaut un schéma de groupe privé par utilisateur avec une valeur de umask de deux.

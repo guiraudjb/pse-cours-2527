@@ -1,0 +1,345 @@
+GUIDE COMPLET SUR L'INITIALISATION ET LA GESTION DU SYSTÈME DEBIAN.
+
+LEXIQUE COMPLET.
+
+      L'UEFI désigne une interface micrologicielle extensible unifiée qui définit un gestionnaire de démarrage pour vérifier la configuration et exécuter le chargeur de démarrage ou le noyau.
+
+      L'ESP désigne une partition système EFI utilisée par le micrologiciel pour stocker les applications UEFI et les fichiers nécessaires au fonctionnement des chargeurs de démarrage.
+
+      Le noyau Linux désigne le noyau système utilisé par défaut par le système Debian.
+
+      L'initrd désigne une image du système de fichiers racine chargée en mémoire pour servir d'étage préparatoire au processus d'amorçage.
+
+      L'initramfs désigne techniquement l'image du système de fichiers initial en RAM pour le noyau Linux 5.x actuel.
+
+      GRUB désigne un chargeur de démarrage capable de comprendre le partitionnement du disque et des systèmes de fichiers comme vfat ou ext4.
+
+      Le PID désigne l'identifiant de processus qui est égal à un pour le programme init.
+
+      Systemd désigne un démon init basé sur des événements pour la concurrence qui remplace sysvinit.
+
+      Les cgroups désignent des groupes de contrôle Linux individuels nommés d'après l'unité à laquelle les processus appartiennent.
+
+      L'UUID désigne un identifiant unique utilisé pour spécifier le chemin des systèmes de fichiers vers les chargeurs de démarrage ou les partitions.
+
+      udev désigne un mécanisme de découverte et d'initialisation automatique du matériel qui utilise les informations du système de fichiers sysfs.
+
+      Le RAID désigne une configuration de système de fichiers dont la définition est stockée dans le fichier /etc/mdadm/mdadm.conf.
+
+COURS DÉTAILLÉ.
+
+I. PROCESSUS D'AMORÇAGE DU SYSTÈME.
+
+   A. Les quatre étages du boot strap process.
+
+      Le processus d'amorçage d'un système informatique est comparé à une fusée à quatre étages où chaque étape passe le contrôle à la suivante.
+
+      Le premier étage correspond à l'UEFI qui gère la configuration initiale du démarrage.
+
+      Le deuxième étage est constitué par le chargeur initial qui prépare le chargement du noyau.
+
+      Le troisième étage est le système mini-Debian qui sert d'étape préparatoire facultative.
+
+      Le quatrième et dernier étage est le système Debian normal qui offre un environnement pleinement fonctionnel.
+
+   B. Le rôle de l'UEFI et de la partition ESP.
+
+      L'interface micrologicielle extensible unifiée UEFI définit un gestionnaire de démarrage qui vérifie la configuration de démarrage.
+
+      Ce gestionnaire exécute ensuite le chargeur de démarrage ou le noyau spécifié selon les variables stockées dans la mémoire RAM non volatile.
+
+      Une partition système EFI appelée ESP est utilisée par les ordinateurs adhérant à la spécification UEFI.
+
+      Cette partition de stockage de données est accédée par le micrologiciel UEFI pour stocker les applications et les fichiers nécessaires.
+
+      Elle contient notamment les chargeurs de démarrage du système d'exploitation.
+
+   C. Le fonctionnement du chargeur de démarrage et de l'initrd.
+
+      Le chargeur de démarrage est lancé par l'UEFI pour charger l'image du noyau et l'image initrd dans la mémoire.
+
+      L'image initrd est l'image du système de fichiers racine et sa prise en charge dépend du chargeur utilisé.
+
+      Pour le noyau Linux 5.x actuel, cette image est techniquement l'image initramfs qui est un système de fichiers initial en RAM.
+
+      Le système Debian utilise normalement le noyau Linux comme noyau système par défaut.
+
+      Pour un système UEFI, le chargeur GRUB2 lit la partition ESP et utilise l'UUID pour déterminer le chemin du fichier de configuration.
+
+      Le fichier de configuration du menu GRUB2 permet de spécifier le chemin de l'image du noyau et de l'image initrd dans le système de fichiers racine.
+
+   D. Le passage au système Debian normal.
+
+      Le système mini-Debian lance le noyau avec son système de fichiers racine en mémoire avant de passer le contrôle au système normal.
+
+      Le système de fichiers racine est ensuite basculé de la mémoire vers le périphérique de stockage physique.
+
+      Le programme init est le premier exécuté avec le PID=1 pour lancer les différents programmes de démarrage.
+
+      Depuis Debian huit Jessie publiée en deux mille quinze, le chemin par défaut de ce programme est lié symboliquement à /lib/systemd/systemd.
+
+      Le processus d'initialisation de systemd génère des processus en parallèle en se basant sur des fichiers de configuration d'unités.
+
+      Ces unités sont chargées selon une priorité définie par des chemins de recherche spécifiques dans le système.
+
+II. SYSTÈMES DE SECOURS ET DE RÉCUPÉRATION.
+
+   A. Importance et utilité d'un système de secours.
+
+      Il est fortement déconseillé de réaliser des tâches d'administration liées au processus d'amorçage sans disposer d'un système de secours.
+
+      La présence d'un tel système permet d'effectuer des opérations complexes comme le démarrage d'un système dont le chargeur de démarrage est endommagé.
+
+      Il est également possible de réparer une installation de chargeur de démarrage défaillante ou d'extraire des données depuis un système qui ne peut plus démarrer.
+
+      Un système de secours facilite aussi l'édition des systèmes de fichiers, des partitions de disque et des volumes LVM impliquant le système de fichiers racine.
+
+      Ces systèmes sont généralement fournis sous forme de fichiers image ISO et écrits sur un support amovible comme une clé USB ou un CD/DVD.
+
+   B. Utilisation du système de secours GRUB UEFI sur USB.
+
+      Le système de secours GRUB UEFI avec menu peut être lancé en allumant l'ordinateur avec la clé USB contenant l'image Super Grub2 Disk insérée.
+
+      Cette méthode est utile en cas de configuration de chargeur de démarrage corrompue par l'installation d'un autre système d'exploitation.
+
+      L'utilisateur peut d'abord démarrer le système de secours pour découvrir automatiquement les systèmes installés qui sont amorçables.
+
+      Il est ensuite possible de démarrer le système Debian installé directement depuis le menu GRUB.
+
+      Une fois arrivé sur l'invite de commande racine Linux, la commande dpkg-reconfigure grub-efi-amd64 permet de réparer la configuration.
+
+   C. Utilisation d'un système Linux live sur USB.
+
+      Un système Linux live de secours peut être démarré en insérant une clé USB préparée avec une image ISO basée sur Debian.
+
+      Des exemples de telles images incluent Debian Live, Kali Linux Live ou encore Grml Live Linux.
+
+      Pour réparer un chargeur de démarrage, l'utilisateur doit monter la partition contenant le système de fichiers racine du système Debian non amorçable sur le point de montage /mnt.
+
+      La réparation s'effectue ensuite au prompt de commande racine Linux en utilisant la commande chroot /mnt suivie de dpkg-reconfigure grub-efi-amd64.
+
+      Pour corriger un paquet dpkg défectueux, on utilise la commande dpkg --root /mnt -i /mnt/var/cache/apt/archives/dpkg_old_version_amd64.deb.
+
+      Il est conseillé de définir son mot de passe dès le début de la session, par exemple avec la commande sudo passwd user sur les consoles virtuelles.
+
+   D. Démarrage d'un système live via le menu GRUB.
+
+      Il est possible de démarrer un système Linux live de secours directement depuis une entrée du menu GRUB.
+
+      Cette procédure nécessite l'installation préalable du paquet grml-rescueboot sur le système.
+
+      L'administrateur doit trouver une image ISO Linux live qui contient le fichier /boot/grub/loopback.cfg dans son image.
+
+      Les images mentionnées dans la documentation pour les systèmes USB possèdent ce fichier nécessaire.
+
+      Il faut copier ces images ISO dans le répertoire /boot/grml/ du système actuel.
+
+      Enfin, la mise à jour du menu GRUB se fait en exécutant la commande dpkg-reconfigure grub-efi-amd64.
+
+III. FONCTIONNEMENT ET GESTION DE SYSTEMD.
+
+   A. Initialisation du système et unités de service.
+
+      Le processus d'initialisation de systemd démarre le programme /usr/sbin/init qui est lié symboliquement à /lib/systemd/systemd depuis Debian huit Jessie publié en deux mille quinze. Ce processus possède le PID=1 et appartient au superutilisateur avec l'UID=0.
+
+      Systemd génère des processus en parallèle en utilisant des fichiers de configuration d'unités écrits dans un style déclaratif. Ces processus sont placés dans des groupes de contrôle Linux nommés d'après l'unité dans la hiérarchie privée de systemd.
+
+      Les unités système sont chargées selon une priorité précise commençant par /etc/systemd/system/* pour les unités créées par l'administrateur. Elles incluent aussi /run/systemd/system/* pour les unités d'exécution et /lib/systemd/system/* pour celles installées par le gestionnaire de paquets.
+
+      Le système utilise différents suffixes pour encoder les types d'unités comme .service pour les processus supervisés ou .mount pour les points de montage. On trouve également .target pour regrouper des fichiers de configuration et créer des points de synchronisation au démarrage.
+
+      Au démarrage, systemd tente de lancer le fichier /lib/systemd/system/default.target qui est normalement lié à graphical.target. Il extrait d'abord des unités spéciales comme local-fs.target ou swap.target pour monter les systèmes de fichiers.
+
+   B. Gestion des services et des sessions utilisateur.
+
+      Lorsqu'un utilisateur se connecte via gdm3 ou sshd, le gestionnaire /lib/systemd/system --user est démarré pour gérer ses services. Ce processus est la propriété de l'utilisateur correspondant et fonctionne de manière parallèle.
+
+      Les unités pour le mode utilisateur sont chargées depuis des chemins spécifiques comme ~/.config/systemd/user/* ou /etc/systemd/user/*. Elles sont gérées de la même manière que les unités du mode système.
+
+      Systemd offre des fonctionnalités de rétrocompatibilité pour les anciens scripts de démarrage de style SysV. Les scripts situés dans /etc/init.d/rc[0123456S].d/ sont analysés et telinit est traduit en demandes d'activation d'unité.
+
+      Les niveaux d'exécution émulés deux à quatre sont tous liés symboliquement au même multi-user.target. Cela permet de maintenir une compatibilité avec les anciens modes de fonctionnement du système.
+
+   C. Commandes de gestion avec systemctl.
+
+      La commande systemctl permet d'effectuer des opérations génériques de gestion du système comme démarrer ou stopper une unité avec start et stop. On peut aussi utiliser restart pour arrêter et redémarrer une unité.
+
+      Pour modifier l'état de démarrage, on utilise enable pour ajouter un lien symbolique ou disable pour le supprimer. Les commandes mask et unmask permettent respectivement d'ajouter ou de supprimer un lien vers /dev/null.
+
+      L'administrateur peut basculer entre différents modes en utilisant la commande isolate. Par exemple, isolate graphical permet de passer à l'interface graphique tandis que isolate multi-user passe en ligne de commande.
+
+      La commande status permet de vérifier l'état d'une unité et affiche des points de couleur pour une lecture rapide. Un point blanc indique un état inactif, un point rouge signifie un échec et un point vert indique un état actif.
+
+      Pour la gestion de l'environnement, systemctl propose show-environment pour l'afficher et set-environment pour définir une variable. La commande daemon-reload est nécessaire pour recharger tous les démons et les fichiers d'unité.
+
+   D. Analyse des performances et surveillance.
+
+      L'analyse des performances du processus de démarrage peut être effectuée avec systemd-analyze time pour connaître la durée des étapes. La commande systemd-analyze blame permet de lister toutes les unités selon leurs temps d'initialisation.
+
+      Pour vérifier la validité d'un fichier, on utilise systemd-analyze verify sur une unité donnée. On peut aussi suivre le processus de démarrage selon les cgroups avec l'outil systemd-cgls.
+
+      La surveillance des sessions utilisateur est possible grâce à loginctl qui propose user-status ou session-status pour obtenir des informations d'état succinctes.
+
+      Les messages du noyau et du système sont consignés par le service systemd-journald.service. Ces données binaires sont accessibles avec la commande journalctl, par exemple avec journalctl -b pour voir le journal du dernier démarrage.
+
+IV. JOURNALISATION ET MESSAGES DU SYSTÈME.
+
+   A. Configuration des messages du noyau avec dmesg.
+
+      Le message d'erreur du noyau affiché sur la console peut être configuré en définissant son seuil.
+
+      L'administrateur utilise la commande dmesg -n3 pour définir ce niveau de message.
+
+      Le tableau des niveaux d'erreur définit huit valeurs allant de zéro à sept.
+
+      La valeur zéro correspond au niveau KERN_EMERG où le système est inutilisable.
+
+      La valeur trois correspond au niveau KERN_ERR qui indique des conditions d'erreur.
+
+      La valeur sept correspond au niveau KERN_DEBUG pour les messages de débogage.
+
+   B. Gestion des journaux binaires avec journalctl.
+
+      Sous systemd, les messages du noyau et du système sont consignés par le service journald.
+
+      Ces données sont stockées sous forme binaire soit dans /var/log/journal soit dans /run/log/journal.
+
+      L'utilitaire journalctl permet d'accéder à ces données binaires de journal.
+
+      La commande journalctl -b permet d'afficher le journal du dernier démarrage.
+
+      Pour afficher le journal des services de l'utilisateur actuel, on utilise journalctl -b --user.
+
+      On peut également afficher le journal des tâches d'une unité spécifique avec journalctl -b -u $unit.
+
+   C. Rôle et configuration de rsyslogd.
+
+      L'utilitaire de journalisation du système rsyslogd peut ne pas être installé sous systemd.
+
+      S'il est présent, il lit les données binaires volatiles du journal au lieu de /dev/log.
+
+      Son rôle est de créer des données ASCII permanentes traditionnelles de journal du système.
+
+      La personnalisation de l'affichage à l'écran et du fichier journal se fait via /etc/default/rsyslog et /etc/rsyslog.conf.
+
+V. CONFIGURATION ET PERSONNALISATION DU SYSTÈME.
+
+   A. Paramétrage du nom d'hôte et des systèmes de fichiers.
+
+      Le noyau gère le système nom_machine et l'unité centrale démarrée par systemd-hostnamed.service définit le nom de machine au démarrage à partir du fichier /etc/hostname.
+
+      Ce fichier /etc/hostname doit contenir uniquement le nom de machine du système et ne doit pas inclure de nom de domaine pleinement qualifié.
+
+      Les options de montage pour les systèmes de fichiers de disque et en réseau sont définies dans le fichier /etc/fstab.
+
+      La configuration du système de fichiers chiffré est assurée par le fichier /etc/crypttab tandis que le RAID logiciel est défini dans /etc/mdadm/mdadm.conf.
+
+      Une fois que tous les systèmes de fichiers sont montés, les fichiers temporaires situés dans /tmp, /var/lock et /var/run sont effacés à chaque démarrage.
+
+   B. Initialisation du réseau et de l'infonuagique.
+
+      Les interfaces réseau sont ordinairement initialisées via le service networking.service pour l'interface lo.
+
+      Sur les systèmes de bureau modernes de Debian sous systemd, le service NetworkManager.service est utilisé pour les autres interfaces.
+
+      Une instance de système d'infonuagique peut être lancée comme un clone des images officielles de Debian pour l'infonuagique.
+
+      Les personnalités comme le nom d'hôte, le réseautage ou les utilisateurs peuvent être configurées avec les paquets cloud-init et netplan.io.
+
+      Ces paquets permettent une configuration déclarative du système en utilisant des données YAML provenant de diverses sources.
+
+   C. Personnalisation des services via les sockets.
+
+      Il est possible de transformer le démarrage d'un service comme sshd en un démarrage sur demande en utilisant l'activation par socket.
+
+      Cette méthode nécessite d'abord de désactiver l'unité de service installée avec les commandes systemctl stop sshd.service et systemctl mask sshd.service.
+
+      Sous systemd, l'équivalent de l'ancien superserveur inetd consiste à ajouter des fichiers de configuration d'unité pour le socket et le service.
+
+      Le fichier sshd.socket est utilisé pour indiquer un socket sur lequel écouter, comme le port vingt-deux défini dans la section [Socket].
+
+      Un fichier de service correspondant, nommé sshd@.service, est ensuite utilisé pour gérer le processus de connexion.
+
+      Après la création de ces fichiers, il est nécessaire de recharger le système avec la commande sudo systemctl daemon-reload.
+
+VI. GESTION DU MATÉRIEL ET DES MODULES DU NOYAU.
+
+   A. Mécanisme de découverte automatique avec udev.
+
+      Le système udev assure la découverte et l'initialisation automatique du matériel depuis le noyau deux virgule six de Linux.
+
+      Lorsqu'un périphérique est découvert par le noyau, udev lance un processus utilisateur qui utilise les informations du système de fichiers sysfs.
+
+      Ce processus utilise le programme modprobe pour charger les modules du noyau nécessaires à la prise en charge du matériel.
+
+      udev crée ensuite les nœuds de périphérique correspondants en conséquence.
+
+      Il est recommandé d'utiliser l'UUID pour les règles de montage dans le fichier fstab plutôt que les noms de périphériques comme /dev/sda.
+
+      Il ne faut pas exécuter de programmes à exécution longue comme un script de sauvegarde dans les règles udev mais utiliser un service systemd.
+
+   B. Chargement et configuration des modules avec modprobe.
+
+      Le programme modprobe permet de configurer un noyau Linux en cours d'exécution en ajoutant ou en supprimant des modules.
+
+      Le système udev automatise l'appel de modprobe pour aider à l'initialisation des modules.
+
+      Certains modules comme TUN/TAP, netfilter ou le pilote du temporisateur de chien de garde peuvent être préchargés en les déclarant dans le fichier /etc/modules.
+
+      Les fichiers de configuration de modprobe se trouvent dans le répertoire /etc/modprobes.d/.
+
+      Il est possible de mettre certains modules sur une liste noire dans le fichier /etc/modprobes.d/blacklist pour éviter leur chargement automatique.
+
+   C. Outils d'information et de maintenance des modules.
+
+      Le programme depmod avec l'option -a permet de reconstruire le fichier /lib/modules/version/modules.dep pour corriger les problèmes de chargement.
+
+      Le programme modinfo affiche des informations détaillées concernant les modules du noyau.
+
+      L'utilitaire lsmod formate le contenu de /proc/modules pour afficher les modules actuellement chargés de manière lisible.
+
+      Pour identifier le matériel exact installé sur le système, il est nécessaire de consulter la section relative à l'identification du matériel.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas modifier directement le fichier /boot/grub/grub.cfg car cette modification est obsolète.
+
+      L'administrateur doit plutôt personnaliser les fichiers dans /etc/grub.d/ et /etc/default/grub pour maintenir la configuration.
+
+      Le système mini-Debian est un étage préparatoire facultatif qui peut être sauté si l'utilisateur compile son propre noyau.
+
+      Il ne faut pas supposer que cet étage est présent sur son système sans l'avoir vérifié soi-même.
+
+      Une confusion possible existe entre l'image initrd et l'image initramfs utilisée pour le noyau Linux 5.x actuel.
+
+      Le programme /init peut être soit un script d'interpréteur via initramfs-tools, soit un exécutable systemd via dracut.
+
+      Il ne faut pas tenter d'exécuter des programmes de longue durée comme un script de sauvegarde via la commande RUN dans les règles udev.
+
+      Il est préférable de créer un fichier systemd.service adéquat pour gérer de telles tâches.
+
+      Les messages du noyau et du système sont consignés de manière binaire par le service systemd-journald.service.
+
+      L'utilitaire rsyslogd peut être installé pour transformer ces données en fichiers ASCII traditionnels.
+
+EXEMPLES CITÉS.
+
+      Le processus d'amorçage est comparé à une fusée à quatre étages allant de l'UEFI jusqu'au système Debian normal.
+
+      L'étage un utilise l'interface UEFI et une partition système EFI appelée ESP pour stocker les chargeurs de démarrage.
+
+      Le chargeur grub-efi-amd64 est capable de comprendre le partitionnement du disque et des systèmes de fichiers comme vfat ou ext4.
+
+      Le paquet syslinux est utilisé spécifiquement pour le CD d'amorçage avec le système de fichiers ISO9660.
+
+      Le programme /usr/sbin/init est lié symboliquement à /lib/systemd/systemd depuis Debian huit Jessie publié en deux mille quinze.
+
+      On peut vérifier le niveau d'exécution actuel de la commande init avec la commande ps --pid 1 -f.
+
+      Pour afficher le journal du dernier démarrage avec journalctl, l'administrateur utilise la commande journalctl -b.
+
+      Le seuil des messages d'erreur du noyau peut être configuré avec la commande dmesg -n3.
+
+      L'administrateur peut utiliser la commande systemctl isolate graphical pour basculer vers un système avec interface graphique.
+
+      Pour identifier les modules du noyau actuellement chargés, le programme lsmod(8) affiche le contenu de /proc/modules.

@@ -1,0 +1,281 @@
+GUIDE COMPLET DE LA GESTION DES PAQUETS ET DU FONCTIONNEMENT INTERNE DE DEBIAN.
+
+LEXIQUE COMPLET.
+
+      APT désigne le système de gestion des paquets utilisé par les outils comme aptitude, apt-get ou synaptic pour gérer les dépendances et les mises à jour.
+
+      DPKG désigne l'outil de plus bas niveau pour la gestion des paquets de Debian qui traite l'installation par dépaquetage, exécution de scripts et installation du contenu.
+
+      MD5 désigne une somme de contrôle utilisée pour vérifier l'intégrité des fichiers des paquets installés à l'aide des valeurs trouvées dans les fichiers .md5sums.
+
+      BTS désigne le système de suivi des bogues de Debian utilisé par le paquet apt-listbugs pour protéger le système contre les bogues critiques.
+
+      ABI désigne l'interface binaire d'application dont la compatibilité est cruciale lors de l'installation de paquets binaires provenant d'archives différentes.
+
+      I18N désigne l'internationalisation qui est prise en charge par le système debconf pour fournir une interaction standardisée avec l'utilisateur.
+
+      L10N désigne la localisation qui permet de gérer les interactions utilisateur de manière standardisée via le système debconf.
+
+      GPG désigne le système utilisé pour vérifier manuellement l'intégrité du fichier Release avec la clé publique d'archive de Debian.
+
+      HTTP désigne le protocole utilisé par les serveurs mandataires comme squid pour gérer le trafic des paquets via un serveur proxy.
+
+      URL désigne l'adresse utilisée pour télécharger un paquet source depuis une autre archive avec la commande dget.
+
+COURS DÉTAILLÉ.
+
+I. OPÉRATIONS AVANCÉES DE GESTION DES PAQUETS.
+
+   A. Commandes de gestion via dpkg et apt.
+
+      La commande dpkg permet d'effectuer des opérations de bas niveau comme l'affichage de l'état d'un paquet avec dpkg -l ou la visualisation de son contenu avec dpkg -L.
+
+      L'administrateur peut reconfigurer un paquet exact via dpkg-reconfigure ou utiliser configure-debian pour un menu en plein écran.
+
+      Pour l'installation de paquets locaux, dpkg -i est utilisé avec précaution car il ne résout pas automatiquement les dépendances contrairement à apt install /path/to/ package_filename .deb.
+
+      Les outils apt-cache comme policy ou madison permettent d'afficher les versions disponibles et les informations concernant l'archive d'un paquet binaire.
+
+      La gestion des sélections de paquets au niveau de dpkg peut être enregistrée dans un fichier avec dpkg --get-selections '*' > selection.txt.
+
+      Les commandes comme apt-get build-dep ou aptitude build-dep servent à installer les paquets nécessaires à la construction d'un paquet.
+
+   B. Vérification de l'intégrité des fichiers installés.
+
+      L'installation du paquet debsums permet d'utiliser la commande debsums(1) pour vérifier les fichiers des paquets installés.
+
+      Cette vérification s'appuie sur les valeurs de MD5sum présentes dans le fichier /var/lib/dpkg/info/package_name.md5sums.
+
+      L'utilité de debsums(1) est limitée en tant qu'outil de sécurité car la base de données MD5sum peut être trafiquée par un intrus.
+
+      Cet outil est principalement recommandé pour la vérification locale des modifications effectuées par l'administrateur ou pour détecter des défectuosités liées au support.
+
+   C. Protection du système contre les bogues critiques.
+
+      L'utilisation de la distribution testing ou unstable rend le système plus sensible aux bogues critiques des paquets.
+
+      Le paquet apt-listbugs protège le système en recherchant automatiquement les bogues critiques dans le BTS de Debian lors des mises à jour via APT.
+
+      Le paquet apt-listchanges est utilisé pour indiquer les nouveautés importantes mentionnées dans le fichier NEWS.Debian pendant la mise à jour du système.
+
+   D. Recherche dans les métadonnées et les dépendances.
+
+      Les commandes grep-dctrl(1), grep-status(1) et grep-available(1) permettent d'effectuer des recherches dans les fichiers au format de contrôle de Debian.
+
+      La commande dpkg -S peut être utilisée pour rechercher les noms de paquets installés contenant un fichier dont le nom correspond à un motif.
+
+      Pour effectuer des recherches plus élaborées dans les scripts des paquets et les textes de requêtes, il faut utiliser grep dans le répertoire /var/lib/dpkg/info/.
+
+      La recherche récursive des dépendances de paquets nécessite l'utilisation de l'outil apt-rdepends(8).
+
+II. FONCTIONNEMENT INTERNE ET MÉTADONNÉES DE L'ARCHIVE.
+
+   A. Structure et types de métadonnées de l'archive.
+
+      Les fichiers de métadonnées de chaque distribution se trouvent sur chaque miroir Debian dans le répertoire dist/nom_de_code. On peut parcourir la structure de son archive à l'aide d'un navigateur web.
+
+      Il existe six types de métadonnées clés pour l'archive Debian. Le fichier Release situé au sommet de la distribution fournit la description de l'archive et les informations d'intégrité.
+
+      Le fichier Release.gpg est la signature du fichier Release signée avec la clé de l'archive. Le fichier Contents-architecture liste tous les fichiers pour tous les paquets dans l'architecture pertinente.
+
+      Le fichier Release au sommet de chaque combinaison de distribution, section et architecture sert à la règle de apt_preferences(5). Les fichiers Packages et Sources contiennent les données de contrôle concaténées des paquets binaires et sources.
+
+      Dans les archives récentes, ces métadonnées sont enregistrées sous forme compressée et différentielle afin de limiter le trafic réseau.
+
+   B. Authenticité et sécurité via le système secure APT.
+
+      Le fichier Release de plus haut niveau est utilisé pour signer l'archive au moyen du système secure APT. L'intégrité de ce fichier est vérifiée par l'infrastructure cryptographique décrite dans apt-secure(8).
+
+      Le fichier de signature chiffré Release.gpg est créé à partir du fichier Release réel avec la clé secrète de l'archive. Les clés publiques sont installées localement par le paquet debian-archive-keyring.
+
+      L'intégrité de tous les fichiers Packages et Sources est vérifiée en utilisant les valeurs des sommes MD5 présentes dans le fichier Release de plus haut niveau. L'intégrité de tous les fichiers de paquets est ensuite vérifiée via les sommes MD5 contenues dans les fichiers Packages et Sources.
+
+      L'utilisation d'une signature cryptographique pour le fichier Release et de sommes MD5 pour chaque paquet allie sécurité et performances. Si une entrée dans la liste des sources spécifie l'option signed-by, l'intégrité est vérifiée avec la clé publique spécifiée.
+
+      L'utilisation de la commande apt-key(8) pour la gestion des clés est déconseillée car elle est vouée à disparaître. Il est possible de vérifier manuellement l'intégrité avec gpg en utilisant la clé publique publiée sur ftp-master.debian.org.
+
+   C. Gestion des fichiers Release et priorités d'archive.
+
+      Les fichiers Release de niveau de l'archive sont utilisés pour la règle d'apt_preferences(5). Ils existent pour tous les sites d'archives spécifiés dans la liste des sources.
+
+      Pour les archives comme experimental ou trixie-backports, une ligne supplémentaire NotAutomatic: yes est présente. La valeur par défaut de Pin-Priority est de un pour ces archives spéciales, contre cinq cents pour les archives normales.
+
+      Le système APT choisit la mise à niveau du paquet de la plus haute priorité d'épinglage dans la liste des sources. Si la priorité est supérieure à mille, la restriction de version est levée pour permettre un retour vers une version précédente.
+
+      La situation d'épinglage de paquet provenant de sources multiples est affichée par la commande apt-cache policy. Les valeurs de Pin-Priority des archives sont affichées à gauche des chemins d'archives dans le résultat.
+
+   D. Localisation et mise à jour des métadonnées locales.
+
+      Les outils comme aptitude ou apt-get doivent mettre à jour les copies locales des métadonnées contenant les informations de l'archive. Ces fichiers sont stockés dans le répertoire /var/lib/apt/lists/.
+
+      Les quatre premiers types de fichiers sont partagés par toutes les commandes APT et mis à jour par apt-get update ou aptitude update. Les métadonnées Packages sont mises à jour si une ligne deb est spécifiée dans la liste des sources.
+
+      Les métadonnées Sources sont mises à jour si une ligne deb-src est spécifiée dans la liste des sources. La copie locale de Contents-architecture est mise à jour par la commande apt-file update.
+
+      Les métadonnées Packages et Sources contiennent une entrée Filename: pointant vers l'emplacement du paquet binaire ou source. Actuellement, ces paquets sont situés dans l'arborescence du répertoire pool/ pour améliorer le passage d'une version à l'autre.
+
+III. STRUCTURE DES PAQUETS ET OUTILS DE BAS NIVEAU.
+
+   A. Format et nomenclature des paquets Debian.
+
+      Le paquet binaire, également appelé deb, suit la structure package-name _ upstream-version - debian.revision _ architecture .deb.
+
+      Le paquet binaire de l'installateur de Debian est désigné par l'extension .udeb, ce qui signifie micro, et il est allégé pour économiser de la place.
+
+      Les paquets sources utilisent différentes extensions selon leur format, comme .orig.tar.gz pour la source amont ou .debian.tar.gz pour les modifications Debian en version trois virgule zéro quilt.
+
+      La nomenclature inclut des composantes obligatoires comme le nom du paquet et la version amont, tandis que l'epoch: et la révision Debian sont optionnelles.
+
+   B. Processus d'installation et scripts de dpkg.
+
+      L'outil dpkg est l'outil de bas niveau pour la gestion des paquets et il traite l'installation selon un ordre précis.
+
+      Le processus commence par le dépaquetage du fichier deb, suivi de l'exécution du script preinst en utilisant le système debconf.
+
+      Ensuite, dpkg procède à l'installation du contenu du paquet sur le système avant de lancer le script postinst.
+
+      Le répertoire /var/lib/dpkg/info/ contient des fichiers essentiels comme les listes de fichiers installés, les valeurs de hachage MD5sum et les scripts de maintenance.
+
+      Les scripts de maintenance incluent des fichiers pour l'installation ou la suppression, à savoir preinst, postinst, prerm et postrm.
+
+   C. Mécanismes d'alternatives, de statoverride et de diversion.
+
+      Le système update-alternatives permet d'installer paisiblement des paquets qui présentent un recouvrement, comme choisir entre vim et nvi pour la commande vi.
+
+      Ce mécanisme utilise des liens symboliques dans /etc/alternatives/ et s'appuie sur des informations enregistrées dans /var/lib/dpkg/alternatives/.
+
+      La commande dpkg-statoverride est utilisée pour indiquer à dpkg d'appliquer un propriétaire ou un mode différent à un fichier lors de l'installation.
+
+      Si un administrateur modifie manuellement le propriétaire ou le mode avec chmod ou chown, ces changements seront réinitialisés lors d'une mise à niveau.
+
+      La commande dpkg-divert permet de forcer dpkg à installer un fichier à un emplacement détourné plutôt qu'à son emplacement par défaut.
+
+      L'utilisation de dpkg-divert est principalement destinée à la maintenance de paquets par des scripts et son usage par l'administrateur est considéré comme obsolète.
+
+IV. RÉCUPÉRATION ET DÉPANNAGE D'UN SYSTÈME DÉFECTUEUX.
+
+   A. Résolution des erreurs de configuration et de cache.
+
+      Si un programme avec interface graphique présente une instabilité après une mise à niveau amont importante, il est conseillé de vérifier les interférences avec les anciens fichiers de configuration locaux. Pour retrouver la stabilité, il faut déplacer ces fichiers de configuration locaux et redémarrer le programme.
+
+      Les erreurs de mise en cache des données du paquet peuvent provoquer des erreurs intrigantes comme GPG error avec l'indication invalid BADSIG lors de l'utilisation de APT. Pour résoudre ce problème, il est nécessaire de supprimer toutes les données mises en cache avec la commande sudo rm -rf /var/lib/apt/* .
+
+      Si un serveur mandataire comme apt-cacher-ng est utilisé, il faut également exécuter la commande sudo rm -rf /var/cache/apt-cacher-ng/* pour nettoyer le cache.
+
+   B. Récupération via dpkg et gestion des dépendances.
+
+      Lorsque le paquet foo est cassé, il est possible de trouver une ancienne version sans bogue dans le répertoire de cache /var/cache/apt/archives/ . Si cela est impossible, l'archive peut être téléchargée depuis https://snapshot.debian.org/ ou copiée depuis le cache d'une machine fonctionnelle.
+
+      L'installation d'une version antérieure peut se faire avec la commande # dpkg -i /path/to/foo_old_version_arch.deb . Si cette tentative échoue à cause de la violation de certaines dépendances, l'administrateur peut utiliser en dernier ressort les options --ignore-depends ou --force-depends de dpkg.
+
+      En cas d'échec d'installation dû à des dépendances manquantes après un usage de sudo dpkg -i, il faut installer les paquets de dépendance en utilisant la commande # apt --fix-broken install . Il convient ensuite de configurer tous les paquets partiellement installés avec la commande # dpkg --configure -a .
+
+      Si le système est sérieusement cassé, il est recommandé de faire une sauvegarde complète du système et d'effectuer une installation propre. Pour une casse minime, un retour en arrière vers une version précédente peut être effectué avec le système de plus haut niveau APT.
+
+   C. Correction des scripts de paquets et corruption de l'état.
+
+      Lorsqu'un script de paquet retourne une erreur, le système de gestion des paquets s'arrête et laisse les paquets partiellement installés. Pour corriger les problèmes liés au paquet nom_paquet, il faut examiner les fichiers situés dans /var/lib/dpkg/info/ tels que les scripts preinst, postinst, prerm ou postrm.
+
+      L'administrateur peut éditer ces scripts pour désactiver la ligne posant problème avec un # en tête de ligne ou forcer un retour avec succès en ajoutant || true à la fin de la ligne. Une fois la modification effectuée, il faut lancer la commande # dpkg --configure -a pour finaliser la configuration.
+
+      Si le fichier /var/lib/dpkg/status est corrompu, le système Debian perd les données de paquets sélectionnés et subit un dommage sérieux. Il est alors possible de consulter l'ancienne version du fichier dans /var/lib/dpkg/status-old ou dans les sauvegardes de /var/backups/dpkg.status* .
+
+      Pour les casses sévères, il est préconisé de réaliser une réinstallation propre après une sauvegarde. Il est possible de récupérer des informations pour guider la nouvelle installation en listant les noms de paquets présents dans le répertoire /usr/share/doc/ de l'ancien système.
+
+V. TECHNIQUES DE GESTION AVANCÉE ET OPTIMISATION.
+
+   A. Utilisation de l'apt-pinning et gestion des priorités.
+
+      L'apt-pinning est une technique consistant à utiliser le fichier /etc/apt/preferences pour ajuster la règle de sélection des paquets. Le système APT choisit la version candidate ayant la plus haute priorité d'épinglage parmi les sources listées dans /etc/apt/sources.list.
+
+      Les valeurs de priorité déterminent le comportement du système, comme la priorité mille un qui permet l'installation même en cas de retour en arrière. La priorité cinq cents est la valeur par défaut pour une archive normale, tandis que la priorité un est utilisée pour les archives non automatiques.
+
+      L'utilisation de cette technique par un novice est risquée et peut causer des problèmes majeurs. Il est recommandé d'éviter cette méthode sauf en cas de nécessité absolue.
+
+      Pour suivre un paquet spécifique depuis l'archive unstable tout en restant sur testing, on peut définir une priorité de sept cents pour ce paquet. Cela permet de récupérer la dernière version unstable sans modifier la priorité globale de l'archive.
+
+      L'état de l'épinglage d'un paquet peut être visualisé avec la commande apt-cache policy. Cette commande affiche les différentes versions disponibles et leurs priorités respectives.
+
+   B. Gestion des sources mixtes et des paquets externes.
+
+      L'installation de paquets provenant de sources d'archives mélangées n'est pas officiellement supportée par Debian. Cette pratique demande une grande expertise technique pour garantir la compatibilité des bibliothèques et de l'ABI du noyau.
+
+      Une méthode manuelle consiste à ajouter temporairement l'entrée unstable dans le fichier /etc/apt/sources.list pour installer un paquet précis. Il faut ensuite rétablir la configuration initiale pour éviter de casser le système.
+
+      L'utilisation de paquets externes présente un risque car ces derniers obtiennent les privilèges du superutilisateur. Il est conseillé de n'utiliser que des archives de confiance et d'utiliser APT sécurisé avec des clés d'archive dans /etc/apt/trusted.gpg.d/.
+
+      Les paquets binaires sont plus dangereux à installer que les paquets non binaires de type Architecture: all. Les risques concernent principalement la compatibilité des versions de la libc et des programmes utilitaires.
+
+   C. Mise à jour automatique et limitation de bande passante.
+
+      Le paquet unattended-upgrades permet de réaliser la mise à niveau automatique des paquets. Il est principalement destiné aux mises à jour de sécurité des systèmes stable.
+
+      Pour les systèmes testing ou unstable, la mise à jour automatique est déconseillée car elle peut casser le système. On peut toutefois configurer le téléchargement préalable des paquets pour gagner du temps.
+
+      La configuration pour le téléchargement automatique nécessite de régler APT::Periodic::Download-Upgradeable-Packages sur un. Pour les systèmes stable, on peut aussi activer APT::Periodic::Unattended-Upgrade sur un.
+
+      La limitation de la bande passante utilisée par APT peut se faire via le paramètre APT::Acquire::http::Dl-Limit. Par exemple, la valeur huit cents limite le débit à 800Kib/sec.
+
+   D. Utilisation de serveurs mandataires et de l'outil equivs.
+
+      L'utilisation d'un serveur mandataire ou proxy est recommandée pour limiter la consommation de bande passante sur un réseau local. APT peut être configuré pour utiliser un proxy web générique comme squid.
+
+      Il existe des outils spécifiques pour l'archive Debian comme apt-cacher ou apt-cacher-ng. Le paquet apt-cacher-ng est un programme compilé en C++ qui sert de proxy avec cache pour la distribution.
+
+      L'outil equivs permet de créer des paquets Debian triviaux pour satisfaire des dépendances manquantes. Il peut servir à créer des métapaquets ou à contourner des erreurs de vérification de dépendances.
+
+      L'utilisation de ces outils de proxy spécialisés peut être complexe lors des réorganisations de l'archive Debian. Les serveurs mandataires web génériques sont souvent plus robustes face à ces changements de structure.
+
+VI. PROCÉDURES DE MAINTENANCE ET DE DÉVELOPPEMENT.
+
+   A. Rétroportage de paquets vers le système stable.
+
+      Pour effectuer des mises à niveau partielles sur un système stable, il est préférable de reconstruire un paquet dans son environnement en utilisant le paquet source. Cette méthode permet d'éviter des mises à niveau massives de paquets dues à leurs dépendances.
+
+      La procédure nécessite d'ajouter les entrées deb-src correspondant à la distribution unstable dans le fichier /etc/apt/sources.list. Il faut ensuite installer les paquets nécessaires comme fakeroot, devscripts et build-essential.
+
+      Une fois les dépendances installées avec apt-get build-dep, l'utilisateur télécharge les sources avec la commande apt-get source. Le travail se poursuit ensuite dans le répertoire du paquet pour modifier le changelog avec la commande dch -i.
+
+      La construction des paquets se réalise avec la commande debuild. Enfin, l'installation sur le système s'effectue en utilisant la commande debi suivie de l'extension .changes du paquet.
+
+   B. Retour d'urgence à une version antérieure.
+
+      Le retour vers une version antérieure n'est pas officiellement géré par Debian et ne devrait être utilisé que lors d'un processus de récupération d'urgence. Pour les systèmes critiques, il est conseillé de sauvegarder les données importantes avant de commencer.
+
+      Une méthode consiste à manipuler la version candidate en modifiant le fichier /etc/apt/sources.list. Par exemple, une ligne pointant vers unstable peut être remplacée par une ligne pointant vers la version testing.
+
+      Il faut ensuite configurer le fichier /etc/apt/preferences avec une priorité d'épinglage de mille dix pour la version cible. L'exécution des commandes apt-get update et apt-get dist-upgrade permet de forcer l'installation des versions antérieures.
+
+      Après cette opération, il est recommandé de supprimer le fichier /etc/apt/preferences. Il est aussi conseillé de supprimer sans purger autant de paquets que possible pour limiter les problèmes de dépendances.
+
+   C. Ressources documentaires et outils de construction.
+
+      Pour la construction de paquets, l'outil debuild est utilisé à partir d'une arborescence source locale. La commande make-kpkg permet de construire un paquet du noyau à partir de l'arborescence source du noyau.
+
+      Le paquet equivs peut être utilisé en dernier ressort pour créer des paquets Debian triviaux afin de satisfaire des dépendances manquantes. Il permet de créer des métapaquets ou de contourner la vérification des dépendances.
+
+      Les documentations primaires incluent les manuels de aptitude, dpkg, apt, apt-get et apt-config. Le paquet apt-doc fournit également des guides utiles comme le guide.html.
+
+      Pour les détails sur l'archive, il faut consulter la Charte Debian au chapitre deux et le Manuel de référence du développeur Debian au chapitre quatre. La FAQ de Debian GNU/Linux au chapitre six traite également des archives FTP Debian.
+
+POINTS D'ATTENTION.
+
+      L'utilisation des commandes de bas niveau comme dpkg -i ou debi nécessite une grande prudence car elles ne résolvent pas automatiquement les dépendances. L'usage des options de force de la ligne de commande dpkg est réservé aux experts pour éviter de casser le système.
+
+      Il existe une distinction importante entre les commandes utilisant des expressions rationnelles comme aptitude et celles utilisant des motifs génériques de type glob. Les utilisateurs doivent adapter leur syntaxe selon l'outil de gestion des paquets employé.
+
+      La vérification des fichiers via debsums possède une utilité limitée pour la sécurité car la base de données MD5sum peut être manipulée par un intrus. Cet outil sert principalement à détecter des erreurs de support ou des modifications de l'administrateur.
+
+      L'utilisation de la technique d'apt-pinning est jugée risquée pour les novices et peut provoquer des problèmes majeurs. Il est recommandé d'utiliser des solutions alternatives pour gérer les exigences conflictuelles de paquets.
+
+      Les paquets provenant d'archives externes ou de sources mixtes sans configuration appropriée présentent un risque car ils obtiennent les privilèges du superutilisateur. La compatibilité des bibliothèques et de l'ABI du noyau n'est pas garantie dans ces cas.
+
+EXEMPLES CITÉS.
+
+      Pour limiter la bande passante utilisée par APT à 800Kib/sec, il faut configurer le paramètre APT::Acquire::http::Dl-Limit "huit cents".
+
+      Le système de priorité d'épinglage définit des valeurs spécifiques comme mille un pour autoriser un retour en arrière ou un pour les archives non automatiques. La valeur par défaut pour une archive normale est de cinq cents.
+
+      Un administrateur peut installer un paquet local tout en laissant APT résoudre les dépendances en utilisant la commande apt install /path/to/ package_filename .deb.
+
+      Pour suivre automatiquement les mises à jour de sécurité sur un système stable, il est conseillé d'utiliser unattended-upgrades avec les paramètres APT::Periodic::Update-Package-Lists "un", APT::Periodic::Download-Upgradeable-Packages "un" et APT::Periodic::Unattended-Upgrade "un".

@@ -1,0 +1,257 @@
+GUIDE DE PRÉPARATION ET DE RÉALISATION DE LA MISE À NIVEAU VERS DEBIAN treize TRIXIE.
+
+LEXIQUE COMPLET.
+
+      APT désigne le programme de gestion de paquets utilisé pour effectuer la mise à niveau du système.
+
+      Debian désigne la distribution de système d'exploitation dont les notes de publication concernent la version treize Trixie.
+
+      Le répertoire /etc désigne l'emplacement contenant les fichiers de configuration du système à sauvegarder.
+
+      Le répertoire /home désigne l'emplacement des répertoires personnels des utilisateurs où se trouvent les dotfiles.
+
+      Le sigle SSH désigne le protocole permettant l'accès à distance au système par une connexion sécurisée.
+
+      Le terme initrd désigne un fichier contenant des outils de base permettant de monter le système de fichiers racine lors de l'amorçage.
+
+      Le sigle VPN désigne un service qui peut ne pas être disponible en permanence durant le processus de mise à niveau.
+
+      Le sigle CDN désigne un service utilisé par APT pour assurer le téléchargement automatique des paquets depuis un serveur de proximité.
+
+      Le sigle CPU désigne le processeur dont l'utilisation peut être légèrement augmentée par le changement de taille de page sur l'architecture ppc64el.
+
+      Le terme chroot désigne une méthode permettant d'analyser et de corriger le système en utilisant une image de récupération.
+
+      Le sigle DNS désigne un service critique qui peut être interrompu lors de la mise à niveau des paquets correspondants.
+
+      Le sigle DHCP désigne un service réseau dont l'indisponibilité peut déconnecter l'utilisateur durant la mise à niveau.
+
+COURS DÉTAILLÉ.
+
+I. ACTIONS PRÉPARATOIRES ET SAUVEGARDES.
+
+   A. Sauvegarde des données et configurations critiques.
+
+      Il est fortement conseillé de réaliser une sauvegarde complète ou de protéger les données et configurations que vous ne pouvez pas vous permettre de perdre. Une panne matérielle durant la mise à niveau peut gravement endommager le système.
+
+      La sauvegarde doit prioritairement inclure le contenu des répertoires /etc, /var/lib/dpkg et /var/lib/apt/extended_states. Il faut également enregistrer la sortie de la commande dpkg --get-selections '*'.
+
+      Si vous utilisez l'outil aptitude pour la gestion des paquets, vous devez sauvegarder le répertoire /var/lib/aptitude/pkgstates.
+
+      Bien que le processus ne modifie pas le répertoire /home, certaines applications comme GNOME, KDE ou la suite Mozilla peuvent écraser les paramètres utilisateur. Il est donc prudent de sauvegarder les fichiers et répertoires cachés appelés dotfiles dans les répertoires personnels.
+
+   B. Information des utilisateurs et gestion des services.
+
+      Il est sage d'informer les utilisateurs à l'avance de la planification de la mise à niveau. Les utilisateurs connectés via SSH ne devraient pas subir de perturbations majeures durant l'opération.
+
+      Pour une sécurité supplémentaire, vous pouvez démonter ou sauvegarder la partition /home avant de commencer. Un redémarrage sera normalement nécessaire suite à la mise à niveau du noyau.
+
+      Certains services seront interrompus lors du remplacement et de la configuration des paquets correspondants. La durée de l'indisponibilité dépend du nombre de paquets et du temps de réponse de l'administrateur aux questions de configuration.
+
+      Pour les services critiques, vous pouvez réduire le temps d'interruption en effectuant d'abord une mise à niveau minimale du système. Il convient ensuite de mettre à jour le noyau et de redémarrer avant de traiter les paquets des services critiques.
+
+   C. Préparation de l'environnement et outils de secours.
+
+      Pour les mises à niveau à distance, l'utilisation de programmes comme screen ou tmux est recommandée pour garantir la continuité de la session en cas de coupure de la connexion.
+
+      Les utilisateurs du démon watchdog fourni par le paquet micro-evtd doivent arrêter le démon et désactiver le minuteur avant la mise à niveau. Cela se fait avec les commandes service micro-evtd stop et /usr/sbin/microapl -a system_set_watchdog off.
+
+      En cas d'échec du démarrage, le mode de secours de l'installateur Debian de trixie est recommandé comme premier secours. Vous pouvez également utiliser une image de récupération ou une image d'installation autonome pour effectuer un chroot.
+
+      L'initrd fournit un interpréteur de commande de débogage pour identifier les problèmes de montage du système de fichiers racine. Sous systemd, vous pouvez obtenir une invite de commande en utilisant les paramètres systemd.unit=rescue.target ou systemd.unit=emergency.target.
+
+II. NETTOYAGE ET ASSAINISSEMENT DU SYSTÈME ACTUEL.
+
+   A. Suppression des sources tierces et des rétroportages.
+
+      Pour garantir une mise à niveau sûre, il est nécessaire de supprimer les sources supplémentaires autres que bookworm ainsi que les paquets provenant de sources tierces. APT doit être configuré pour ne contenir que les dépôts officiels afin d'éviter toute complication durant le processus.
+
+      Les rétroportages Debian, ou backports, doivent également être traités avec précaution. Bien que les paquets de bookworm-backports puissent être mis à niveau normalement, leur chemin de mise à niveau est moins testé et présente davantage de risques.
+
+      Il est impératif de supprimer les entrées bookworm-backports de vos fichiers de sources APT avant de commencer l'opération. Une fois la mise à niveau terminée, vous pourrez ajouter trixie-backports selon les instructions officielles.
+
+      Les utilisateurs utilisant des rétroportages sloppy, qui utilisent les entrées de sources référençant bookworm-backports-sloppy, ne disposent d'aucun chemin de mise à niveau clair. Il est donc demandé de supprimer ces entrées avant de procéder.
+
+      Si vous avez ajouté la section proposed-updates dans vos fichiers de sources APT, il est conseillé de la supprimer pour éviter des conflits probables. Cette précaution permet de maintenir la cohérence du système de gestion des paquets.
+
+   B. Gestion des paquets obsolètes et non-Debian.
+
+      La suppression des paquets obsolètes est une étape recommandée pour éviter des complications et des risques de sécurité. Ces paquets ne sont plus entretenus et pourraient interférer avec la nouvelle version du système.
+
+      Il est également important d'identifier et de supprimer les paquets qui ne proviennent pas de Debian. Vous pouvez utiliser la commande apt list avec des filtres spécifiques ou l'outil apt-forktracer pour trouver ces éléments.
+
+      Les paquets installés via des archives externes peuvent être supprimés pendant la mise à niveau en raison de dépendances conflictuelles. Si vous utilisez une archive tierce, vérifiez si elle propose des versions pour trixie et modifiez vos sources en conséquence.
+
+      Certains paquets non officiels rétroportés sur bookworm sont particulièrement susceptibles de poser problème. Ils peuvent entraîner des conflits de fichiers lors de la transition vers la nouvelle version stable.
+
+      Enfin, il est utile de supprimer les résidus de fichiers de configuration laissés par des mises à niveau précédentes. Vous pouvez identifier ces fichiers inutiles en cherchant les extensions .dpkg-* ou .ucf-* dans le répertoire /etc.
+
+   C. Vérification de l'état de la base de données des paquets.
+
+      Avant de procéder à la mise à niveau, vous devez vérifier que la base de données des paquets est prête. Si vous utilisez aptitude ou synaptic, il est nécessaire de passer en revue toutes les actions en attente.
+
+      Un paquet programmé pour être installé ou supprimé peut poser problème durant la procédure. Il est crucial de corriger ces situations tant que vos fichiers de sources pointent encore vers bookworm.
+
+      La commande dpkg --audit est très utile pour identifier les paquets qui se trouvent dans un état d'erreur, en échec de configuration ou partiellement installés. Tous les blocages de paquets doivent être levés avant de continuer.
+
+      Vous pouvez utiliser la commande apt-mark showhold pour lister les paquets qui sont actuellement bloqués. Si un paquet essentiel est bloqué, la mise à niveau du système échouera.
+
+      Pour les paquets que vous avez recompilés localement sans changer leur nom, il est nécessaire de les bloquer manuellement. Cela évite qu'ils ne soient écrasés par une nouvelle version lors de la mise à niveau.
+
+III. CONFIGURATION DES SOURCES APT POUR TRIXIE.
+
+   A. Migration vers le nouveau format deb822.
+
+      APT migre vers un format différent pour configurer les sources de téléchargement des paquets. Les fichiers sources.list et les fichiers list du répertoire sources.list.d sont remplacés par des fichiers se terminant par l'extension .sources.
+
+      Ce nouveau format est plus lisible et s'appelle le style deb822. Il est conseillé de remplacer les anciens fichiers par un unique fichier nommé debian.sources dans le répertoire /etc/apt/sources.list.d/.
+
+      L'utilisation de ce nouveau format est recommandée pour assurer une transition propre vers Trixie. Il convient de s'assurer que tous les anciens fichiers de sources sont bien supprimés après cette opération.
+
+   B. Ajout des dépôts officiels et du service CDN.
+
+      Il est recommandé d'utiliser le service CDN pour APT de Debian afin de télécharger les paquets depuis un serveur de proximité. La configuration correcte pour utiliser ce service avec les composants main et non-free-firmware doit être effectuée dans le fichier debian.sources.
+
+      La configuration doit inclure l'URI https://deb.debian.org/debian pour les suites trixie et trixie-updates. Le chemin du trousseau de clés doit être spécifié comme /usr/share/keyrings/debian-archive-keyring.gpg.
+
+      Une section distincte doit être ajoutée pour la sécurité avec l'URI https://security.debian.org/debian-security pour la suite trixie-security. Les composants main et non-free-firmware doivent également y être inclus.
+
+      Si l'utilisateur préfère un miroir spécifique, il peut substituer l'URI par celle de son choix comme par exemple https://mirrors.kernel.org/debian. Les composants contrib ou non-free peuvent être ajoutés à toutes les lignes de composants si nécessaire.
+
+      Après avoir ajouté les nouvelles sources, il est impératif de commenter les entrées d'archive préexistantes en plaçant un caractère # au début des lignes.
+
+   C. Gestion des miroirs locaux et des supports optiques.
+
+      Il est possible de modifier les fichiers de sources pour utiliser un miroir sur un disque local. Par exemple, si le miroir se trouve sous /var/local/debian, l'URI doit être configurée comme file:/var/local/debian.
+
+      Pour l'utilisation de supports optiques comme les DVD ou les CD, il faut d'abord commenter les entrées existantes avec un caractère #. Le fichier /etc/fstab doit contenir une ligne autorisant le montage du CD au point de montage /media/cdrom.
+
+      Une configuration type pour le fichier fstab est /dev/sr0 /media/cdrom auto noauto,ro 0 0. Il ne doit y avoir aucun espace entre les mots noauto,ro dans la quatrième colonne.
+
+      L'utilisateur doit d'abord monter le support avec la commande mount /media/cdrom avant de lancer la commande apt-cdrom add. Cette dernière permet d'ajouter les données du support dans la base de données d'APT.
+
+IV. PROCESSUS DE MISE À NIVEAU DES PAQUETS.
+
+   A. Vérification de l'espace disque disponible.
+
+      Avant de lancer la mise à niveau complète, il est impératif de s'assurer que l'espace disque est suffisant sur la partition contenant le répertoire /var/.
+
+      Les paquets nécessaires sont stockés dans /var/cache/apt/archives et une insuffisance d'espace peut rendre le système difficile à récupérer.
+
+      L'outil apt permet d'obtenir une estimation de l'espace nécessaire en exécutant la commande apt -o APT::Get::Trivial-Only=true full-upgrade.
+
+      Pour libérer de la place, l'administrateur peut utiliser apt clean pour supprimer les anciens paquets ou apt autoremove pour les paquets inutilisés.
+
+      Il est également possible de déplacer temporairement le répertoire de cache vers un support externe comme une clé USB en utilisant un montage bind.
+
+   B. Exécution de la mise à niveau minimale.
+
+      Une mise à niveau minimale est recommandée pour résoudre les conflits de dépendances ou pour les systèmes ayant une capacité de stockage limitée.
+
+      Cette étape consiste à exécuter la commande apt upgrade --without-new-pkgs afin de mettre à jour les paquets sans installer de nouveaux éléments.
+
+      Cette procédure permet de préparer le terrain avant de procéder à la mise à niveau totale du système.
+
+      Si le paquet apt-listchanges est installé, il affichera des informations importantes qu'il faudra valider avec la touche q pour continuer.
+
+   C. Exécution de la mise à niveau complète du système.
+
+      La phase principale de la mise à niveau s'effectue en utilisant la commande apt full-upgrade.
+
+      Cette commande installe les versions les plus récentes de tous les paquets et gère les changements de dépendances en installant ou retirant des paquets si nécessaire.
+
+      Lors de l'utilisation de supports optiques comme des CD ou DVD, le système peut demander l'insertion de plusieurs disques durant le processus.
+
+      Certains paquets qui ne peuvent pas être mis à jour sans modifier l'état d'installation d'un autre élément seront affichés comme retenus.
+
+      Pour résoudre ces cas de paquets retenus, il est possible d'utiliser l'outil aptitude ou la commande apt install pour le paquet spécifique.
+
+V. GESTION DES INCIDENTS ET RÉSOLUTION DE PROBLÈMES.
+
+   A. Résolution des erreurs de configuration et de dépendances.
+
+      Si l'étape apt full-upgrade échoue avec le message d'erreur concernant l'impossibilité de faire une configuration immédiate, il faut exécuter la commande apt full-upgrade -o APT::Immediate-Configure=0. Une autre solution consiste à ajouter temporairement les sources de bookworm et de trixie dans les fichiers d'APT avant de relancer apt update.
+
+      En cas de boucles de conflits ou de prédépendances, il est parfois nécessaire d'utiliser l'option -o APT::Force-LoopBreak=1 pour retirer un paquet essentiel. Si la structure des dépendances nécessite une intervention manuelle, l'administrateur peut utiliser apt -f install ou la commande dpkg --configure --pending.
+
+      Pour les cas extrêmes de dépendances défectueuses, une réinstallation forcée peut être tentée avec la commande dpkg --install suivie du chemin vers le paquet .deb. Il est également possible de supprimer manuellement un paquet en cause avec la commande dpkg --remove.
+
+      Il est recommandé de vérifier l'état des paquets avant la mise à niveau avec la commande dpkg --audit pour identifier les paquets en état de configuration échouée ou partiellement installés. L'utilisation de la commande apt-mark showhold permet aussi de détecter les paquets bloqués qui pourraient faire échouer la procédure.
+
+   B. Gestion des conflits de fichiers et de configuration.
+
+      Les conflits de fichiers surviennent souvent si des rétroportages non officiels sont installés sur le système. Pour résoudre un conflit où un paquet tente d'écraser un fichier appartenant à un autre, il faut forcer la suppression du paquet fautif avec la commande dpkg -r --force-depends.
+
+      Lors de la mise à niveau, le système peut demander s'il faut remplacer des fichiers de configuration par les versions des responsables de paquets. Il est généralement nécessaire de répondre oui pour maintenir la cohérence, mais les anciennes versions sont conservées avec l'extension .dpkg-old.
+
+      Pour éviter les confusions, il est conseillé de supprimer les résidus de mises à niveau précédentes en cherchant les fichiers se terminant par .dpkg-, .ucf- ou les erreurs de fusion. La commande find dans le répertoire /etc est l'outil préconisé pour identifier ces fichiers inutiles.
+
+      Si des paquets obsolètes ou des fichiers de configuration de paquets supprimés subsistent, ils peuvent être nettoyés avec la commande apt purge '?config-files'. Cette action permet de supprimer les fichiers de configuration qui pourraient causer des problèmes de stabilité.
+
+   C. Débogage de l'amorçage et accès console.
+
+      Si le système ne parvient pas à monter le système de fichiers racine, l'interpréteur de commande de débogage fourni dans l'initrd peut être utilisé. Il permet de vérifier les fichiers de périphériques dans /dev, les modules chargés via cat /proc/modules et les erreurs de pilotes dans la sortie de dmesg.
+
+      Pour les échecs de démarrage sous systemd, l'ajout du paramètre systemd.unit=rescue.target à la ligne de commande du noyau permet d'obtenir une invite de commande root. Le paramètre systemd.unit=emergency.target est une alternative qui offre une invite plus tôt, mais nécessite un remontage manuel de la partition racine en lecture et écriture avec mount -o remount,rw /.
+
+      Une autre méthode consiste à activer le service debug-shell.service via le paramètre systemd.debug-shell=1 pour ouvrir un interpréteur de connexion sur le tty9 très tôt durant le processus.
+
+      En cas de perte de visibilité de la mise à niveau sur la console locale, notamment après le redémarrage d'un gestionnaire d'affichage, il faut utiliser les touches Ctrl+Alt+F1 ou Alt+F1. Le numéro du terminal peut être remplacé par Fx selon le terminal virtuel où se déroule l'opération.
+
+VI. MISE À JOUR DU NOYAU ET FIN DE L'OPÉRATION.
+
+   A. Installation des métapaquets du noyau.
+
+      Lors de la mise à niveau de bookworm vers trixie, il est fortement recommandé d'installer un métapaquet linux-image-* pour garantir la réception automatique des nouvelles versions.
+
+      Vous pouvez vérifier la présence de ces métapaquets en exécutant la commande dpkg -l 'linux-image*' avec un filtre grep sur les termes ii et meta.
+
+      Si aucun résultat n'apparaît, il convient d'installer un nouveau paquet linux-image ou de rechercher le métapaquet approprié via la commande apt-cache search linux-image-* avec les filtres grep -i meta et grep -v transition.
+
+      En cas d'incertitude sur le choix du paquet, l'utilisation de la commande uname -r permet de trouver un nom similaire, comme linux-image-amd64 pour un noyau 4.9.0-8-amd64.
+
+      Il est préférable de mettre à niveau le noyau séparément de la mise à niveau complète pour limiter les risques de rendre le système temporairement non amorçable.
+
+   B. Nettoyage des paquets redondants et obsolètes.
+
+      Une fois la mise à niveau terminée, il est nécessaire de supprimer les paquets devenus redondants ou obsolètes pour nettoyer la distribution.
+
+      L'utilisation de la commande apt autoremove permet de supprimer automatiquement les paquets qui n'étaient installés qu'en tant que dépendances et qui ne sont plus nécessaires.
+
+      Les paquets obsolètes peuvent être identifiés avec la commande apt list '?obsolete' et supprimés via la commande apt purge '?obsolete'.
+
+      Il est important de noter que le projet Debian arrête habituellement le suivi de sécurité d'un paquet un an après la sortie de trixie.
+
+      Il est conseillé de contrôler les fichiers de configuration de ces paquets avant de décider de les purger définitivement du système.
+
+   C. Purge des fichiers de configuration résiduels.
+
+      Il est recommandé de purger les paquets supprimés, particulièrement ceux provenant de vendeurs tiers ou les anciens scripts init.d qui peuvent causer des problèmes.
+
+      Pour identifier les paquets qui ont laissé des fichiers de configuration sur le système, vous pouvez utiliser la commande apt list '?config-files'.
+
+      La commande apt purge '?config-files' permet de supprimer l'ensemble de ces fichiers de configuration résiduels en une seule opération.
+
+      Soyez prudent car la purge d'un paquet entraîne généralement la suppression de ses fichiers de journaux, il est donc utile de les sauvegarder au préalable.
+
+POINTS D'ATTENTION.
+
+      La mise à niveau nécessite une attention particulière sur les fichiers de configuration car certaines applications comme GNOME ou KDE peuvent écraser les réglages utilisateur par défaut.
+
+      Il est crucial de ne pas laisser le processus sans surveillance car une absence de réponse aux questions de configuration peut entraîner une indisponibilité prolongée des services.
+
+      L'utilisation de sources tierces ou de rétroportages non officiels augmente considérablement les risques de conflits de fichiers et de dépendances lors du passage vers trixie.
+
+      Une confusion possible concerne l'espace disque car il faut prévoir de la place non seulement pour le téléchargement dans /var/cache/apt/archives mais aussi pour l'installation des nouveaux binaires.
+
+      La gestion du noyau est une nuance importante puisque l'installation d'un métapaquet linux-image est fortement recommandée pour garantir les mises à jour automatiques futures.
+
+EXEMPLES CITÉS.
+
+      Pour sécuriser les données, l'administrateur doit sauvegarder les répertoires /etc, /var/lib/dpkg et /var/lib/apt/extended_states ainsi que la liste des paquets via la commande dpkg --get-selections '*'.
+
+      En cas de panne de démarrage sous systemd, l'utilisation du paramètre systemd.unit=emergency.target permet d'obtenir une invite de commande root, bien que le système de fichiers soit alors en lecture seule.
+
+      Pour les systèmes utilisant l'architecture ppc64el, le passage à une taille de page de quatre kiB au lieu de soixante-quatre kiB peut nécessiter l'installation du paquet linux-image-powerpc64le-64k pour maintenir la compatibilité.
+
+      Si l'espace disque manque, une méthode consiste à monter une clé USB sur /media/cleusb et à utiliser la commande mount --bind pour diriger le cache vers /media/cleusb/archives.

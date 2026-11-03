@@ -1,0 +1,247 @@
+GUIDE DE DÉMARRAGE, DE CONFIGURATION ET DE MAINTENANCE DU SYSTÈME DEBIAN treize TRIXIE.
+
+LEXIQUE COMPLET.
+
+      Le sigle GRUB désigne le programme d'amorçage qui affiche le menu de démarrage du système.
+
+      Le terme LUKS désigne le format utilisé pour les partitions chiffrées avec dm-crypt.
+
+      Le sigle MUA désigne l'agent utilisateur, qui est le programme permettant de lire et d'écrire le courrier.
+
+      Le sigle MTA désigne l'agent de transport, le programme qui transporte les courriers d'un ordinateur à un autre.
+
+      Le sigle MDA désigne l'agent de distribution, le programme qui distribue le courrier dans les boîtes des utilisateurs.
+
+      Le terme SMTP désigne le protocole utilisé pour expédier et recevoir le courrier directement sur un réseau.
+
+      Le sigle DHCP désigne le protocole utilisé par l'installateur pour configurer automatiquement le matériel réseau.
+
+      Le terme UEFI désigne un type de système qui peut être configuré pour amorcer depuis un support USB.
+
+      Le sigle BIOS désigne un système qui peut nécessiter l'activation du USB legacy support pour l'amorçage.
+
+      Le sigle PXE désigne une méthode d'amorçage par le réseau qui utilise des fichiers dans le répertoire netboot/.
+
+      Le sigle TFTP désigne un protocole utilisé pour configurer un serveur afin de permettre l'amorçage réseau.
+
+      Le sigle LVM désigne un type de partition sur lequel on peut choisir une partition à réparer en mode de secours.
+
+COURS DÉTAILLÉ.
+
+I. PREMIER DÉMARRAGE ET GESTION DU CHIFFREMENT.
+
+   A. Le menu d'amorçage grub et premiers pas.
+
+      Le premier écran visible lors du démarrage après une installation standard est le menu du programme d'amorçage grub. Le premier choix proposé correspond à votre nouveau système Debian, tandis que d'autres systèmes comme Windows s'affichent en dessous s'ils ont été détectés.
+
+      Si le système ne démarre pas correctement, il ne faut pas paniquer car un problème mineur peut être la cause. Dans la plupart des cas, il n'est pas nécessaire de refaire une installation complète pour corriger ces erreurs.
+
+      On peut utiliser le mode de secours intégré à l'installateur pour tenter de réparer le système. Pour y accéder, il faut sélectionner rescue dans le menu de démarrage ou utiliser le paramètre rescue/enable=true.
+
+      En cas de besoin d'aide, les utilisateurs peuvent contacter les canaux IRC #debian ou #debian-boot sur le réseau OFTC. La liste de diffusion debian-user est également une ressource disponible pour les nouveaux utilisateurs.
+
+   B. Montage des volumes chiffrés et gestion des erreurs.
+
+      Si des volumes chiffrés ont été créés, il faut fournir la phrase secrète pour chaque volume pendant le démarrage. Pour les partitions avec dm-crypt, l'invite affiche le nom de la partition comme sda2 ou md0 avant de demander la phrase LUKS.
+
+      Lors de la saisie de la phrase secrète, aucun caractère n'est montré à l'écran, pas même une astérisque. L'utilisateur dispose de deux possibilités de correction en cas d'erreur, mais après la troisième tentative, le processus de démarrage sautera ce volume.
+
+      L'invite peut varier selon le type d'initramfs utilisé pour l'amorçage du système. Par exemple, avec initramfs-tools, l'invite commence par les messages de montage du système de fichiers racine avant de demander la phrase.
+
+      Si la partition racine n'est pas montée correctement, le processus de démarrage s'arrête et nécessite un redémarrage de la machine. Pour les volumes de données comme /home ou /srv, le montage peut se faire manuellement après le démarrage.
+
+   C. Procédure de secours pour les volumes non montés.
+
+      Pour les volumes chiffrés avec dm-crypt qui n'ont pas été montés, il faut d'abord les enregistrer avec l'application device mapper. La commande à exécuter est # /etc/init.d/cryptdisks start.
+
+      Cette commande examine tous les volumes listés dans /etc/crypttab et crée les périphériques dans le répertoire /dev. Une fois l'enregistrement terminé, on peut monter les volumes de la façon habituelle avec la commande mount.
+
+      Si des systèmes de fichiers non critiques comme /usr ou /var ne sont pas montés, le système doit tout de même s'amorcer. Il est alors nécessaire de relancer les services ou, plus simplement, de redémarrer l'ordinateur.
+
+      En mode de secours, l'installateur permet de choisir une partition à réparer, comme la partition racine. Si l'installateur ne peut pas lancer d'interpréteur de commandes, il propose un environnement limité où le système racine est monté sur /target.
+
+II. CONNEXION ET ACCÈS À LA DOCUMENTATION.
+
+   A. Première connexion utilisateur.
+
+      Une fois que le système a été amorcé, l'utilisateur se retrouve face à l'invite de connexion appelée login.
+
+      Pour accéder au système, il convient d'utiliser le nom d'utilisateur ainsi que le mot de passe choisis durant le processus d'installation.
+
+      Après cette étape de connexion réussie, l'utilisateur peut commencer à utiliser son nouveau système Debian.
+
+   B. Exploration de la documentation locale et des répertoires.
+
+      Les nouveaux utilisateurs peuvent parcourir la documentation qui est déjà installée sur leur système.
+
+      La documentation accompagnant les programmes installés se trouve dans le répertoire /usr/share/doc/, organisée dans des sous-répertoires portant le nom du programme ou du paquet.
+
+      Certains paquets comme apt nécessitent l'installation de paquets de documentation séparés tels que apt-doc et apt-howto.
+
+      Il existe des répertoires spéciaux dans /usr/share/doc/ comme le répertoire /usr/share/doc/HOWTO/en-txt/ qui contient les HOWTO Linux au format .gz.
+
+      Si l'outil dhelp est installé, l'utilisateur peut consulter l'index de la documentation via le fichier /usr/share/doc/HTML/index.html avec un navigateur.
+
+      Pour une consultation facile en mode texte, il est possible de se rendre dans /usr/share/doc/ et d'utiliser la commande w3m suivi d'un point.
+
+   C. Utilisation des commandes d'aide et de navigation.
+
+      L'utilisateur peut saisir la commande info suivie du nom d'une commande ou la commande man suivie du nom d'une commande pour obtenir des informations.
+
+      L'exécution de la commande help permet d'afficher l'aide concernant les commandes de l'interpréteur de commandes.
+
+      Saisir une commande suivie de l'argument --help affiche un court résumé sur l'usage de cette commande précise.
+
+      Pour gérer l'affichage d'un résultat qui défile au-delà du haut de l'écran, il faut taper | more après la commande pour provoquer une pause.
+
+      Une liste des commandes commençant par une lettre donnée peut être obtenue en tapant cette lettre puis deux fois la touche de tabulation.
+
+III. GESTION DU SYSTÈME ET MAINTENANCE.
+
+   A. Procédures d'arrêt et de redémarrage sécurisés.
+
+      Il est crucial de ne pas arrêter le système en utilisant le bouton reset ou en coupant simplement l'alimentation car cela pourrait endommager le disque ou perdre des fichiers.
+
+      Si vous utilisez un environnement de bureau, vous pouvez utiliser l'option éteindre l'ordinateur disponible dans le menu pour arrêter ou redémarrer le système.
+
+      La combinaison de touches Ctrl+Alt+Del permet également d'initier l'arrêt du système.
+
+      En tant que superutilisateur, vous pouvez utiliser les commandes reboot pour redémarrer ou halt pour arrêter le système sans couper l'alimentation.
+
+      Les commandes poweroff ou shutdown -h now permettent d'éteindre la machine, tandis que le système d'initialisation systemd propose aussi systemctl reboot ou systemctl poweroff.
+
+   B. Compréhension du système de gestion des paquets.
+
+      Le concept fondamental de Debian repose sur le système de gestion des paquets qui contrôle la majeure partie du système, notamment les répertoires /usr, /var, /bin, /sbin et /lib.
+
+      Il est déconseillé de modifier manuellement des fichiers dans ces répertoires car ils seront écrasés lors de la prochaine mise à jour du paquet correspondant.
+
+      Les experts utilisent l'application aptitude pour marquer un paquet comme à conserver afin d'éviter ces modifications accidentelles.
+
+      La méthode recommandée pour l'installation est d'utiliser apt, soit en ligne de commande, soit via des interfaces comme aptitude ou synaptic.
+
+      L'outil apt permet de fusionner plusieurs sources de paquets telles que main, contrib, non-free et non-free-firmware pour installer des logiciels soumis à des restrictions.
+
+   C. Gestion des versions et des tâches récurrentes.
+
+      La gestion des différentes versions des applications installées sur le système est assurée par l'outil update-alternatives.
+
+      Les fichiers de configuration pour les actions de l'administrateur doivent être placés dans le répertoire /etc.
+
+      Pour exécuter des tâches répétitives selon une fréquence quotidienne, hebdomadaire ou mensuelle, il faut utiliser les répertoires /etc/cron.daily, /etc/cron.weekly ou /etc/cron.monthly.
+
+      Ces tâches sont appelées depuis le fichier /etc/crontab et sont lancées par ordre alphabétique.
+
+      Pour des tâches spécifiques à un utilisateur ou avec une fréquence précise, il est préférable d'utiliser /etc/crontab ou le répertoire /etc/cron.d/votre_choix.
+
+IV. CONFIGURATION DU SERVICE DE MESSAGERIE.
+
+   A. Architecture des agents de courrier (MUA, MTA, MDA).
+
+      Un système de courrier repose sur la combinaison de trois éléments fondamentaux. Ces composants assurent la lecture, le transport et la distribution des messages.
+
+      Le premier élément est l'agent utilisateur, appelé MUA, qui permet à l'utilisateur de lire et d'écrire son courrier. Des programmes comme mutt ou des interfaces graphiques comme evolution et thunderbird remplissent ce rôle.
+
+      Le deuxième élément est l'agent de transport, nommé MTA, qui est chargé de transporter les courriers d'un ordinateur à un autre. Il peut être combiné avec d'autres fonctions ou utilisé séparément.
+
+      Le troisième élément est l'agent de distribution, appelé MDA, qui assure la distribution du courrier dans les boîtes des utilisateurs. Des programmes comme procmail peuvent servir d'agent de distribution.
+
+      Certains logiciels modernes comme kmail ou evolution combinent les fonctions MUA, MTA et MDA en un seul programme. Cependant, ils peuvent aussi être utilisés avec les programmes traditionnels de Debian.
+
+   B. Configuration de l'envoi et de la réception locale.
+
+      Il est recommandé d'installer un ensemble traditionnel de MTA et MDA pour recevoir les messages importants du système. Les paquets exim4 et mutt sont installables via la commande apt install exim4 mutt.
+
+      L'agent de transport exim4 peut aussi remplir la fonction de MDA. Par défaut, il est configuré pour n'envoyer des courriels que sur le système local.
+
+      Les courriels adressés à l'administrateur ou au compte root sont redirigés vers l'utilisateur créé pendant l'installation. Ce renvoi est géré par le fichier /etc/aliases.
+
+      Les messages envoyés par le système sont ajoutés dans le fichier /var/mail/nom_utilisateur. L'utilisateur peut ensuite lire ces courriels en utilisant le programme mutt.
+
+   C. Paramétrage d'exim4 pour l'envoi vers l'extérieur.
+
+      Pour que le système gère le courrier vers l'extérieur, il faut reconfigurer le paquet exim4 avec la commande dpkg-reconfigure exim4-config. Cette commande doit être exécutée en tant que superutilisateur.
+
+      Plusieurs scénarios sont proposés lors de la configuration. Le premier est celui d'un site internet où le courrier est expédié et reçu directement avec SMTP.
+
+      Une autre option est l'utilisation d'une machine relais appelée smarthost. Dans ce cas, le courrier sortant est envoyé à une autre machine qui assure l'expédition vers la destination finale.
+
+      Il existe aussi l'option d'une machine relais sans gestion du courrier local. Enfin, l'option par défaut permet une distribution locale seulement.
+
+      Si aucun scénario ne convient, une configuration fine est possible via les fichiers du répertoire /etc/exim4. Il est conseillé d'utiliser le serveur de son fournisseur d'accès pour éviter le rejet des messages par les serveurs antipourriel.
+
+V. DÉPANNAGE ET RÉPARATION DU SYSTÈME.
+
+   A. Compilation du noyau Linux.
+
+      La compilation d'un nouveau noyau est une opération qui s'avère très probablement inutile. Le noyau par défaut fourni dans Debian prend en charge la quasi totalité des configurations.
+
+      Si vous souhaitez tout de même compiler votre propre noyau, cela reste une possibilité. Il est alors recommandé d'utiliser la cible make deb-pkg.
+
+      Pour obtenir des informations complémentaires sur ce sujet, vous pouvez consulter le Manuel du noyau Linux pour Debian. Ce document est disponible sous le nom de Debian Linux Kernel Handbook en anglais.
+
+   B. Utilisation du mode de secours pour réparer un système cassé.
+
+      Le mode de secours est utile lorsque le système ne peut plus démarrer suite à une erreur de configuration ou un problème matériel. Pour y accéder, il faut sélectionner rescue dans le menu de démarrage ou utiliser le paramètre rescue/enable=true lors de l'amorçage.
+
+      L'installateur affiche alors une note indiquant que vous êtes en mode de secours et non en processus d'installation. Le système ne sera pas réécrit durant cette procédure.
+
+      Vous devez choisir une partition parmi la liste affichée, généralement celle contenant le système de fichiers racine. L'installateur peut alors proposer un interpréteur de commandes pour effectuer les corrections nécessaires.
+
+      Si l'installateur ne peut pas lancer d'interpréteur directement dans le système de fichiers, il proposera un environnement propre. Dans ce cas, le système de fichiers racine sélectionné sera monté sur le répertoire /target.
+
+      Une commande utile dans cet environnement est grub-install '(hd0)' pour réinstaller le programme d'amorçage GRUB sur le secteur principal du premier disque dur. Une fois les corrections terminées, il suffit de quitter l'interpréteur pour relancer le système.
+
+VI. GUIDE DU PROCESSUS D'INSTALLATION.
+
+   A. Méthodes d'amorçage (CD, USB, réseau, disque dur).
+
+      L'installation peut se faire via un disque optique en utilisant l'image netinst qui récupère les paquets sur le réseau ou une image DVD qui ne nécessite pas de connexion. Il faut pour cela graver l'image choisie et modifier la configuration du BIOS ou de l'UEFI.
+
+      Une clé USB amovible peut également servir de support grâce aux images isohybrid qui fonctionnent sur les lecteurs optiques et les périphériques USB. Sur les anciens systèmes, il est parfois nécessaire d'activer le USB legacy support dans le BIOS pour que le périphérique soit reconnu.
+
+      L'amorçage par le réseau est possible via la méthode PXE en extrayant les fichiers netboot/ dans un répertoire TFTP et en configurant un serveur DHCP. Cette méthode est particulièrement adaptée aux architectures spécifiques nécessitant un amorçage réseau.
+
+      Il est aussi possible de réaliser l'installation depuis un disque dur possédant déjà un autre système d'exploitation. Pour cela, il faut placer les fichiers hd-media/ et une image DVD dans le répertoire racine du disque avant d'amorcer Linux avec initrd.
+
+   B. Étapes clés de l'installation et partitionnement.
+
+      Le processus débute par le choix de la langue, du pays et de la carte clavier pour configurer l'environnement de base. L'installateur détecte ensuite le matériel et configure le réseau via DHCP si aucun autre mode n'est spécifié.
+
+      La création des comptes est une étape cruciale où l'on définit le mot de passe du superutilisateur root et un utilisateur ordinaire. Si aucun mot de passe root n'est fourni, le paquet sudo est installé et le premier utilisateur devient privilégié.
+
+      Le partitionnement peut être effectué de manière automatique pour les débutants ou de façon manuelle pour un contrôle total. L'utilisateur doit s'assurer de disposer au moins d'une partition d'échange et d'une partition racine montée sur /.
+
+      Si l'on souhaite conserver une partition Windows, l'installateur permet de redimensionner une partition FAT ou NTFS pour libérer de l'espace. Une fois le partitionnement validé, l'installateur formate les partitions et installe le système de base ainsi que le noyau.
+
+      La phase finale consiste à choisir des tâches supplémentaires comme l'environnement de bureau graphique pour rendre le système plus efficace. L'installation se termine par la mise en place du programme d'amorçage GRUB sur la partition UEFI ou le premier disque dur.
+
+   C. Finalisation et signalement de rapports d'installation.
+
+      Une fois l'installation terminée, il faut retirer le support utilisé et redémarrer la machine pour accéder au nouveau système. L'utilisateur peut alors se connecter avec les identifiants créés durant le processus.
+
+      Si l'installation s'est déroulée correctement, il est recommandé d'envoyer un rapport en utilisant le paquet reportbug. La commande reportbug installation-reports permet de transmettre ces informations aux développeurs.
+
+      En cas d'échec de l'installation, il est essentiel de signaler le bogue pour aider à l'amélioration de l'installateur. Si l'échec est total, des procédures spécifiques de signalement de problèmes doivent être suivies.
+
+POINTS D'ATTENTION.
+
+      Il est crucial de ne pas confondre l'arrêt du système avec un simple appui sur le bouton reset ou une coupure de courant brutale. Une telle action peut entraîner la perte de fichiers ou endommager le disque dur.
+
+      Lors de la saisie d'une phrase secrète pour un volume chiffré, aucun caractère ne s'affiche à l'écran. Il faut être vigilant car une erreur est possible et le système sautera le volume après la troisième tentative.
+
+      La gestion des paquets impose de ne pas modifier directement les fichiers dans les répertoires comme /usr ou /bin. Toute modification manuelle sera écrasée lors de la prochaine mise à jour du paquet concerné.
+
+      Il existe une nuance importante entre les commandes d'arrêt sous l'ancien système SysV et le système actuel systemd. Par exemple, les effets des commandes halt et poweroff diffèrent selon le système d'initialisation utilisé.
+
+      Le système de courrier installé par défaut ne permet que des échanges en local. Pour envoyer ou recevoir des messages vers l'extérieur, une reconfiguration de l'agent exim4 est nécessaire.
+
+EXEMPLES CITÉS.
+
+      Si un utilisateur a chiffré plusieurs volumes, il peut identifier la correspondance entre les noms de partitions comme sda2 et les points de montage en consultant les fichiers /etc/crypttab et /etc/fstab.
+
+      Pour obtenir de l'aide sur une commande spécifique, un utilisateur peut taper le nom de la commande suivi de l'option --help. Il est aussi possible d'utiliser la commande man ou info pour des informations plus détaillées.
+
+      Un administrateur peut automatiser des tâches récurrentes en plaçant des scripts dans les répertoires /etc/cron.daily, /etc/cron.weekly ou /etc/cron.monthly.
+
+      En cas de système cassé, l'utilisateur peut sélectionner l'option rescue dans le menu de démarrage. Cela permet de monter la partition racine sur le répertoire /target pour effectuer des réparations comme la réinstallation de GRUB avec la commande grub-install '(hd0)'.

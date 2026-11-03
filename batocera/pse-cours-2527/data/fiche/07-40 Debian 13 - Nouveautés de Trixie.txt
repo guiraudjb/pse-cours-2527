@@ -1,0 +1,229 @@
+SYNTHÈSE DES NOUVEAUTÉS ET CARACTÉRISTIQUES DE DEBIAN treize TRIXIE.
+
+LEXIQUE COMPLET.
+
+      L'architecture riscv64 désigne une architecture soixante-quatre bits officiellement prise en charge pour la première fois dans Debian treize.
+
+      Le terme ROP désigne des exploits de type Return-Oriented Programming visant à compromettre la sécurité.
+
+      Le sigle COP/JOP désigne des attaques de type Call/Jump-Oriented Programming sur l'architecture arm64.
+
+      L'architecture arm64 désigne une architecture soixante-quatre bits bénéficiant de protections contre les attaques grâce aux technologies PAC et BTI.
+
+      Le sigle PAC désigne la technologie Pointer Authentication utilisée pour la protection contre les exploits ROP.
+
+      Le sigle BTI désigne la technologie Branch Target Identification utilisée pour la protection contre les attaques COP/JOP.
+
+      Le terme HTTP Boot désigne une méthode permettant de démarrer l'installateur Debian via les microprogrammes UEFI et U-Boot.
+
+      Le sigle BDIC désigne un format de dictionnaire binaire développé par Google pour être utilisé dans Chromium.
+
+      Le sigle ABI désigne l'interface binaire de programmation qui subit une transition vers le format soixante-quatre bits pour la gestion des dates au-delà de deux mille trente-huit.
+
+      Le terme Qt WebEngine désigne un moteur utilisé par des navigateurs web comme Falkon pour prendre en charge la vérification orthographique.
+
+      Le sigle KDE Plasma désigne un environnement de bureau qui passe de la version cinq à la version six dans Debian treize.
+
+      Le terme Debian Pure Blends désigne une sélection de mélanges exclusifs comme Debian Junior ou Debian Science installables via l'installateur.
+
+COURS DÉTAILLÉ.
+
+I. ARCHITECTURES ET COMPATIBILITÉ MATÉRIELLE.
+
+   A. Liste des architectures officiellement prises en charge.
+
+      Debian treize propose un support officiel pour plusieurs architectures matérielles.
+
+      La liste inclut le PC soixante-quatre bits nommé amd64 ainsi que l'architecture ARM soixante-quatre bits appelée arm64.
+
+      Les systèmes ARM sont également représentés par l'architecture ARM EABI nommée armel et l'architecture ARMv7 nommée armhf.
+
+      Le support s'étend au PowerPC soixante-quatre bits petit-boutiste ppc64el et au RISC-V soixante-quatre bits petit-boutiste riscv64.
+
+      Enfin, l'architecture IBM System z désignée par le sigle s390x est officiellement prise en charge.
+
+   B. Cas particulier de l'architecture i386.
+
+      Sur les systèmes PC soixante-quatre bits, un espace utilisateur trente-deux bits partiel est disponible pour l'architecture i386.
+
+      Cette architecture i386 ne participe pas à la transition de l'ABI time_t soixante-quatre bits.
+
+      Sa fonction principale est de maintenir la prise en charge de logiciels anciens.
+
+      Pour obtenir plus de détails sur cette architecture, il convient de consulter la documentation sur la prise en charge réduite de l'architecture i386.
+
+   C. Prise en charge officielle de riscv64.
+
+      Cette version de Debian est la première à prendre en charge officiellement l'architecture riscv64.
+
+      Cette nouveauté permet aux utilisateurs d'exécuter Debian sur du matériel RISC-V soixante-quatre bits.
+
+      Les utilisateurs de cette architecture peuvent bénéficier de toutes les fonctionnalités de Debian treize.
+
+      Des renseignements supplémentaires sur cette prise en charge sont disponibles sur le wiki.
+
+II. SÉCURITÉ ET ÉVOLUTIONS TECHNIQUES DU SYSTÈME.
+
+   A. Protection arm64 contre les attaques ROP et COP/JOP.
+
+      La version trixie introduit des fonctionnalités de sécurité sur l'architecture arm64 pour limiter les exploits de type Return-Oriented Programming (ROP).
+
+      Ces mesures visent également à protéger le système contre les attaques de type Call/Jump-Oriented Programming (COP/JOP).
+
+      La protection contre les attaques ROP repose sur la technologie Pointer Authentication (PAC).
+
+      Pour contrer les attaques COP/JOP, Debian utilise la technologie Branch Target Identification (BTI).
+
+      Ces fonctionnalités de sécurité sont activées automatiquement si le matériel de l'utilisateur les supporte.
+
+   B. Transition de l'ABI time_t soixante-quatre bits.
+
+      Toutes les architectures en dehors de l'architecture i386 utilisent désormais une ABI time_t soixante-quatre bits.
+
+      Cette transition permet de prendre en charge les dates situées au-delà de l'année deux mille trente-huit.
+
+      Sur les architectures trente-deux bits comme armel et armhf, l'ABI de nombreuses bibliothèques a changé sans modifier la bibliothèque soname.
+
+      Les paquets et les logiciels de tierce partie sur ces architectures trente-deux bits doivent être recompilés ou reconstruits.
+
+      Une vérification est nécessaire sur ces systèmes pour rechercher d'éventuelles pertes de données silencieuses.
+
+      L'architecture i386 ne participe pas à cette transition car sa fonction principale est de supporter des logiciels anciens.
+
+   C. Progrès vers les constructions reproductibles.
+
+      Les contributeurs de Debian ont réalisé des progrès significatifs pour garantir que les constructions produisent des résultats reproductibles octet à octet.
+
+      Il est possible de vérifier l'état des paquets installés sur une machine grâce au nouveau paquet debian-repro-status.
+
+      Les statistiques globales de Debian pour trixie et les versions ultérieures sont disponibles sur le site reproduce.debian.net.
+
+      Les utilisateurs peuvent contribuer à ces efforts en rejoignant le canal #debian-reproducible sur IRC pour discuter des correctifs.
+
+      Il est également possible de vérifier les statistiques en installant le nouveau paquet rebuilderd et en configurant sa propre instance.
+
+III. AMÉLIORATIONS DES OUTILS ET SERVICES RÉSEAU.
+
+   A. Prise en charge de HTTP Boot via UEFI et U-Boot.
+
+      L'installateur Debian et les images d'installation autonomes de la distribution peuvent désormais être démarrés avec la méthode HTTP Boot.
+
+      Cette nouvelle fonctionnalité nécessite que les microprogrammes UEFI et U-Boot soient compatibles avec ce protocole.
+
+      Sur les systèmes utilisant le microprogramme TianoCore, l'utilisateur doit entrer dans le menu Device Manager pour accéder à la Network Device List.
+
+      Il convient ensuite de sélectionner l'interface réseau ainsi que l'option HTTP Boot Configuration pour spécifier l'URL complète de l'ISO Debian.
+
+      Pour les autres types d'implémentations de microprogramme, il est nécessaire de consulter la documentation spécifique du matériel ou du microprogramme.
+
+   B. Évolutions de curl avec HTTP/3 et wcurl.
+
+      L'interface en ligne de commande ainsi que la bibliothèque libcurl prennent désormais la prise en charge du protocole HTTP/3.
+
+      Les utilisateurs peuvent effectuer des requêtes HTTP/3 en utilisant les drapeaux spécifiques --http3 ou --http3-only.
+
+      Le paquet curl inclut également une nouvelle alternative à wget nommée wcurl qui utilise curl pour réaliser les téléchargements.
+
+      L'utilisation de cet outil est simplifiée puisque le téléchargement de fichiers s'effectue avec la commande wcurl suivie de l'URL.
+
+   C. Améliorations des dictionnaires Hunspell et Qt WebEngine.
+
+      Les navigateurs web basés sur Qt WebEngine comme Falkon ou Privacy Browser supportent désormais la vérification orthographique.
+
+      Cette fonctionnalité utilise les données de hunspell fournies sous le format de dictionnaire binaire BDIC.
+
+      Le format BDIC est un format développé par Google pour une utilisation dans Chromium et il est disponible dans chaque paquet de langue Hunspell pour la première fois dans Trixie.
+
+      Les navigateurs basés sur Qt WebEngine peuvent tirer profit de ces dictionnaires s'ils bénéficient d'une prise en charge amont adéquate.
+
+IV. LOGICIELS, ENVIRONNEMENTS DE BUREAU ET MISES À JOUR.
+
+   A. Statistiques des paquets et mises à jour majeures.
+
+      Debian treize propose plus de quatorze mille cent seize nouveaux paquets par rapport à la version bookworm.
+
+      Le nombre total de paquets dans la distribution dépasse désormais les soixante-neuf mille huit cent trente.
+
+      Plus de quarante-quatre mille trois cent vingt-six paquets logiciels ont été mis à jour, ce qui représente soixante-trois pour cent des paquets de la distribution bookworm.
+
+      En revanche, plus de huit mille huit cent quarante-quatre paquets, soit douze pour cent de ceux de bookworm, ont été supprimés et seront indiqués comme obsolètes.
+
+   B. Nouveaux environnements de bureau et applications.
+
+      La distribution inclut désormais GNOME quarante-huit, KDE Plasma six virgule trois, LXDE treize, LXQt 2.1.0 et Xfce quatre virgule vingt.
+
+      Les suites bureautiques ont été mises à jour avec LibreOffice en version vingt-cinq et GNUcash en version cinq virgule dix.
+
+      Le noyau Linux passe de la série six virgule un à la série six virgule douze.
+
+      D'autres logiciels importants comme Apache, Bash, Python trois et OpenSSH bénéficient de montées de version significatives.
+
+   C. Focus sur l'intégration de Plasma six et Qt six.
+
+      Debian treize est la première version de la distribution à fournir Plasma six avec une pile basée sur Qt six et KDE Framework six.
+
+      Cette version inclut spécifiquement Qt 6.8.2, KDE Frameworks six virgule treize et Plasma 6.3.6.
+
+      Les applications KDE Gear sont également présentes avec la suite KDE PIM version 24.12.3 et les autres applications Gear version 25.04.3.
+
+      Pour maintenir la compatibilité, Debian treize propose aussi Qt 5.15.15 et KDE Frameworks cinq virgule cent seize.
+
+      Certaines applications comme Krita dépendent encore de KDE Frameworks cinq avant sa suppression prévue durant le cycle de développement de forky.
+
+V. SYSTÈME D'INSTALLATION ET DÉPLOIEMENT.
+
+   A. Méthodes et ressources de l'installateur officiel.
+
+      L'installateur Debian constitue le système officiel pour installer la distribution et propose plusieurs méthodes d'installation selon l'architecture utilisée.
+
+      Les images de l'installateur pour trixie ainsi que le manuel d'installation sont accessibles directement sur le site web de Debian.
+
+      Le manuel d'installation est également disponible sur le premier médium de l'ensemble des DVD, CD ou Blu-ray officiels de Debian.
+
+      Il est possible de consulter les errata de l'installateur Debian pour obtenir une liste des problèmes connus.
+
+   B. Installation des mélanges exclusifs Debian Pure Blends.
+
+      Une sélection de mélanges exclusifs Debian nommés Debian Pure Blends peut désormais être installée directement depuis l'installateur Debian.
+
+      Cette catégorie inclut notamment des mélanges tels que Debian Junior, Debian Science ou encore Debian FreedomBox.
+
+      Le guide d'installation fournit des informations complémentaires pour procéder à l'installation de ces mélanges spécifiques.
+
+      Des détails supplémentaires sur les mélanges exclusifs Debian sont disponibles sur le site officiel de Debian ou sur le wiki.
+
+   C. Images pour le cloud, les conteneurs et les machines virtuelles.
+
+      L'équipe pour l'informatique dématérialisée publie des images de Debian trixie pour des services de cloud computing populaires comme Amazon Web Services, Microsoft Azure, OpenStack et Plain VM.
+
+      Ces images utilisent des accroches cloud-init et favorisent un démarrage rapide grâce à des paquets de noyau optimisés et des configurations GRUB adaptées.
+
+      L'équipe pour l'informatique dématérialisée assurera la fourniture d'images à jour jusqu'à la fin de la période de prise en charge à long terme LTS de trixie.
+
+      Des images multi-architectures de Debian trixie sont également disponibles sur Docker Hub pour répondre aux besoins des utilisateurs.
+
+      En plus des images standards, une variante slim plus petite est proposée pour permettre de minimiser l'espace disque utilisé.
+
+POINTS D'ATTENTION.
+
+      Il faut distinguer la prise en charge officielle de l'architecture riscv64 qui est une nouveauté de cette version de la prise en charge réduite de l'architecture i386.
+
+      Une nuance importante concerne la transition de l'ABI time_t soixante-quatre bits qui ne concerne pas l'architecture i386 car sa fonction est de supporter des logiciels anciens.
+
+      Sur les architectures trente-deux bits comme armel et armhf, le changement d'ABI de nombreuses bibliothèques ne modifie pas la bibliothèque soname.
+
+      L'utilisation de l'architecture arm64 bénéficie de protections contre les attaques ROP et COP/JOP uniquement si le matériel supporte PAC et BTI.
+
+      Pour l'environnement Plasma six, la mise à niveau des profils utilisateur est généralement prise en charge mais des problèmes occasionnels peuvent survenir.
+
+EXEMPLES CITÉS.
+
+      La distribution Debian treize comprend plus de soixante-neuf mille huit cent trente paquets au total, dont plus de quatorze mille cent seize sont de nouveaux paquets.
+
+      Le projet a mis à jour plus de quarante-quatre mille trois cent vingt-six paquets logiciels, ce qui représente soixante-trois pour cent des paquets de la distribution bookworm.
+
+      Concernant les environnements de bureau, la version inclut notamment GNOME quarante-huit, KDE Plasma six virgule trois, LXDE treize, LXQt 2.1.0 et Xfce quatre virgule vingt.
+
+      Le noyau Linux passe de la série six virgule un dans la version douze à la série six virgule douze dans la version treize.
+
+      L'outil curl et sa bibliothèque libcurl passent de la version 7.88.1 à la version 8.14.1.
