@@ -1,0 +1,229 @@
+FICHE DE RÉVISION COMPLÈTE SUR LA GESTION DE LA MÉMOIRE.
+
+LEXIQUE COMPLET.
+
+      La MMU désigne l'unité de gestion de la mémoire chargée de la translation des adresses virtuelles vers les adresses physiques.
+
+      La segmentation désigne une méthode de gestion de la mémoire organisée en régions telles que le code, les données, la pile et le tas.
+
+      La fragmentation externe désigne un problème lié à la segmentation où l'espace mémoire est morcelé.
+
+      La pagination désigne un mécanisme de gestion de la mémoire utilisant des cadres de page et des pages pour l'adressage virtuel.
+
+      La fragmentation interne désigne un problème lié à la pagination.
+
+      Le swap désigne le mécanisme de va-et-vient entre la mémoire principale et la mémoire secondaire via une zone d'échange.
+
+      La mémoire virtuelle désigne un système basé sur l'adressage virtuel et la pagination qui n'est pas la mémoire vive.
+
+      Le défaut de page désigne une interruption qui survient lorsqu'une page n'est pas présente en mémoire centrale.
+
+      Le page stealer désigne un thread du processus zéro qui libère la mémoire physique en déchargeant les pages les moins utilisées.
+
+      Le pager désigne un thread du processus zéro chargé de charger une page à la demande suite à un défaut de page.
+
+      Le COW désigne la technique de copie sur écriture qui permet aux processus de partager des zones en lecture seule jusqu'à une modification.
+
+      Le TLB désigne une mémoire associative utilisée par la MMU pour mémoriser les translations d'adresses et optimiser la recherche de pages.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET ENJEUX DE LA GESTION MÉMOIRE.
+
+   A. Objectifs et concepts fondamentaux.
+
+      Le module vise à comprendre les concepts et les mécanismes fondamentaux de la gestion mémoire.
+
+      Il permet de maîtriser les termes techniques tels que le va-et-vient, la pagination, le défaut de page, le dérobeur de pages ou la copie sur écriture.
+
+      L'apprentissage porte sur les mécanismes de base comme la segmentation, la pagination et le swapping.
+
+      Les notions de mémoire virtuelle et de gestion des pages ainsi que les optimisations sont également abordées.
+
+   B. Rôles et contraintes du système.
+
+      La mémoire joue un rôle crucial en raison d'une forte sollicitation constante.
+
+      Elle constitue souvent un goulot d'étranglement pour le système.
+
+      Le système doit assurer un partage équitable de la mémoire entre les différents processus.
+
+      De nombreuses contraintes de sécurité doivent être respectées pour la sûreté du système.
+
+      La confidentialité et l'intégrité des données utilisateurs sont des enjeux majeurs de cette gestion.
+
+   C. Types de mémoire et bus.
+
+      La gestion de la mémoire distingue la mémoire volatile de la mémoire persistante.
+
+      Le Front Side Bus est un élément technique lié à cette architecture.
+
+II. MÉCANISMES DE BASE DE LA GESTION MÉMOIRE.
+
+   A. La segmentation et la fragmentation externe.
+
+      La segmentation consiste à diviser la mémoire en différentes régions spécifiques telles que le code, les données, la pile et le tas.
+
+      Ce mécanisme utilise des adresses logiques propres au processus qui sont ensuite converties en adresses physiques par la MMU.
+
+      La fragmentation externe est un problème lié à ce mode de gestion de la mémoire.
+
+   B. La pagination et la fragmentation interne.
+
+      La pagination repose sur l'utilisation de cadres de page et de pages pour organiser l'adressage virtuel.
+
+      Ce système permet de gérer la mémoire via un adressage virtuel spécifique.
+
+      La fragmentation interne est une conséquence directe de l'utilisation de ce mécanisme de pagination.
+
+   C. Le mécanisme de swapping.
+
+      Le swapping est une méthode de gestion de la mémoire qui utilise un va-et-vient sur la mémoire secondaire.
+
+      Ce processus implique le transfert de pages entre la mémoire principale et la zone d'échange.
+
+      Le rôle du swapper est d'allouer un espace de swap et de gérer les transferts de pages via le swap in et le swap out.
+
+III. FONCTIONNEMENT DE LA MÉMOIRE VIRTUELLE.
+
+   A. Rôle de la MMU et adressage.
+
+      La MMU est l'unité de gestion de la mémoire qui assure la translation des adresses virtuelles vers les adresses physiques.
+
+      L'adressage virtuel permet de distinguer les adresses logiques propres au processus des adresses physiques de la mémoire.
+
+      Ce mécanisme repose sur l'utilisation de la pagination pour gérer l'espace d'adressage.
+
+   B. Structure des tables de pages en trente-deux bits.
+
+      Dans un système trente-deux bits, la translation d'adresse se fait grâce au registre CR3 du processeur qui pointe vers le répertoire de pages.
+
+      Le répertoire de pages contient mille vingt-quatre entrées de trente-deux bits, soit quatre octets par entrée, avec une adresse physique de table de page sur vingt-deux bits.
+
+      La table de page contient mille vingt-quatre entrées de trente-deux bits qui contiennent l'adresse physique d'une page sur vingt-deux bits.
+
+      La page contient quatre mille quatre-vingt-seize entrées de huit bits, ce qui correspond à un octet par entrée.
+
+      Chaque entrée de la table de page inclut également dix bits de contrôle pour la gestion du système.
+
+   C. Les bits de contrôle et droits d'accès.
+
+      Le bit Present indique si la page est actuellement présente en mémoire centrale.
+
+      Le bit Accessed est positionné lors de l'accès au cadre de page et aide au choix des pages pour le swap.
+
+      Le bit Dirty est activé lors d'une écriture sur la page pour guider le processus de mise en swap.
+
+      Les bits Read/Write et User/Supervisor permettent de contrôler les droits d'accès et le niveau de privilège requis.
+
+      Les bits PCD/PWT et Global sont utilisés par le cache matériel pour optimiser les opérations.
+
+      Le bit Page Size permet l'utilisation d'une pagination étendue avec des pages de quatre Mo.
+
+IV. GESTION DES DÉFAUTS DE PAGE ET PROCESSUS SYSTÈME.
+
+   A. Faute de segmentation et protection.
+
+      La faute de segmentation est une erreur de programmation fréquente qui survient lorsqu'une adresse virtuelle se situe en dehors de l'espace d'adressage du processus. Cela arrive notamment quand la valeur est supérieure au champ limite défini.
+
+      Ce mécanisme sert à assurer la protection de l'OS mais aussi celle des autres processus en cours d'exécution. Il empêche un processus d'accéder indûment à des zones qui ne lui sont pas allouées.
+
+   B. Le défaut de page et le rôle du pager.
+
+      Le défaut de page se produit lorsqu'une page n'est pas présente en mémoire centrale. Ce phénomène déclenche une interruption pour permettre au système de réagir.
+
+      Le pager est un thread du processus zéro qui a pour rôle le chargement de page à la demande. Il intervient spécifiquement à la suite d'un défaut de page.
+
+      Pour fonctionner, le pager recherche d'abord un cadre de page libre. Il vérifie ensuite si la page se trouve dans la swap ou si elle doit être chargée depuis le disque.
+
+   C. Le dérobeur de pages et algorithmes de remplacement.
+
+      Le page stealer est un thread du processus zéro qui a pour mission de libérer de la mémoire physique. Il gère l'occupation de la mémoire en déchargeant les pages les moins utilisées selon un seuil appelé low water mark.
+
+      Plusieurs algorithmes de remplacement de page peuvent être utilisés si la mémoire est occupée à cent pour cent. Le système peut utiliser le FIFO pour décharger la page la plus ancienne.
+
+      Le système peut également appliquer le LFU pour décharger la page la moins fréquemment utilisée. Enfin, l'algorithme LRU décharge la page la moins récemment utilisée grâce à un compteur décrémenté par cycle d'horloge.
+
+V. OPTIMISATIONS DE LA GESTION MÉMOIRE.
+
+   A. Localité et working set.
+
+      Le working set d'un processus correspond à l'ensemble des pages qu'il a référencées durant ses n dernières références mémoire.
+
+      Ce nombre de pages définit la fenêtre de l'espace de travail nécessaire pour le processus.
+
+      L'optimisation repose sur le principe de localité temporelle, où une adresse récemment accédée a une forte probabilité d'être de nouveau utilisée.
+
+      La localité spatiale indique que les adresses voisines d'une adresse récemment référencée ont également une forte probabilité d'être accédées.
+
+      Des algorithmes sont mis en place pour maximiser l'utilisation de l'unité centrale en cadrant au mieux l'espace de travail de chaque processus.
+
+      La prépagination est une technique utilisée pour améliorer ces mécanismes d'optimisation.
+
+   B. Mécanismes de copie sur écriture et TLB.
+
+      Le mécanisme COW permet d'éviter de nombreuses copies de zones mémoires identiques en faisant partager des zones en lecture seule comme le code ou les données.
+
+      Les processus père et fils peuvent partager une zone en lecture et écriture jusqu'à ce que l'un des deux tente d'écrire dedans.
+
+      Dès qu'une écriture est tentée, la zone concernée est dupliquée pour garantir l'intégrité des données.
+
+      Le TLB est une mémoire associative utilisée par la MMU pour mémoriser les translations d'adresses.
+
+      Cette optimisation permet au processeur de ne pas consulter systématiquement la table de pages pour la recherche de pages.
+
+   C. Mappage de fichiers et Slab allocator.
+
+      La projection ou mappage de fichiers permet de manipuler un fichier page par page directement dans la mémoire vive via les appels mmap et munmap.
+
+      Cette méthode offre une grande rapidité car elle n'utilise pas les mécanismes d'entrées et sorties standard comme le buffer.
+
+      L'appel msync est utilisé pour effectuer l'écriture sur le disque des modifications apportées à la copie d'un fichier projeté en mémoire.
+
+      Le Slab allocator est un mécanisme qui donne accès aux structures fréquemment utilisées par le noyau.
+
+VI. LES APPELS SYSTÈMES DE GESTION MÉMOIRE.
+
+   A. Gestion des processus et de l'espace d'adressage.
+
+      L'appel système fork permet de réaliser la duplication de la mémoire virtuelle du processus père.
+
+      L'appel système exec sert au chargement d'un nouveau fichier exécutable dans le processus.
+
+      L'appel système exit permet de terminer le processus courant et de supprimer son espace d'adressage.
+
+   B. Manipulation du tas et des protections.
+
+      L'appel système brk est utilisé pour la modification de la taille du tas.
+
+      L'appel système mprotect permet de contrôler la manière d'accéder à une portion de la mémoire.
+
+   C. Projection de fichiers en mémoire.
+
+      L'appel système mmap crée l'association mémoire pour un fichier et étend l'espace d'adressage du processus.
+
+      L'appel système munmap détruit la projection et réduit l'espace d'adressage du processus.
+
+      L'appel système msync assure l'écriture sur disque des modifications effectuées sur la copie d'un fichier projeté en mémoire par mmap.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la mémoire virtuelle avec la mémoire vive car la première repose sur l'adressage virtuel et la pagination.
+
+      Une confusion courante existe entre la segmentation qui peut causer une fragmentation externe et la pagination qui génère une fragmentation interne.
+
+      Il est important de distinguer le rôle du page stealer qui libère de la mémoire et celui du pager qui charge les pages à la demande.
+
+      La faute de segmentation est une erreur de programmation liée à une adresse hors de l'espace d'adressage alors que le défaut de page concerne une page non présente en mémoire centrale.
+
+      Le mécanisme COW ne duplique pas immédiatement les zones mémoire mais attend qu'une écriture soit effectuée par l'un des processus.
+
+EXEMPLES CITÉS.
+
+      Dans un système trente-deux bits, la translation d'adresse utilise un répertoire de pages contenant mille vingt-quatre entrées de trente-deux bits.
+
+      Une entrée de la table de page contient une adresse physique de vingt-deux bits et dix bits de contrôle.
+
+      La page elle-même contient quatre mille quatre-vingt-seize entrées de huit bits.
+
+      Le processus peut utiliser l'appel système mmap pour projeter un fichier en mémoire ou mprotect pour contrôler l'accès à une portion de mémoire.

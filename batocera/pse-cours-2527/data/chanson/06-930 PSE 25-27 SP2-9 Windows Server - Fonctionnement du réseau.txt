@@ -1,0 +1,53 @@
+TITRE : Réseau Windows Riddim
+
+[Intro]
+Écoute le rythme de la pile TCP/IP,
+Pour Windows Server, la connexion est infinie.
+
+[Couplet 1]
+Le TCP/IP est le socle de la communication,
+Connectant les clients avec une grande précision.
+Le DHCP distribue les adresses de façon automatique,
+Pour les postes de travail, c'est la méthode pratique.
+Mais pour les serveurs, l'adressage doit être statique,
+Évite les conflits avec une configuration spécifique.
+Le DNS fait le lien entre le nom et l'adresse IP,
+Sans lui, l'Active Directory ne peut pas fonctionner, mon ami.
+
+[Refrain]
+DHCP, DNS et Active Directory,
+Les quatre piliers pour gérer tout ton réseau de vie.
+Le contrôleur de domaine assure l'authentification,
+Dans la hiérarchie, tout est en parfaite organisation.
+
+[Couplet 2]
+L'Active Directory stocke les objets et les ressources,
+Le contrôleur de domaine gère les politiques et les forces.
+Le port trois cent vingt-neuf est pour le protocole LDAP,
+Et le port quatre-vingt-huit Kerberos ne fait pas d'impasse.
+Le port quatre cent quarante-cinq sert pour le partage SMB,
+Mais sur QUIC, le port quatre cent quarante-trois est le clé.
+Pour le diagnostic, utilise ipconfig ou bien nslookup,
+Et avec ping ou tracert, tu ne resteras pas dans le loop.
+
+[Refrain]
+DHCP, DNS et Active Directory,
+Les quatre piliers pour gérer tout ton réseau de vie.
+Le contrôleur de domaine assure l'authentification,
+Dans la hiérarchie, tout est en parfaite organisation.
+
+[Pont]
+Hyper-V crée des commutateurs pour la virtualisation,
+Externe, interne ou privé, pour chaque situation.
+Le SDN apporte le contrôle et le pare-feu distribué,
+Avec le RSC, la charge CPU est enfin réduite et libérée.
+
+[Refrain final]
+DHCP, DNS et Active Directory,
+Les quatre piliers pour gérer tout ton réseau de vie.
+Le contrôleur de domaine assure l'authentification,
+Dans la hiérarchie, tout est en parfaite organisation.
+
+[Outro]
+Révise bien tes ports et tes protocoles avec sagesse,
+Pour maîtriser Windows Server et éviter la détresse.

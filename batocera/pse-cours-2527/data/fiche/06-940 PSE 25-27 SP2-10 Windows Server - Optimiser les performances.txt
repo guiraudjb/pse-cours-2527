@@ -1,0 +1,297 @@
+GUIDE COMPLET DE L'OPTIMISATION DES PERFORMANCES SOUS WINDOWS SERVER.
+
+LEXIQUE COMPLET.
+
+      L'institut de la gestion publique et du développement économique désigne l'organisme responsable de la formation présentée dans le document.
+
+      Le sigle AD DS désigne Active Directory Domain Services, un rôle serveur essentiel pour la gestion des identités et des accès.
+
+      Le sigle CPU désigne le processeur, composant matériel dont la performance dépend de la fréquence, du nombre de cœurs et de la taille des caches L2 ou L3.
+
+      Le sigle RAM désigne la mémoire vive, dont le dimensionnement est critique pour éliminer la pagination et assurer la réactivité du serveur.
+
+      Le sigle SSD désigne un disque de stockage à semi-conducteurs, particulièrement recommandé pour le disque système ou les charges à fort taux d'E/S.
+
+      Le sigle NVMe désigne le protocole Non-Volatile Memory Express qui offre des performances supérieures et jusqu'à quatre-vingts pour cent d'IOPS en plus sur les lectures aléatoires 4K.
+
+      Le sigle RSS désigne la mise à l'échelle côté réception, une fonctionnalité des cartes réseau permettant une meilleure répartition de la charge.
+
+      Le sigle IIS désigne Internet Information Services, le rôle de serveur Web utilisé pour l'hébergement de services en ligne.
+
+      Le sigle Hyper-V désigne la technologie de virtualisation permettant de faire fonctionner plusieurs machines virtuelles sur un hôte.
+
+      Le sigle RDS désigne les services Bureau à distance, un rôle serveur nécessitant un dimensionnement spécifique de la mémoire.
+
+      Le sigle SDN désigne le réseau défini par logiciel, un sous-système dont l'optimisation passe par le dimensionnement des contrôleurs.
+
+      Le sigle DTrace désigne un utilitaire de surveillance et de débogage des performances en temps réel intégré nativement à Windows Server deux mille vingt-cinq.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET MÉTHODOLOGIE D'OPTIMISATION.
+
+   A. Enjeux et conséquences d'une mauvaise configuration.
+
+      L'optimisation des performances vise à garantir la disponibilité, la réactivité et l'efficacité des services hébergés sur un serveur.
+
+      Un serveur mal configuré ou sous-dimensionné peut entraîner des lenteurs, des timeouts ou des pannes critiques.
+
+      Ces dysfonctionnements ont un impact direct sur la productivité des utilisateurs et sur la continuité des activités de l'organisation.
+
+   B. Le cycle itératif en quatre étapes.
+
+      Le processus d'optimisation repose sur une approche méthodique qui commence par la collecte des métriques et des données de performance via PerfMon.
+
+      L'étape suivante consiste à analyser ces données pour identifier précisément les goulots d'étranglement du système.
+
+      Une fois les problèmes identifiés, il faut procéder à l'ajustement des paramètres et à l'optimisation de la configuration.
+
+      Enfin, une surveillance continue est indispensable pour vérifier les améliorations apportées et maintenir les performances.
+
+   C. Les trois piliers : matériel, rôles et sous-systèmes.
+
+      Le premier pilier concerne le matériel serveur, incluant le choix et la configuration des composants physiques comme le CPU, la RAM, les disques et le réseau.
+
+      Le deuxième pilier porte sur les rôles serveur, ce qui nécessite des ajustements spécifiques pour des services tels que AD DS, Hyper-V ou le serveur de fichiers.
+
+      Le troisième pilier traite du sous-système du serveur par l'optimisation des couches système comme le cache, la mémoire, le réseau ou le SDN.
+
+      Chaque domaine doit être abordé de manière itérative car une modification dans un pilier peut impacter les deux autres.
+
+II. OPTIMISATION DES COMPOSANTS MATÉRIELS.
+
+   A. Processeur et gestion du cache.
+
+      Le choix du processeur doit se porter sur des modèles soixante-quatre bits pour garantir une compatibilité et des performances optimales.
+
+      Il est recommandé de privilégier des processeurs dotés de cœurs à plus haute fréquence pour augmenter la vitesse de calcul.
+
+      Pour les charges de travail qui permettent le traitement parallèle, il est préférable de choisir un nombre élevé de cœurs.
+
+      L'adaptation du sous-système mémoire et des entrées et sorties aux performances du CPU est essentielle pour éviter les déséquilibres.
+
+      La sélection de processeurs possédant de grands caches L2 ou L3 permet de réduire la latence lors du traitement des données.
+
+   B. Mémoire vive et gestion de la pagination.
+
+      L'objectif principal est d'installer une quantité de mémoire suffisante pour éliminer totalement le recours à la pagination.
+
+      Il est conseillé d'isoler le fichier d'échange sur son propre disque physique afin de limiter la contention.
+
+      L'utilisation de SSD pour le disque de pagination est recommandée, idéalement dans une configuration tolérante aux pannes.
+
+      Pour une charge très légère comme un serveur core de base, deux Go de RAM sont le minimum et quatre Go sont recommandés.
+
+      Une charge élevée nécessitant SQL Server ou Hyper-V demande entre seize et trente-deux Go de RAM minimale et de trente-deux à soixante-quatre Go recommandés.
+
+      Les environnements intensifs ou enterprise avec une virtualisation dense nécessitent cent vingt-huit Go de RAM minimale et deux cent cinquante-six Go - plusieurs To recommandés.
+
+   C. Stockage et technologies SSD NVMe.
+
+      Les disques durs à grande vitesse sont adaptés pour les volumes de stockage massif.
+
+      Les SSD doivent être utilisés pour le disque système UEFI, le démarrage et les disques sensibles à la latence.
+
+      L'usage des SSD NVMe est préconisé pour les opérations d'entrées et sorties simultanées intensives.
+
+      Les SSD NVMe offrent des performances supérieures et une plus grande longueur de file d'attente de commandes.
+
+      Cette technologie permet un traitement plus efficace des commandes de quatre Ko et peut atteindre jusqu'à trois virgule trois millions d'IOPS sur les SSD PCIe Gen cinq.
+
+      Windows Server deux mille vingt-cinq apporte un support natif NVMe qui peut augmenter les IOPS de quatre-vingts pour cent sur les lectures aléatoires 4K.
+
+   D. Réseau et efficacité énergétique.
+
+      Il faut utiliser des cartes réseau possédant la certification matérielle Windows et être compatibles soixante-quatre bits.
+
+      L'activation de la mise à l'échelle côté réception, appelée RSS, est nécessaire sur les cartes réseau.
+
+      Pour réduire la consommation, il est possible de choisir des processeurs avec une enveloppe thermique TDP inférieure.
+
+      L'utilisation de mémoire basse consommation et de SSD permet également de limiter la consommation électrique.
+
+      Les disques de deux virgule cinq pouces sont à privilégier par rapport aux modèles de trois virgule cinq pouces car ils sont moins énergivores.
+
+      L'installation de ventilateurs à vitesse variable dans les alimentations contribue aussi à l'efficacité énergétique.
+
+III. OPTIMISATION DES RÔLES SERVEURS ET SOUS-SYSTÈMES.
+
+   A. Active Directory Domain Services (AD DS).
+
+      Pour optimiser AD DS, il est recommandé de vérifier que tous les contrôleurs de domaine agissent comme des serveurs de catalogue global afin de mieux répartir la charge.
+
+      Il convient d'éviter la création manuelle d'objets de connexion et de laisser le KCC gérer ces processus.
+
+      La suppression des contrôleurs de domaine orphelins et la mise à jour vers la version la plus récente de Windows Server sont essentielles.
+
+      Le service DNS doit toujours être configuré pour fonctionner localement sur le contrôleur de domaine.
+
+      Dans les environnements très sollicités, l'ajustement des poids LDAP via LdapSrvWeight permet de réduire la charge sur l'émulateur PDC.
+
+      L'état de la réplication peut être vérifié avec la commande repadmin /replsummary ou Get-ADReplicationFailure.
+
+   B. Services de fichiers (SMB) et serveur Web (IIS).
+
+      Pour le serveur de fichiers, il est conseillé de configurer le mode de gestion de l'alimentation du BIOS et du système d'exploitation sur Haute performance.
+
+      L'utilisation de xcopy avec les options /q et /k permet de réduire la sortie console et le trafic réseau lors des transferts.
+
+      L'optimisation d'IIS repose sur la mise en place de la compression HTTP statique et dynamique.
+
+      Il est également possible d'utiliser la mise en cache en mode noyau avec une capacité allant jusqu'à cinq cent douze Mo.
+
+      Enfin, l'ajustement des paramètres TCP/IP comme la fenêtre de réception et l'autotuning est préconisé pour améliorer les performances.
+
+   C. Virtualisation avec Hyper-V.
+
+      L'optimisation d'Hyper-V nécessite d'allouer la mémoire, le CPU et le stockage à chaque machine virtuelle en fonction de ses besoins réels.
+
+      Windows Server deux mille vingt-cinq introduit des compteurs de gigue CPU pour quantifier les fluctuations du temps de traitement avec une précision milliseconde.
+
+      Le partitionnement GPU permet désormais d'allouer des ressources graphiques virtuelles à plusieurs machines virtuelles.
+
+      La protection des ressources de l'hôte peut être activée avec l'option -EnableHostResourceProtection $true pour limiter les activités perturbatrices des machines virtuelles.
+
+   D. Optimisation des couches réseau et SDN.
+
+      Pour le réseau, il est recommandé d'activer la mise à l'échelle côté réception appelée RSS sur les cartes d'adaptation.
+
+      Le groupement de cartes réseau via le NIC Teaming est une pratique recommandée pour optimiser le sous-système.
+
+      L'utilisation de la décharge des cartes réseau, ou offload, permet d'améliorer l'efficacité du traitement.
+
+      Concernant le SDN, il est crucial de s'assurer que les contrôleurs réseau sont correctement dimensionnés.
+
+      Le groupement physique des cartes réseau doit également être activé pour garantir des performances optimales.
+
+IV. OUTILS DE DIAGNOSTIC ET AUTOMATISATION.
+
+   A. Monitoring avec PerfMon et Resource Monitor.
+
+      PerfMon est l'outil historique de monitoring de Windows qui permet de créer des collecteurs de données et d'analyser des compteurs de performance.
+
+      Ce système permet de surveiller des indicateurs essentiels comme l'activité de pagination via le compteur Memory\Pages/sec ou le débit réseau avec Network Interface\Bytes Total/sec.
+
+      Il est également possible de contrôler l'utilisation du disque par PhysicalDisk\% Disk Time et de mesurer la longueur de la file d'attente avec PhysicalDisk\Avg. Disk Queue Length.
+
+      Resource Monitor complète cette approche en offrant une vue en temps réel de l'utilisation du CPU, de la mémoire, du disque et du réseau.
+
+   B. Introduction au tracing avec DTrace.
+
+      DTrace est un utilitaire de ligne de commande intégré nativement dans Windows Server deux mille vingt-cinq pour la surveillance et le débogage des performances en temps réel.
+
+      Cet outil permet une instrumentation dynamique du noyau et du code espace utilisateur sans nécessiter de modification du code source.
+
+      Il propose des techniques avancées telles que des agrégations, des histogrammes et le traçage d'événements au niveau utilisateur.
+
+      Pour l'utiliser, l'utilisateur doit exécuter la commande dtrace depuis une invite de commandes ou un terminal PowerShell avec des privilèges élevés.
+
+   C. Automatisation via PowerShell.
+
+      PowerShell est utilisé pour automatiser la surveillance et l'optimisation du système en créant des scripts pour monitorer le CPU, la mémoire et le disque.
+
+      Il permet d'ajuster les paramètres système via la commande Set-ItemProperty et de gérer efficacement les paramètres réseau.
+
+      Pour le réseau, les commandes Get-NetAdapterRss et Set-NetAdapterRss permettent de vérifier et de configurer le profil RSS, tandis que Set-NetTCPSetting peut activer l'autotuning TCP.
+
+      Le diagnostic des services est facilité par Get-ADReplicationFailure et repadmin /replsummary pour l'état de réplication AD, ou encore Get-WindowsFeature pour lister les rôles installés.
+
+V. INNOVATIONS ET NOUVEAUTÉS DE WINDOWS SERVER deux mille vingt-cinq.
+
+   A. Support natif NVMe et gains de performance.
+
+      Windows Server deux mille vingt-cinq marque une rupture majeure avec l'émulation SCSI utilisée depuis quatorze ans.
+
+      Cette évolution permet d'atteindre jusqu'à quatre-vingts pour cent d'IOPS supplémentaires sur les lectures aléatoires 4K.
+
+      L'utilisation de ce support natif permet également une réduction de l'utilisation CPU par E/S allant jusqu'à quarante-cinq pour cent.
+
+      Le système exploite des files d'attente multi-queues pour offrir un accès direct au matériel.
+
+      Les performances peuvent atteindre jusqu'à trois virgule trois millions d'IOPS sur les SSD PCIe Gen cinq.
+
+      L'activation nécessite l'installation de la mise à jour cumulative KB5066835 d'octobre deux mille vingt-cinq ou ultérieure.
+
+   B. Le mécanisme de Hotpatching.
+
+      Le hotpatching permet d'installer des mises à jour de sécurité sans avoir besoin de redémarrer le serveur.
+
+      Ce processus réduit l'impact sur les charges de travail et diminue les fenêtres de maintenance nécessaires.
+
+      L'installation est plus rapide et consomme moins de fichiers binaires, de disque et de CPU.
+
+      Le fonctionnement repose sur un cumul de base rafraîchi tous les trois mois.
+
+      Les deux mois suivants, des correctifs hotpatch sont publiés pour compléter la protection.
+
+      Cette fonctionnalité est disponible sur les machines virtuelles Azure et Azure Local ainsi que via Azure Arc.
+
+   C. Améliorations système et outils intégrés.
+
+      L'outil DTrace est désormais intégré nativement pour permettre la surveillance et le débogage en temps réel.
+
+      Il permet une instrumentation dynamique du noyau et du code espace utilisateur sans modification du code.
+
+      Hyper-V bénéficie de nouveaux compteurs de gigue CPU pour identifier les goulots d'étranglement avec une précision milliseconde.
+
+      Le partitionnement GPU permet d'allouer des ressources graphiques virtuelles à plusieurs machines virtuelles.
+
+      Le système supporte de nouveaux formats de compression de fichiers comme le 7z et le TAR.
+
+      La mise à niveau sur place est possible pour les serveurs provenant de Windows Server deux mille douze R2.
+
+VI. SYNTHÈSE DES BONNES PRATIQUES ET RECOMMANDATIONS.
+
+   A. Récapitulatif des configurations matérielles.
+
+      Le processeur doit être en soixante-quatre bits avec une haute fréquence et un grand nombre de cœurs pour les charges parallèles. Il est recommandé de choisir des processeurs disposant de grands caches L2 ou L3 pour réduire la latence.
+
+      La mémoire vive doit être installée en quantité suffisante pour éliminer la pagination. Le fichier d'échange doit être isolé sur son propre disque physique, idéalement un SSD en configuration tolérante aux pannes.
+
+      Le stockage doit utiliser des SSD pour le disque système UEFI et les disques sensibles à la latence. Les SSD NVMe sont à privilégier pour les E/S simultanées intensives car ils offrent jusqu'à quatre-vingts pour cent d'IOPS en plus sur les lectures aléatoires 4K.
+
+      Les cartes réseau doivent être certifiées Windows, compatibles soixante-quatre bits et disposer de la fonction RSS activée. Pour l'alimentation, il faut privilégier des composants à faible TDP et des disques de deux virgule cinq pouces pour réduire la consommation.
+
+   B. Tableau des commandes PowerShell essentielles.
+
+      La commande Get-NetAdapterRss permet de vérifier l'état RSS des cartes réseau tandis que Set-NetAdapterRss -Profile sert à configurer le profil.
+
+      Pour la gestion réseau, Get-NetTCPSetting affiche les paramètres TCP et Set-NetTCPSetting -AutoTuningLevelLocal Normal active l'autotuning.
+
+      Le diagnostic de l'Active Directory s'effectue avec Get-ADReplicationFailure pour les échecs et repadmin /replsummary pour le résumé de l'état de réplication.
+
+      Enfin, la commande Get-WindowsFeature est utilisée pour lister les rôles installés sur le serveur.
+
+   C. Check-list des meilleures pratiques par domaine.
+
+      Au niveau matériel, il faut utiliser des SSD NVMe pour les charges intensives et activer le RSS sur les cartes réseau. L'isolation du fichier d'échange sur un disque dédié est également une pratique recommandée.
+
+      Pour le système, le plan d'alimentation doit être configuré sur Haute performance pour éviter les ralentissements liés à l'économie d'énergie. L'activation du support natif NVMe permet d'exploiter pleinement les performances des SSD.
+
+      Concernant les rôles, il faut optimiser les paramètres SMB pour les serveurs de fichiers et utiliser le partitionnement GPU dans Hyper-V. Pour l'Active Directory, il est conseillé de faire fonctionner le DNS localement sur le contrôleur de domaine.
+
+      Pour le monitoring, une surveillance proactive avec PerfMon est indispensable pour la détection précoce des goulots d'étranglement. L'utilisation de Windows Server deux mille vingt-cinq permet d'activer le Hotpatching pour réduire les interruptions de maintenance.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'optimisation matérielle et l'optimisation des rôles car une modification dans un domaine peut impacter les autres.
+
+      L'optimisation de la mémoire ne doit pas se limiter à la quantité de RAM mais doit aussi inclure l'isolation du fichier d'échange sur son propre disque physique.
+
+      Il est crucial de ne pas confondre le monitoring en temps réel avec la collecte de données historique car PerfMon permet de créer des collecteurs de données.
+
+      L'ajustement des performances ne doit pas être une action unique mais un processus itératif comprenant la collecte, l'analyse, l'ajustement et la surveillance.
+
+      Une erreur courante consiste à négliger le mode d'alimentation du BIOS qui doit être configuré sur Haute performance pour éviter les ralentissements.
+
+EXEMPLES CITÉS.
+
+      L'utilisation du support natif NVMe sur Windows Server deux mille vingt-cinq permet d'obtenir jusqu'à quatre-vingts pour cent d'IOPS en plus sur les lectures aléatoires 4K.
+
+      Pour une charge de travail très élevée comme un gros Hyper-V, la RAM recommandée est de cent vingt-huit Go et plus.
+
+      Le hotpatching permet d'installer des mises à jour de sécurité sans redémarrer le serveur pour les machines virtuelles Azure et Azure Local.
+
+      La commande repadmin /replsummary est utilisée pour vérifier l'état de réplication dans un environnement Active Directory.
+
+      L'outil DTrace est une nouveauté de Windows Server deux mille vingt-cinq qui permet l'instrumentation dynamique du noyau et du code espace utilisateur.

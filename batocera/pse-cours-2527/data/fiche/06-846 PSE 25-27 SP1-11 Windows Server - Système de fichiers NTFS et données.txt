@@ -1,0 +1,265 @@
+FICHE DE RÉVISION COMPLÈTE SUR LES SYSTÈMES DE FICHIERS ET LA GESTION DES DONNÉES WINDOWS.
+
+LEXIQUE COMPLET.
+
+      L'Institut de la Gestion publique et du Développement économique désigne l'organisme chargé de la formation et de la préparation à la qualification PSE.
+
+      Le sigle NTFS désigne le système de fichiers de référence utilisé pour les volumes Windows modernes afin d'organiser et de protéger les données.
+
+      La MFT désigne la table maîtresse des fichiers qui contient les métadonnées et les références vers les données de chaque fichier et répertoire.
+
+      Le sigle ACL désigne la liste de contrôle d'accès permettant de définir les permissions sur un objet.
+
+      Le sigle DACL désigne la liste de contrôle d'accès discrétionnaire qui contient les entrées autorisant ou refusant des droits.
+
+      Le sigle SACL désigne la liste de contrôle d'accès système utilisée pour configurer l'audit des succès ou des échecs.
+
+      Le sigle SMB désigne le protocole utilisé pour la gestion des partages et l'accès aux fichiers sur le réseau.
+
+      Le sigle VSS désigne le service de copie instantanée de volume qui fournit une infrastructure de copies cohérentes pour la récupération.
+
+      Le sigle EFS désigne un mécanisme de protection cryptographique des données.
+
+      Le sigle ADS désigne les flux alternatifs permettant de stocker des données de manière distincte dans un fichier.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX DE L'ORGANISATION DU STOCKAGE.
+
+   A. Hiérarchie du disque au fichier.
+
+      L'organisation des données suit une progression logique allant du matériel vers l'unité de données. Elle débute par le disque physique qui peut être divisé en plusieurs partitions ou espaces de stockage.
+
+      Chaque partition constitue un espace de stockage qui permet ensuite la création d'un volume. Le volume représente l'unité logique de stockage au sein du système.
+
+      Le système de fichiers est ensuite appliqué au volume par un formatage qui crée les structures nécessaires. Ce processus permet de passer du stockage brut à une organisation structurée.
+
+      L'organisation se poursuit par la création de répertoires qui servent de structures pour organiser les fichiers. Le fichier constitue l'unité logique finale contenant les données.
+
+      Il est essentiel de ne pas confondre le stockage physique avec l'organisation logique des données. La hiérarchie permet de passer du disque au fichier de manière ordonnée.
+
+   B. Notions de volume, chemin et métadonnées.
+
+      Le volume est défini comme un espace logique géré par le système comme une unité unique. Il sert de base à l'application du système de fichiers.
+
+      Le chemin représente la localisation logique d'une ressource au sein de la structure de stockage. Il permet de désigner précisément où se trouve un objet.
+
+      Les métadonnées sont des informations cruciales qui décrivent une ressource sans avoir à analyser son contenu. Elles permettent au système de gérer les fichiers efficacement.
+
+      Les attributs sont des caractéristiques spécifiques associées à un fichier ou à un répertoire. Ils complètent les informations fournies par les métadonnées.
+
+      Le fichier est l'unité logique qui contient les données elles-mêmes. Il est indissociable de ses métadonnées et de ses attributs pour une gestion complète par le système.
+
+   C. Fonctions principales d'un système de fichiers.
+
+      Un système de fichiers remplit quatre fonctions majeures pour l'organisation des données. Il doit permettre de nommer les ressources et de les localiser via des chemins et des namespaces.
+
+      La protection des données est une fonction essentielle assurée par les ACL et le chiffrement. Elle garantit la sécurité des accès aux fichiers et aux répertoires.
+
+      Le système doit également assurer la capacité de résister aux erreurs grâce à la journalisation. Cette fonction garantit l'intégrité des données et la cohérence transactionnelle.
+
+      NTFS est le système de référence utilisé pour les volumes Windows modernes. Il offre des fonctionnalités avancées de sécurité et de gestion.
+
+      D'autres systèmes comme ReFS sont utilisés pour des usages serveur et résilients sans remplacer totalement NTFS. Les formats FAT et exFAT restent utiles pour certains médias amovibles malgré leurs limites de sécurité.
+
+II. ARCHITECTURE ET FONCTIONNEMENT DU SYSTÈME NTFS.
+
+   A. La Master File Table (MFT).
+
+      Chaque fichier et chaque répertoire est associé à une entrée dans la MFT.
+
+      Cette table maîtresse contient les métadonnées essentielles ainsi que les références vers les données du fichier.
+
+      Certaines données de petite taille peuvent être stockées directement à l'intérieur même de l'entrée de la MFT.
+
+      La compréhension de la MFT est fondamentale pour saisir l'organisation interne du système NTFS.
+
+   B. Attributs, journalisation et flux alternatifs (ADS).
+
+      Les attributs permettent de gérer les données, les dates, la sécurité ainsi que les références vers les structures associées.
+
+      Les métadonnées servent au système pour gérer les fichiers sans avoir besoin d'analyser leur contenu.
+
+      Le mécanisme de journaling assure la cohérence transactionnelle du système de fichiers.
+
+      Les flux alternatifs, ou ADS, constituent une caractéristique spécifique de l'organisation des données.
+
+   C. Comparaison NTFS, ReFS et FAT/exFAT.
+
+      NTFS est le système de référence pour les volumes Windows modernes.
+
+      Le système ReFS apparaît pour des usages serveurs et des besoins de résilience, sans pour autant remplacer tous les usages de NTFS.
+
+      Les systèmes FAT et exFAT restent utiles pour certains médias amovibles malgré leurs limites en matière de sécurité.
+
+III. MODÈLE DE SÉCURITÉ ET GESTION DES AUTORISATIONS.
+
+   A. Structure des ACL (DACL et SACL).
+
+      Le modèle logique des autorisations repose sur l'interaction entre un sujet et un objet. Le sujet peut être un utilisateur, un groupe ou un ordinateur.
+
+      L'objet représente la ressource cible comme un fichier, un dossier, une clé ou un processus. Le contrôle d'accès est géré par deux types de listes distinctes.
+
+      La DACL contient les ACE qui permettent d'autoriser ou de refuser un accès spécifique. Elle est le pilier du contrôle d'accès au sein du système.
+
+      La SACL est utilisée pour l'audit en enregistrant les succès ou les échecs d'accès. Elle nécessite une politique d'audit active et une configuration pertinente pour être efficace.
+
+   B. Méthode de calcul des droits effectifs.
+
+      Le calcul des droits effectifs n'est pas une simple impression visuelle mais une conclusion calculée. Il nécessite une analyse rigoureuse de plusieurs étapes.
+
+      La première étape consiste à collecter toutes les appartenances de l'utilisateur en incluant ses groupes. Il faut ensuite identifier l'héritage provenant du répertoire parent vers l'enfant.
+
+      Le système doit distinguer les droits explicites des droits hérités. Il prend également en compte la priorité des instructions d'autorisation ou de refus.
+
+      La méthode finale combine les permissions NTFS et les permissions de partage. La règle d'or est de retenir systématiquement le droit le plus restrictif des deux.
+
+   C. Interaction entre permissions de partage SMB et NTFS.
+
+      La gestion des accès varie selon que l'accès est réalisé localement ou via le réseau. Les permissions NTFS s'appliquent de manière constante pour l'accès local.
+
+      Lors d'un accès réseau, le système doit cumuler les permissions du partage SMB et les permissions NTFS. Le compte utilisateur peut bénéficier de plusieurs autorisations via ses groupes.
+
+      Il est impératif d'analyser les règles réellement applicables pour déterminer l'accès final. Une erreur courante consiste à ne regarder qu'un seul des deux types de droits.
+
+      Les bonnes pratiques de gestion recommandent d'éviter de multiplier les exceptions individuelles. Il est préférable de documenter la finalité et les groupes autorisés pour chaque partage.
+
+IV. ADMINISTRATION ET OUTILS DE GESTION DES VOLUMES.
+
+   A. Outils d'administration graphique et ligne de commande.
+
+      L'administration des volumes peut s'effectuer via la gestion des disques qui propose une interface graphique pour l'administration.
+
+      L'outil DiskPart permet une administration en ligne de commande qui nécessite toutefois une grande prudence lors de son utilisation.
+
+      Le langage PowerShell offre des commandes spécifiques comme Get-Disk, Get-Partition et Get-Volume pour la gestion des structures.
+
+      Pour l'interrogation des listes de contrôle d'accès, la commande Get-Acl est l'outil de référence.
+
+      La gestion des partages réseau s'appuie sur Get-SmbShare, New-SmbShare et Get-SmbShareAccess pour le contrôle des droits.
+
+   B. Gestion des quotas et de l'espace disque.
+
+      La gestion des quotas permet de suivre ou de limiter la consommation d'espace sur les volumes.
+
+      Ces mécanismes servent à identifier les utilisateurs ou les répertoires qui sont responsables d'une croissance de données.
+
+      Il est nécessaire de définir des seuils d'alerte adaptés pour une gestion efficace de l'espace.
+
+      L'association des quotas doit impérativement respecter la politique de gestion des données de l'organisation.
+
+      Il ne faut jamais supprimer automatiquement une donnée sans avoir préalablement vérifié les règles de conservation.
+
+   C. Surveillance des performances et des erreurs.
+
+      Le Performance Monitor est l'outil utilisé pour assurer le suivi des performances des entrées et sorties.
+
+      L'Observateur d'événements permet de rechercher les erreurs spécifiques liées au stockage du système.
+
+      La surveillance peut porter sur les sessions, les fichiers ouverts et les événements selon les besoins identifiés.
+
+      L'audit et la traçabilité permettent de reconstituer une chronologie grâce aux événements Windows.
+
+      La corrélation de plusieurs événements est préférable à la recherche d'une erreur isolée pour le diagnostic.
+
+V. PROTECTION, SAUVEGARDE ET TRAÇABILITÉ DES DONNÉES.
+
+   A. Stratégies de sauvegarde et restauration.
+
+      Une sauvegarde consiste en une copie de données permettant d'assurer une récupération ultérieure.
+
+      Elle ne remplace en aucun cas les permissions ou les mécanismes de disponibilité du système.
+
+      La définition de la stratégie doit préciser quoi sauvegarder, quand effectuer les copies, pour combien de temps et sur quel support.
+
+      Il est indispensable de tester régulièrement les procédures de restauration.
+
+      Une sauvegarde qui n'a pas été testée ne peut garantir une restauration réussie en cas de besoin.
+
+   B. Utilisation du service VSS (Volume Shadow Copy).
+
+      Le service VSS fournit une infrastructure permettant de créer des copies cohérentes des données.
+
+      Certaines fonctions de Windows ainsi que diverses applications s'appuient sur cette technologie.
+
+      L'utilisation des versions précédentes peut permettre une récupération de données dans certains environnements.
+
+      Il faut toutefois bien distinguer une copie instantanée d'une véritable sauvegarde ou d'une restauration.
+
+      Les sauvegardes classiques restent indispensables pour faire face aux scénarios de perte ou de corruption.
+
+   C. Audit, journalisation et principes de sécurité.
+
+      L'audit doit être mis en place pour répondre à un besoin précis de sécurité ou de conformité.
+
+      Il permet d'identifier le compte concerné, l'objet visé et le contexte de l'action.
+
+      La journalisation et l'audit contribuent à assurer la traçabilité et l'intégrité des données.
+
+      Il est préférable de corréler plusieurs événements plutôt que de chercher une erreur de manière isolée.
+
+      Les journaux doivent être conservés conformément à la politique de l'organisation.
+
+      La gestion des données repose sur les axes de la disponibilité, la confidentialité, l'intégrité et la traçabilité.
+
+VI. MÉTHODOLOGIE DE RÉSOLUTION ET PRÉPARATION À L'ÉPREUVE.
+
+   A. Axes d'analyse de la gestion des données.
+
+      La gestion des données repose sur quatre piliers fondamentaux que sont la disponibilité, la confidentialité, l'intégrité et la traçabilité.
+
+      La disponibilité est assurée par la mise en place de mécanismes de sauvegarde, de restauration et de continuité de service.
+
+      La confidentialité est garantie par l'application des ACL, du chiffrement et du principe du moindre privilège.
+
+      L'intégrité est maintenue grâce au contrôle d'erreur et au versioning des fichiers.
+
+      La traçabilité s'appuie sur la journalisation, l'utilisation des journaux et les processus d'audit pour fournir des preuves.
+
+   B. Réflexes pour le diagnostic et la correction.
+
+      Pour diagnostiquer un problème d'accès, il faut impérativement calculer les droits effectifs en combinant les appartenances de l'utilisateur, l'héritage et la distinction entre droits explicites et hérités.
+
+      Le diagnostic doit systématiquement confronter les permissions NTFS avec les permissions de partage SMB pour retenir l'autorisation la plus restrictive.
+
+      En cas de doute sur l'accès à un fichier, il est nécessaire de vérifier si le problème provient du mode utilisateur, du mode noyau ou du matériel.
+
+      L'analyse doit identifier l'objet système concerné, qu'il s'agisse d'un processus, d'un thread, d'un service, d'un pilote ou d'un fichier.
+
+      La vérification des hypothèses doit s'appuyer sur des indicateurs précis comme l'Observateur d'événements ou le Performance Monitor.
+
+      Toute correction proposée doit être minimale, réversible et traçable afin de ne pas dégrader la sécurité ou la continuité.
+
+   C. Critères de réponse pour la qualification PSE.
+
+      Une réponse conforme aux attentes de la qualification PSE doit être exacte, structurée, vérifiable et proportionnée.
+
+      L'explication doit être formulée de manière claire en précisant la localisation du composant dans l'architecture Windows.
+
+      Il est essentiel de déterminer si le droit est direct, hérité, autorisé ou refusé pour justifier une décision.
+
+      L'analyse doit toujours relier chaque mesure technique à un risque concret de sécurité ou de continuité.
+
+      La réponse doit permettre de conclure sur la conséquence directe d'un événement ou d'une configuration sur le système.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le stockage physique d'un disque avec l'organisation logique des volumes et des systèmes de fichiers.
+
+      Une erreur courante consiste à confondre l'accès local régi par les permissions NTFS avec l'accès réseau qui nécessite la combinaison des permissions de partage SMB et NTFS.
+
+      Pour déterminer les droits effectifs, il est crucial de retenir le principe du plus restrictif lors de la combinaison des permissions de partage et NTFS.
+
+      Il est important de distinguer une copie instantanée via VSS d'une véritable sauvegarde ou d'une restauration pour garantir la continuité.
+
+      L'accès effectif est une conclusion calculée par l'administration et non une simple impression visuelle tirée de l'onglet sécurité.
+
+EXEMPLES CITÉS.
+
+      Un utilisateur peut affirmer voir des fichiers dans un dossier partagé contenant des données sensibles sans pour autant pouvoir les ouvrir.
+
+      L'administration des partages peut s'effectuer via l'interface graphique ou par des commandes PowerShell comme Get-SmbShare ou New-SmbShare.
+
+      Le calcul des droits effectifs suit une méthode précise incluant la collecte des appartenances, l'identification de l'héritage et la distinction entre explicite et hérité.
+
+      Le programme de formation pour la qualification PSE prévoit une session le vendredi de neuf heures quinze à seize heures quarante-cinq.

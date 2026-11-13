@@ -1,0 +1,253 @@
+GUIDE COMPLET SUR LA COMMUNICATION ENTRE PROCESSUS ET LES MÉCANISMES IPC.
+
+LEXIQUE COMPLET.
+
+      L'IPC désigne l'inter-process communication, soit l'ensemble des mécanismes permettant à des processus concurrents ou distants de communiquer.
+
+      Le PID désigne l'identifiant de processus, qui est un numéro unique permettant d'identifier chaque processus.
+
+      Le PPID désigne l'identifiant de processus parent, qui permet au processus enfant de conserver la référence de son créateur.
+
+      L'institut de la gestion publique et du développement économique est l'organisme qui fournit le support de formation sur la communication entre processus.
+
+      Le système System V désigne une catégorie d'IPC gérés par le noyau par l'intermédiaire de tables et totalement détachés du système de fichiers.
+
+      La section critique désigne une région de code ou une manipulation de donnée critique qui ne doit être exécutée par qu'un seul processus à la fois.
+
+      Le mutex désigne un mécanisme de verrou ou d'exclusion mutuelle utilisé pour protéger l'intégrité des données dans une section critique.
+
+      Le sémaphore désigne un mécanisme de synchronisation représenté par un entier qui permet de régler les conflits d'accès concurrents à une ressource.
+
+      Le thread désigne un fil d'exécution ou processus léger qui partage le même contexte mémoire avec d'autres threads d'un même processus.
+
+      Le socket désigne un point de communication permettant à un processus d'émettre ou de recevoir des données via des familles protocolaires comme AF_UNIX ou AF_INET.
+
+      Le FIFO désigne un tube nommé qui existe dans le système de fichiers et peut être ouvert grâce à une référence.
+
+      Le SGF désigne le système de fichiers où apparaissent les tubes nommés avec le symbole p.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX DE LA GESTION DES PROCESSUS.
+
+   A. Création de processus avec fork et exec.
+
+      Sous UNIX, la création d'un processus s'effectue par l'appel système int fork(void).
+
+      Le processus qui exécute cet appel est désigné comme le processus parent ou père.
+
+      Le nouveau processus créé est appelé le processus fils ou enfant.
+
+      Chaque processus possède un identifiant de processus unique nommé PID.
+
+      Le processus fils reçoit son propre PID mais conserve également le PID du parent comme identifiant de processus parent ou PPID.
+
+      La fonction système exec() permet d'exécuter un nouveau processus dans le contexte d'un processus existant en effectuant une superposition.
+
+   B. Structure interne et table des processus.
+
+      Tous les processus sont associés à une entrée dans la table des processus qui est gérée de manière interne par le noyau.
+
+      Le noyau alloue pour chaque processus une structure appelée zone u contenant des données privées uniquement manipulables par le noyau.
+
+      La table des processus permet d'accéder à la table des régions par processus, laquelle permet d'accéder à la table des régions.
+
+      Ce double niveau d'indirection est utilisé pour permettre le partage de certaines régions.
+
+      Les structures de régions de la table des régions renseignent sur le type, les droits d'accès et la localisation des données.
+
+      La localisation peut correspondre à des adresses en mémoire ou à des adresses sur disque.
+
+   C. Notions de threads et différences avec les processus.
+
+      Un thread est un fil d'exécution ou un processus léger possédant un compteur ordinal, des registres et une pile d'exécution.
+
+      Un processus classique contient un thread, mais un processus peut également contenir plusieurs threads qui partagent le même contexte mémoire.
+
+      L'utilisation de threads permet l'allègement des opérations de commutation de contexte et la parallélisation des tâches.
+
+      L'accès partagé aux données entre les threads impose le recours à des outils de synchronisation comme les verrous et les sémaphores.
+
+      La librairie C pthread permet de gérer les threads avec des fonctions comme pthread_create pour la création ou pthread_join pour la suspension.
+
+      La fonction pthread_exit permet à un thread de terminer son exécution en retournant l'état de terminaison.
+
+II. CONCEPTS ET ENJEUX DE L'INTER-PROCESS COMMUNICATION.
+
+   A. Définition et catégories d'IPC.
+
+      L'inter-process communication, ou IPC, désigne l'ensemble des mécanismes permettant à des processus concurrents ou distants de communiquer entre eux.
+
+      Ces mécanismes sont essentiels car le système est initialement conçu pour garantir une étanchéité entre les processus.
+
+      On peut classer les outils d'IPC en trois catégories distinctes pour répondre aux besoins des développeurs.
+
+      La première catégorie regroupe les outils permettant aux processus de s'échanger des données de manière directe ou indirecte.
+
+      La deuxième catégorie concerne les outils permettant de synchroniser les processus, notamment pour la gestion du principe de section critique.
+
+      La troisième catégorie offre directement les caractéristiques des deux premières en combinant l'échange de données et la synchronisation.
+
+   B. Problématique de la section critique.
+
+      La section critique est une région de code ininterruptible où un seul processus doit être présent à la fois.
+
+      Elle est nécessaire lors de la manipulation d'une donnée critique afin de garantir l'intégrité des informations.
+
+      Pour gérer cette situation, il est indispensable de mettre en place un verrou ou un mécanisme d'exclusion mutuelle appelé mutex.
+
+      Le respect des critères d'exclusion mutuelle impose que deux processus ne se trouvent jamais simultanément dans la section critique.
+
+      Un processus doit également pouvoir entrer en section critique si aucune autre entité ne s'y trouve déjà.
+
+      Enfin, l'équité doit être respectée pour qu'un processus ne soit pas contraint d'attendre indéfiniment son tour d'accès.
+
+   C. Risques d'interblocage et de famine.
+
+      L'utilisation de mécanismes de verrouillage peut s'avérer non performante, comme dans l'exemple d'une mise à jour de compte bancaire où un processus ajoute mille euros et un autre retire cinq cents euros.
+
+      L'interblocage, aussi appelé deadlock ou étreinte fatale, survient lorsque plusieurs processus se bloquent mutuellement, à l'image du problème du dîner des philosophes.
+
+      Ce risque peut paralyser l'exécution de plusieurs programmes simultanément.
+
+      La famine est un autre risque majeur où un processus reste bloqué en attente d'un droit d'accès qui ne lui sera jamais accordé.
+
+      Un exemple de famine est celui d'un écrivain qui attend indéfiniment l'accès à une zone mémoire partagée occupée par des lecteurs.
+
+III. LES MÉCANISMES DE COMMUNICATION SYSTEM V.
+
+   A. Files de messages et gestion asynchrone.
+
+      Les files de messages sont des mécanismes de communication qui permettent à des processus de s'échanger des données via un lieu de stockage intermédiaire appelé boîte aux lettres.
+
+      Ce mode de fonctionnement repose sur une communication asynchrone entre l'émetteur et le récepteur.
+
+      L'implémentation de l'API standard Unix deux propose deux types de files de messages, à savoir les message queue Système V et les message queues Posix.
+
+      Les premières sont apparues dans les systèmes Unix des années quatre-vingts mais leur interface de programmation était jugée un peu bancale.
+
+      Il était notamment nécessaire de réserver quatre octets pour stocker la priorité du message et l'intégration au concept des descripteurs de fichiers Unix n'était pas totale.
+
+      L'évolution dans les années quatre-vingt-dix a permis d'uniformiser les interfaces via la norme Posix avec l'apparition de nouvelles files de message dont les descripteurs sont plus proches de ceux des fichiers.
+
+   B. Mémoire partagée et accès directs.
+
+      La mémoire partagée permet aux processus de partager de l'information directement et sans contrôle.
+
+      Ce mécanisme repose sur l'allocation d'une zone de la mémoire centrale.
+
+      L'existence de cette zone de mémoire est indépendante des processus qui y accèdent.
+
+      Cependant, la gestion des accès concurrents doit impérativement être mise en place, notamment via l'utilisation de sémaphores.
+
+   C. Sémaphores et synchronisation par jetons.
+
+      Le sémaphore est un mécanisme de synchronisation qui permet de régler les conflits d'accès concurrents de processus distincts à une même ressource.
+
+      Il peut être représenté comme un distributeur de tickets dont la valeur est un entier.
+
+      Le cas particulier du mutex est un sémaphore booléen qui prend les deux valeurs zéro et un.
+
+      Le fonctionnement repose sur deux opérations atomiques associées, à savoir l'opération P qui décrémente le sémaphore et l'opération V qui l'incrémente.
+
+      Un sémaphore est constitué de la valeur du sémaphore, de l'identificateur du dernier processus ayant manipulé le sémaphore et du nombre de processus attendant que la valeur s'incrémente.
+
+      Bien qu'utilisés pour définir des sections critiques en exclusion mutuelle, ces outils sont complexes à mettre en place car ils présentent des risques d'interblocage et de famine.
+
+IV. LES MÉCANISMES DE COMMUNICATION NATIFS UNIX ET LINUX.
+
+   A. Signaux et communication système.
+
+      Les signaux sont des messages qu'un processus peut envoyer à un autre processus.
+
+      Ils sont rarement utilisés pour la communication entre processus utilisateurs mais sont fortement utilisés par le système d'exploitation.
+
+      Les signaux reçus peuvent provenir de l'utilisateur au clavier, d'un autre programme via le système ou du système lui-même.
+
+      Le système peut également envoyer des signaux pour prévenir un processus que son environnement a changé ou pour gérer des processus qui se comportent mal.
+
+      On peut lister les signaux avec la commande kill -l ou consulter le manuel avec la commande man sept signal.
+
+   B. Tubes classiques et tubes nommés (FIFO).
+
+      Un tube est une méthode de connexion entre la sortie standard d'un processus et l'entrée standard d'un autre processus.
+
+      Il est matérialisé par deux entrées de la table des fichiers ouverts et est créé par l'appel système pipe.
+
+      Un tube classique ne peut être partagé que par un processus père et ses fils.
+
+      Les tubes nommés, aussi appelés fifos, existent dans le système de fichiers et apparaissent avec le symbole p dans le SGF.
+
+      Ils peuvent être créés avec la primitive mknod ou mkfifo et permettent un partage avec des processus autres que ceux de la filiation.
+
+   C. Sockets et communication réseau.
+
+      Un socket est un point de communication par lequel un processus peut émettre ou recevoir des données.
+
+      Il utilise un descripteur pour désigner la connexion et peut gérer plusieurs familles protocolaires.
+
+      Les sockets Unix sont basés sur les fichiers locaux avec l'adresse AF_UNIX tandis que les sockets réseaux utilisent AF_INET.
+
+      On peut utiliser le mode connecté avec le protocole TCP ou le mode déconnecté avec le protocole UDP.
+
+      Les sockets se situent entre la couche réseau et la couche transport du modèle OSI.
+
+      Les commandes netstat -anp ou ss -ltn permettent de superviser ces connexions.
+
+   D. Échange de données via les fichiers.
+
+      L'échange d'informations entre deux ou plusieurs processus peut se faire par l'utilisation de fichiers.
+
+      Les processus effectuent des opérations d'écriture dans un ou plusieurs fichiers pour communiquer.
+
+      Cette méthode peut utiliser un système de fichiers local ou un système de fichiers distribué.
+
+V. OUTILS DE GESTION ET DE SUPERVISION.
+
+   A. Commandes de lister et supprimer les IPC.
+
+      La commande ipcs permet de lister les différents mécanismes d'IPC gérés par le noyau. Elle peut être utilisée avec l'option -a pour lister tous les IPC ou avec les options -q, -m et -s pour cibler respectivement les files de messages, la mémoire partagée et les sémaphores.
+
+      Pour supprimer les ressources créées, on utilise la commande ipcrm. Cette commande nécessite de préciser le type d'objet avec les options -q pour les files de messages, -m pour la mémoire partagée ou -s pour les sémaphores.
+
+      La suppression d'un IPC peut s'effectuer en utilisant son identifiant ou sa clef. Il est donc crucial de bien identifier la ressource avant de lancer l'opération de suppression pour éviter toute erreur.
+
+   B. Surveillance des processus et des descripteurs.
+
+      La commande ps est utilisée pour surveiller les processus en cours d'exécution. L'utilisation de ps -ef permet notamment de rechercher un processus spécifique, comme un service simulant un démon, via un filtre grep.
+
+      Pour vérifier l'utilisation des tubes nommés ou des fichiers ouverts par un processus, on utilise la commande lsof. Elle permet de confirmer que les descripteurs pointent bien vers les fichiers de communication comme commandes ou reponses.
+
+      Le système de fichiers /proc contient des informations directes sur les IPC System V. On peut consulter les fichiers /proc/sysvipc/shm, /proc/sysvipc/msg et /proc/sysvipc/sem pour visualiser l'état de la mémoire partagée, des files de messages et des sémaphores.
+
+   C. Utilisation des signaux pour l'arrêt de service.
+
+      Les signaux sont des messages envoyés par le système ou un utilisateur pour communiquer avec un processus. Ils sont principalement utilisés par le système d'exploitation pour gérer les processus qui se comportent mal ou pour signaler un changement d'environnement.
+
+      La commande kill est l'outil principal pour envoyer un signal à un processus spécifique via son PID. Par exemple, l'envoi du signal TERM permet d'interrompre proprement un service en cours d'exécution.
+
+      Dans un script, l'instruction trap permet de capturer un signal comme TERM ou INT. Cela permet au programme de déclencher une action spécifique, telle que l'affichage d'un message d'arrêt, avant de terminer son exécution.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'appel système fork qui crée un nouveau processus avec la fonction exec qui remplace le contexte d'un processus existant par un nouveau.
+
+      Une confusion fréquente réside entre les processus et les threads car si un processus peut contenir plusieurs threads, ces derniers partagent le même contexte mémoire.
+
+      L'utilisation de la mémoire partagée nécessite impérativement la mise en place de mécanismes de synchronisation comme les sémaphores pour éviter les risques d'intégrité des données.
+
+      Il est crucial de distinguer les tubes classiques qui ne fonctionnent qu'entre un père et ses fils des tubes nommés ou FIFOs qui peuvent être utilisés par n'importe quel processus via le système de fichiers.
+
+      Le risque de famine est une nuance importante où un processus attend indéfiniment un droit d'accès qui ne lui sera jamais accordé comme dans le cas d'un écrivain sur une zone mémoire.
+
+EXEMPLES CITÉS.
+
+      Un exemple de section critique est la mise à jour d'un compte bancaire où un processus ajoute mille euros tandis qu'un second en retire cinq cents euros.
+
+      La commande ipcs permet de lister les ressources avec l'option -a pour tout voir, -q pour les files de messages, -m pour la mémoire partagée et -s pour les sémaphores.
+
+      Dans une démonstration de service, l'utilisation de deux FIFOs nommées permet de transmettre des commandes et de récupérer des réponses entre deux terminaux.
+
+      La commande ipcmk peut être utilisée pour créer un segment de mémoire partagée de quatre mille quatre-vingt-seize octets ou pour générer des files de messages et des sémaphores.
+
+      Le système peut envoyer des signaux à un processus pour prévenir que son environnement a changé ou pour gérer des processus qui se comportent mal.

@@ -1,0 +1,53 @@
+TITRE : Réduction de la dette Riddim
+
+[Intro]
+Écoute le rythme de la gestion du système,
+Pour éviter que l'obsolescence ne devienne un problème.
+
+[Couplet 1]
+La dette technique s'accumule dans l'ombre,
+Unix ou Windows, les systèmes deviennent sombres.
+L'infrastructure matérielle et les vieux modes d'administration,
+Créent des risques financiers pour toute l'organisation.
+Sans révisions de sécurité la surface d'attaque grandit,
+Le maintien en condition opérationnelle est un défi.
+Le RGPD et le RGS imposent la conformité,
+Pour éviter les pertes et la mauvaise réputation de l'unité.
+
+[Refrain]
+Réduis la dette, gère ton parc avec sagesse,
+Pour que la sécurité soit une constante et non une faiblesse.
+Inventaire, migration et automatisation,
+C'est le chemin vers une saine administration.
+
+[Couplet 2]
+Utilise la CMDB pour voir les relations,
+Entre serveurs, services et les applications.
+Avec GLPI ou Lansweeper fais ton inventaire,
+Pour trouver les versions en fin de support éditeur, c'est clair.
+Mesure le patch latency et l'écart de configuration,
+Selon les CIS Benchmarks ou l'ANSSI en action.
+Prépare ta migration avec le RGI et le RGESN,
+Et le RGAA pour que tes services en ligne soient sereins.
+
+[Refrain]
+Réduis la dette, gère ton parc avec sagesse,
+Pour que la sécurité soit une constante et non une faiblesse.
+Inventaire, migration et automatisation,
+C'est le chemin vers une saine administration.
+
+[Pont]
+Fais des vagues de déploiement avec un rollback prévu,
+Pour que chaque migration ne soit jamais un échec imprévu.
+Utilise Ansible ou Puppet pour le configuration as code,
+Et Zabbix ou Prometheus pour que la supervision soit la mode.
+
+[Refrain final]
+Réduis la dette, gère ton parc avec sagesse,
+Pour que la sécurité soit une constante et non une faiblesse.
+Inventaire, migration et automatisation,
+C'est le chemin vers une saine administration.
+
+[Outro]
+Veille sur les fins de support, ne reste pas en arrière,
+La qualité du système est ta seule et vraie lumière.

@@ -1,0 +1,269 @@
+GUIDE COMPLET DE L'ADMINISTRATION WINDOWS SERVER EN ENVIRONNEMENT WORKGROUP.
+
+LEXIQUE COMPLET.
+
+      L'Institut de la Gestion publique et du Développement économique est l'organisme qui fournit le contenu de cette formation.
+
+      Le Workgroup désigne un mode de configuration par défaut où chaque serveur est indépendant et possède sa propre base de comptes locale.
+
+      L'AD DS désigne l'Active Directory Domain Services qui permet une gestion centralisée des identités, des ressources et des politiques de sécurité.
+
+      Le sigle SAM désigne le Security Accounts Manager qui est la base de données locale stockant les utilisateurs et les groupes de chaque serveur.
+
+      Le protocole NTLM désigne le NT LAN Manager qui est un protocole d'authentification hérité utilisé par défaut en l'absence de Kerberos.
+
+      Le sigle LGPO désigne les Local Group Policy qui permettent d'appliquer des stratégies de configuration et de sécurité sur une machine individuelle.
+
+      Le sigle SMB désigne le Server Message Block qui est le protocole utilisé pour le partage de fichiers et d'imprimantes.
+
+      Le sigle WAC désigne le Windows Admin Center qui est un outil d'administration moderne basé sur un navigateur pour gérer plusieurs serveurs.
+
+      Le sigle WinRM désigne le Windows Remote Management qui est le protocole utilisé par PowerShell Remoting pour l'administration à distance.
+
+      Le sigle RSAT désigne les Remote Server Administration Tools qui sont des outils installables sur un poste client pour gérer des serveurs à distance.
+
+      Le sigle DSC désigne le Desired State Configuration qui est une méthode de gestion déclarative pour maintenir l'état souhaité d'un serveur.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET COMPARAISON DES ENVIRONNEMENTS.
+
+   A. Distinction entre Workgroup et Domaine Active Directory.
+
+      Le Workgroup est le mode de configuration par défaut de Windows Server où chaque machine est gérée de manière indépendante. L'administration y est décentralisée car il n'existe aucune gestion centralisée des identités, des politiques ou des ressources.
+
+      Dans un environnement de domaine Active Directory, la gestion est centralisée et évolutive grâce à une base de données unique appelée annuaire. Cette structure permet d'appliquer des politiques de sécurité cohérentes et de proposer l'authentification unique pour les utilisateurs.
+
+      La distinction majeure réside dans la base de comptes qui est locale sur chaque machine en Workgroup alors qu'elle est centralisée dans l'annuaire pour un domaine. Les stratégies de groupe sont également différentes puisque le Workgroup utilise la LGPO par machine tandis que le domaine utilise les GPO.
+
+      La découverte des ressources s'effectue via le voisinage réseau sans annuaire en mode Workgroup, contrairement au domaine qui s'appuie sur un annuaire central. L'authentification utilise le protocole NTLM en Workgroup alors que le domaine privilégie Kerberos pour une approche unifiée.
+
+   B. Cas d'usage et recommandations de déploiement.
+
+      Le Workgroup est recommandé pour les petites structures comptant moins de vingt utilisateurs ou machines. Il est également idéal pour les environnements de test, de développement ou de laboratoire.
+
+      Les serveurs isolés comme ceux situés en DMZ, sur des sites distants ou dans le cloud nécessitent l'utilisation d'un Workgroup. Ce mode est aussi possible pour des serveurs d'infrastructure dédiés tels que les serveurs Hyper-V ou les serveurs de fichiers.
+
+      Le passage à un domaine Active Directory devient nécessaire lorsque le nombre de serveurs dépasse cinq à dix unités ou que le nombre d'utilisateurs dépasse vingt-cinq. Les besoins de délégation d'administration ou de conformité comme le RGPD sont d'autres signaux déclencheurs.
+
+      Le choix du Workgroup peut aussi être dicté par des contraintes de coût ou de licence, notamment avec Windows Essentials qui est limité à vingt-cinq utilisateurs. Maîtriser l'administration sans AD permet de mieux comprendre les mécanismes de Windows Server avant de passer à l'automatique.
+
+   C. Mécanismes d'authentification NTLM et base SAM.
+
+      Chaque serveur en mode Workgroup possède sa propre base de comptes appelée SAM pour Security Accounts Manager. Cette base contient les utilisateurs locaux avec leurs mots de passe hachés ainsi que les groupes locaux intégrés comme Administrateurs ou Invités.
+
+      L'architecture sans ADDS fonctionne comme un silo d'identités car il n'existe aucune synchronisation automatique entre les serveurs. Chaque machine est un îlot autonome où les informations de sécurité sont stockées localement.
+
+      L'authentification en environnement décentralisé repose principalement sur le protocole NTLM qui est un mécanisme hérité utilisé en l'absence de Kerberos. Pour accéder à une ressource, l'utilisateur doit obligatoirement posséder un compte existant localement sur le serveur cible.
+
+      L'accès à un partage nécessite l'utilisation d'un format d'identification spécifique comprenant le nom de la machine suivi du nom de l'utilisateur. Par exemple, pour accéder au serveur SRV-FICHIERS, l'utilisateur doit fournir l'identifiant SRV-FICHIERS\JeanDupont.
+
+II. GESTION DES IDENTITÉS ET DES ACCÈS LOCAUX.
+
+   A. Administration via l'interface graphique (lusrmgr.msc).
+
+      L'outil principal pour la gestion graphique est la console Utilisateurs et Groupes Locaux accessible via la commande lusrmgr.msc.
+
+      Cette console permet de créer, modifier ou supprimer des utilisateurs et des groupes locaux sur le serveur.
+
+      Elle offre la possibilité d'ajouter ou de retirer des utilisateurs au sein de groupes spécifiques.
+
+      L'administrateur peut également gérer les propriétés des comptes comme le mot de passe ou l'expiration des comptes.
+
+   B. Gestion des comptes et groupes via PowerShell.
+
+      La gestion des comptes locaux peut être réalisée de manière efficace grâce à l'utilisation de commandes PowerShell spécifiques.
+
+      La commande Get-LocalUser permet de lister tous les utilisateurs locaux tandis que New-LocalUser sert à en créer un nouveau.
+
+      Les commandes Enable-LocalUser et Disable-LocalUser permettent respectivement d'activer ou de désactiver un compte existant.
+
+      Pour la gestion des groupes, les commandes Get-LocalGroup et New-LocalGroup permettent de lister ou de créer des groupes locaux.
+
+      L'ajout d'un utilisateur à un groupe se fait avec la commande Add-LocalGroupMember et le retrait avec Remove-LocalGroupMember.
+
+   C. Bonnes pratiques de sécurité pour les comptes locaux.
+
+      Il est impératif d'utiliser des mots de passe forts et uniques pour chaque compte créé sur le système.
+
+      Le nombre d'administrateurs locaux doit être limité au strict nécessaire pour ne laisser l'accès qu'au personnel habilité.
+
+      Il est recommandé de désactiver les comptes inutilisés comme le compte Invité pour réduire la surface d'attaque.
+
+      Le renommage du compte administrateur par défaut constitue une mesure efficace pour limiter les risques d'attaque.
+
+      En l'absence d'AD, une documentation rigoureuse via un fichier Excel ou un Wiki interne est indispensable pour pallier l'absence de vue centralisée.
+
+III. CONFIGURATION ET STRATÉGIES DE GROUPE LOCALES.
+
+   A. Utilisation de l'éditeur de stratégie de groupe locale (gpedit.msc).
+
+      Pour accéder à l'outil de configuration, il convient de taper la commande gpedit.msc et de valider la saisie.
+
+      L'éditeur permet d'appliquer des stratégies de groupe locales, ce qui constitue une version plus basique des GPO utilisées dans un domaine.
+
+      La structure de l'outil se divise en deux sections principales pour organiser les paramètres.
+
+      La configuration de l'ordinateur regroupe les paramètres qui s'appliquent à la machine peu importe l'utilisateur connecté.
+
+      La configuration de l'utilisateur contient les paramètres qui s'appliquent spécifiquement à l'utilisateur qui est connecté.
+
+   B. Exemples de paramètres de sécurité et d'audit.
+
+      La politique de mots de passe se configure dans le chemin configuration de l'ordinateur vers les paramètres Windows et les paramètres de sécurité.
+
+      Ce paramètre est essentiel pour définir la longueur, la complexité et la durée de vie des mots de passe.
+
+      La stratégie de verrouillage de compte permet de verrouiller un compte après un nombre défini d'échecs.
+
+      Les stratégies d'audit servent à activer l'audit des connexions ou des accès aux fichiers.
+
+      Les restrictions logicielles permettent de bloquer l'exécution de certains programmes sur le serveur.
+
+      Enfin, les paramètres de sécurité réseau permettent de configurer le protocole NTLM et les connexions réseau.
+
+   C. Limites des stratégies locales par rapport aux GPO de domaine.
+
+      L'une des limites majeures est l'absence de délégation puisque les paramètres s'appliquent à tous les utilisateurs de la machine.
+
+      Il n'existe pas de possibilité de ciblage contrairement aux GPO de domaine qui permettent d'appliquer des stratégies à des groupes d'utilisateurs spécifiques.
+
+      La gestion est également limitée par l'absence de réplication car chaque serveur doit être configuré individuellement.
+
+      Pour les environnements sans AD, ces stratégies de groupe locales restent néanmoins un outil précieux pour durcir la sécurité des serveurs.
+
+IV. PARTAGE DE RESSOURCES ET SERVICES RÉSEAU.
+
+   A. Configuration des partages de fichiers et permissions NTFS.
+
+      Le partage de fichiers en mode Workgroup repose sur l'utilisation du serveur SMB intégré à Windows Server.
+
+      La première étape consiste à créer les utilisateurs locaux directement sur le serveur qui hébergera le partage.
+
+      Il faut ensuite créer le dossier cible et définir les permissions NTFS via l'onglet Sécurité en ajoutant les utilisateurs ou les groupes locaux avec les droits appropriés.
+
+      Le partage du dossier s'effectue ensuite via l'onglet Partage en utilisant le mode de partage avancé.
+
+      Il est recommandé de configurer les permissions de partage sur Tout le monde avec le Contrôle total car les permissions NTFS offrent un contrôle plus fin.
+
+      Enfin, le pare-feu doit être configuré pour autoriser le flux des services de partage de fichiers et d'imprimantes.
+
+   B. Gestion des imprimantes en mode autonome.
+
+      Le fonctionnement de la gestion des imprimantes en mode Workgroup est similaire à celui des partages de fichiers.
+
+      L'administrateur doit d'abord installer l'imprimante physiquement ou virtuellement sur le serveur.
+
+      L'imprimante est ensuite partagée en utilisant l'outil Périphériques et imprimantes.
+
+      Les permissions d'accès aux impressions sont définies en se basant sur les groupes locaux du serveur.
+
+      Pour pouvoir imprimer, les clients doivent impérativement s'authentifier en utilisant un compte local existant sur le serveur.
+
+   C. Défis de la gestion des identités multiples.
+
+      L'absence d'Active Directory crée un défi majeur car les comptes sont des silos d'identités sans synchronisation automatique.
+
+      Si un utilisateur doit accéder à cinq serveurs de fichiers, il est nécessaire de créer les mêmes utilisateurs sur chaque machine avec les mêmes mots de passe.
+
+      Cette répétition manuelle est indispensable pour garantir un accès cohérent aux ressources pour l'utilisateur.
+
+      Pour pallier cette difficulté, il est possible d'utiliser des scripts PowerShell afin d'automatiser la création d'utilisateurs sur plusieurs machines.
+
+      Une autre solution consiste à utiliser un outil de synchronisation comme Microsoft Identity Manager, bien que celui-ci soit plus complexe.
+
+      Lorsque le nombre de serveurs ou d'utilisateurs devient trop important, la migration vers un domaine Active Directory devient la solution recommandée.
+
+V. OUTILS D'ADMINISTRATION ET AUTOMATISATION.
+
+   A. Utilisation de Windows Admin Center et PowerShell Remoting.
+
+      Windows Admin Center est un outil d'administration moderne basé sur un navigateur qui permet de gérer des serveurs Windows Server deux mille seize et des versions ultérieures.
+
+      Cet outil offre une interface graphique intuitive accessible depuis n'importe quel navigateur pour gérer jusqu'à plusieurs centaines de serveurs.
+
+      Il propose des modules dédiés pour la gestion des utilisateurs et groupes locaux, des certificats, des partages de fichiers, ainsi que la surveillance des performances et des mises à jour.
+
+      PowerShell Remoting utilise le protocole WinRM pour permettre l'exécution de commandes sur des machines distantes.
+
+      L'activation de cette fonctionnalité sur un serveur cible se fait avec la commande Enable-PSRemoting -Force.
+
+      L'utilisation de la commande Invoke-Command permet d'exécuter des blocs de code sur un serveur distant comme SERVEUR02 en utilisant des identifiants via Get-Credential.
+
+   B. Exploitation des outils RSAT sans Active Directory.
+
+      Les Remote Server Administration Tools sont des outils installables sur un poste client Windows pour gérer des serveurs à distance.
+
+      En l'absence d'Active Directory, certains outils comme AD Users and Computers ou Group Policy Management ne sont pas utilisables.
+
+      L'outil Computer Management reste disponible pour la gestion des disques et des utilisateurs locaux.
+
+      L'Event Viewer permet la consultation des journaux et l'outil Services permet la gestion des services Windows.
+
+      L'utilisation de ces outils RSAT nécessite impérativement de fournir des identifiants valides sur le serveur distant.
+
+   C. Automatisation via scripts PowerShell et DSC.
+
+      L'automatisation via PowerShell est indispensable dans un environnement sans AD pour gérer la création massive d'utilisateurs ou la configuration de serveurs identiques.
+
+      Un script peut importer un fichier CSV pour créer des utilisateurs locaux et les ajouter à un groupe spécifique en utilisant New-LocalUser et Add-LocalGroupMember.
+
+      Il est également possible d'exporter tous les utilisateurs locaux vers un fichier CSV avec la commande Get-LocalUser pour effectuer des sauvegardes.
+
+      La configuration de la stratégie de mot de passe peut être réalisée via la commande net accounts pour définir des paramètres comme une longueur minimale de douze caractères.
+
+      PowerShell DSC permet de définir la configuration souhaitée d'un serveur de manière déclarative pour maintenir un état spécifique.
+
+      Ce mécanisme permet de décrire l'état voulu pour les utilisateurs, les groupes ou les paramètres afin que le système l'applique et le maintienne automatiquement.
+
+VI. SÉCURISATION ET ÉVOLUTION DE L'INFRASTRUCTURE.
+
+   A. Mesures de durcissement et de protection réseau.
+
+      Le durcissement des comptes repose sur l'application de mots de passe complexes de douze caractères minimum incluant des majuscules, des minuscules, des chiffres et des symboles. Il est également crucial de mettre en place une stratégie de verrouillage de compte après trois à cinq échecs.
+
+      Pour limiter les risques d'attaque, il convient de désactiver le compte Invité et de renommer le compte Administrateur par défaut. Seul le personnel habilité doit être membre du groupe Administrateurs locaux.
+
+      La protection réseau doit s'appuyer sur le pare-feu Windows configuré pour n'autoriser que les ports nécessaires. La segmentation réseau via des segments dédiés comme la DMZ ou des VLAN est également recommandée.
+
+      L'utilisation de l'IPsec permet de sécuriser les communications entre les serveurs. Pour les serveurs connectés au cloud, une authentification à deux facteurs peut être ajoutée via Microsoft Entra ID.
+
+   B. Audit, journalisation et mises à jour.
+
+      Le maintien de la sécurité nécessite de garder les serveurs à jour via Windows Update ou WSUS, ce dernier pouvant être utilisé en mode autonome. L'installation et la mise à jour régulière d'un antivirus sont indispensables.
+
+      L'audit doit être activé via les politiques de groupe locales pour surveiller les échecs et les succès des connexions ainsi que les accès aux fichiers. Il est conseillé de consulter régulièrement les journaux de sécurité avec l'outil eventvwr.msc.
+
+      Pour une gestion efficace, les journaux d'événements peuvent être centralisés vers un serveur Syslog ou un SIEM. Cela permet de pallier l'absence de gestion centralisée des comptes en environnement Workgroup.
+
+   C. Signaux d'alerte et étapes de migration vers Active Directory.
+
+      Plusieurs indicateurs signalent la nécessité de migrer vers un domaine. Le passage à Active Directory est recommandé dès que le parc dépasse cinq à dix serveurs ou vingt-cinq utilisateurs.
+
+      La multiplication des comptes à gérer manuellement sur chaque machine et le besoin d'une authentification unique ou SSO sont des signaux critiques. Le besoin de délégation d'administration pour plusieurs équipes ou de conformité pour le RGPD impose également une évolution.
+
+      La migration vers Active Directory suit des étapes précises. Elle commence par l'installation de contrôleurs de domaine, suivie de la jointure des serveurs au domaine et de la migration des comptes locaux via des outils comme ADMT.
+
+      La dernière phase consiste à reconfigurer les partages et les permissions en passant des comptes locaux aux comptes de domaine, puis à déployer les stratégies de groupe. Cette transition permet de corriger les mauvaises pratiques accumulées.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre un serveur membre d'un Workgroup avec un serveur membre d'un domaine Active Directory.
+
+      L'administration en mode Workgroup est décentralisée car chaque machine possède sa propre base de comptes locale appelée SAM.
+
+      Les stratégies de groupe locales LGPO sont moins puissantes que les GPO de domaine car elles ne permettent ni délégation ni ciblage spécifique.
+
+      L'authentification en Workgroup utilise le protocole NTLM alors que le domaine utilise Kerberos pour une authentification unifiée.
+
+      Le terme membre d'un Workgroup peut prêter à confusion car il désigne l'appartenance à un groupe de travail et non à un domaine.
+
+EXEMPLES CITÉS.
+
+      Une petite structure de moins de vingt utilisateurs ou un environnement de test peut se contenter d'un Workgroup.
+
+      Pour accéder à un partage sur le serveur SRV-FICHIERS, l'utilisateur JeanDupont doit utiliser le format SRV-FICHIERS\JeanDupont.
+
+      Le passage à Active Directory devient nécessaire lorsqu'une infrastructure dépasse cinq à dix serveurs ou vingt-cinq utilisateurs.
+
+      L'outil Windows Admin Center permet de gérer plusieurs serveurs de manière centralisée via un navigateur web.

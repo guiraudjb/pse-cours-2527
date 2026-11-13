@@ -1,0 +1,53 @@
+TITRE : Continuité et Reprise Riddim
+
+[Intro]
+Écoute le rythme pour la disponibilité,
+La continuité est notre priorité.
+
+[Couplet 1]
+L'analyse des risques identifie la menace,
+La probabilité et les conséquences face à l'audace.
+Pannes matérielles ou erreurs humaines à prévoir,
+Incendie ou coupure électrique pour nous faire trembler.
+La redondance double les équipements pour tenir,
+La virtualisation permet de ne pas s'interrompre ici.
+Le mode dégradé aide les salariés à travailler,
+Avec des outils alternatifs pour ne pas s'arrêter.
+
+[Refrain]
+Le PCA maintient les services essentiels,
+Le PRA rétablit le système dans le réel.
+RTO pour le temps de reprise acceptable,
+RPO pour la perte de données tolérable.
+
+[Couplet 2]
+La réplication copie les données pour la disponibilité,
+La sauvegarde restaure après une panne de l'activité.
+La messagerie et le site web sont prioritaires,
+La base de données clients est un service exemplaire.
+Le logiciel de gestion et les fichiers partagés,
+Doivent être protégés pour ne pas être impactés.
+Le cloud et le stockage externalisé sont nos alliés,
+Pour des ressources de secours accessibles et liées.
+
+[Refrain]
+Le PCA maintient les services essentiels,
+Le PRA rétablit le système dans le réel.
+RTO pour le temps de reprise acceptable,
+RPO pour la perte de données tolérable.
+
+[Pont]
+Si l'entreprise fixe deux heures de RTO,
+Quinze minutes de RPO pour son niveau.
+Il faut tester les plans pour éviter l'échec,
+Et améliorer les procédures avec un bon réflexe.
+
+[Refrain final]
+Le PCA maintient les services essentiels,
+Le PRA rétablit le système dans le réel.
+RTO pour le temps de reprise acceptable,
+RPO pour la perte de données tolérable.
+
+[Outro]
+Ne confonds pas le maintien et la reprise,
+Le plan de continuité est notre seule voie.

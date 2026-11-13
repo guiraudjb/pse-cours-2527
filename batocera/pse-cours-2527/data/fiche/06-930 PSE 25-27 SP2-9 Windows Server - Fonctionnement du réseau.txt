@@ -1,0 +1,297 @@
+GUIDE DE RÉVISION SUR L'INFRASTRUCTURE RÉSEAU ET LES SERVICES WINDOWS SERVER.
+
+LEXIQUE COMPLET.
+
+      Le TCP/IP désigne l'ensemble des protocoles standard qui permet aux ordinateurs Windows de se connecter aux réseaux locaux, étendus et à Internet.
+
+      Le DHCP désigne le service permettant l'attribution automatique des adresses IP et des paramètres de configuration réseau aux clients.
+
+      Le DNS désigne le service de résolution de noms qui fait le lien entre les noms de domaine et les adresses IP.
+
+      L'Active Directory désigne l'annuaire centralisé qui stocke et organise les informations relatives aux utilisateurs, ordinateurs, groupes et ressources.
+
+      Le contrôleur de domaine désigne le serveur qui héberge les services Active Directory Domain Services pour l'authentification et la gestion des politiques.
+
+      Le sigle GPO désigne les politiques de sécurité gérées par le contrôleur de domaine.
+
+      Le sigle SMB sur QUIC désigne un protocole sécurisé utilisant le port quatre cent quarante-trois pour offrir un accès distant aux fichiers via Internet.
+
+      L'Hyper-V désigne l'outil de virtualisation réseau permettant de créer des commutateurs virtuels pour les machines virtuelles.
+
+      Le SDN désigne le réseau défini par logiciel qui apporte des fonctionnalités comme le contrôle réseau scalable ou le pare-feu distribué.
+
+      Le RSC désigne une technologie qui permet de fusionner plusieurs segments TCP en un seul pour réduire la charge CPU.
+
+      L'Institut de la Gestion publique et du Développement économique désigne l'organisme lié à la formation présentée dans le document.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET PILE TCP/IP.
+
+   A. Rôle du réseau et de la pile TCP/IP.
+
+      Le réseau agit comme le système nerveux de toute infrastructure informatique.
+
+      Sous Windows Server, il repose sur des briques technologiques robustes, standardisées et parfaitement intégrées.
+
+      La communication réseau sous Windows Server s'appuie sur la suite de protocoles TCP/IP.
+
+      Ce protocole est un ensemble de standards qui permet aux ordinateurs Windows de se connecter aux réseaux locaux, étendus et à Internet.
+
+   B. Fonctionnalités et connectivité.
+
+      La pile TCP/IP offre une connectivité entre les ordinateurs Windows et d'autres systèmes comme Mac, UNIX, Linux ou les mainframes IBM.
+
+      Elle fournit des utilitaires de base essentiels pour le partage d'informations au sein de l'infrastructure.
+
+      Ce protocole constitue le socle indispensable pour accéder aux services Internet tels que le Web ou le FTP.
+
+      TCP/IP est considéré comme un élément incontournable pour la communication de tout réseau Windows.
+
+   C. Les quatre piliers du réseau de base.
+
+      Le premier pilier est le TCP/IP qui sert de protocole de connectivité réseau entre les ordinateurs et les périphériques compatibles.
+
+      Le deuxième pilier est le DHCP qui assure l'attribution automatique des configurations IP aux clients.
+
+      Le troisième pilier est le DNS qui permet la résolution des noms de domaine en adresses IP.
+
+      Le quatrième pilier est l'Active Directory qui fonctionne comme un annuaire centralisé des utilisateurs, des ordinateurs et des ressources.
+
+      Un réseau de base permet également de faire évoluer l'infrastructure en ajoutant des domaines, des sous-réseaux IP ou des services d'accès à distance.
+
+II. ADRESSAGE ET SERVICES DE CONFIGURATION AUTOMATIQUE.
+
+   A. Modes d'adressage statique et dynamique.
+
+      L'adressage statique consiste à configurer manuellement l'adresse IP, le masque de sous-réseau, la passerelle et les serveurs DNS.
+
+      Cette méthode est recommandée pour les serveurs, notamment pour les contrôleurs de domaine et les serveurs DHCP ou DNS.
+
+      L'adressage dynamique permet aux clients d'obtenir automatiquement leur configuration via un serveur DHCP.
+
+      Cette méthode est privilégiée pour la gestion des postes de travail.
+
+      Un serveur DHCP qui s'attribue lui-même une adresse dynamique peut provoquer des conflits.
+
+      Les serveurs critiques doivent toujours disposer d'une adresse IP statique.
+
+   B. Fonctionnement et configuration du service DHCP.
+
+      Le service DHCP permet d'attribuer automatiquement des adresses IP et des paramètres de configuration réseau aux périphériques configurés en clients.
+
+      Son utilisation simplifie et centralise la gestion des adresses IP en évitant la configuration manuelle de chaque poste.
+
+      L'installation du rôle DHCP s'effectue via le Gestionnaire de serveur.
+
+      La configuration d'une plage d'adresses appelée Scope définit la plage d'adresses IP à distribuer et le masque de sous-réseau.
+
+      Cette configuration inclut également la passerelle par défaut, les serveurs DNS et la durée du bail.
+
+   C. Haute disponibilité et gestion des baux.
+
+      La haute disponibilité peut être assurée par la configuration du serveur DHCP en mode DHCP failover pour garantir la continuité de service.
+
+      La gestion de la durée du bail, ou lease time, est un paramètre essentiel défini lors de la configuration de la plage d'adresses.
+
+III. RÉSOLUTION DE NOMS AVEC LE SERVICE DNS.
+
+   A. Principes de fonctionnement et zones.
+
+      Le DNS est le service qui permet de faire le lien entre les noms de domaine et les adresses IP.
+
+      Ce système est indispensable car les humains retiennent plus facilement des noms comme serveur01.entreprise.local que des suites de chiffres comme 192.168.1.10.
+
+      Le fonctionnement repose sur des zones qui sont des espaces de noms administrés par un serveur DNS.
+
+      Un exemple de zone est entreprise.local.
+
+   B. Enregistrements et types de résolution.
+
+      Les zones contiennent des enregistrements qui constituent des associations entre un nom et une adresse IP.
+
+      Le service utilise différents types d'enregistrements tels que les types A, AAAA, CNAME, MX, etc.
+
+      La résolution directe consiste à transformer un nom en adresse IP.
+
+      La résolution inverse permet de trouver le nom correspondant à une adresse IP.
+
+   C. Relation vitale entre DNS et Active Directory.
+
+      Le DNS et l'Active Directory entretiennent une relation fusionnelle au sein de l'infrastructure.
+
+      Dans un environnement Active Directory, le DNS est directement intégré au domaine.
+
+      Les contrôleurs de domaine hébergent généralement le rôle DNS pour assurer le service.
+
+      Les zones sont souvent intégrées à Active Directory pour bénéficier de la réplication et de la sécurité.
+
+      Sans DNS, l'Active Directory ne fonctionne pas car les clients doivent impérativement pointer vers un serveur DNS capable de résoudre les noms du domaine.
+
+IV. ACTIVE DIRECTORY ET LE CONTRÔLEUR DE DOMAINE.
+
+   A. Structure et organisation de l'annuaire AD DS.
+
+      Active Directory Domain Services est bien plus qu'un simple annuaire car il constitue le cœur de l'infrastructure réseau Microsoft.
+
+      Il permet de stocker et d'organiser les informations relatives aux utilisateurs, aux ordinateurs membres du domaine, aux groupes ainsi qu'aux diverses ressources comme les imprimantes ou les dossiers partagés.
+
+      L'organisation de cet annuaire est structurée de manière hiérarchique en utilisant des objets, des conteneurs et des sous-conteneurs.
+
+      Cette organisation fonctionne de façon similaire à un système de dossiers pour faciliter la gestion des données.
+
+   B. Rôles et fonctions du contrôleur de domaine.
+
+      Le contrôleur de domaine est le serveur spécifique qui héberge les services Active Directory Domain Services.
+
+      Il assure l'authentification des utilisateurs et des ordinateurs au sein de l'infrastructure.
+
+      Ce serveur est également responsable de la gestion des politiques de sécurité à travers l'utilisation des GPO.
+
+      Il assure la réplication des données de l'annuaire entre les différents contrôleurs de domaine.
+
+      Le contrôleur de domaine agit comme un annuaire global pour permettre les recherches à l'échelle de la forêt.
+
+   C. Services réseau et ports spécifiques.
+
+      Un contrôleur de domaine expose de nombreux services réseau qui utilisent chacun des ports spécifiques pour fonctionner.
+
+      Le service LDAP utilise les ports trois cent quatre-vingt-neuf en TCP ou UDP pour l'accès à l'annuaire, tandis que le LDAPS utilise le port six cent trente-six en TCP pour un accès sécurisé via SSL.
+
+      L'authentification est gérée par le protocole Kerberos sur les ports quatre-vingt-huit en TCP ou UDP, alors que le DNS utilise le port cinquante-trois en TCP ou UDP pour la résolution de noms.
+
+      Le partage de fichiers repose sur le protocole SMB via le port quatre cent quarante-cinq en TCP et les appels de procédure distante utilisent le port cent trente-cinq ainsi que des ports dynamiques.
+
+      Enfin, le service de catalogue global utilise le port trois mille deux cent soixante-huit en TCP pour les recherches.
+
+      Pour la configuration des pare-feux, il faut noter que la plage de ports dynamiques par défaut pour les versions récentes de Windows Server s'étend de quarante-neuf mille cent cinquante-deux à soixante-cinq mille cinq cent trente-cinq.
+
+V. CONFIGURATION ET OUTILS DE DIAGNOSTIC.
+
+   A. Méthodes de configuration IP.
+
+      La configuration réseau sous Windows Server peut s'effectuer via le Centre Réseau et partage en utilisant l'interface graphique.
+
+      Il est possible d'agir directement sur les propriétés de la carte réseau pour paramétrer les protocoles TCP/IPv4 et TCP/IPv6.
+
+      L'utilisation des Cmdlets PowerShell permet également de configurer le réseau de manière automatisée.
+
+      Pour un serveur, la méthode recommandée est l'adressage statique qui consiste à saisir manuellement l'adresse IP, le masque de sous-réseau, la passerelle et les serveurs DNS.
+
+      L'adressage dynamique est privilégié pour les postes de travail car les clients obtiennent leur configuration automatiquement via un serveur DHCP.
+
+   B. Utilisation de l'outil ipconfig.
+
+      L'outil ipconfig permet de consulter la configuration IP actuelle d'une machine Windows.
+
+      La commande ipconfig /all affiche l'intégralité des informations détaillées comme l'adresse MAC, le DNS ou le DHCP.
+
+      Pour libérer le bail DHCP d'une interface, on utilise la commande ipconfig /release.
+
+      La commande ipconfig /renew permet de renouveler le bail DHCP obtenu.
+
+      Enfin, l'utilisation de ipconfig /flushdns sert à vider le cache DNS de la machine.
+
+   C. Outils de diagnostic réseau et de connectivité.
+
+      L'outil ping est utilisé pour tester la connectivité de base en envoyant des paquets ICMP vers une destination.
+
+      La commande tracert permet de tracer la route empruntée par les paquets pour atteindre une destination précise.
+
+      L'outil pathping combine les fonctionnalités de ping et de tracert pour fournir des statistiques détaillées sur la perte de paquets.
+
+      La commande netstat avec l'option -ano affiche toutes les connexions réseau actives ainsi que les ports d'écoute et les processus associés.
+
+      L'outil nslookup sert à interroger un serveur DNS afin de vérifier la résolution d'un nom de domaine.
+
+VI. SÉCURITÉ ET VIRTUALISATION RÉSEAU.
+
+   A. Gestion du pare-feu Windows et profils.
+
+      Le pare-feu Windows avec sécurité avancée est un outil qui permet de filtrer les transmissions réseau entrantes et sortantes.
+
+      Il intègre trois profils distincts nommés Domaine, Privé et Public.
+
+      Le profil Domaine est destiné aux réseaux d'entreprise au sein d'un domaine Active Directory, tandis que le profil Privé concerne les réseaux domestiques ou professionnels de confiance.
+
+      Le profil Public est utilisé pour les réseaux publics présentant des risques élevés.
+
+      La configuration avancée permet de créer des règles basées sur les ports, les protocoles, les adresses IP ou les programmes.
+
+      Les bonnes pratiques incluent la restriction des ports ouverts au strict nécessaire et l'utilisation de VLAN pour segmenter le réseau.
+
+   B. Commutateurs virtuels Hyper-V.
+
+      Un commutateur virtuel est un commutateur réseau logiciel de niveau deux qui permet aux machines virtuelles de communiquer entre elles et avec le réseau physique.
+
+      Le type de commutateur Externe permet aux machines virtuelles de communiquer avec le réseau physique et avec Internet.
+
+      Le type Interne permet aux machines virtuelles de communiquer entre elles et avec l'hôte, mais sans accès vers l'extérieur.
+
+      Le type Privé assure une isolation totale en permettant aux machines virtuelles de communiquer uniquement entre elles.
+
+      Les performances du commutateur virtuel sont améliorées sous Windows Server deux mille vingt-deux grâce au Receive Segment Coalescing qui fusionne les segments TCP pour réduire la charge CPU.
+
+   C. Introduction au Software-Defined Networking.
+
+      Le SDN est une technologie qui apporte des améliorations significatives aux infrastructures modernes.
+
+      Windows Server deux mille vingt-deux propose un contrôleur réseau scalable ainsi qu'un support pour VXLAN et OVSDB.
+
+      Cette approche inclut également un équilibreur de charge logiciel et un pare-feu distribué.
+
+      Le SDN permet aussi la mise en place de passerelles VPN site-à-site pour les besoins de connectivité.
+
+VII. INNOVATIONS DE WINDOWS SERVER deux mille vingt-deux.
+
+   A. Optimisations de la pile TCP.
+
+      Windows Server deux mille vingt-deux introduit le protocole TCP HyStart++ pour améliorer la gestion des connexions.
+
+      Cette innovation permet de réduire la perte de paquets lors de l'établissement des connexions sur les réseaux à haut débit.
+
+      Le système intègre également la technologie RACK pour une meilleure gestion des retransmissions.
+
+      Cette amélioration concerne spécifiquement les Retry Timeouts - RTO.
+
+   B. Sécurisation avec SMB sur QUIC.
+
+      Le protocole SMB sur QUIC offre une solution de connexion sécurisée sur Internet.
+
+      Ce service utilise le protocole QUIC basé sur UDP avec TLS un virgule trois sur le port quatre cent quarante-trois au lieu du port quatre cent quarante-cinq utilisé par le SMB classique.
+
+      Cette méthode permet de créer un véritable VPN SMB pour les télétravailleurs et les organisations à haute sécurité.
+
+   C. Améliorations des performances de virtualisation.
+
+      Les performances du commutateur virtuel Hyper-V ont été améliorées grâce au Receive Segment Coalescing ou RSC.
+
+      Le RSC permet de fusionner plusieurs segments TCP en un seul segment plus grand pour réduire la charge CPU et augmenter le débit.
+
+      Le système bénéficie aussi de l'UDP Segmentation Offload et de l'UDP Receive Side Coalescing.
+
+      Enfin, la vitesse de réparation et de resynchronisation des données est jusqu'à deux fois plus rapide pour Storage Spaces Direct.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre l'adressage statique et l'adressage dynamique car les serveurs critiques comme les contrôleurs de domaine doivent impérativement utiliser une IP statique.
+
+      Une erreur classique consiste à attribuer une adresse dynamique à un serveur DHCP lui-même, ce qui peut provoquer des conflits réseau majeurs.
+
+      Le service DNS est indissociable d'Active Directory car sans une résolution de noms fonctionnelle, le domaine ne peut pas fonctionner.
+
+      Il est crucial de distinguer les trois profils du pare-feu Windows qui sont le domaine, le privé et le public pour appliquer les bonnes règles de sécurité.
+
+      La confusion est possible entre les types de commutateurs virtuels Hyper-V, sachant que le type interne permet la communication avec l'hôte mais pas avec l'extérieur.
+
+EXEMPLES CITÉS.
+
+      Pour diagnostiquer une connexion, l'outil ping teste la connectivité de base tandis que nslookup permet d'interroger spécifiquement un serveur DNS.
+
+      Le protocole SMB sur QUIC utilise le port quatre cent quarante-trois au lieu du port quatre cent quarante-cinq pour offrir un accès sécurisé via Internet.
+
+      Un contrôleur de domaine utilise le port trois cent quatre-vingt-neuf pour le protocole LDAP et le port quatre-vingt-huit pour l'authentification Kerberos.
+
+      La plage de ports dynamiques par défaut pour les versions récentes de Windows Server s'étend de quarante-neuf mille cent cinquante-deux à soixante-cinq mille cinq cent trente-cinq.
+
+      L'outil ipconfig propose des variantes comme ipconfig /all pour afficher l'adresse MAC ou ipconfig /flushdns pour vider le cache DNS.

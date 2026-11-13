@@ -1,0 +1,275 @@
+GUIDE DE GESTION ET D'OPTIMISATION DES PERFORMANCES SOUS GNU LINUX.
+
+LEXIQUE COMPLET.
+
+      L'Institut de la Gestion publique et du Développement économique désigne l'organisme qui dispense ce module sur la gestion des performances.
+
+      Le sigle CPU désigne l'unité centrale de traitement dont la charge peut être analysée par le pourcentage d'inactivité ou d'utilisation.
+
+      Le terme RAM désigne la mémoire physique installée sur le système pour stocker les données des processus.
+
+      Le sigle SGBD désigne un système de gestion de base de données qui peut nécessiter des mémoires partagées importantes.
+
+      Le terme swap désigne la mémoire secondaire utilisée pour le stockage des pages lorsque la mémoire physique est insuffisante.
+
+      Le sigle PID désigne l'identifiant unique d'un processus permettant de le repérer dans les outils comme top.
+
+      Le sigle IPC désigne les mécanismes de communication entre processus tels que la mémoire partagée ou les files de messages.
+
+      Le terme I/O désigne les opérations d'entrée et de sortie qui concernent principalement les performances des disques.
+
+      Le sigle NFS désigne un système de fichiers en réseau utilisé pour les statistiques de transfert de données.
+
+      Le sigle ICMP désigne le protocole utilisé par la commande ping pour mesurer le temps de réponse réseau.
+
+      Le sigle VM désigne une machine virtuelle dont le temps processeur peut être volé par l'hyperviseur.
+
+      Le sigle LVM désigne un système de gestion de volumes permettant d'optimiser la taille des blocs au niveau du stockage.
+
+COURS DÉTAILLÉ.
+
+I. INTRODUCTION ET CONCEPTS FONDAMENTAUX.
+
+   A. Définitions de la performance et du temps de réponse.
+
+      La performance d'un système se définit par sa capacité à traiter un certain nombre d'opérations dans un laps de temps donné.
+
+      Le temps de réponse correspond au délai nécessaire au système pour traiter et répondre à un message envoyé suite à la validation par la touche Enter.
+
+      Le temps de réponse acceptable est déterminé lors de la conception d'une application par une expression précise des exigences.
+
+      Sur un système de gestion, le temps de réponse exigé se situe de l'ordre de la seconde.
+
+      Pour un système temps réel, le temps de réponse doit être bien inférieur à celui d'un système de gestion.
+
+   B. Objectifs de l'analyse système et applicative.
+
+      L'objectif du module est de savoir analyser et optimiser les performances d'un OS GNU / Linux.
+
+      L'analyse porte sur les ressources du système telles que le CPU, la RAM et les disques.
+
+      L'optimisation concerne également la pagination, le swapping et les tables système.
+
+      Le travail d'analyse s'étend au paramétrage du noyau du système d'exploitation et à la configuration applicative.
+
+      L'étude inclut aussi les ressources réseau comme les interfaces et la pile IP.
+
+II. MÉTHODOLOGIE D'ANALYSE DE PERFORMANCE.
+
+   A. Quand et quoi analyser.
+
+      L'analyse doit être effectuée lors de l'installation du système pour établir des valeurs de référence concernant les ressources système comme le CPU, la mémoire ou les disques ainsi que les ressources réseau.
+
+      Il est nécessaire de procéder à des mesures lors de chaque évolution applicative, système ou montée en charge afin de comparer les résultats avant et après les modifications.
+
+      Une analyse préventive par une surveillance régulière est recommandée, tout comme une intervention immédiate lors d'une remontée d'alerte, d'un temps de réponse dégradé ou d'une plainte des utilisateurs.
+
+      L'analyse doit porter sur chaque élément de l'architecture selon le type de déploiement, incluant les serveurs, les réseaux et les SGBD.
+
+      Le diagnostic doit prendre en compte le contexte de fonctionnement en distinguant l'activité transactionnelle normale de l'activité exceptionnelle ou les traitements batchs normaux et exceptionnels.
+
+   B. Étapes de collecte et d'analyse.
+
+      La première étape consiste en la collecte par une prise de mesure qui doit impérativement tenir compte du contexte tel que la période et le nombre d'utilisateurs.
+
+      L'analyse repose ensuite sur la comparaison des données recueillies avec des valeurs seuils comme les références ou les offres de contrats de services.
+
+      Il convient également d'étudier la documentation du système d'exploitation ainsi que les recommandations systèmes pour interpréter les résultats.
+
+      Une comparaison avec les prises de mesure précédentes permet de déterminer précisément ce qui a changé depuis la dernière analyse.
+
+   C. Processus de proposition de solutions.
+
+      Une fois l'analyse terminée, l'expert doit formuler des propositions de solutions logicielles et ou matérielles adaptées au problème identifié.
+
+      La mise en œuvre de ces solutions peut se faire de manière unitaire ou de façon homogène sur l'ensemble du parc.
+
+      Toute modification apportée au système doit obligatoirement être suivie d'une nouvelle analyse pour valider l'efficacité des changements.
+
+III. OUTILS DE SURVEILLANCE DES PROCESSUS ET DU SYSTÈME.
+
+   A. Utilisation de top et ps.
+
+      L'utilitaire top affiche en continu l'état du système en présentant les processus par ordre décroissant d'activité. Il permet de visualiser la charge moyenne du système sur les un, cinq et quinze dernières minutes via la ligne load average.
+
+      La commande top propose plusieurs options comme -d pour le délai de rafraîchissement ou -p pour cibler un PID spécifique. L'option -n permet de définir le nombre de mesures à effectuer.
+
+      La commande ps permet d'afficher l'état des processus avec des options variées telles que -A pour tous les processus ou -e pour l'ensemble des processus. L'option -f fournit un affichage détaillé tandis que -u affiche le nom du propriétaire.
+
+      Il existe des variantes de ps comme pstree qui permet d'afficher l'arborescence des processus. L'utilisation de ps aux est également courante pour lister les processus utilisateur avec le nom des users et l'heure de début.
+
+   B. Analyse de la charge avec uptime et w.
+
+      La commande uptime permet de connaître la charge globale du système à un instant donné. Elle indique également le nombre de jours écoulés depuis le dernier redémarrage ainsi que le nombre d'utilisateurs connectés.
+
+      La commande w est utilisée pour identifier qui est connecté sur le système, depuis combien de temps et ce que l'utilisateur fait. Si cette commande n'est pas implémentée, la commande standard who ou who -Hu peut être utilisée.
+
+      L'analyse de la charge via uptime précise la charge machine pour la dernière minute, les cinq dernières minutes et les quinze dernières minutes. Ces données sont essentielles pour évaluer la contention sur le processeur.
+
+   C. Mesure de temps et appels système avec time et strace.
+
+      La commande time permet de déterminer le temps d'exécution d'un processus en détaillant la répartition entre le temps système, le temps utilisateur et le temps réel. Sa syntaxe de base est time suivi du nom du programme.
+
+      Selon les distributions Linux, deux commandes peuvent cohabiter pour cette fonction, à savoir time et timex. Cette mesure est cruciale pour évaluer la performance d'une application spécifique.
+
+      La commande strace est un outil puissant qui permet d'afficher les appels système invoqués par une application. Elle aide à comprendre les interactions directes entre le logiciel et le noyau du système d'exploitation.
+
+IV. GESTION DE LA MÉMOIRE ET DES RESSOURCES SYSTÈME.
+
+   A. Analyse de la mémoire physique et swap avec free.
+
+      La commande free permet d'afficher l'utilisation de la mémoire sur le système. Elle peut être utilisée avec des options comme -b pour les bytes, -k pour les kibibytes, -m pour les mebibytes ou -g pour les gibibytes.
+
+      La ligne Mem concerne la mémoire physique et indique le total, la mémoire utilisée, la mémoire libre, la mémoire partagée, le buff/cache et la mémoire disponible. Le champ available est une estimation de la mémoire disponible pour le démarrage de nouvelles applications sans utiliser la mémoire secondaire.
+
+      Le champ buff/cache représente la quantité de mémoire utilisée par les tampons du noyau et le cache de pages. Il est possible de forcer le noyau à vider ces caches avec la commande sync; echo trois > /proc/sys/vm/drop_caches.
+
+      La ligne Swap concerne la mémoire secondaire et indique le total, la quantité utilisée et la quantité libre. Une utilisation élevée de l'espace de swap peut être un symptôme de surcharge mémoire.
+
+      Le paramètre swappiness, dont la valeur par défaut est soixante, contrôle le degré auquel le système effectue des swaps. Une valeur élevée donne la priorité aux performances en poussant les processus inactifs hors de la mémoire physique, tandis qu'une valeur faible privilégie l'interactivité.
+
+   B. Surveillance globale avec vmstat.
+
+      L'utilitaire vmstat affiche l'utilisation des ressources du processeur, de la mémoire et des disques. Sa syntaxe permet de définir un délai et un nombre de répétitions pour l'affichage.
+
+      La section Procs indique le nombre de processus en cours d'exécution ou attendant le processeur ainsi que le nombre de processus bloqués attendant une ressource comme le disque.
+
+      La partie Memory détaille l'espace de swap utilisé, la mémoire libre et la quantité de mémoire utilisée comme tampon.
+
+      La section Swap permet de surveiller le swap in, qui est la mémoire déplacée du swap vers la RAM, et le swap out, qui est la mémoire déplacée de la RAM vers le swap.
+
+      La section IO présente les blocs lus par seconde avec bi et les blocs écrits par seconde avec bo.
+
+      La partie System montre le nombre d'interruptions par seconde avec in et le nombre de changements de contexte par seconde avec cs.
+
+      La section CPU fournit des statistiques sur le temps passé en mode utilisateur avec us, en mode système avec sy, le temps d'inactivité avec id et le temps d'attente des entrées/sorties avec wa.
+
+   C. Gestion de la communication inter-processus avec ipcs.
+
+      La commande ipcs est utilisée pour afficher les informations relatives à l'IPC ou communication inter-processus. Elle permet de visualiser la mémoire partagée, les files de messages et les sémaphores.
+
+      L'utilisation de l'option -s permet d'afficher les sémaphores, l'option -m concerne la mémoire partagée et l'option -q concerne les files de messages. L'option -a permet d'afficher toutes les IPC.
+
+      Il est possible d'identifier le processus associé à une IPC en utilisant l'option -p.
+
+      Pour supprimer une IPC orpheline qui n'est associée à aucun processus, on utilise la commande ipcrm avec les options -m, -q ou -s suivies du numéro d'identifiant.
+
+V. ANALYSE DES ENTRÉES/SORTIES ET DU RÉSEAU.
+
+   A. Performance des disques avec iostat.
+
+      La commande iostat est utilisée pour afficher des informations sur l'ensemble des périphériques d'entrée et de sortie de type disque.
+
+      Elle permet de surveiller l'activité des blocs et d'identifier d'éventuels goulots d'étranglement au niveau du stockage.
+
+      L'analyse de cette commande est essentielle pour détecter une surutilisation d'un disque ou un temps d'accès moyen trop élevé.
+
+      Une file d'attente des I/O importante ou un temps de réponse dégradé sont des symptômes caractéristiques d'une surcharge disque.
+
+      Les causes de ces problèmes peuvent inclure une application mal écrite, une fragmentation des données ou un matériel peu performant.
+
+   B. Statistiques réseau avec ss, ping et traceroute.
+
+      L'outil SS est une commande de statistiques réseau qui remplace la commande netstat désormais obsolète.
+
+      Elle permet d'afficher les statistiques du réseau de manière plus simple et plus rapide, comme avec l'option ss --listen.
+
+      La commande ping sert à mesurer le temps de réponse pour atteindre un point d'accès réseau grâce à une requête d'echo de type ICMP.
+
+      La commande traceroute reprend les fonctionnalités du ping mais détaille le cheminement et la route pour atteindre l'hôte.
+
+      Elle permet de visualiser le temps de réponse entre chaque nœud intermédiaire ou passerelle empruntée lors du trajet.
+
+      Une surcharge réseau peut se manifester par une réémission de trames ou un temps de réponse dégradé de l'application.
+
+   C. Surveillance NFS et trafic avec nfsstat et ntop.
+
+      La commande nfsstat est dédiée à l'affichage des statistiques NFS et RPC.
+
+      Elle propose plusieurs options comme -s pour les statistiques serveur, -c pour le client, -n pour le NFS ou -r pour le RPC.
+
+      L'outil ntop est une sonde réseau qui peut être installée en complément pour identifier des problèmes de performance applicative.
+
+      Il permet d'afficher un top ten des dix stations ou serveurs les plus consommateurs en bande passante ou en nombre de connexions.
+
+      L'installation de ntop nécessite un serveur Linux, deux cartes réseaux dont une en mode écoute, le package ntop et un serveur httpd.
+
+VI. COLLECTE DE DONNÉES ET COMPTABILITÉ SYSTÈME.
+
+   A. Utilisation avancée de sar et sysstat.
+
+      L'outil sar permet de collecter des informations sur l'utilisation des ressources de manière interactive ou en batch. Il peut cibler des ressources spécifiques comme le processeur, la mémoire ou le disque.
+
+      La commande s'utilise avec un délai entre deux relevés et un nombre de répétitions. L'option -o permet d'enregistrer la collecte dans un fichier au format data pour une exploitation ultérieure avec sar -f.
+
+      L'option -A permet de collecter toutes les options de mesure. Les options spécifiques incluent -b pour le buffer cache, -d pour l'activité des périphériques en mode bloc et -p pour la pagination.
+
+      Le rapport peut aussi porter sur la file d'attente de processus avec -q ou sur la gestion de la mémoire avec -r. L'option -u est dédiée à l'utilisation de l'unité centrale et -v aux tables du noyau.
+
+      L'utilisation de sar peut être paramétrée avec une heure de départ -s et une heure de fin -e. L'intervalle entre les mesures est défini par l'option -i.
+
+   B. Mise en place de la surveillance par crontab.
+
+      Le système peut être surveillé automatiquement par la configuration de la crontab pendant une plage horaire définie. On peut utiliser l'outil sar, la comptabilité système ou des scripts personnalisés.
+
+      Lors de l'installation du paquet sysstat, le processus sa1 collecte des données et les enregistre dans le répertoire /var/log/sa/. Les rapports journaliers sont ensuite créés à partir de ces fichiers.
+
+      Les fichiers de type sa(jj) sont générés par sa1 pour la collecte. Les fichiers de type sar(jj) sont produits par sa2 pour le rapport quotidien.
+
+      Ces fichiers de collecte peuvent être lus directement grâce à la commande sar -f sa(jj). Cette méthode permet de traiter des problèmes de temps de réponse qui surviennent de manière aléatoire.
+
+   C. Comptabilité système avec l'accounting et acctcom.
+
+      L'accounting est un outil de surveillance qui permet de mettre en place une comptabilité de l'utilisation des ressources. Il sert à suivre l'activité globale, les connexions, les actions des utilisateurs et l'activité disque.
+
+      La mise en œuvre commence par l'activation de la collecte avec la commande accton pointant vers /var/log/pacct. L'administrateur peut ensuite analyser les rapports avec la commande ac -f.
+
+      La commande acctcom permet d'analyser les données avec diverses options. L'option -a fournit des statistiques par processus tandis que -u permet de filtrer par utilisateur.
+
+      D'autres options comme -m ou -k servent à calculer la moyenne de l'occupation mémoire par processus par minute. L'option -h permet de comparer l'utilisation du CPU par processus par rapport aux autres via le hog factor.
+
+VII. DIAGNOSTIC DES SYMPTÔMES ET STRATÉGIES D'OPTIMISATION.
+
+   A. Identification des surcharges CPU, mémoire, disque et réseau.
+
+      Une surcharge CPU se manifeste par un pourcentage idle proche de zéro, un pourcentage user ou système proche de cent pour cent, une run queue importante ou un load average supérieur à un pour un CPU. Les causes incluent la création de nombreux processus, des applications effectuant beaucoup d'appels systèmes ou des processus en boucle.
+
+      La surcharge mémoire est identifiée par un faible niveau de mémoire disponible, une utilisation de l'espace de swap ou de nombreux page out. Cela peut provenir de fuites mémoire, de réservations importantes par des processus comme la jvm ou de l'utilisation de shared memory par des SGBD.
+
+      Pour le disque, les symptômes incluent un temps de réponse dégradé, une forte utilisation du périphérique ou une file d'attente des I/O importante. Les causes sont souvent liées à une application mal écrite, une fragmentation des données, un matériel peu performant ou un swapping excessif.
+
+      Une surcharge réseau se traduit par un temps de réponse dégradé d'une application ou une réémission de trames. Les facteurs de dégradation incluent un réseau défectueux, une architecture inadaptée, la présence de virus ou des trames inutiles polluant le réseau.
+
+   B. Facteurs d'optimisation logicielle et matérielle.
+
+      L'optimisation logicielle peut passer par le réglage des paramètres du système, la mise en œuvre de threads ou la parallélisation des tâches en SMP. Il est aussi conseillé d'utiliser des librairies partagées, de prioriser les processus avec nice ou d'arrêter les services inutiles.
+
+      La gestion de la mémoire peut être améliorée en ajustant la taille de la mémoire disponible, du buffer cache ou des mémoires partagées pour les SGBD. Il est possible de libérer l'espace mémoire pré alloué inutilement par des processus comme la jvm.
+
+      L'optimisation des données et du stockage inclut le réglage de la taille des blocs au niveau LVM, du file system ou du SGBD. Le stripping disque est également une solution pour améliorer les performances de stockage.
+
+      Au niveau matériel, l'utilisation de matériel plus rapide ou la mise en œuvre de clustering permet de répondre aux besoins de performance. Les traitements batchs peuvent aussi être optimisés en les reportant en période creuse.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la charge du CPU avec une occupation à cent pour cent. Une charge supérieure à un indique une contention si le temps idle est égal à zéro virgule zéro, sinon la cause est ailleurs comme un disque trop lent.
+
+      La mémoire réellement utilisée par un processus ne se limite pas à la valeur RES. Elle se situe entre la valeur RES moins SHR et la valeur VIRT.
+
+      La valeur de la mémoire disponible peut différer de la mémoire libre car elle inclut les pages récupérables en mémoire.
+
+      Le paramètre swappiness varie de zéro à cent et influence le comportement du système. Une valeur élevée favorise les performances en poussant les processus inactifs vers le swap, tandis qu'une valeur faible privilégie l'interactivité.
+
+      L'utilisation de la mémoire secondaire doit rester faible pour garantir de bonnes performances. Un usage important du swap peut être le symptôme d'un problème de mémoire ou d'un disque lent.
+
+EXEMPLES CITÉS.
+
+      Lors de l'utilisation de la commande top, la ligne load average affiche la charge moyenne sur les un, cinq et quinze dernières minutes.
+
+      La commande free permet d'afficher la mémoire en utilisant des options comme -m pour les MiB ou -g pour les GiB.
+
+      Pour vider les caches du noyau, l'administrateur peut utiliser la commande sync suivie de echo trois vers le fichier /proc/sys/vm/drop_caches.
+
+      Le module mentionne que le temps de réponse exigé sur un système de gestion est de l'ordre de la seconde.
+
+      La commande sar peut être utilisée pour analyser des données historiques enregistrées dans des fichiers de type sa(jj) ou sar(jj).

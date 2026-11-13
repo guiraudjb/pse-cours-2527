@@ -1,0 +1,395 @@
+GUIDE DE RÉVISION COMPLET SUR LA DISTRIBUTION DEBIAN GNU/LINUX.
+
+LEXIQUE COMPLET.
+
+      Le sigle APT désigne l'Advanced Package Tool qui est une interface avancée pour le système de gestion des paquets Debian.
+
+      Le terme Debian désigne une distribution spécifique du système d'exploitation Linux disposant de plus de soixante-quatre mille neuf cent soixante et un logiciels.
+
+      Le sigle GNU désigne le projet qui fournit de nombreux utilitaires et applications utilisés par Debian.
+
+      L'organisme FSF désigne la Free Software Foundation qui soutient les idéaux du logiciel libre.
+
+      Le sigle LSB désigne la Linux Standard Base qui est une spécification pour permettre l'utilisation du même paquet binaire sur plusieurs distributions.
+
+      Le sigle POSIX désigne la norme IEEE mille trois virgule un-mille neuf cent quatre-vingt-dix qui assure la compatibilité du code source des systèmes d'exploitation de type Unix.
+
+      Le sigle GPL désigne la licence GNU qui est utilisée pour la redistribution de la plupart des paquets de Debian.
+
+      Le terme Debian stable désigne la version de la distribution qui est bien testée et dont seuls les changements de sécurité sont incorporés.
+
+      Le sigle BTS désigne le Bug Tracking System qui permet de classer les détails des bogues rapportés par les utilisateurs et les développeurs.
+
+      L'organisme SPI désigne Software in the Public Interest qui est une association à but non lucratif basée aux États-Unis.
+
+COURS DÉTAILLÉ.
+
+I. FONDAMENTAUX ET DÉFINITIONS DE DEBIAN.
+
+   A. Qu'est-ce que Debian GNU/Linux.
+
+      Debian GNU/Linux est une distribution spécifique du système d'exploitation Linux qui dispose de nombreux paquets.
+
+      Cette distribution est complète car elle inclut actuellement plus de soixante-quatre mille neuf cent soixante et un logiciels au sein de ses archives.
+
+      Elle est libre d'utilisation et de distribution sans aucune exigence de paiement ou d'adhésion à un établissement.
+
+      Le système est dynamique et évolue rapidement grâce à environ mille quatre cents volontaires qui contribuent constamment au projet.
+
+      Les archives sont mises à jour deux fois chaque jour par les membres du projet.
+
+   B. Relation avec le projet GNU et Linux.
+
+      Linux est le noyau d'un système d'exploitation de type Unix qui a été à l'origine conçu pour les ordinateurs trois cent quatre-vingt-six et plus récents.
+
+      Le projet Debian est un descendant direct du projet GNU qui a été créé par Ian Murdock en mille neuf cent quatre-vingt-treize.
+
+      Debian GNU/Linux est le résultat d'un effort de volontaires pour créer un système compatible Unix et de grande qualité.
+
+      Plusieurs des applications qui rendent Debian GNU/Linux utile ont été développées par le projet GNU de la Free Software Foundation.
+
+      La FSF a explicitement demandé que le système soit appelé Debian GNU/Linux.
+
+   C. Philosophie du logiciel libre et charte Debian.
+
+      Pour Debian, le terme libre fait référence à la liberté et non au prix des logiciels.
+
+      Le logiciel libre signifie que vous avez la liberté de distribuer des copies et de recevoir le code source.
+
+      Vous avez également la possibilité de modifier le logiciel ou d'employer des parties du code dans de nouveaux projets libres.
+
+      Le projet Debian est très strict quant au fait de fournir des logiciels vraiment libres selon ses propres principes.
+
+      La charte Debian définit des exigences de qualité et des normes que doit satisfaire chaque paquet de la distribution.
+
+   D. Prononciation et origine du nom.
+
+      Le nom du projet se prononce Deb-i-an avec un e court et une accentuation portée sur la première syllabe.
+
+      Ce mot est la contraction des noms Debra et Ian Murdock qui sont les fondateurs du projet.
+
+      La prononciation de Ian peut présenter une certaine ambiguïté mais le fondateur préfère la prononciation i'-an.
+
+II. VERSIONS ET INSTALLATION DU SYSTÈME.
+
+   A. Les trois distributions : stable, testing et unstable.
+
+      La version treize, nommée trixie, constitue la distribution stable qui est bien testée. Seuls les changements liés à des problèmes importants de sécurité ou d'utilisation y sont incorporés.
+
+      La distribution testing, actuellement appelée forky, contient les paquets qui intégreront la prochaine version stable. Elle est mise à jour plus souvent que la version stable mais moins que la version unstable.
+
+      La version unstable est la version en cours de développement qui est mise à jour continuellement. Elle est aussi connue sous le nom de sid.
+
+      Les paquets migrent de sid vers testing après un certain nombre de jours, par exemple cinq jours. Ils n'entrent dans testing que s'ils ne présentent aucun bogue critique pour la publication.
+
+   B. Méthodes d'obtention et supports d'installation.
+
+      Les images d'installation peuvent être obtenues en cliquant sur le lien Download du site web officiel de Debian. Il existe également une page dédiée pour les images CD et DVD.
+
+      L'installation peut se faire depuis un CD-ROM en configurant le système pour démarrer sur ce support. Le manuel d'installation fournit des précisions sur cette procédure.
+
+      Il est possible d'installer le système directement depuis un site Internet distant. On peut utiliser une petite image de CD pour créer un support amorçable et finir l'installation via le réseau.
+
+      D'autres alternatives existent comme l'utilisation d'une clé USB ou le démarrage directement depuis le disque dur. Le démarrage par TFTP net booting est aussi une option disponible.
+
+      Pour les installations sur plusieurs ordinateurs, il est possible de réaliser des installations entièrement automatiques. Toutes les méthodes ne sont pas supportées par toutes les architectures.
+
+   C. Différences entre les versions et choix de la distribution.
+
+      La version stable est le choix favori pour ceux qui privilégient la sécurité ou la stabilité. Elle est particulièrement recommandée pour les serveurs de production qui doivent fonctionner vingt-quatre heures sur vingt-quatre et sept jours sur sept.
+
+      La version unstable propose les logiciels les plus récents mais peut être cassée à tout moment. Elle convient aux utilisateurs expérimentés qui acceptent de faire face à des plantages du système.
+
+      La version testing se situe entre ces deux extrêmes avec des logiciels plus à jour que la stable. Elle est moins souvent cassée qu'unstable mais la correction des bogues peut prendre plusieurs mois.
+
+      Le choix dépend de l'aversion au risque et de l'expérience en gestion de système. Si l'utilisateur est indécis, il est conseillé de rester sur la distribution stable.
+
+      En cas de matériel très récent qui n'est pas détecté en version stable, il peut être utile de basculer vers testing ou unstable. Le site linux-on-laptops.com peut aider pour les ordinateurs portables.
+
+   D. Processus de mise à jour et de migration.
+
+      La mise à jour d'un système Debian peut se faire via les outils aptitude ou apt-get. Pour la version stable, l'utilisateur doit principalement se soucier de l'application des mises à jour de sécurité.
+
+      Il est possible de mettre à jour le système vers la dernière version stable en utilisant aptitude update puis aptitude full-upgrade. Pour les mises à jour entre deux versions majeures, il faut lire les notes de publication.
+
+      Le passage de la version stable vers testing ou unstable est possible en modifiant le fichier /etc/apt/sources.list. Cependant, l'opération inverse est impossible.
+
+      Pour les utilisateurs de la version testing nommée forky, le comportement dépend de la configuration du fichier sources.list. Si le champ contient forky, la machine deviendra la nouvelle version stable lors de la publication.
+
+      Si l'utilisateur souhaite installer des paquets provenant de différentes distributions, il peut utiliser l'épinglage ou apt-pinning. Il est toutefois recommandé de ne pas mélanger les paquets pour éviter les dysfonctionnements.
+
+III. ARCHITECTURE ET COMPATIBILITÉ MATÉRIELLE.
+
+   A. Architectures matérielles supportées.
+
+      Debian GNU/Linux peut fonctionner sur tous les systèmes pris en charge par le noyau Linux car elle fournit le code source complet pour tous les programmes.
+
+      La version treize de Debian propose une distribution binaire complète pour l'architecture amd64 qui couvre les processeurs AMD soixante-quatre bits avec l'extension AMD64, ainsi que tous les processeurs Intel avec l'extension EM64T.
+
+      Le système supporte également les architectures arm64 pour les périphériques récents, armel pour les machines ARM petit-boutistes et armhf pour les machines ARMv7 avec unité de calcul flottant.
+
+      Les architectures i386, ia64, mips, mipsel, powerpc et ppc64el sont également prises en charge pour divers types de processeurs et de machines.
+
+      Debian propose aussi un portage soixante-quatre bits pour les machines IBM System z via l'architecture s390x.
+
+   B. Noyaux disponibles et compatibilité Unix.
+
+      Au-delà du noyau Linux, Debian fournit une distribution binaire complète pour le noyau FreeBSD via les portages kfreebsd-amd64 et kfreebsd-i386.
+
+      Le système propose également des travaux en cours pour les portages avr32 et hurd-i386 qui utilise le micronoyau GNU Mach.
+
+      La combinaison du noyau Linux, du système de fichiers et des utilitaires GNU est conçue pour être en conformité avec la norme POSIX mille trois virgule un.
+
+      Le code source de Linux est compatible avec les autres systèmes Unix et gère presque tout ce qui est disponible pour les systèmes de type système V ou les dérivés des BSD.
+
+   C. Gestion des paquets entre différentes distributions.
+
+      Les différentes distributions Linux utilisent des formats de paquets et des programmes de gestion de paquets différents.
+
+      Il est possible de désarchiver un paquet Debian ou un paquet Red Hat sur une machine Debian grâce à la norme de hiérarchie du système de fichiers Linux.
+
+      L'outil alien est utilisé pour convertir les différents formats de paquets entre les distributions.
+
+      Cependant, l'utilisation de paquets d'une autre distribution peut avoir des effets imprévisibles sur le gestionnaire de paquets de Debian à cause de fichiers de contrôle non standardisés.
+
+      Une meilleure méthode consiste à utiliser le répertoire /usr/local/ qui est entièrement à la discrétion de l'utilisateur pour installer des paquets hors gestionnaire.
+
+   D. Installation de logiciels hors Debian.
+
+      Il est recommandé de mettre le code source des programmes dans le répertoire /usr/local/src pour les installer manuellement.
+
+      Après la compilation, les binaires doivent être déposés dans /usr/local/bin/, les bibliothèques dans /usr/local/lib/ et les fichiers de configuration dans /usr/local/etc/.
+
+      Si les programmes doivent être placés ailleurs, il est possible d'utiliser des liens symboliques depuis /usr/local/ vers l'emplacement exigé.
+
+      Si le copyright le permet, il est conseillé de réfléchir à la possibilité de créer un paquet Debian pour le programme et de l'envoyer au système.
+
+IV. LE SYSTÈME DE GESTION DES PAQUETS.
+
+   A. Structure d'un paquet binaire et paquet source.
+
+      Un paquet binaire Debian est une archive spécifique se terminant par l'extension .deb. Elle contient les fichiers exécutables, les bibliothèques ainsi que la documentation associée à un programme.
+
+      Le nom d'un fichier binaire suit une convention précise incluant le nom du paquet, le numéro de version du développeur amont, le numéro de révision Debian et l'architecture.
+
+      Un paquet source est constitué d'un fichier .dsc décrivant le paquet ainsi que des fichiers sources originels non modifiés au format tar compressé avec gzip.
+
+      Il comprend également un fichier .debian.tar.xz qui contient les modifications spécifiques apportées par Debian par rapport aux sources d'origine.
+
+      L'outil dpkg-source permet de gérer l'archivage et le désarchivage de ces sources, tandis que l'interface apt-get source peut être utilisée pour les récupérer.
+
+   B. Format des fichiers de contrôle et scripts d'installation.
+
+      Le fichier control est un élément essentiel qui contient des informations comme le nom du paquet, la version, l'architecture et le responsable de la maintenance.
+
+      Il définit également des champs cruciaux tels que la taille installée, la section, la priorité et une description résumant les fonctionnalités du logiciel.
+
+      Les scripts d'installation sont des fichiers exécutables lancés automatiquement lors de la manipulation du paquet.
+
+      Le script preinst s'exécute avant le dépaquetage, tandis que le postinst complète la configuration une fois le paquet dépaqueté.
+
+      Les scripts prerm et postrm interviennent respectivement avant et après la suppression des fichiers associés au paquet.
+
+      Tous ces fichiers de contrôle et ces scripts sont regroupés dans la section control d'une archive Debian.
+
+   C. Hiérarchie des priorités et des dépendances.
+
+      Chaque paquet se voit assigner une priorité par les développeurs, allant de Required ou Important pour le fonctionnement du système à Extra pour les paquets très spécifiques.
+
+      Les paquets Standard constituent la base installée par défaut, incluant des outils comme l'interpréteur Python ou le serveur OpenSSH.
+
+      Le système utilise des dépendances pour définir les relations entre les paquets, comme Depends qui exige l'installation d'un autre programme pour le fonctionnement de A.
+
+      Certaines relations sont plus souples, comme Recommends qui indique qu'un utilisateur voudrait probablement la fonctionnalité de B, ou Suggests pour des fichiers liés.
+
+      Il existe aussi des mécanismes de conflit comme Conflicts, qui empêche le fonctionnement de A si B est présent, ou Breaks qui empêche la configuration simultanée.
+
+      Le concept de paquet virtuel permet à plusieurs programmes, comme firefox-esr et konqueror, de satisfaire une même exigence de dépendance sous le nom de www-browser.
+
+   D. Outils de gestion : dpkg, APT et aptitude.
+
+      dpkg est le programme principal de gestion des paquets qui gère l'installation, la configuration et la suppression des archives .deb.
+
+      APT est une interface avancée qui fournit des outils en ligne de commande comme apt-get pour gérer les paquets à partir de sources spécifiées dans le fichier sources.list.
+
+      L'outil apt fusionne les fonctions d'apt-get et d'apt-cache tout en offrant un format de sortie en couleurs plus agréable pour les utilisateurs.
+
+      Aptitude est un gestionnaire de paquets qui propose une interface texte basée sur la bibliothèque curses ainsi qu'une interface graphique.
+
+      Aptitude est recommandé pour la gestion quotidienne des paquets en console car il facilite la recherche de logiciels obsolètes.
+
+      Les outils de haut niveau comme aptitude ou synaptic reposent tous sur apt, qui lui-même utilise dpkg pour la gestion de bas niveau.
+
+V. GESTION DES LOGICIELS ET DE L'ENVIRONNEMENT.
+
+   A. Logiciels disponibles et environnement de développement.
+
+      Debian GNU/Linux propose une vaste collection de plus de soixante-quatre mille neuf cent soixante et un logiciels. Cette offre inclut des applications de développement comme GCC, g++, make, et l'éditeur Emacs.
+
+      Le système fournit également des langages de programmation tels que Perl, Python et Tcl/Tk avec leurs bibliothèques respectives. Les environnements de bureau comme GNOME, KDE et Xfce sont disponibles via le système de fenêtrage Xorg.
+
+      Pour les besoins de développement, le méta-paquet build-essential permet d'installer les outils standards de construction. Il est possible d'utiliser la commande apt-get build-dep pour installer toutes les dépendances nécessaires à la construction d'un paquet source.
+
+      La gestion de Java est assurée par des implémentations libres fournissant des kits de développement JDK et des environnements d'exécution. Les navigateurs web comme Mozilla ou Konqueror permettent l'exécution d'applets Java via des greffons.
+
+   B. Gestion du matériel et des firmwares non-libres.
+
+      Debian fonctionne sur de nombreuses architectures matérielles comme amd64, arm64, i386 et powerpc. Le système peut également être porté sur des noyaux comme FreeBSD ou GNU/Hurd.
+
+      Certains périphériques nécessitent l'utilisation de firmwares non-libres pour fonctionner correctement. Depuis la version douze de Debian, ces binaires sont regroupés dans un nouveau composant de l'archive nommé non-free-firmware.
+
+      Pour utiliser ces composants, l'utilisateur doit s'assurer que son fichier sources.list inclut bien la section non-free-firmware. Cela permet de charger les images de firmware nécessaires lors de l'initialisation du matériel.
+
+      En cas de problème avec une carte réseau sans fil, il est possible d'utiliser l'outil ndiswrapper pour exploiter un pilote Windows. L'achat d'un matériel compatible reste une alternative recommandée.
+
+   C. Personnalisation du système et gestion des services.
+
+      L'utilisateur peut personnaliser son installation en utilisant le paquet libpaper1 pour définir le format de papier global. Les périphériques matériels peuvent être partagés en ajoutant des utilisateurs aux groupes spécifiques comme le groupe cdrom.
+
+      Le système Debian utilise par défaut systemd pour l'initialisation, mais il supporte aussi l'initialisation traditionnelle par System V. Les services peuvent être gérés avec la commande service ou la commande systemctl.
+
+      Pour les utilisateurs préférant l'ancien style, le paquet sysvinit-core permet l'amorçage par System V. Les scripts de démarrage utilisent alors des niveaux d'exécution allant de zéro pour l'arrêt à six pour le redémarrage.
+
+      Il est possible de remplacer un fichier installé par un paquet en utilisant l'outil dpkg-divert. Cette méthode permet de détourner l'installation vers un autre nom de fichier afin de ne pas écraser une version personnalisée.
+
+   D. Gestion de la diversité et des alternatives.
+
+      Debian gère la présence de plusieurs logiciels offrant la même fonctionnalité grâce au système des paquets virtuels. Par exemple, les paquets tin et trn fournissent tous deux le paquet virtuel news-reader.
+
+      Le script Perl update-alternatives permet de choisir l'outil préféré parmi les différentes options disponibles. Cette commande assure que les liens symboliques et les fichiers de support associés sont correctement mis à jour.
+
+      L'utilisateur peut configurer ses choix avec la commande update-alternatives --config pour sélectionner une option via un numéro. Il est aussi possible d'installer une nouvelle alternative avec l'option --install.
+
+      Ce mécanisme permet de maintenir la compatibilité des dépendances tout en offrant une grande flexibilité aux administrateurs. Cela garantit que les programmes demandant une fonctionnalité de base trouveront toujours un fournisseur adapté.
+
+VI. ORGANISATION DES ARCHIVES ET MAINTENANCE.
+
+   A. Structure des répertoires de l'archive Debian.
+
+      Le répertoire dists est une abréviation pour distributions et constitue la manière canonique d'accéder aux versions de Debian.
+
+      Le répertoire pool contient les paquets réels et est structuré selon le nom des paquets sources.
+
+      À l'intérieur de pool, le répertoire est divisé par section comme main, contrib et non-free, puis par la première lettre du nom des paquets.
+
+      Les répertoires binary-quelquechose contiennent les fichiers catalogues pour les paquets binaires de chaque architecture disponible.
+
+      Le répertoire source contient les fichiers catalogues pour les paquets sources contenus dans la distribution.
+
+      Le répertoire incoming sert à conserver les paquets après l'envoi par un développeur avant leur autorisation dans l'archive.
+
+   B. Fonctionnement des dépôts et des miroirs.
+
+      Les miroirs permettent de copier les distributions Debian pour faciliter l'accès aux utilisateurs.
+
+      Le répertoire dists contient des sous-répertoires pour les versions stable, testing et unstable.
+
+      Le répertoire pool permet de stocker les paquets dans un emplacement canonique quel que soit leur distribution.
+
+      L'utilisation de miroirs réduit la consommation de bande passante lors des changements majeurs de distribution.
+
+      Le service httpredir.debian.org aide à choisir le meilleur miroir en utilisant la situation géographique de l'utilisateur.
+
+      Le service apt-cacher peut être utilisé pour télécharger les mises à jour une seule fois sur un réseau de machines.
+
+   C. Mise à jour du système et journalisation.
+
+      Pour mettre à jour le système, il est recommandé d'utiliser aptitude ou apt-get.
+
+      L'utilisation de aptitude update suivie de aptitude full-upgrade permet de réaliser une mise à jour complète.
+
+      Pour les mises à jour entre deux versions majeures de Debian, il convient de lire les notes de publication.
+
+      L'option --log de dpkg permet d'activer le journal des mises à jour et des suppressions.
+
+      Il est possible de configurer le journal dans le fichier /etc/dpkg/dpkg.cfg avec la ligne log /var/log/dpkg.log.
+
+      L'outil cron-apt peut automatiser la mise à jour du système à intervalle régulier via un cron.
+
+   D. Gestion des noyaux et des modules.
+
+      Debian fournit une distribution binaire complète pour plusieurs noyaux comme Linux et FreeBSD.
+
+      Le paquet kernel-package est utilisé pour construire les noyaux Linux distribués par Debian.
+
+      Les utilisateurs peuvent construire des noyaux personnalisés en utilisant la commande make deb-pkg.
+
+      Un fichier de configuration dans /etc/modules permet de lister les modules chargés manuellement au démarrage.
+
+      D'autres configurations de modules sont stockées dans le répertoire /etc/modprobe.d/.
+
+      La commande dpkg --purge linux-image-NNN permet de désinstaller un vieux paquet de noyau sans risque.
+
+VII. ÉCOSYSTÈME, AIDE ET CONTRIBUTION.
+
+   A. Ressources documentaires et recherche d'aide.
+
+      La documentation officielle comprend le Guide d'installation Debian GNU/Linux et la Référence Debian qui couvre de nombreux aspects de l'administration système.
+
+      Les utilisateurs peuvent consulter le Wiki Debian pour trouver des solutions à des problèmes courants ou des guides pratiques.
+
+      Le système propose des pages de manuel de style Unix accessibles via la commande man et des pages info de style GNU pour un système hypertexte.
+
+      Pour une recherche rapide, il est possible d'utiliser le site de recherche Debian WWW ou les archives des listes de diffusion.
+
+      Les paquets installés contiennent souvent leur propre documentation dans le répertoire /usr/share/doc/PAQUET.
+
+   B. Signalement de bogues et suivi des problèmes.
+
+      Debian utilise un système de gestion des bogues appelé BTS qui classe les détails des problèmes rapportés par les utilisateurs et les développeurs.
+
+      Chaque bogue est numéroté et conservé dans la base de données publique accessible sur le site de Debian.
+
+      Le paquet reportbug peut guider l'utilisateur dans la rédaction d'un rapport et envoyer automatiquement les détails du système.
+
+      Les rapports de bogues critiques pour la publication sont suivis pour garantir que la distribution stable ne contienne pas de problèmes graves.
+
+      Un serveur de courrier permet d'accéder au système de gestion des bogues en envoyant un message avec le mot help.
+
+   C. Comment participer et contribuer au projet.
+
+      Le développement est ouvert à tous et les volontaires peuvent devenir contributeurs, responsables de paquets ou développeurs Debian.
+
+      Les contributeurs participent à des tâches comme la rédaction de documentation, la traduction ou le support aux utilisateurs.
+
+      Les développeurs Debian disposent de privilèges étendus comme la participation aux élections ou le droit de charger des paquets sur l'archive.
+
+      Le projet accepte des ressources sous forme de temps, de matériel ou de contributions financières via des organisations comme Software in the Public Interest.
+
+      Le développement collaboratif s'effectue notamment sur Salsa, qui est une instance GitLab pour le projet Debian.
+
+   D. Distribution commerciale et produits dérivés.
+
+      Il est permis de construire et de vendre des CD-ROM Debian sans demander de permission préalable au projet.
+
+      Les fabricants de supports doivent toutefois se conformer aux licences des programmes fournis, comme la licence GNU GPL.
+
+      Debian peut être empaquetée avec des logiciels non-libres grâce au référentiel non-free disponible dans l'archive.
+
+      Des entreprises peuvent utiliser Debian comme base pour créer des distributions destinées à des marchés verticaux spécifiques.
+
+      Il est possible de créer un paquet Debian pour un programme commercial afin qu'il s'installe facilement sur n'importe quel système Debian.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre la version stable avec la version testing ou unstable car la première est conçue pour la sécurité et la stabilité tandis que les autres offrent des logiciels plus récents mais potentiellement cassés.
+
+      La migration d'une distribution vers une autre est une opération irréversible qui ne peut se faire que de la version stable vers testing puis vers unstable.
+
+      Il est important de distinguer Debian des distributions basées sur Debian comme Ubuntu ou Kali car ces dernières ne sont pas Debian et l'utilisation de leurs dépôts peut créer des dysfonctionnements.
+
+      Le terme libre dans le projet Debian se réfère à la liberté d'utilisation et de modification et non au prix du logiciel.
+
+      L'utilisation de paquets provenant de différentes distributions peut échouer car les fichiers de contrôle ne sont pas standardisés entre les gestionnaires de paquets.
+
+EXEMPLES CITÉS.
+
+      La version stable actuelle de Debian est la version treize nommée trixie.
+
+      Le projet Debian contient plus de soixante-quatre mille neuf cent soixante et un logiciels et fonctionne sur sept architectures.
+
+      Le nom du projet est une contraction des noms de Debra et Ian Murdock qui a fondé le projet en mille neuf cent quatre-vingt-treize.
+
+      Les noms de code des versions précédentes proviennent des personnages des films Toy Story comme buzz pour la version un virgule un ou woody pour la version trois virgule zéro.
+
+      Un utilisateur peut installer un environnement de développement de base en utilisant le méta-paquet build-essential.

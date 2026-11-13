@@ -1,0 +1,53 @@
+TITRE : Gestion Mémoire Riddim
+
+[Intro]
+Écoute le rythme de la MMU qui s'élance,
+La gestion de la mémoire entre en danse.
+
+[Couplet 1]
+La segmentation divise en code et en données,
+Mais la fragmentation externe vient tout morceler.
+La pagination utilise cadres et pages pour l'adresse,
+Mais la fragmentation interne crée une faiblesse.
+Le swap fait le va-et-vient sur la mémoire secondaire,
+Entre la mémoire principale et la zone d'échange exemplaire.
+Le swapper gère le swap in et le swap out avec soin,
+Pour que le système ne perde jamais le témoin.
+
+[Refrain]
+Mémoire virtuelle, pagination et adressage,
+La MMU traduit pour éviter le naufrage.
+Entre le pager qui charge et le page stealer qui libère,
+La gestion du système est notre seule prière.
+
+[Couplet 2]
+En trente-deux bits, le registre CR3 est le guide,
+Le répertoire de pages sur mille vingt-quatre est limpide.
+Quatre octets par entrée pour la table de page,
+Vingt-deux bits pour l'adresse physique de l'image.
+La page a quatre mille quatre-vingt-seize entrées de huit bits,
+Le bit Present dit si la page est là, c'est écrit.
+Le bit Dirty et le bit Accessed guident le processus,
+Pour que le remplacement de page soit sans stress.
+
+[Refrain]
+Mémoire virtuelle, pagination et adressage,
+La MMU traduit pour éviter le naufrage.
+Entre le pager qui charge et le page stealer qui libère,
+La gestion du système est notre seule prière.
+
+[Pont]
+Le COW partage les zones en lecture seule,
+Jusqu'à l'écriture qui duplique la cellule.
+Le TLB mémorise pour optimiser la recherche,
+Évitant à la MMU une trop longue marche.
+
+[Refrain final]
+Mémoire virtuelle, pagination et adressage,
+La MMU traduit pour éviter le naufrage.
+Entre le pager qui charge et le page stealer qui libère,
+La gestion du système est notre seule prière.
+
+[Outro]
+Mmap pour projeter, mprotect pour sécuriser,
+La gestion mémoire est enfin maîtrisée.

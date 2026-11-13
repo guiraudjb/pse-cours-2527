@@ -1,0 +1,53 @@
+TITRE : Performance GNU Linux Riddim
+
+[Intro]
+L'Institut de la Gestion publique et du Développement économique arrive,
+Pour optimiser ton système et que la performance arrive.
+
+[Couplet 1]
+Le CPU analyse la charge par le pourcentage d'utilisation,
+La RAM stocke les données de chaque processus en action.
+Le SGBD demande de la mémoire partagée en quantité,
+Le swap est la mémoire secondaire pour la disponibilité.
+Le PID est l'identifiant unique pour utiliser le top,
+L'IPC gère la communication sans aucun faux pas.
+Les I/O concernent les disques et leurs opérations,
+Le NFS sert aux statistiques de transfert de données.
+
+[Refrain]
+Analyse, optimise et surveille tes ressources,
+Pour que la performance garde toute sa force.
+Du CPU à la RAM, du réseau au stockage,
+Garde le contrôle sur tout ton paysage.
+
+[Couplet 2]
+Le temps de réponse est le délai après la touche Enter,
+Une seconde pour la gestion, c'est ce qu'on doit attendre.
+Utilise top pour voir la charge sur quinze dernières minutes,
+Ou la commande ps pour que la liste des processus s'exécute.
+Uptime donne la charge et les jours depuis le redémarrage,
+W montre qui est connecté pour éviter le naufrage.
+Time détaille le temps système et le temps utilisateur,
+Strace montre les appels système pour mieux comprendre l'acteur.
+
+[Refrain]
+Analyse, optimise et surveille tes ressources,
+Pour que la performance garde toute sa force.
+Du CPU à la RAM, du réseau au stockage,
+Garde le contrôle sur tout ton paysage.
+
+[Pont]
+Free affiche la mémoire en bytes ou en mebibytes,
+Le swappiness à soixante guide les écritures.
+Vmstat surveille le processeur et les interruptions,
+Iostat détecte les goulots d'étranglement en action.
+
+[Refrain final]
+Analyse, optimise et surveille tes ressources,
+Pour que la performance garde toute sa force.
+Du CPU à la RAM, du réseau au stockage,
+Garde le contrôle sur tout ton paysage.
+
+[Outro]
+Sar et sysstat collectent les données dans le temps,
+Pour une gestion Linux parfaite et performante.

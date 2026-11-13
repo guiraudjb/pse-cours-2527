@@ -1,0 +1,53 @@
+TITRE : Windows System Riddim
+
+[Intro]
+Écoute le rythme de l'Institut de la Gestion publique,
+Pour le PSE, on prépare la connaissance avec le cœur.
+
+[Couplet 1]
+La mémoire physique c'est la RAM installée,
+La mémoire virtuelle est une abstraction isolée.
+Le processus est un conteneur de ressources et de PID,
+Le thread est l'unité d'exécution avec son contexte CPU.
+Le working set regroupe les pages en activité,
+Le paging déplace les pages vers le stockage avec agilité.
+Une page fault survient quand la page n'est pas là,
+Le commit est la charge et le pool noyau guide tes pas.
+
+[Refrain]
+Windows système, garde l'équilibre et la clarté,
+Entre processus et threads, trouve la vérité.
+Diagnostique la mémoire et les services en arrière-plan,
+Avec le bon indicateur, tu maîtrises le plan.
+
+[Couplet 2]
+Le service Windows peut démarrer de façon automatique,
+La tâche planifiée suit un déclencheur méthodique.
+Avec PowerShell utilise Get-Service pour contrôler,
+Et Get-ScheduledTask pour les tâches à inventorier.
+Le pilote permet au matériel de bien fonctionner,
+Le Plug and Play aide le périphérique à s'installer.
+Le registre est une base de données en ruches et clés,
+Sauvegarde toujours avant de modifier les paramètres.
+
+[Refrain]
+Windows système, garde l'équilibre et la clarté,
+Entre processus et threads, trouve la vérité.
+Diagnostique la mémoire et les services en arrière-plan,
+Avec le bon indicateur, tu maîtrises le plan.
+
+[Pont]
+Ne confonds pas le conteneur et l'unité planifiée,
+Ne change pas les priorités sans une analyse certifiée.
+Le gestionnaire de tâches et l'observateur d'événements,
+Sont tes alliés pour un diagnostic de précision et de mouvement.
+
+[Refrain final]
+Windows système, garde l'équilibre et la clarté,
+Entre processus et threads, trouve la vérité.
+Diagnostique la mémoire et les services en arrière-plan,
+Avec le bon indicateur, tu maîtrises le plan.
+
+[Outro]
+De la RAM au registre, tout est bien ordonné,
+Prépare ton épreuve, la réussite est assurée.

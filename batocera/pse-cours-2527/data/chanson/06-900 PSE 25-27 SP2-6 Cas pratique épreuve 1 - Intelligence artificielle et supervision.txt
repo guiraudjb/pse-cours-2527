@@ -1,0 +1,53 @@
+TITRE : Supervision IA Riddim
+
+[Intro]
+Écoute le rythme de la donnée,
+L'intelligence artificielle arrive pour nous guider.
+
+[Couplet 1]
+Les systèmes sont devenus indispensables partout,
+Mais la complexité des réseaux nous rend fous.
+L'administrateur système surveille les serveurs,
+Mais le volume d'infos fait peur au cœur.
+La supervision doit être constante et sans fin,
+Pour éviter les pannes et le mauvais destin.
+Une panne coûte cher et fait perdre du temps,
+L'IA arrive pour gérer ce flux important.
+
+[Refrain]
+L'IA surveille vingt-quatre heures sur vingt-quatre,
+Sept jours sur sept, elle est toujours là.
+Détection d'anomalies et maintenance prédictive,
+Pour une infrastructure vraiment plus active.
+
+[Couplet 2]
+Elle analyse le processeur et les réseaux,
+Pour repérer les signes faibles et les défauts.
+Fini les fausses alertes et les erreurs de l'humain,
+L'analyse comportementale trace le bon chemin.
+Dans le centre de données elle voit tout de suite,
+Si un disque dur produit des erreurs de lecture ou de fuite.
+Elle anticipe la surchauffe ou l'instabilité,
+Pour garantir la disponibilité de l'activité.
+
+[Refrain]
+L'IA surveille vingt-quatre heures sur vingt-quatre,
+Sept jours sur sept, elle est toujours là.
+Détection d'anomalies et maintenance prédictive,
+Pour une infrastructure vraiment plus active.
+
+[Pont]
+C'est une aide à la décision pour les techniciens,
+Elle classe les incidents selon leur niveau de tension.
+Elle suggère des solutions et automatise les tâches,
+Pour que l'expert humain ne subisse plus de taches.
+
+[Refrain final]
+L'IA surveille vingt-quatre heures sur vingt-quatre,
+Sept jours sur sept, elle est toujours là.
+Détection d'anomalies et maintenance prédictive,
+Pour une infrastructure vraiment plus active.
+
+[Outro]
+L'humain et la machine travaillent en harmonie,
+Pour une maintenance efficace et une gestion infinie.

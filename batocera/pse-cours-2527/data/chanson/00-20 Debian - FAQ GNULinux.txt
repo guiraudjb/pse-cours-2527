@@ -1,0 +1,53 @@
+TITRE : Debian Libre Riddim
+
+[Intro]
+Debian GNU/Linux, la liberté est notre voie
+Depuis mille neuf cent quatre-vingt-treize, on garde la foi
+
+[Couplet 1]
+Ian Murdock a fondé ce projet avec passion
+Sous le patronage de la Free Software Foundation
+Plus de soixante-quatre mille neuf cent soixante et un logiciels
+Libres et complets, pour ne jamais s'essouffler
+Si tu veux la stabilité, choisis la version stable
+Trixie est la treizième, un choix très responsable
+Pour les serveurs ou le bureau, c'est le choix le plus sûr
+Avec des mises à jour de sécurité, le système est pur
+
+[Refrain]
+Debian est libre, Debian est universel
+Un système robuste, un esprit essentiel
+De stable à unstable, on avance avec rigueur
+Le logiciel libre, c'est la clé du bonheur
+
+[Couplet 2]
+Pour installer tes paquets, utilise apt-get install
+Ou aptitude pour une gestion plus musicale
+Si tu veux mettre à jour, fais apt-get update
+Puis apt-get dist-upgrade pour ne pas être en retard
+Pour savoir ta version, tape lsb_release -a
+Ou regarde dans le fichier /etc/apt/sources.list, n'hésite pas
+Si tu veux un paquet source, utilise apt-get source foo
+Et build-dep pour les dépendances, c'est tout ce qu'il te faut
+
+[Refrain]
+Debian est libre, Debian est universel
+Un système robuste, un esprit essentiel
+De stable à unstable, on avance avec rigueur
+Le logiciel libre, c'est la clé du bonheur
+
+[Pont]
+Sid est l'unstable, le garçon qui casse les jouets
+Forky est la testing, qui attend d'être prêt
+Le noyau Linux est le cœur de la machine
+Avec les utilitaires GNU, la puissance s'affine
+
+[Refrain final]
+Debian est libre, Debian est universel
+Un système robuste, un esprit essentiel
+De stable à unstable, on avance avec rigueur
+Le logiciel libre, c'est la clé du bonheur
+
+[Outro]
+Software in the Public Interest, merci pour le soutien
+Debian GNU/Linux, le chemin est serein

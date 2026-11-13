@@ -1,0 +1,53 @@
+TITRE : IPC Vibration Riddim
+
+[Intro]
+Écoute le noyau, la communication s'élève,
+Entre les processus, la structure est un rêve.
+
+[Couplet 1]
+Le fork crée le fils avec son propre PID,
+Le parent garde le PPID pour ne pas s'oublier.
+L'appel exec fait une superposition totale,
+Dans le contexte existant, la tâche est loyale.
+La table des processus gère la zone u,
+Le double niveau d'indirection est reconnu.
+Un thread est léger, partage le même contexte,
+Avec la librairie pthread, on gère l'aspect complexe.
+
+[Refrain]
+IPC, c'est l'échange et la synchronisation,
+Pour éviter le deadlock et la famine en action.
+Mémoire partagée ou bien un socket réseau,
+Le système communique pour rester toujours beau.
+
+[Couplet 2]
+Le mutex protège la section critique avec soin,
+Le sémaphore est un entier qui règle les besoins.
+L'opération P décrémente, la V incrémente,
+Pour que l'intégrité des données soit constante.
+Le système System V est détaché du fichier,
+Les files de messages sont un mode asynchrone entier.
+Les sockets AF_UNIX ou bien AF_INET,
+TCP ou UDP, le protocole est parfait.
+
+[Refrain]
+IPC, c'est l'échange et la synchronisation,
+Pour éviter le deadlock et la famine en action.
+Mémoire partagée ou bien un socket réseau,
+Le système communique pour rester toujours beau.
+
+[Pont]
+Le FIFO est un tube nommé dans le SGF,
+Avec le symbole p, il n'est jamais bref.
+Utilise ipcs pour lister les ressources,
+Et ipcrm pour supprimer les erreurs de la source.
+
+[Refrain final]
+IPC, c'est l'échange et la synchronisation,
+Pour éviter le deadlock et la famine en action.
+Mémoire partagée ou bien un socket réseau,
+Le système communique pour rester toujours beau.
+
+[Outro]
+L'institut de la gestion publique nous guide,
+Sur la communication, le savoir est limpide.

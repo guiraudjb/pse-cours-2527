@@ -1,0 +1,53 @@
+TITRE : Big Data Riddim
+
+[Intro]
+Écoute le rythme de la donnée qui circule,
+Un flux immense que le monde manipule.
+
+[Couplet 1]
+Le Big Data arrive avec son grand volume,
+Des textes et des sons qui s'accumulent dans la brume.
+La variété des formes comme l'image ou le son,
+La vélocité produit l'information en action.
+Chaque clic sur Internet ou chaque achat en ligne,
+Génère des données que le numérique assigne.
+Ce n'est pas qu'un stockage de fichiers sans fin,
+C'est la valeur extraite pour tracer le chemin.
+
+[Refrain]
+Volume, variété et grande vélocité,
+Chercher la valeur avec agilité.
+Le Big Data transforme notre réalité,
+Par l'analyse et la grande complexité.
+
+[Couplet 2]
+Hadoop distribue le stockage sur plusieurs machines,
+Spark traite en mémoire vive et les données s'illuminent.
+Python nettoie et organise avec précision,
+SQL gère l'information avec sa fonction.
+Le cloud computing facilite l'accès dématérialisé,
+Dans le commerce ou la santé, tout est analysé.
+Les transports optimisent les trajets et les flux,
+Pour éviter les embouteillages et les trajets imprévus.
+
+[Refrain]
+Volume, variété et grande vélocité,
+Chercher la valeur avec agilité.
+Le Big Data transforme notre réalité,
+Par l'analyse et la grande complexité.
+
+[Pont]
+Mais attention à la vie privée et aux données personnelles,
+Le piratage informatique reste une menace réelle.
+Les biais algorithmiques peuvent être discriminatoires,
+L'éthique doit guider nos analyses et nos histoires.
+
+[Refrain final]
+Volume, variété et grande vélocité,
+Chercher la valeur avec agilité.
+Le Big Data transforme notre réalité,
+Par l'analyse et la grande complexité.
+
+[Outro]
+Extraire l'information utile et la vérité,
+Dans ce monde de données, garde la clarté.

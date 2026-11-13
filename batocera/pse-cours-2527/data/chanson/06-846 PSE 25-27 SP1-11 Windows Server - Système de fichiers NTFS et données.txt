@@ -1,0 +1,53 @@
+TITRE : Le Rythme du Système Riddim
+
+[Intro]
+Écoute la vibration du disque et du volume
+Le système de fichiers guide notre écoute
+
+[Couplet 1]
+Du disque physique vers le fichier final
+La hiérarchie est un chemin logique et vital
+Le volume est l'espace où le système s'installe
+Le chemin localise la ressource digitale
+Les métadonnées décrivent sans lire le contenu
+Les attributs précisent ce que l'on a reconnu
+NTFS est la référence pour les volumes modernes
+Pour protéger les données et briser les chaînes
+
+[Refrain]
+Disponibilité, confidentialité, intégrité, traçabilité
+Quatre piliers pour la sécurité et la réalité
+Retiens le plus restrictif pour tes droits effectifs
+Dans le monde Windows, reste toujours attentif
+
+[Couplet 2]
+La MFT contient les métadonnées essentielles
+Les flux alternatifs ADS sont des données spéciales
+La DACL autorise ou refuse avec précision
+La SACL audite les succès et les échecs en action
+Pour le réseau le protocole SMB est le maître
+Avec VSS les copies instantanées vont apparaître
+Le chiffrement EFS protège la confidentialité
+Et la journalisation assure la cohérence de l'intégrité
+
+[Refrain]
+Disponibilité, confidentialité, intégrité, traçabilité
+Quatre piliers pour la sécurité et la réalité
+Retiens le plus restrictif pour tes droits effectifs
+Dans le monde Windows, reste toujours attentif
+
+[Pont]
+Entre le partage SMB et les droits NTFS
+C'est le droit le plus restrictif qui nous laisse
+L'administration se fait par PowerShell ou graphique
+DiskPart ou Get-Acl rendent le diagnostic efficace
+
+[Refrain final]
+Disponibilité, confidentialité, intégrité, traçabilité
+Quatre piliers pour la sécurité et la réalité
+Retiens le plus restrictif pour tes droits effectifs
+Dans le monde Windows, reste toujours attentif
+
+[Outro]
+La sauvegarde doit être testée pour être garantie
+Pour la qualification PSE, prépare ta stratégie

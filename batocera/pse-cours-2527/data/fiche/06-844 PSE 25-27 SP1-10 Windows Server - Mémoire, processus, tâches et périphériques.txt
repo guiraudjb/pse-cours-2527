@@ -1,0 +1,233 @@
+FICHE DE RÉVISION POUR LA PRÉPARATION À L'ÉPREUVE SYSTÈME WINDOWS.
+
+LEXIQUE COMPLET.
+
+      L'Institut de la Gestion publique et du Développement économique est l'organisme qui dispense la préparation à l'épreuve système Windows.
+
+      Le PSE désigne la qualification visée par cette préparation au système d'exploitation Windows.
+
+      La mémoire physique désigne la RAM réellement installée sur le serveur.
+
+      La mémoire virtuelle désigne une abstraction qui donne aux processus un espace d'adressage propre.
+
+      Le working set désigne l'ensemble des pages actuellement associées à l'activité d'un processus.
+
+      Le processus désigne un conteneur qui porte les ressources comme le PID, l'espace mémoire et les handles.
+
+      Le thread désigne l'unité d'exécution qui possède un contexte CPU, une pile et une priorité.
+
+      Le service Windows désigne un processus de longue durée qui peut démarrer de manière automatique ou manuelle.
+
+      La tâche planifiée désigne une exécution automatisée contrôlée par des déclencheurs, des actions et des conditions.
+
+      Le pilote désigne un composant qui permet au système d'exploiter un périphérique matériel.
+
+      Le registre Windows désigne une base de données hiérarchique organisée en ruches, clés et sous-valeurs.
+
+COURS DÉTAILLÉ.
+
+I. GESTION DE LA MÉMOIRE ET DE L'ADRESSAGE.
+
+   A. Mémoire physique versus mémoire virtuelle.
+
+      La mémoire physique correspond à la RAM réellement installée sur le serveur.
+
+      La mémoire virtuelle est une abstraction qui offre à chaque processus son propre espace d'adressage.
+
+      Cette architecture permet d'assurer l'isolation et la protection des différents processus en cours d'exécution.
+
+      L'objectif principal est de permettre une utilisation efficace de la RAM disponible.
+
+   B. Mécanismes de pagination et de traduction d'adresses.
+
+      La mémoire virtuelle est organisée en unités de gestion appelées pages.
+
+      Le système assure la traduction des adresses virtuelles vers les adresses physiques.
+
+      Les pages peuvent être présentes directement en RAM ou être déplacées sur le disque.
+
+      Le mécanisme de paging permet le déplacement de ces pages entre la mémoire et le stockage.
+
+      Une page fault se produit lorsqu'une page demandée n'est pas immédiatement disponible dans le contexte d'exécution.
+
+   C. Indicateurs de diagnostic et pression mémoire.
+
+      Le commit représente la charge engagée tandis que le working set désigne les pages actuellement en mémoire.
+
+      Les hard faults indiquent des accès disque liés à la pagination du système.
+
+      Le pool noyau correspond à la mémoire utilisée par le noyau et les pilotes.
+
+      Un handle leak signale la présence d'objets qui n'ont pas été libérés.
+
+      La pression mémoire peut être identifiée par une activité excessive sur le fichier de pagination ou le disque.
+
+II. PROCESSUS, THREADS ET CYCLE DE VIE.
+
+   A. Différence entre processus et threads.
+
+      Le processus est considéré comme le conteneur qui porte les ressources nécessaires à l'exécution. Il possède son propre identifiant appelé PID, un espace mémoire dédié, des handles, un jeton et un environnement spécifique.
+
+      Le thread représente l'unité qui est réellement planifiée par le système. Il contient le contexte CPU, la pile, la priorité et gère l'exécution proprement dite.
+
+      Windows met en œuvre un mécanisme de multitâche préemptif pour gérer ces éléments. L'analyse technique doit permettre de distinguer un processus consommateur d'un thread bloqué ou d'une dépendance de service.
+
+      Les handles et les jetons sont des éléments essentiels qui orientent l'analyse de la sécurité et des ressources du système.
+
+   B. Cycle de vie d'un processus.
+
+      La phase de création correspond au moment où le système prépare l'ensemble des ressources nécessaires au processus.
+
+      L'étape d'initialisation consiste à charger le code, les fichiers DLL et les différents paramètres de fonctionnement.
+
+      Pendant la phase d'exécution, les threads sont planifiés sur les processeurs logiques pour effectuer les tâches.
+
+      Le processus peut entrer en phase d'attente lorsqu'il est suspendu par une E/S, un verrou ou un événement particulier.
+
+      La terminaison marque la fin du cycle avec la libération des ressources et l'enregistrement éventuel d'informations.
+
+   C. Ordonnancement et gestion des priorités.
+
+      Windows effectue la planification des threads et non directement celle des processus.
+
+      La priorité influence directement l'ordre et la fréquence d'accès au processeur pour les différentes unités d'exécution.
+
+      Le système doit préserver la réactivité tout en partageant le CPU.
+
+      Il est important de noter que modifier les priorités sans un diagnostic préalable peut dégrader le comportement global du système.
+
+      Les indicateurs clés pour surveiller ce mécanisme sont le temps processeur, la longueur des files et le temps de réponse.
+
+III. SERVICES ET TÂCHES PLANIFIÉES.
+
+   A. Gestion et configuration des services Windows.
+
+      Les services Windows sont des processus de longue durée qui s'exécutent en arrière-plan.
+
+      Ils peuvent être configurés pour démarrer de manière automatique, manuelle ou selon des déclencheurs spécifiques.
+
+      Chaque service peut fonctionner sous l'identité de comptes de service particuliers.
+
+      Il est crucial d'identifier les dépendances et le rôle d'un service avant toute modification.
+
+      Un service arrêté peut entraîner des conséquences fonctionnelles importantes pour le système.
+
+   B. Fonctionnement des tâches planifiées et déclencheurs.
+
+      Les tâches planifiées permettent une exécution automatisée basée sur des déclencheurs temporels ou événementiels.
+
+      L'ordonnanceur gère ces tâches en tenant compte des priorités et du contexte d'exécution.
+
+      Le fonctionnement repose sur des mécanismes tels que le quantum et l'affinité processeur.
+
+      Point PSE : toute exécution automatique doit être rattachée à une source de déclenchement et à une identité d'exécution.
+
+      L'historique de tâche permet de suivre les exécutions passées.
+
+   C. Administration via PowerShell.
+
+      L'outil Get-Service permet d'interroger et de contrôler l'état ainsi que la configuration des services.
+
+      La commande Get-ScheduledTask est utilisée pour inventorier les tâches planifiées du système.
+
+      Pour consulter les informations relatives à l'exécution d'une tâche, on utilise Get-ScheduledTaskInfo.
+
+      La commande Start-ScheduledTask permet de lancer une tâche manuellement.
+
+      Les scripts d'administration doivent être testés et journalisés pour garantir leur fiabilité.
+
+      Il est recommandé d'appliquer des privilèges minimaux pour éviter d'exécuter des automatisations avec des droits excessifs.
+
+IV. GESTION DES PÉRIPHÉRIQUES ET DES PILOTES.
+
+   A. Architecture de la couche d'abstraction matérielle.
+
+      L'architecture repose sur une structure organisée en couches allant de l'application jusqu'au matériel.
+
+      Le gestionnaire d'E/S, ou I/O Manager, assure l'interface entre les applications et les couches inférieures.
+
+      Le pilote constitue l'élément central qui permet au système d'exploiter un périphérique spécifique.
+
+      La pile périphérique et le matériel forment la base de cette structure d'abstraction.
+
+      Cette organisation permet d'identifier si un symptôme provient du matériel, du pilote ou d'un conflit de ressources.
+
+   B. Fonctionnement du Plug and Play.
+
+      Le mécanisme Plug and Play permet une détection et une configuration automatisées des composants.
+
+      Cette automatisation est possible lorsque le matériel et le pilote associé le permettent.
+
+      Le gestionnaire de périphériques joue un rôle essentiel pour identifier les éventuels dysfonctionnements.
+
+      Un bon réflexe de diagnostic consiste à vérifier le matériel, la version du pilote et les événements système.
+
+   C. Diagnostic des pilotes et des ressources.
+
+      Le diagnostic nécessite d'identifier précisément le périphérique, son pilote, sa signature et son état.
+
+      Il est crucial de comparer une panne matérielle avec un pilote défaillant ou un conflit de ressources.
+
+      Le gestionnaire de périphériques et l'outil pnputil sont des ressources utiles pour l'analyse.
+
+      Les journaux système et l'outil Driver Verifier peuvent être utilisés avec prudence pour approfondir l'étude.
+
+      L'analyse doit également prendre en compte la stratégie de sécurité appliquée au périphérique.
+
+V. OUTILS DE DIAGNOSTIC ET CONFIGURATION SYSTÈME.
+
+   A. Outils natifs d'observation et de performance.
+
+      Le gestionnaire des tâches offre une vue rapide sur les processus et l'utilisation de la mémoire.
+
+      Le moniteur de ressources permet de réaliser une analyse détaillée des différentes ressources du système.
+
+      Le moniteur de performances est utilisé pour la collecte de compteurs et l'analyse de données dans le temps.
+
+      PowerShell permet l'interrogation et l'automatisation du diagnostic via des commandes comme Get-Process ou Get-Service.
+
+      L'observateur d'événements sert à rechercher des indices et des erreurs liés au fonctionnement du système.
+
+   B. Utilisation du Registre Windows.
+
+      Le registre Windows est une base de données hiérarchique qui contient les paramètres système, matériels, utilisateurs et logiciels.
+
+      Cette structure est organisée en ruches, en clés et en sous-valeurs.
+
+      La modification directe du registre est une opération sensible qui doit être réservée aux personnes maîtrisant son impact.
+
+      Avant toute modification sensible, il est impératif de procéder à une sauvegarde et de documenter la méthode de retour arrière.
+
+   C. Méthodologie de diagnostic et analyse de cas.
+
+      Le diagnostic consiste à passer d'un symptôme observable à une mesure précise en utilisant des indicateurs comme le commit ou le working set.
+
+      L'analyse doit permettre de distinguer si le système manque de RAM ou s'il subit un comportement anormal d'un processus ou d'un pilote.
+
+      Face à un cas de lenteur après ouverture de session avec un disque saturé et une RAM modérément utilisée, il faut identifier des hypothèses.
+
+      La méthode de diagnostic repose sur la sélection d'indicateurs à observer et la distinction entre processus, service, tâche planifiée et pilote.
+
+      La sortie attendue d'un diagnostic est une conclusion provisoire qui soit prudente, outillée et hiérarchisée.
+
+POINTS D'ATTENTION.
+
+      Il ne faut pas confondre le processus qui porte les ressources avec le thread qui est l'unité planifiée par le système.
+
+      Une confusion fréquente réside dans la distinction entre la mémoire physique qui est la RAM installée et la mémoire virtuelle qui est une abstraction.
+
+      Il est crucial de ne pas modifier les priorités d'ordonnancement sans un diagnostic préalable pour éviter de dégrader la réactivité globale.
+
+      L'analyse doit distinguer un processus consommateur d'un thread bloqué ou d'une dépendance de service pour être efficace.
+
+      La modification du registre Windows est une opération sensible qui nécessite une sauvegarde et une méthode de retour arrière.
+
+EXEMPLES CITÉS.
+
+      Un cas de diagnostic montre un poste lent après l'ouverture de session avec un disque saturé mais une RAM modérément utilisée.
+
+      Le moniteur de performances permet de corréler les compteurs de ressources dans le temps pour identifier des anomalies.
+
+      L'utilisation de PowerShell avec les commandes Get-Process ou Get-Service permet d'automatiser l'inventaire et la mesure du système.
+
+      Le gestionnaire de périphériques sert à identifier les dysfonctionnements liés au matériel ou aux pilotes Plug and Play.

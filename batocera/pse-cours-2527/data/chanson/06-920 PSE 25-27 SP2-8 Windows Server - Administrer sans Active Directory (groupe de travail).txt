@@ -1,0 +1,53 @@
+TITRE : Workgroup Riddim Riddim
+
+[Intro]
+L'Institut de la Gestion publique nous donne la leçon,
+Pour l'administration Windows, écoute cette chanson.
+
+[Couplet 1]
+En mode Workgroup chaque serveur est indépendant,
+Pas d'Active Directory pour un contrôle centralisant.
+La base SAM stocke les comptes de façon locale,
+L'authentification NTLM reste la règle digitale.
+Pour les petits parcs de moins de vingt utilisateurs,
+C'est le choix idéal pour les tests et les laboratoires.
+Mais si cinq à dix serveurs commencent à s'accumuler,
+Le domaine Active Directory va devoir arriver.
+
+[Refrain]
+Pas d'annuaire central, tout est dans le SAM,
+Chaque machine est un îlot, c'est le même examen.
+LGPO pour la sécurité sur chaque machine seule,
+Le Workgroup est un silo, tel est son rôle.
+
+[Couplet 2]
+Utilise lusrmgr.msc pour gérer les utilisateurs,
+Ou avec PowerShell pour être plus efficace et régulier.
+New-LocalUser et Add-LocalGroupMember sont tes alliés,
+Pour automatiser sans jamais te fatiguer.
+Configure gpedit.msc pour durcir la sécurité,
+Les politiques de mots de passe sont une nécessité.
+Le partage SMB nécessite des permissions NTFS,
+Pour que sur SRV-FICHIERS JeanDupont puisse s'asseoir et lire.
+
+[Refrain]
+Pas d'annuaire central, tout est dans le SAM,
+Chaque machine est un îlot, c'est le même examen.
+LGPO pour la sécurité sur chaque machine seule,
+Le Workgroup est un silo, tel est son rôle.
+
+[Pont]
+Windows Admin Center gère tout via le navigateur,
+Et WinRM permet le PowerShell Remoting avec ardeur.
+Si vingt-cinq utilisateurs dépassent la limite de licence,
+La migration vers le domaine devient une évidence.
+
+[Refrain final]
+Pas d'annuaire central, tout est dans le SAM,
+Chaque machine est un îlot, c'est le même examen.
+LGPO pour la sécurité sur chaque machine seule,
+Le Workgroup est un silo, tel est son rôle.
+
+[Outro]
+Maîtrise le Workgroup avant de passer au domaine,
+Pour que ton infrastructure soit toujours sereine.

@@ -1,0 +1,53 @@
+TITRE : Windows Server Riddim
+
+[Intro]
+Écoute le rythme de l'optimisation,
+Pour ton serveur, c'est la bonne direction.
+
+[Couplet 1]
+L'institut de la gestion publique te guide,
+Pour que ta performance ne soit jamais vide.
+Le cycle est itératif en quatre étapes,
+Collecte, analyse, ajuste et surveille la trappe.
+Le CPU en soixante-quatre bits est la loi,
+Avec des caches L2 ou L3 pour garder la foi.
+La RAM doit éliminer la pagination,
+Pour éviter les lenteurs de la configuration.
+
+[Refrain]
+Matériel, rôles et sous-systèmes,
+C'est la clé pour que tout fonctionne bien.
+Optimise tes services et tes données,
+Pour que la continuité soit toujours assurée.
+
+[Couplet 2]
+Le SSD NVMe est une révolution,
+Quatre-vingts pour cent d'IOPS en plus de l'action.
+Sur Windows Server deux mille vingt-cinq, c'est natif,
+Trois virgule trois millions d'IOPS, c'est positif.
+Pour Hyper-V, la mémoire est un grand enjeu,
+Cent vingt-huit Go minimum pour les plus ambitieux.
+Active le RSS sur tes cartes réseau,
+Et le mode haute performance dans le BIOS, c'est beau.
+
+[Refrain]
+Matériel, rôles et sous-systèmes,
+C'est la clé pour que tout fonctionne bien.
+Optimise tes services et tes données,
+Pour que la continuité soit toujours assurée.
+
+[Pont]
+DTrace permet le débogage en temps réel,
+Pendant que le Hotpatching évite le réveil.
+Pas de redémarrage pour la sécurité,
+Sur Azure Local, c'est la grande liberté.
+
+[Refrain final]
+Matériel, rôles et sous-systèmes,
+C'est la clé pour que tout fonctionne bien.
+Optimise tes services et tes données,
+Pour que la continuité soit toujours assurée.
+
+[Outro]
+Utilise PowerShell et PerfMon pour surveiller,
+Le serveur est prêt, tu peux maintenant travailler.
